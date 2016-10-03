@@ -46,7 +46,7 @@
 * Δεδομένα εφαρμογών
 
 
-## Διεπαφή με τον χρήστη 
+## Διεπαφή με τον χρήστη
 
 * HTML, iOS, Android
 
@@ -201,7 +201,7 @@ def connect_db():
     """Connects to the specific database."""
     rv = sqlite3.connect(app.config['DATABASE'])
     # Return dictionaries instead of tuples
-    rv.row_factory = sqlite3.Row 
+    rv.row_factory = sqlite3.Row
     return rv
 ```
 
@@ -218,24 +218,36 @@ def close_db(error):
         g.sqlite_db.close()
 ```
 
-## Εκκίνηση εφαρμογής
+## Εκκίνηση εφαρμογής σε Mac και Linux
 
-* Για να ξεκινήσουμε την εφαρμογή μπορούμε να δώσουμε σε υπολογιστές
-  Mac και Linux:
+* Για να ξεκινήσουμε την εφαρμογή σε Mac και Linux πρέπει καταρχήν να δώσουμε
+  από τη γραμμή εντολών:
 
 ```bash
-export FLASK_APP=flaskr
+export FLASK_APP=flaskr.py
 export FLASK_DEBUG=1
-python -m flask run
+```
+* Στη συνέχεια για να ξεκινήσουμε την εφαρμογή θα πρέπει να βρισκόμαστε μέσα
+  στον κατάλογο `flaskr` και να δώσουμε:
+```bash
+flask run
 ```
 
+## Εκκίνηση εφαρμογής σε MS-Windows
 
-* Σε υπολογιστές MS-Windows:
+*  Για να ξεκινήσουμε την εφαρμογή σε MS-Windows πρέπει καταρχήν να δώσουμε
+  από τη γραμμή εντολών:
 
 ```
 set FLASK_APP=flaskr
 set FLASK_DEBUG=1
 python -m flask run
+```
+
+* Στη συνέχεια για να ξεκινήσουμε την εφαρμογή θα πρέπει να βρισκόμαστε μέσα
+  στον κατάλογο `flaskr` και να δώσουμε:
+```bash
+flask run
 ```
 
 ## Πρόσβαση στην εφαρμογή
@@ -276,7 +288,7 @@ def initdb_command():
 * Αν όλα πάνε καλά μπορείτε να τρέξετε την παρακάτω εντολή για να
 δημιουργηθεί η βάση:
 ```
-python -m flask initdb
+flask initdb
 ```
 
 
