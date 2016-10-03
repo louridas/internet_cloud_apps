@@ -286,11 +286,15 @@ def initdb_command():
 
 
 * Αν όλα πάνε καλά μπορείτε να τρέξετε την παρακάτω εντολή για να
-δημιουργηθεί η βάση:
-```
-flask initdb
+δημιουργηθεί η βάση σε MS-Windows:
+```bash
+pythoh -m flask initdb
 ```
 
+* Εναλλακτικά, σε Mac OS ή Linux δίνετε:
+```bash
+flask initdb
+```
 
 ## Εμφάνιση αναρτήσεων
 
