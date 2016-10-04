@@ -76,12 +76,29 @@
 
 # Εισαγωγή στο Flask
 
+## Flask
+
+* Το [Flask](http://flask.pocoo.org/) είναι μια μικρο-πλατφόρμα
+  ανάπτυξης διαδικτυακών εφαρμογών.
+
+* Προσφέρεται για τη γρήγορη ανάπτυξη σχετικά μικρών εφαρμογών και
+  υπηρεσιών.
+
+* Είναι ιδιαίτερα δημοφιλές και χρησιμοποείται ευρύτατα.
+
 
 ## Εγκατάσταση Flask
 
 ```bash
 pip install Flask
 ```
+
+<div class="notes">
+
+Η εντολή `pip` είναι ο γενικός τρόπος με τον οποίον εγκαθιστούμε
+πακέτα και βιβλιοθήκες στην Python.
+
+</div>
 
 ## Hello World στο Flask
 
@@ -97,6 +114,28 @@ if __name__ == "__main__":
     app.run()
 ```
 
+<div class="notes">
+
+Η πρώτη γραμμή, `app = Flask(__name__)`, δημιουργεί το
+αντικείμενο `app` που αντιπροσωπεύει την εφαρμογή που φτιάχνουμε.
+
+Η γραμμή `@app.route("/")` δηλώνει ότι η συνάρτηση που θα ακολουθεί θα
+υλοποιεί τη συμπεριφορά της εφαρμογής μας στο μονοπάτι `/`. Το
+μονοπάτι είναι το κομμάτι ενός URL που ακολουθεί της διεύθυνσης του
+υπολογιστή. Το μονοπάτι `/` είναι ουσιαστικά το "κενό" μονοπάτι, π.χ.
+http://www.google.com ή http://www.google.com/. Παρακάτω θα δούμε
+άλλα μονοπάτια.
+
+Αν δεν έχετε ξαναδεί το σύμβολο `@` στην Python, με το σύμβολο αυτό
+ορίζουμε *διακοσμητές* (decorators) στη γλώσσα. Οι διακοσμητές είναι
+ένας μηχανισμός με τον οποίο μία συνάρτηση τυλίγεται μέσα σε μία άλλη,
+εξωτερική συνάρτηση. Στην περίπτωσή μας, ο διακοσμητής `app.route`
+τυλίγει τη συνάρτηση `hello` σε μία συνάρτηση η οποία εξασφαλίζει ότι
+όταν το μονοπάτι που δίνεται είναι `/` θα εκτελεστεί ο κώδικας μέσα
+στη `hello`. 
+
+</div>
+
 ## Εκτέλεση
 
 * Εκτελούμε το πρόγραμμα
@@ -104,17 +143,52 @@ if __name__ == "__main__":
 python hello_world.py
 ```
 
-* Η εφαρμογή είναι προσβάσιμη στο http://127.0.0.1:5000/
+* Η εφαρμογή είναι προσβάσιμη στη διεύθυνση http://127.0.0.1:5000/.
+
+<div class="notes">
+
+Αν δώσουμε http://127.0.0.1:5000/ στον browser μας, θα δούμε να
+εμφανίζεται το μήνυμα Hello World!.
+
+Η διεύθυνση http://127.0.0.1 είναι η *τοπική* διεύθυνση του
+υπολογιστή. Κάθε υπολογιστής που είναι συνδεμένος στο διαδίκτυο έχει
+μία διεύθυνση με την οποία είναι προσβάσιμος από άλλους υπολογιστές.
+Πώς όμως μπορούμε να αναφερθούμε στον ίδιο τον υπολογιστή μας από τον
+υπολογιστή μας; Αυτό κάνει η διεύθυνση 127.0.0.1: είναι ο τρόπος με
+τον οποίο ένας υπολογιστής μπορεί να αναφερθεί στον εαυτό του.
+
+Το 5000 που βλέπετε μετά τη διεύθυνση είναι η *θύρα* ή *πόρτα*
+(port) του υπολογιστή. Μπορείτε να φανταστείτε κάθε υπολογιστή σαν μία
+πολυκατοικία με πολλά διαμερίσματα. Για την ίδια λοιπόν διεύθυνση
+έχουμε πολλές διαφορετικές κατοικίες, σε κάθε μία από την οποία
+αντιστοιχεί μια διαφορετική πόρτα.
+
+Αν σε μία διεύθυνση στο διαδίκτυο δεν δώσουμε τον αριθμό της πόρτας,
+εννοείται η πόρτα 80. Δηλαδή, το http://www.google.com είναι το
+ίδιο με το http://www.google.com:80. Η πόρτα 80 είναι η κεντρική
+είσοδος για τις εφαρμογές HTTP, δηλαδή για τις διαδικτυακές εφαρμογές.
+
+</div>
 
 ## Παραμετροποιημένο Hello World
 
 * Προσθέτουμε την παρακάτω συνάρτηση κάτω από την πρώτη:
 
-```python
-@app.route('/user/<name>')
-def user(name):
-    return '<h1>Hello user %s!</h1>' % name
-```
+    ```python
+    @app.route('/user/<name>')
+    def user(name):
+        return '<h1>Hello user %s!</h1>' % name
+    ```
+
+<div class="notes">
+
+Η συνάρτηση αυτή χειρίζεται ένα διαφορετικό μονοπάτι: `/user/<name>`,
+δηλαδή μονοπάτια του τύπου http://127.0.0.1/user/Panos, ή όποιο άλλο
+όνομα, το `<name>` είναι παράμετρος. Αν δώσουμε τη διεύθυνση
+http://127.0.0.1/user/Panos στον browser μας, θα εμφανιστεί το μήνυμα
+Hello user Panos!.
+
+</div>
 
 # Flask Tutorial
 
@@ -129,11 +203,27 @@ def user(name):
 
 * Δημιουργείστε την παρακάτω δομή καταλόγων:
 
-```
-/flaskr
-    /static
-    /templates
-```
+    ```
+    /flaskr
+        /static
+        /templates
+    ```
+
+<div class="notes">
+
+* Στον κατάλογο `flaskr` θα γράψουμε τον κώδικα της εφαρμογής μας.
+
+* Στον κατάλογο `static` θα τοποθετήσουμε *στατικά* αρχεία, δηλαδή
+  αρχεία που δεν χρησιμοποιούνται για τη δυναμική παραγωγή
+  περιεχομένου. Στατικά αρχεία είναι οι εικόνες, τα αρχεία στυλ (CSS),
+  κ.λπ.
+
+* Στον κατάλογο `templates` θα τοποθετήσουμε *σκελετούς* (templates)
+  των σελίδων της εφαρμογής. Οι σκελετοί αυτοί, κατά τη διάρκεια
+  εκτέλεσης της εφαρμογής, θα γεμίζουν με περιεχόμενο και θα
+  δημιουργούν τις σελίδες HTML που θα βλέπουν οι χρήστες.
+
+</div>
 
 ## Δημιουργία βάσης
 
@@ -141,114 +231,250 @@ def user(name):
 
 * Τα περιεχόμενα του αρχείου θα είναι:
 
-```sql
-drop table if exists entries;
-create table entries (
-  id integer primary key autoincrement,
-  title text not null,
-  'text' text not null
-);
-```
+    ```sql
+    drop table if exists entries;
+    create table entries (
+        id integer primary key autoincrement,
+        title text not null,
+        'text' text not null
+    );
+    ```
 
 ## Προοίμιο εφαρμογής
 
 * Στον κατάλογο `flaskr` δημιουργείστε ένα αρχείο `flaskr.py`, στο
   οποίο θα γράφετε αυτά που ακολουθούν.
 
-```python
-# all the imports
-import os
-import sqlite3
-from flask import Flask, request, session, g, redirect, url_for, \
-    abort, render_template, flash
-```
+    ```python
+    # all the imports
+    import os
+    import sqlite3
+    from flask import Flask, request, session, g, redirect, url_for, \
+        abort, render_template, flash
+    ```
+
+<div class="notes">
+
+Όπως συνήθως σε ένα πρόγραμμα Python, στην αρχή του αναγράφουμε τις
+βιβλιοθήκες και τα στοιχεία τους που θα χρησιμοποιήσουμε. Θα δούμε
+παρακάτω τι κάνουν αυτά.
+
+</div>
 
 ## Δημιουργία εφαρμογής
 
 * Στη συνέχεια γράψτε τον παρακάτω κώδικα ο οποίος δημιουργεί την εφαρμογή.
 
-```python
-# create our little application :)
-app = Flask(__name__)
-```
+    ```python
+    # create our little application :)
+    app = Flask(__name__)
+    ```
+
+<div class="notes">
+
+Όπως βλέπετε, η εφαρμογή δεν είναι τίποτε άλλο από ένα κανονικό
+αντικείμενο Python.
+
+</div>
 
 ## Ρυθμίσεις εφαρμογής
 
-```python
-# Load default config and override config from an environment variable
+* Η εφαρμογή για να λειτουργήσει θα χρειαστεί τις παρακάτω ρυθμίσεις:
 
-app.config.from_object(__name__)
+    ```python
+    # Load default config and override config from an environment variable
 
-app.config.update(dict(
-    DATABASE=os.path.join(app.root_path, 'flaskr.db'),
-    SECRET_KEY='development key',
-    USERNAME='admin',
-    PASSWORD='default'
-))
+    app.config.from_object(__name__)
 
-app.config.from_envvar('FLASKR_SETTINGS', silent=True)
-```
+    app.config.update(dict(
+        DATABASE=os.path.join(app.root_path, 'flaskr.db'),
+        SECRET_KEY='development key',
+        USERNAME='admin',
+        PASSWORD='default'
+    ))
+
+    app.config.from_envvar('FLASKR_SETTINGS', silent=True)
+    ```
+
+<div class="notes">
+
+Κάθε ρεαλιστική εφαρμογή χρειάζεται μια σειρά ρυθμίσεων για να
+λειτουργήσει. Τέτοιες ρυθμίσεις μπορεί να είναι το είδος και η
+τοποθεσία της βάσης δεδομένων που χρησιμοποιεί, όπως και οποιοδήποτε
+άλλο στοιχείο θα πρέπει να γνωρίζει η εφαρμογή τη στιγμή που ξεκινά.
+
+Στην περίπτωσή μας, χρησιμοποιούμε τις παρακάτω ρυθμίσεις:
+
+* `DATABASE`, η οποία θα δείχνει στο αρχείο που θα αποθηκεύονται τα
+  δεδομένα της βάσης μας. Το αρχείο θα ονομάζεται `flaskr.db` και θα
+  βρίσκεται στον κατάλογο στον οποίο βρίσκεται και η εφαρμογή μας
+  (`app.root_path`).
+
+* `SECRET_KEY`, το οποίο είναι μια μυστική συμβολοσειρά, με την οποία
+  θα υπογράφει η εφαρμογή μας κάποια στοιχεία που θα στέλνει στο
+  χρήστη. Συγκεκριμένα, η εφαρμογή μας θα χρησιμοποιεί
+  [cookies](https://en.wikipedia.org/wiki/HTTP_cookie). Τα cookies
+  αυτά θα είναι κρυπτογραφικά υπογεγραμμένα από την εφαρμογή μας με
+  το `SECRET_KEY`, ώστε να μην μπορούν να αλλαχθούν από τον χρήστη (ή
+  όποιον άλλον). 
+
+* `USERNAME` και `PASSWORD` είναι το όνομα και ο κωδικός εισόδου του
+  χρήστη. Θεωρούμε ότι η εφαρμογή θα έχει μόνο έναν χρήστη. Σημειώστε
+  ότι *δεν είναι καθόλου καλή ιδέα* να αποθηκεύουμε κωδικούς με αυτόν
+  τον τρόπο. Αλλά προς το παρόν θα κάνουμε αυτήν την παραχώρηση.
+
+</div>
 
 ## Σύνδεση με τη βάση
 
-* Θα χρησιμοποιήσουμε τη βάση δεδομένων SQLite.
+* Θα χρησιμοποιήσουμε τη βάση δεδομένων
+  [SQLite](https://www.sqlite.org/).
 
 * Για να συνδεθούμε μαζί της, θα χρησιμοποιήσουμε την παρακάτω
   συνάρτηση.
 
-```python
-def connect_db():
-    """Connects to the specific database."""
-    rv = sqlite3.connect(app.config['DATABASE'])
-    # Return dictionaries instead of tuples
-    rv.row_factory = sqlite3.Row
-    return rv
-```
+    ```python
+    def connect_db():
+        """Connects to the specific database."""
+        rv = sqlite3.connect(app.config['DATABASE'])
+        # Return dictionaries instead of tuples
+        rv.row_factory = sqlite3.Row
+        return rv
+    ```
+
+<div class="notes">
+
+Η SQLite είναι μια *ενσωματωμένη* (embedded) σχεσιακή βάση δεδομένων.
+Ενσωματωμένη σημαίνει ότι δεν εγκαθίσταται ως ανεξάρτητη εφαρμογή,
+στην οποία έχει πρόσβαση το πρόγραμμά μας, αλλά ενσωματώνεται μέσα στο
+ίδιο το πρόγραμμα. Στην περίπτωσή μας, μας εξυπηρετεί για να
+μπορέσουμε να δοκιμάσουμε γρήγορα τον κώδικά μας.
+
+Ανεξαρτήτως ποιας βάσης χρησιμοποιούμε, κάθε φορά που θέλουμε να
+διαβάσουμε ή να γράψουμε δεδομένα σε αυτήν πρέπει να *συνδεθούμε* με
+τη βάση. Η συνάρτηση που γράψαμε συνδέεται με τη βάση που ορίζεται ως
+`DATABASE` στις ρυθμίσεις της εφαρμογής. Επίσης, ορίζουμε ότι τα
+αποτελέσματα που θα διαβάζονται από τη βάση θα μας επιστρέφονται με τη
+μορφή λεξικού (dictionary) της Python. Μία γραμμή της βάσης θα είναι
+ένα λεξικό, με ένα κλειδί για κάθε στήλη.
+
+</div>
+
+## Σύνδεση με τη βάση
+
+* Για να συνδεθούμε με τη βάση θα χρησιμοποιήσουμε την παρακάτω
+  συνάρτηση:
+
+    ```python
+    def get_db():
+        """Opens a new database connection if there is none yet for the
+        current application context.
+        """
+        if not hasattr(g, 'sqlite_db'):
+            g.sqlite_db = connect_db()
+        return g.sqlite_db
+    ```
+
+<div class="notes">
+
+Το αντικείμενο `g` που βλέπετε είναι ένα αντικείμενο στο οποίο
+μπορούμε να αποθηκεύουμε πράγματα που θα χρειαστούν για την
+επεξεργασία των αιτήσεων που έρχονται από τον πελάτη. Το αντικείμενο
+αυτό δεν χρειάζεται να το δηλώσουμε εμείς κάπου. Δημιουργείται πριν
+την εξυπηρέτηση της αίτησης και ανήκει στο λεγόμενο *περιβάλλον της
+εφαρμογής* (application context). Το περιβάλλον της εφαρμογής περιέχει
+διάφορα αντικείμενα τα οποία χρησιμεύουν για την εξυπηρέτηση μιας
+αίτησης. 
+
+</div>
 
 ## Αποσύνδεση από τη βάση
 
 * Μετά από τη διαχείριση κάθε αίτησης, ή κάποιο λάθος, θα πρέπει να
 αποσυνδεθούμε από τη βάση:
 
-```python
-@app.teardown_appcontext
-def close_db(error):
-    """Closes the database again at the end of the request."""
-    if hasattr(g, 'sqlite_db'):
-        g.sqlite_db.close()
-```
+    ```python
+    @app.teardown_appcontext
+    def close_db(error):
+        """Closes the database again at the end of the request."""
+        if hasattr(g, 'sqlite_db'):
+            g.sqlite_db.close()
+    ```
+
+<div class="notes">
+
+Κάθε σύνδεση στη βάση απαιτεί υπολογιστικούς πόρους, οπότε κοστίζει.
+Για το λόγο αυτό θέλουμε να ελαχιστοποιούμε τον αριθμό ανοιχτών
+συνδέσεων σε μία βάση δεδομένων. Εξ΄ άλλου, σχετικοί περιορισμοί
+τίθενται και από κάθε βάση: συνήθως επιτρέπεται να υπάρχει μέχρι ένας
+αριθμός ανοιχτών συνδέσεων. 
+
+Ο διακοσμητής `@app.teardown_appcontext` εξασφαλίζει ότι η συνάρτηση
+`close_db` θα εκτελείται κάθε φορά που θα καταστρέφεται το περιβάλλον
+της εφαρμογής (application context). Κάθε φορά που έρχεται μια αίτηση
+δημιουργείται ένα περιβάλλον της εφαρμογής, το οποίο περιέχει ανάμεσα
+στα άλλα ένα αντικείμενο `g`. Μόλις εξυπηρετηθεί η αίτηση, το
+περιβάλλον της εφαρμογής καταστρέφεται. Τη στιγμή λοιπόν που
+καταστρέφεται εμείς κλείνουμε τη σύνδεση με τη βάση.
+
+</div>
 
 ## Εκκίνηση εφαρμογής σε Mac και Linux
 
 * Για να ξεκινήσουμε την εφαρμογή σε Mac και Linux πρέπει καταρχήν να δώσουμε
   από τη γραμμή εντολών:
 
-```bash
-export FLASK_APP=flaskr.py
-export FLASK_DEBUG=1
-```
+    ```bash
+    export FLASK_APP=flaskr.py
+    export FLASK_DEBUG=1
+    ```
+
 * Στη συνέχεια για να ξεκινήσουμε την εφαρμογή θα πρέπει να βρισκόμαστε μέσα
   στον κατάλογο `flaskr` και να δώσουμε:
-```bash
-flask run
-```
+
+    ```bash
+    flask run
+    ```
+
+<div class="notes">
+
+Οι δύο πρώτες εντολές ορίζουν δύο *μεταβλητές περιβάλλοντος*
+(environment variables) του λειτουργικού συστήματος. Η πρώτη θα δώσει
+στο Flask την εφαρμογή, η δεύτερη θα του δηλώσει ότι θα τρέχει σε
+λειτουργία αποσφαλμάτωσης (debug mode). Με τη λειτουργία
+αποσφαλμάτωσης θα εμφανίζονται αναλυτικές πληροφορίες σε περίπτωση
+προγραμματιστικών σφαλμάτων, ώστε να μπορούμε να τα διορθώσουμε
+ευκολότερα. Προσοχή, η λειτουργία αποσφαλμάτωσης δεν πρέπει να
+χρησιμοποιείται όταν μια υπηρεσία χρησιμοποιείται παραγωγικά, διότι
+την κάνει ευάλωτη σε επιθέσεις.
+
+</div>
 
 ## Εκκίνηση εφαρμογής σε MS-Windows
 
 *  Για να ξεκινήσουμε την εφαρμογή σε MS-Windows πρέπει καταρχήν να δώσουμε
   από τη γραμμή εντολών:
 
-```
-set FLASK_APP=flaskr
-set FLASK_DEBUG=1
-python -m flask run
-```
+    ```
+    set FLASK_APP=flaskr.py
+    set FLASK_DEBUG=1
+    ```
 
 * Στη συνέχεια για να ξεκινήσουμε την εφαρμογή θα πρέπει να βρισκόμαστε μέσα
   στον κατάλογο `flaskr` και να δώσουμε:
-```bash
-python -m flask run
-```
+
+    ```bash
+    python -m flask run
+    ```
+
+<div class="notes">
+
+Όπως και στην προηγούμενη περίπτωση, ορίζουμε δύο μεταβλητές
+συστήματος που υποδεικνύουν την εφαρμογή και τη λειτουργία
+εκσφαλμάτωσης. 
+
+</div>
+
 
 ## Πρόσβαση στην εφαρμογή
 
@@ -258,131 +484,285 @@ python -m flask run
 * Αυτή τη στιγμή θα πάρουμε ένα μήνυμα λάθους, γιατί η εφαρμογή μας
   δεν δείχνει απολύτως τίποτε.
 
+<div class="notes">
+
+Συγκεκριμένα, αφού δεν έχουμε ορίσει καμμία συνάρτηση για το χειρισμό
+κανενός μονοπατιού, η εφαρμογή δεν μπορεί να απαντήσει τίποτε στις
+αιτήσεις του πελάτη.
+
+Παρ' όλα αυτά, δοκιμάζουμε να την τρέξουμε για να επιβεβαιώσουμε ότι
+όλα πάνε καλά μέχρι αυτή τη στιγμή. 
+
+</div>
+
+
 ## Δημιουργία της βάσης
 
 * Για να εκτελεστούν οι εντολές του `schema.sql` μέσα από το Flask,
   γράφουμε τα εξής:
 
-```python
-def init_db():
-    db = get_db()
-    with app.open_resource('schema.sql', mode='r') as f:
-        db.cursor().executescript(f.read())
-    db.commit()
-```
+    ```python
+    def init_db():
+        db = get_db()
+        with app.open_resource('schema.sql', mode='r') as f:
+            db.cursor().executescript(f.read())
+        db.commit()
+    ```
+
+<div class="notes">
+
+Με τη συνάρτηση αυτή θα μπορούμε πλέον να δημιουργούμε τη βάση
+δεδομένων όποτε θέλουμε μέσα από την ίδια την εφαρμογή μας. Στη
+συνάρτηση ξεκινάμε παίρνοντας μια σύνδεση με τη βάση. Στη συνέχεια
+ανοίγουμε το αρχείο `schema.sql` που έχουμε προηγουμένως δημιουργήσει.
+Η συνάρτηση `app.open_resource('schema.sql', mode='r')` θα βρει το
+αρχείο στον κατάλογο `flaskr` όπου βρίσκεται και η εφαρμογή. Στη
+συνέχεια, εκτελούμε τις εντολές SQL που βρίσκονται στο αρχείο αυτό.
+Στο τέλος πρέπει να επιβεβαιώσουμε (commit) τις αλλαγές μας. 
 
 ## Εντολή δημιουργίας της βάσης
 
 * Για να δημιουργούμε τη βάση κατά βούληση από τη γραμμή εντολών,
   προσθέτουμε στο αρχείο:
 
-```python
-@app.cli.command('initdb')
-def initdb_command():
-    """Initializes the database."""
-    init_db()
-    print('Initialized the database.')
-```
+    ```python
+    @app.cli.command('initdb')
+    def initdb_command():
+        """Initializes the database."""
+        init_db()
+        print('Initialized the database.')
+    ```
 
+<div class="notes">
+
+Επειδή μπορεί να θέλουμε να κάνουμε πολλές δοκιμές, και να
+δημιουργήσουμε πολλές φορές τη βάση, βολεύει να μπορούμε να εκτελούμε
+τη συνάρτηση `init_db()` κατά βούληση. Ο διακοσμητής
+`@app.cli.command('initdb')` δημιουργεί μια νέα εντολή, την οποία θα
+μπορούμε να εκτελούμε από τη γραμμή εντολών, τα περιεχόμενα της οποίας
+είναι η συνάρτηση `initdb_command()`. Στη συνάρτηση αυτή καλούμε την
+`init_db()` και στη συνέχεια τυπώνουμε κατάλληλο μήνυμα.
+
+</div>
 
 * Αν όλα πάνε καλά μπορείτε να τρέξετε την παρακάτω εντολή για να
 δημιουργηθεί η βάση σε MS-Windows:
-```bash
-pythoh -m flask initdb
-```
+
+    ```bash
+    pythoh -m flask initdb
+    ```
 
 * Εναλλακτικά, σε Mac OS ή Linux δίνετε:
-```bash
-flask initdb
-```
 
+    ```bash
+    flask initdb
+    ```
+   
 ## Εμφάνιση αναρτήσεων
 
 * Οι αναρτήσεις θα εμφανίζονται στη ρίζα της εφαρμογής (`/`):
 
-```python
-@app.route('/')
-def show_entries():
-    db = get_db()
-    cur = db.execute('select title, text from entries order by id desc')
-    entries = cur.fetchall()
-    return render_template('show_entries.html', entries=entries)
-```
+    ```python
+    @app.route('/')
+    def show_entries():
+        db = get_db()
+        cur = db.execute('select title, text from entries order by id desc')
+        entries = cur.fetchall()
+        return render_template('show_entries.html', entries=entries)
+    ```
+
+<div class="notes">
+
+Με το διακοσμητή `@app.route('/')` ορίζουμε ότι στο μονοπάτι `/` θα
+εκτελείται η συνάρτηση `show_entries()`. Στη συνάρτηση αυτή
+συνδεόμαστε με τη βάση, εκτελούμε μία αναζήτηση για να πάρουμε όλα τα
+στοιχεία που έχουν εισαχθεί, τα αποθηκεύουμε στη μεταβλητή `entries`,
+και επιστρέφουμε το σκελετό `show_entries.html` δίνοντάς του τη
+μεταβλητή `entries`. Θα δούμε στη συνέχεια ότι ο σκελετός αυτός θα
+γεμίσει με τα δεδομένα της `entries`.
+
+</div>
 
 ## Προσθήκη ανάρτησης
 
 * Νέες αναρτήσεις θα προστίθενται στο μονοπάτι `/add`:
 
-```python
-@app.route('/add', methods=['POST'])
-def add_entry():
-    if not session.get('logged_in'):
-        abort(401)
-    db = get_db()
-    db.execute('insert into entries (title, text) values (?, ?)',
-                 [request.form['title'], request.form['text']])
-    db.commit()
-    flash('New entry was successfully posted')
-    return redirect(url_for('show_entries'))
-```
+    ```python
+    @app.route('/add', methods=['POST'])
+    def add_entry():
+        if not session.get('logged_in'):
+            abort(401)
+        db = get_db()
+        db.execute('insert into entries (title, text) values (?, ?)',
+                   [request.form['title'], request.form['text']])
+        db.commit()
+        flash('New entry was successfully posted')
+        return redirect(url_for('show_entries'))
+    ```
+
+<div class="notes">
+
+Η συνάρτηση `add_entry()` θα καλείται κάθε φορά που έρχεται από τον
+πελάτη μια μέθοδος HTTP POST μέσω του μονοπατιού `/add`. Αυτό θα
+συμβαίνει ότι ο χρήστης υποβάλει μια νέα ανάρτηση.
+
+Ενόσω ο χρήστης αλληλεπιδρά με την εφαρμογή μας, η εφαρμογή διατηρεί
+ένα αντικείμενο `session` το οποίο αντιστοιχεί στη συνεδρία με τον
+χρήστη. Το αντικείμενο `session` μοιάζει πολύ με ένα λεξικό της
+Python. Αν ο χρήστης έχει ταυτοποιηθεί, τότε στο αντικείμενο αυτό θα
+υπάρχει το κλειδί `logged_in`. Αν όχι, τότε δεν θέλουμε να μπορεί να
+αναρτήσει τίποτε, συνεπώς καλούμε τη συνάρτηση `abort(401)`. Ο κωδικός
+401 στο πρωτόκολλο HTTP σημαίνει "unauthorized", δηλαδή ο χρήστης δεν
+έχει άδεια να κάνει τη συγκεκριμένη πράξη. Με τη συνάρτηση `abort()`
+επιστρέφουμε αυτόν τον κωδικό. Μπορούμε (αλλά δεν το κάνουμε εδώ) να
+επιστρέφουμε και μια πληροφοριακή σελίδα για το λάθος, κ.λπ.
+
+Αν ο χρήστης έχει προηγουμένως ταυτοποιηθεί, τότε εισάγουμε στη βάση
+τα στοιχεία που συμπλήρωσε στη σχετική φόρμα, που θα δούμε παρακάτω.
+Στην εντολή SQL που θα εκτελεστεί, θα αντικατασταθεί το πρώτο ? από το
+πεδίο `title` της φόρμας, και το δεύτερο ? από το πεδίο `text`.
+
+Το αντικείμενο `request` είναι το λεγόμενο *αντικείμενο αίτησης*
+(request object). Αυτό περιέχει όλα τα δεδομένα που έχει εισάγει ο
+χρήστης, μαζί με ό,τι άλλα δεδομένα χρειάζονται για να περιγραφεί
+ακριβώς η αίτηση του πελάτη (ποιος browser χρησιμοποιείται,
+κωδικοποίηση, cookies, τυχόν αρχεία που ανεβάζει ο χρήστης, κ.λπ.).
+
+Η συνάρτηση `flash()` μας δίνει τη δυνατότητα να στείλουμε ένα μήνυμα
+στην απάντηση στον πελάτη. Η παράμετρος που θα περάσουμε θα είναι
+διαθέσιμη στον σκελετό που θα περιέχει τον HTML κώδικα της σελίδας που
+θα επιστραφεί και έτσι θα μπορέσουμε να το εμφανίσουμε εκεί μέσα.
+
+Η συνάρτηση θα ανακατευθύνει το χρήστη στο URL που αντιστοιχεί στη
+συνάρτηση `show_entries()`. Χάρη στη συνάρτηση `url_for`, δεν
+χρειάζεται να θυμόμαστε ακριβώς ποιο είναι αυτό· το Flask θα τη βρει
+και θα την εισάγει σωστά.
+
+</div>
+
 
 ## Είσοδος
 
 * Οι χρήστες θα μπορούν να μπουν στην εφαρμογή με το μονοπάτι `/login`:
 
-```python
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        if request.form['username'] != app.config['USERNAME']:
-            error = 'Invalid username'
-        elif request.form['password'] != app.config['PASSWORD']:
-            error = 'Invalid password'
-        else:
-            session['logged_in'] = True
-            flash('You were logged in')
-            return redirect(url_for('show_entries'))
-    return render_template('login.html', error=error)
-```
+    ```python
+    @app.route('/login', methods=['GET', 'POST'])
+    def login():
+        error = None
+        if request.method == 'POST':
+            if request.form['username'] != app.config['USERNAME']:
+                error = 'Invalid username'
+            elif request.form['password'] != app.config['PASSWORD']:
+                error = 'Invalid password'
+            else:
+                session['logged_in'] = True
+                flash('You were logged in')
+                return redirect(url_for('show_entries'))
+        return render_template('login.html', error=error)
+    ```
+
+<div class="notes">
+
+Για να χειριστούμε την είσοδο του χρήστη πρέπει να διακρίνουμε δύο
+περιπτώσεις.
+
+1. Ο χρήστης απλώς βλέπει τη σελίδα εισόδου. Στην περίπτωση αυτή, ο
+   πελάτης (browser) στέλνει μια αίτηση με τη μέθοδο HTTP GET. Το
+   πεδίο `method` του αντικειμένου `request` δείχνει τη μέθοδο με την
+   οποία έγινε η αίτηση. Στην περίπτωση αυτή, η συνάρτηση δεν θα κάνει
+   τίποτε παρά θα επιστρέψει τη σελίδα `login.html`.
+
+2. Ο χρήστης υποβάλλει το όνομα και τον κωδικό του στη σελίδα εισόδου.
+   Στην περίπτωση αυτή, ο πελάτης (browser) στέλνει τα στοιχεία αυτά
+   με τη μέθοδο HTTP POST. Αν τα στοιχεία δεν συμφωνούν με αυτά που
+   ορίστηκαν στις ρυθμίσεις της εφαρμογής, θα επιστρέψουμε τη σελίδα
+   `login.html` με το κατάλληλο λάθος. Αν τα στοιχεία είναι σωστά,
+   τότε αποθηκεύουμε στο λεξικό της συνεδρίας, `session`, το κλειδί
+   `logged_in` με τιμή `True`, περνάμε στην απάντηση ένα μήνυμα
+   επιτυχούς εισόδου, και ανακατευθύνουμε το χρήστη στο URL που
+   αντιστοιχεί στη συνάρτηση `show_entries()`.
+
+</div>
 
 ## Έξοδος
 
 * Η έξοδος από την εφαρμογή θα γίνεται από το μονοπάτι `/logout`:
 
-```python
-@app.route('/logout')
-def logout():
-    session.pop('logged_in', None)
-    flash('You were logged out')
-    return redirect(url_for('show_entries'))
-```
+    ```python
+    @app.route('/logout')
+    def logout():
+        session.pop('logged_in', None)
+        flash('You were logged out')
+        return redirect(url_for('show_entries'))
+    ```
+
+<div class="notes">
+
+Για να βγει ο χρήστης από την εφαρμογή, θα βγάλουμε από το αντικείμενο
+`session` το κλειδί `logged_in`. Η μέθοδος `pop(key, default)` στα
+λεξικά αφαιρεί το κλειδί `key`, αν υπάρχει, και επιστρέφει την τιμή
+του, αλλιώς αν δεν υπάρχει επιστρέφει την τιμή `default`. Θα
+εμφανίσουμε κατάλληλο μήνυμα και θα τον ανακατευθύνουμε στην κεντρική
+σελίδα της εφαρμογής.
+
+</div>
 
 ## Σκελετός εμφάνισης
 
 * Ο βασικός σκελετός των σελίδων μας θα δίνεται από τη σελίδα
   `layout.html` στον κατάλογο `static`.
 
-```html
-<!doctype html>
-<title>Flaskr</title>
-<link rel=stylesheet type=text/css
-      href="{{ url_for('static', filename='style.css') }}">
-<div class=page>
-  <h1>Flaskr</h1>
-  <div class=metanav>
-  {% if not session.logged_in %}
-    <a href="{{ url_for('login') }}">log in</a>
-  {% else %}
-    <a href="{{ url_for('logout') }}">log out</a>
-  {% endif %}
-  </div>
-  {% for message in get_flashed_messages() %}
-    <div class=flash>{{ message }}</div>
-  {% endfor %}
-  {% block body %}{% endblock %}
+    ```html
+    <!doctype html>
+    <title>Flaskr</title>
+    <link rel=stylesheet type=text/css
+          href="{{ url_for('static', filename='style.css') }}">
+    <div class=page>
+      <h1>Flaskr</h1>
+      <div class=metanav>
+      {% if not session.logged_in %}
+        <a href="{{ url_for('login') }}">log in</a>
+      {% else %}
+        <a href="{{ url_for('logout') }}">log out</a>
+      {% endif %}
+      </div>
+      {% for message in get_flashed_messages() %}
+        <div class=flash>{{ message }}</div>
+      {% endfor %}
+      {% block body %}{% endblock %}
+    </div>
+    ```
+
+<div class="notes">
+
+Οι σελίδες HTML που θα εμφανίζονται στον χρήστη θα κατασκευάζονται
+δυναμικά από την εφαρμογή μας. Για το σκοπό αυτό θα χρησιμοποιήσουμε
+σκελετούς σελίδων (templates), τα οποία θα γεμίζουν με περιεχόμενα
+καθώς εξυπηρετείται η αντίστοιχη αίτηση.
+
+Το Flask χρησιμοποιεί το μηχανισμό
+[Jinga2](http://jinja.pocoo.org/docs/dev/templates/) για την περιγραφή
+των σκελετών. Αυτή τη στιγμή αρκεί να γνωρίζουμε ότι:
+
+* Μπορούμε να συμπεριλάβουμε κώδικα μέσα σε `{% ... %}`. Ο κώδικας
+  αυτός είναι εντολές σε μία γλώσσα που μοιάζει με την Python. Ο
+  κώδικας αυτός θα καθορίσει τα περιεχόμενα της τελικής σελίδας HTML.
+  Έτσι, στον παραπάνω σκελετό, ορίζουμε τι θα εμφανιστεί αν ο χρήστης
+  έχει ταυτοποιηθεί και τι αν δεν έχει, και εμφανίζουμε τα μηνύματα
+  που έχουμε περάσει με τη συνάρτηση `flash()`.
+
+* Με τη σύνταξη `{{ ... }}` μπορούμε να χρησιμοποιήσουμε εκφράσεις, η
+  τιμή των οποίων θα αντικαταστήσει το `{{ ... }}`. Με τον τρόπο αυτό
+  δίνουμε στην τελική σελίδα HTML τα σωστά URLs και τα εκάστοτε
+  μηνύματα (δείτε το βρόχο `for`).
+
+* Οι σκελετοί μπορεί να εντάσσονται σε μία ιεραρχία. Ο παραπάνω
+  βασικός σκελετός μπορεί να επεκταθεί από άλλους, πιο εξειδικευμένους
+  σκελετούς. Οι σκελετοί αυτοί θα ενταχθούν στο σημείο
+  `{% block body %}{% endblock %}`.
+
 </div>
-```
+
 
 ## Εμφάνιση αναρτήσεων
 
@@ -391,76 +771,81 @@ def logout():
 * Δημιουργούμε το παρακάτω αρχείο `show_entries.html` στον κατάλογο
   `static`.
 
-```html
-{% extends "layout.html" %}
-{% block body %}
-  {% if session.logged_in %}
+    ```html
+    {% extends "layout.html" %}
+    {% block body %}
+    {% if session.logged_in %}
     <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
-      <dl>
-        <dt>Title:
-        <dd><input type=text size=30 name=title>
-        <dt>Text:
-        <dd><textarea name=text rows=5 cols=40></textarea>
-        <dd><input type=submit value=Share>
-      </dl>
+    <dl>
+    <dt>Title:
+    <dd><input type=text size=30 name=title>
+    <dt>Text:
+    <dd><textarea name=text rows=5 cols=40></textarea>
+    <dd><input type=submit value=Share>
+    </dl>
     </form>
-  {% endif %}
-  <ul class=entries>
-  {% for entry in entries %}
+    {% endif %}
+    <ul class=entries>
+    {% for entry in entries %}
     <li><h2>{{ entry.title }}</h2>{{ entry.text|safe }}
-  {% else %}
+    {% else %}
     <li><em>Unbelievable.  No entries here so far</em>
-  {% endfor %}
-  </ul>
-{% endblock %}
-```
+    {% endfor %}
+    </ul>
+    {% endblock %}
+    ```
 
 ## Είσοδος
 
 * Η σελίδα εμφάνισης αναρτήσεων επεκτείνει επίσης το βασικό σκελετό.
 
 * Δημιουργούμε το παρακάτω αρχείο `login.html` στον κατάλογο
-  `static`.
-
-```html
-{% extends "layout.html" %}
-{% block body %}
-  <h2>Login</h2>
-  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
-  <form action="{{ url_for('login') }}" method=post>
-    <dl>
-      <dt>Username:
-      <dd><input type=text name=username>
-      <dt>Password:
-      <dd><input type=password name=password>
-      <dd><input type=submit value=Login>
-    </dl>
-  </form>
-{% endblock %}
-```
+  `static`:
+  
+    ```html
+    {% extends "layout.html" %}
+    {% block body %}
+      <h2>Login</h2>
+      {% if error %}
+        <p class=error><strong>Error:</strong> {{ error }}
+      {% endif %}
+      <form action="{{ url_for('login') }}" method=post>
+        <dl>
+          <dt>Username:
+          <dd><input type=text name=username>
+          <dt>Password:
+          <dd><input type=password name=password>
+          <dd><input type=submit value=Login>
+        </dl>
+      </form>
+    {% endblock %}
+    ```
 
 ## Στυλ
 
-* Για να δώσουμε στυλ στην εφαρμογή μας, δημιοργούμε το αρχείο
-  `style.css` στον κατάλογο `static`.
+* Για να δώσουμε στυλ στην εφαρμογή μας, δημιουργούμε το αρχείο
+  `style.css` στον κατάλογο `static`:
 
-```css
-body            { font-family: sans-serif; background: #eee; }
-a, h1, h2       { color: #377ba8; }
-h1, h2          { font-family: 'Georgia', serif; margin: 0; }
-h1              { border-bottom: 2px solid #eee; }
-h2              { font-size: 1.2em; }
+    ```css
+    body            { font-family: sans-serif; background: #eee; }
+    a, h1, h2       { color: #377ba8; }
+    h1, h2          { font-family: 'Georgia', serif; margin: 0; }
+    h1              { border-bottom: 2px solid #eee; }
+    h2              { font-size: 1.2em; }
 
-.page           { margin: 2em auto; width: 35em; border: 5px solid #ccc;
-                  padding: 0.8em; background: white; }
-.entries        { list-style: none; margin: 0; padding: 0; }
-.entries li     { margin: 0.8em 1.2em; }
-.entries li h2  { margin-left: -1em; }
-.add-entry      { font-size: 0.9em; border-bottom: 1px solid #ccc; }
-.add-entry dl   { font-weight: bold; }
-.metanav        { text-align: right; font-size: 0.8em; padding: 0.3em;
-                  margin-bottom: 1em; background: #fafafa; }
-.flash          { background: #cee5F5; padding: 0.5em;
-                  border: 1px solid #aacbe2; }
-.error          { background: #f0d6d6; padding: 0.5em; }
-```
+    .page           { margin: 2em auto; width: 35em; border: 5px solid #ccc;
+    padding: 0.8em; background: white; }
+    .entries        { list-style: none; margin: 0; padding: 0; }
+    .entries li     { margin: 0.8em 1.2em; }
+    .entries li h2  { margin-left: -1em; }
+    .add-entry      { font-size: 0.9em; border-bottom: 1px solid #ccc; }
+    .add-entry dl   { font-weight: bold; }
+    .metanav        { text-align: right; font-size: 0.8em; padding: 0.3em;
+    margin-bottom: 1em; background: #fafafa; }
+    .flash          { background: #cee5F5; padding: 0.5em;
+    border: 1px solid #aacbe2; }
+    .error          { background: #f0d6d6; padding: 0.5em; }
+
+    ```
+
+    
