@@ -229,28 +229,31 @@ pip install iPython
 
 * Κάθε ανάρτηση θα ανήκει σε έναν χρήστη.
 
-* Το μοντέλο των αναρτήσεων θα είναι το παρακάτω:
+* Το μοντέλο των αναρτήσεων θα είναι το ακόλοθο.
 
-    ```python
-    class Entry(db.Model):
-        __tablename__ = 'entries'
-        id = db.Column(db.Integer, primary_key=True)
-        title = db.Column(db.String(120), nullable=False)
-        text = db.Column(db.Text(), nullable=False)
-        datetime = db.Column(db.DateTime(), nullable=False)
 
-        user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+##
 
-        def __init__(self, title, text, user_id, datetime):
-            self.title = title
-            self.text = text
-            self.user_id = user_id
-            self.datetime = datetime
+```python
+class Entry(db.Model):
+    __tablename__ = 'entries'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(120), nullable=False)
+    text = db.Column(db.Text(), nullable=False)
+    datetime = db.Column(db.DateTime(), nullable=False)
 
-        def __repr__(self):
-            return '<Entry %r %r %r %r>' % (self.title, self.text,
-                                            self.user_id, self.datetime)
-    ```
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __init__(self, title, text, user_id, datetime):
+        self.title = title
+        self.text = text
+        self.user_id = user_id
+        self.datetime = datetime
+
+    def __repr__(self):
+        return '<Entry %r %r %r %r>' % (self.title, self.text,
+                                        self.user_id, self.datetime)
+```
 
 ## Μοντέλο βάσης: χρήστες
 
@@ -258,32 +261,34 @@ pip install iPython
 
 * Επίσης κάθε χρήστης έχει ένα σύνολο αναρτήσεων που έχει δημιουργήσει.
 
-    ```python
-    class User(db.Model):
-        __tablename__ = 'users'
-        id = db.Column(db.Integer, primary_key=True)
-        username = db.Column(db.String(20),
-                             nullable=False,
-                             unique=True,
-                             index=True)
-        password = db.Column(db.String(30), nullable=False)    
-        name = db.Column(db.String(20), nullable=False)
-        surname = db.Column(db.String(30), nullable=False)
-        email = db.Column(db.String(30), nullable=False)
-        entries = db.relationship('Entry', backref='user',
-                                  lazy='dynamic')
+##
 
-        def __init__(self, username, name, surname, email, password):
-            self.username = username
-            self.name = name
-            self.surname = surname
-            self.email = email
-            self.password = password
+```python
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20),
+                         nullable=False,
+                         unique=True,
+                         index=True)
+    password = db.Column(db.String(30), nullable=False)    
+    name = db.Column(db.String(20), nullable=False)
+    surname = db.Column(db.String(30), nullable=False)
+    email = db.Column(db.String(30), nullable=False)
+    entries = db.relationship('Entry', backref='user',
+                              lazy='dynamic')
 
-        def __repr__(self):
-            return '<User %r %r %r %r>' % (self.username, self.email,
-                                           self.name, self.surname)
-    ```
+    def __init__(self, username, name, surname, email, password):
+        self.username = username
+        self.name = name
+        self.surname = surname
+        self.email = email
+        self.password = password
+
+    def __repr__(self):
+        return '<User %r %r %r %r>' % (self.username, self.email,
+                                       self.name, self.surname)
+```
 
 ## Δημιουργία βάσης
 
@@ -295,7 +300,7 @@ pip install iPython
     db.create_all()
     ```
 
-## Εισαγωγή Χρηστών
+## Εισαγωγή χρηστών
 
 * Αυτή τη στιγμή δεν θα υλοποιήσουμε τη διαδικασία εγγραφής χρηστών
   μέσα στην εφαρμογή, οπότε απλώς θα τους εισάγουμε απ' ευθείας μέσω
@@ -315,7 +320,7 @@ pip install iPython
     db.session.commit()
     ```
 	
-## Εμφάνιση Αναρτήσεων
+## Εμφάνιση αναρτήσεων
 
 * Για να δούμε τις αναρτήσεις θα κάνουμε αναζήτηση στη βάση μέσω
   SQLAlchemy:
@@ -328,7 +333,7 @@ pip install iPython
         return render_template('show_entries.html', entries=entries)
     ```
 
-## Προσθήκη Ανάρτησης
+## Προσθήκη ανάρτησης
 
 * Όταν ο χρήστης δημιουργεί μια νέα ανάρτηση θα πρέπει να αποθηκεύουμε
   στη βάση:
@@ -339,22 +344,25 @@ pip install iPython
 
 * Ταυτόχρονα, η εισαγωγή θα γίνει μέσω SQLAlchemy.
 
-    ```python
-    @app.route('/add', methods=['POST'])
-    def add_entry():
-        user_id = session.get('user_id')
-        if user_id is None:
-            abort(401)
-        entry = Entry(request.form['title'],
-                      request.form['text'],
-                      user_id,
-                      datetime.now()
-        )
-        db.session.add(entry)
-        db.session.commit()
-        flash('New entry was successfully posted')
-        return redirect(url_for('show_entries'))
-    ```
+
+##
+
+```python
+@app.route('/add', methods=['POST'])
+def add_entry():
+    user_id = session.get('user_id')
+    if user_id is None:
+        abort(401)
+    entry = Entry(request.form['title'],
+                  request.form['text'],
+                  user_id,
+                  datetime.now()
+    )
+    db.session.add(entry)
+    db.session.commit()
+    flash('New entry was successfully posted')
+    return redirect(url_for('show_entries'))
+```
 
 ## Είσοδος
 
@@ -417,62 +425,67 @@ def logout():
 
 * Η σελίδα εμφάνισης αναρτήσεων επεκτείνει το βασικό πρότυπο.
 
-* Δημιουργούμε το παρακάτω αρχείο `show_entries.html` στον κατάλογο
+* Δημιουργούμε το ακόλουθο αρχείο `show_entries.html` στον κατάλογο
   `static`.
 
-    ```html
-    {% extends "layout.html" %}
-    {% block body %}
-      {% if session.user_id %}
-        <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
-          <dl>
-            <dt>Title:
-            <dd><input type=text size=30 name=title>
-            <dt>Text:
-            <dd><textarea name=text rows=5 cols=40></textarea>
-            <dd><input type=submit value=Share>
-          </dl>
-        </form>
-      {% endif %}
-      <ul class=entries>
-      {% for entry in entries %}
-        <li><h2>{{ entry.title }}</h2>
-          {{ entry.user.username }} {{ entry.datetime }}
-          <p>
-          {{ entry.text|safe }}
-          </p>
-      {% else %}
-        <li><em>Unbelievable.  No entries here so far</em>
-      {% endfor %}
-      </ul>
-    {% endblock %}
-    ```
+
+##
+
+```html
+{% extends "layout.html" %}
+{% block body %}
+  {% if session.user_id %}
+    <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
+      <dl>
+        <dt>Title:
+        <dd><input type=text size=30 name=title>
+        <dt>Text:
+        <dd><textarea name=text rows=5 cols=40></textarea>
+        <dd><input type=submit value=Share>
+      </dl>
+    </form>
+  {% endif %}
+  <ul class=entries>
+  {% for entry in entries %}
+    <li><h2>{{ entry.title }}</h2>
+      {{ entry.user.username }} {{ entry.datetime }}
+      <p>
+      {{ entry.text|safe }}
+      </p>
+  {% else %}
+    <li><em>Unbelievable.  No entries here so far</em>
+  {% endfor %}
+  </ul>
+{% endblock %}
+```
 
 ## Είσοδος
 
 * Η σελίδα εμφάνισης αναρτήσεων επεκτείνει επίσης το βασικό πρότυπο.
 
-* Δημιουργούμε το παρακάτω αρχείο `login.html` στον κατάλογο
-  `static`:
-  
-    ```html
-    {% extends "layout.html" %}
-    {% block body %}
-      <h2>Login</h2>
-      {% if error %}
-        <p class=error><strong>Error:</strong> {{ error }}
-      {% endif %}
-      <form action="{{ url_for('login') }}" method=post>
-        <dl>
-          <dt>Username:
-          <dd><input type=text name=username>
-          <dt>Password:
-          <dd><input type=password name=password>
-          <dd><input type=submit value=Login>
-        </dl>
-      </form>
-    {% endblock %}
-    ```
+* Δημιουργούμε το ακόλουθο αρχείο `login.html` στον κατάλογο
+  `static`.
+
+##
+
+```html
+{% extends "layout.html" %}
+{% block body %}
+  <h2>Login</h2>
+  {% if error %}
+    <p class=error><strong>Error:</strong> {{ error }}
+  {% endif %}
+  <form action="{{ url_for('login') }}" method=post>
+    <dl>
+      <dt>Username:
+      <dd><input type=text name=username>
+      <dt>Password:
+      <dd><input type=password name=password>
+      <dd><input type=submit value=Login>
+    </dl>
+  </form>
+{% endblock %}
+```
 
 <div class="notes">
 
@@ -509,6 +522,151 @@ def logout():
 
     ```
 
+
 # Χειρισμός Κωδικών
 
+## Το πρόβλημα
 
+* Μέχρι τώρα, οι κωδικοί των χρηστών αποθηκεύονται στη βάση έτσι όπως
+  ακριβώς δίνονται.
+
+* Αυτό είναι τεράστιο πρόβλημα ασφαλείας.
+
+* Οι κωδικοί πρέπει να αποθηκεύονται με τρόπο τέτοιο ώστε να μην είναι
+  δυνατόν να διαπιστωθούν τα περιεχόμενά τους, ακόμα και αν έχουμε
+  πλήρη πρόσβαση στη βάση.
+
+* Για το σκοπό αυτό οι κωδικοί κρυπτογραφούνται με κατάλληλη συνάρτητη
+  κατακερματισμού. 
+
+## Bcrypt
+
+* Κατ' αρχήν θα πρέπει να εγκαταστήσουμε τη βιβλιοθήκη bcrypt.
+
+    ```bash
+    pip3 install bcrypt
+    ```
+
+## Φόρμα εγγραφής
+
+* Αυτή τη φορά θα εμπλουτίσουμε την εφαρμογή με τη δυνατότητα online
+  εγγραφής χρηστών.
+
+* Η φόρμα εγγραφής θα είναι η ακόλουθη, την οποία θα την αποθηκεύσουμε
+  με το όνομα `register.html` στον κατάλογο `templates`.
+
+
+##
+
+
+```html
+{% extends "layout.html" %}
+{% block body %}
+  <h2>Register</h2>
+  {% if error %}
+    <p class=error><strong>Error:</strong> {{ error }}
+  {% endif %}
+  <form action="{{ url_for('register') }}" method=post>
+    <dl>
+      <dt>Name:
+      <dd><input type=text name=name>
+      <dt>Surname:
+      <dd><input type=text name=surname>
+      <dt>email:
+      <dd><input type=email name=email>
+      <dt>Username:
+      <dd><input type=text name=username>
+      <dt>Password:
+      <dd><input type=password name=password>
+      <dt>Repeat Password:
+      <dd><input type=password name=repeat-password>
+      <dd><input type=submit value=Login>
+    </dl>
+  </form>
+{% endblock %}
+```
+
+## Εγγραφή χρηστών
+
+* Ο χειρισμός της εγγραφής θα γίνεται από την παρακάτω συνάρτηση, η
+  οποία θα απαντά σε αιτήσεις στο μονοπάτι `/register`.
+
+    ```python
+    @app.route('/register', methods=['GET', 'POST'])
+    def register():
+        error = None
+        if request.method == 'POST':
+            password = bcrypt.hashpw(request.form['password'].encode('utf8'),
+                                     bcrypt.gensalt())
+            user = User(request.form['username'],
+                        request.form['name'],
+                        request.form['surname'],
+                        request.form['email'],
+                        password)
+            db.session.add(user)
+            try:
+                db.session.commit()
+                session['user_id'] = user.id
+                session['username'] = user.username
+            except exc.SQLAlchemyError as ex:
+                error = 'Error inserting record in the database'
+            if not error:
+                flash('Registration successful')
+                return redirect(url_for('show_entries'))
+        return render_template('register.html', error=error)
+    ```
+
+## Είσοδος
+
+* Η διαδικασία εισόδου του χρήστη θα πρέπει να αλλάξει ελαφρώς,
+  προκειμένου να ελέγχεται ο κρυπτογραφημένος κωδικός.
+
+    ```python
+    @app.route('/login', methods=['GET', 'POST'])
+    def login():
+        error = None
+        if request.method == 'POST':
+            user = User.query.filter_by(username=request.form['username']).first()
+            if user is None:
+                error = 'Invalid username'
+            elif not bcrypt.checkpw(request.form['password'].encode('utf8'),
+                                    user.password):
+                error = 'Invalid password'
+            else:
+                session['user_id'] = user.id
+                session['username'] = user.username
+                flash('You have been logged in')
+                return redirect(url_for('show_entries'))
+        return render_template('login.html', error=error)
+    ```
+
+## Βασικό πρότυπο εμφάνισης
+
+* Το βασικό πρότυπο εμφάνισης επίσης πρέπει να αλλαχθεί λίγο, ώστε στο
+  πάνω μέρος να εμφανίζουμε όταν πρέπει το σύνδεσμο για είσοδο ή για
+  εγγραφή.
+
+    ```html
+    <!doctype html>
+    <title>Flaskr</title>
+    <link rel=stylesheet type=text/css
+          href="{{ url_for('static', filename='style.css') }}">
+    <div class=page>
+      <h1>Flaskr</h1>
+      <div class=metanav>
+      {% if not session.user_id %}
+        <a href="{{ url_for('login') }}">log in</a>
+        {% if request.path != '/register' %} 
+          or
+          <a href="{{ url_for('register') }}">register</a>
+        {% endif %}
+      {% else %}
+        <a href="{{ url_for('logout') }}">log out</a>
+      {% endif %}
+      </div>
+      {% for message in get_flashed_messages() %}
+        <div class=flash>{{ message }}</div>
+      {% endfor %}
+      {% block body %}{% endblock %}
+    </div>
+    ```
