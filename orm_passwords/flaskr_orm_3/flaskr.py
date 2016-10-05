@@ -18,6 +18,8 @@ app.config.update(dict(
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 ))
 
+app.config.from_envvar('FLASKR_SETTINGS', silent=True)
+
 db = SQLAlchemy(app)
 
 class Entry(db.Model):

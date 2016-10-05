@@ -62,6 +62,8 @@ pip install iPython
         SQLALCHEMY_TRACK_MODIFICATIONS = False
     ))
 
+    app.config.from_envvar('FLASKR_SETTINGS', silent=True)
+
     db = SQLAlchemy(app)
     ```
 
@@ -137,7 +139,6 @@ pip install iPython
     ```python
     Entry.query.delete()
     db.session.commit()
-    entries
     ```
 
 ## Εμφάνιση αναρτήσεων
@@ -145,7 +146,7 @@ pip install iPython
 * Θα συνεχίσουμε με τη συγγραφή των μεθόδων για το χειρισμό των
   λειτουργιών της υπηρεσίας.
 
-* Η εμφάνιση των συναρτήσεων, με τη χρήση πλέον Flask-SQLAlchemy,
+* Η εμφάνιση των αναρτήσεων, με τη χρήση πλέον Flask-SQLAlchemy,
   είναι:
 
     ```python
@@ -157,8 +158,7 @@ pip install iPython
 
 ## Προσθήκη ανάρτησης
 
-* Αντίστοιχα, η προσθήκη συναρτήσεων γίνεται:
-  είναι:
+* Αντίστοιχα, η προσθήκη αναρτήσεων γίνεται:
 
     ```python
     @app.route('/add', methods=['POST'])
@@ -176,7 +176,7 @@ pip install iPython
 
 * Οι άλλες δύο λειτουργίες, είσοδος και έξοδος, παραμένουν ως έχουν.
 
-* Συνεπώς απλώς αντιγράψτε τες από την προηγούμενη έκδοση της
+* Συνεπώς, απλώς αντιγράψτε τες από την προηγούμενη έκδοση της
   εφαρμογής.
 
 * Για να τρέξετε την εφαρμογή δίνετε ότι και στην προηγούμενη έκδοση.
@@ -217,6 +217,8 @@ pip install iPython
         SQLALCHEMY_TRACK_MODIFICATIONS = False
     ))
 
+    app.config.from_envvar('FLASKR_SETTINGS', silent=True)
+
     db = SQLAlchemy(app)
     ```
 
@@ -229,10 +231,10 @@ pip install iPython
 
 * Κάθε ανάρτηση θα ανήκει σε έναν χρήστη.
 
-* Το μοντέλο των αναρτήσεων θα είναι το ακόλοθο.
+* Το μοντέλο των αναρτήσεων θα είναι το ακόλουθο.
 
+## Κώδικας αναρτήσεων
 
-##
 
 ```python
 class Entry(db.Model):
@@ -261,7 +263,7 @@ class Entry(db.Model):
 
 * Επίσης κάθε χρήστης έχει ένα σύνολο αναρτήσεων που έχει δημιουργήσει.
 
-##
+## Κώδικας χρηστών
 
 ```python
 class User(db.Model):
@@ -271,7 +273,7 @@ class User(db.Model):
                          nullable=False,
                          unique=True,
                          index=True)
-    password = db.Column(db.String(30), nullable=False)    
+    password = db.Column(db.String(30), nullable=False)
     name = db.Column(db.String(20), nullable=False)
     surname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(30), nullable=False)
@@ -304,7 +306,7 @@ class User(db.Model):
 
 * Αυτή τη στιγμή δεν θα υλοποιήσουμε τη διαδικασία εγγραφής χρηστών
   μέσα στην εφαρμογή, οπότε απλώς θα τους εισάγουμε απ' ευθείας μέσω
-  Python:
+  της γραμμής εντολών Python:
   
 
     ```python
@@ -345,7 +347,7 @@ class User(db.Model):
 * Ταυτόχρονα, η εισαγωγή θα γίνει μέσω SQLAlchemy.
 
 
-##
+## Κώδικας προσθήκης
 
 ```python
 @app.route('/add', methods=['POST'])
@@ -429,7 +431,7 @@ def logout():
   `static`.
 
 
-##
+## Κώδικας εμφάνισης
 
 ```html
 {% extends "layout.html" %}
@@ -466,7 +468,7 @@ def logout():
 * Δημιουργούμε το ακόλουθο αρχείο `login.html` στον κατάλογο
   `static`.
 
-##
+## Κώδικας εισόδου 
 
 ```html
 {% extends "layout.html" %}
@@ -556,7 +558,7 @@ def logout():
   με το όνομα `register.html` στον κατάλογο `templates`.
 
 
-##
+## Κώδικας φόρμας
 
 
 ```html
@@ -580,7 +582,7 @@ def logout():
       <dd><input type=password name=password>
       <dt>Repeat Password:
       <dd><input type=password name=repeat-password>
-      <dd><input type=submit value=Login>
+      <dd><input type=submit value=Register>
     </dl>
   </form>
 {% endblock %}
@@ -670,3 +672,96 @@ def logout():
       {% block body %}{% endblock %}
     </div>
     ```
+
+# MySQL
+
+## Εγκατάσταση MySQL
+
+* Πηγαίνετε στο
+  [http://dev.mysql.com/downloads/](http://dev.mysql.com/downloads/)
+  και κατεβάστε την τελευταία έκδοση του MySQL Community Server.
+
+* Επίσης, πηγαίνετε στο
+  [http://dev.mysql.com/downloads/](http://dev.mysql.com/downloads/)
+  και κατεβάστε την τελευταία έκδοση του MySQL Workbench.
+
+## Εγκατάσταση οδηγού
+
+* Για να επικοινωνήσουμε με τη MySQL από προγράμματα Python
+  χρειαζόμαστε τον κατάλληλο *οδηγό* (driver).
+
+* Κατεβάστε και εγκαταστήστε τον οδηγό
+  [Connector/Python](http://dev.mysql.com/downloads/connector/python/).
+
+## Δημιουργία βάσης
+
+* Δημιουργείστε τη βάση `flaskr` εισάγοντας τις ακόλουθες εντολές SQL
+  στον MySQL Workbench:
+
+    ```sql
+    CREATE DATABASE flaskr CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+    CREATE USER 'flaskr_user'@'localhost' IDENTIFIED BY 'aojkqw3m2t';
+
+    GRANT ALL PRIVILEGES ON flaskr.* TO 'flaskr_user'@'localhost';
+    ```
+
+## Ρύθμιση για χρήση MySQL
+
+* Δημιουργείστε στον κατάλογο `flaskr` ένα αρχείο `config.py` στο
+  οποίο θα εισάγετε την παρακάτω γραμμή:
+
+    ```python
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://flaskr_user:aojkqw3m2t@localhost/flaskr'
+    ```
+
+* Στη συνέχεια, αν έχετε υπολογιστή MS-Windows, δώστε το παρακάτω στη
+  γραμμή εντολών:
+
+    ```
+    set FLASKR_SETTINGS=config.py
+    ```
+
+* Αν έχετε υπολογιστή Linux ή Mac, δώστε το παρακάτω στη γραμμή
+  εντολών:
+
+    ```bash
+    export FLASKR_SETTINGS=config.py
+    ```
+
+## Δημιουργία πινάκων
+
+* Για να δημιουργήσουμε τους πίνακες της βάσης μας (entries, users)
+  μπορούμε πάλι να χρησιμοποιήσουμε τη γραμμή εντολών Python:
+
+    ```python
+    from flaskr import db
+    db.create_all()
+    ```
+
+## Δημιουργία πινάκων
+
+* Εναλλακτικά, μπορούμε να δημιουργήσουμε αντίστοιχη εντολή,
+  προσθέτοντας στο αρχείο `flaskr.py`:
+
+    ```python
+    @app.cli.command('initdb')
+    def initdb_command():
+        """Initializes the database."""
+        db.create_all()
+        print('Initialized the database.')
+    ```
+
+* Οπότε μπορούμε να δώσουμε από τη γραμμή εντολών:
+
+    ```bash
+    flask initdb
+    ```
+
+* Αυτό θα μπορούσαμε να το είχαμε κάνει προηγουμένως με την SQLite·
+  απλώς προτιμούσαμε να χρησιμοποιούμε τη γραμμή εντολών της Python.
+
+## Επόμενα βήματα
+
+* Δεν υπάρχουν!
+
