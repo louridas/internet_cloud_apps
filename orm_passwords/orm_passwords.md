@@ -688,7 +688,7 @@ def logout():
             if user is None:
                 error = 'Invalid username'
             elif not bcrypt.checkpw(request.form['password'].encode('utf8'),
-                                    user.password):
+                                    user.password.encode('utf8')):
                 error = 'Invalid password'
             else:
                 session['user_id'] = user.id
