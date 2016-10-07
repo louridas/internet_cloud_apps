@@ -66,6 +66,12 @@ class User(db.Model):
         return '<User %r %r %r %r>' % (self.username, self.email,
                                        self.name, self.surname)
 
+@app.cli.command('initdb')
+def initdb_command():
+    """Initializes the database."""
+    db.create_all()
+    print('Initialized the database.')
+    
 @app.route('/')
 def show_entries():
     entries = Entry.query.order_by(Entry.datetime.desc()).all()
