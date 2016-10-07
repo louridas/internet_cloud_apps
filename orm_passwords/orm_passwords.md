@@ -143,11 +143,15 @@
 * Ξεκινάμε την Python μέσα στον κατάλογο `flaskr_orm_1`
   πληκτρολογόντας `python`, ή καλύτερα `ipython`.
 
+* Για να είναι εμφανές ότι μιλάμε για τη γραμμή εντολών της Python,
+  η είσοδός μας και η έξοδός μας εκεί θα ξεκινούν με `>>>` σε ό,τι
+  ακολουθεί. 
+
 * Στη συνέχεια γράφουμε:
 
     ```python
-    from flaskr import db
-    db.create_all()
+    >>> from flaskr import db
+    >>> db.create_all()
     ```
 
 ## Εισαγωγή δεδομένων
@@ -158,14 +162,14 @@
 * Για παράδειγμα, για να εισάγουμε δύο αναρτήσεις, γράφουμε:
 
     ```python
-    from flaskr import Entry
+    >>> from flaskr import Entry
 
-    entry_1 = Entry("First Entry", "This is the first entry")
-    entry_2 = Entry("Second Entry", "This is the second entry")
+    >>> entry_1 = Entry("First Entry", "This is the first entry")
+    >>> entry_2 = Entry("Second Entry", "This is the second entry")
 
-    db.session.add(entry_1)
-    db.session.add(entry_2)
-    db.session.commit()
+    >>> db.session.add(entry_1)
+    >>> db.session.add(entry_2)
+    >>> db.session.commit()
     ```
 
 ## Αναζήτηση δεδομένων
@@ -173,13 +177,13 @@
 * Για να κάνουμε μια αναζήτηση στα δεδομένα, γράφουμε:
 
     ```python
-    entries = Entry.query.all()
+    >>> entries = Entry.query.all()
     ```
 * Πράγματι, ενόσω είμαστε στη γραμμή εντολών μπορούμε να
   επιβεβαιώσουμε τις εγγραφές:
 
     ```python
-    entries
+    >>> entries
     ```
 
 ## Διαγραφή δεδομένων
@@ -187,15 +191,15 @@
 * Για να διαγράψουμε τα δεδομένα, γράφουμε:
 
     ```python
-    Entry.query.delete()
-    db.session.commit()
+    >>> Entry.query.delete()
+    >>> db.session.commit()
     ```
 
 * Και πάλι επιβεβαιώνουμε:
 
     ```python
-    entries = Entry.query.all()
-    entries
+    >>> entries = Entry.query.all()
+    >>> entries
     ```
 
 
@@ -291,8 +295,8 @@
 
 * Το μοντέλο των αναρτήσεων θα είναι το ακόλουθο.
 
-## Κώδικας αναρτήσεων
 
+## Κώδικας αναρτήσεων
 
 ```python
 class Entry(db.Model):
@@ -356,8 +360,8 @@ class User(db.Model):
   εντολών της Python ή IPython:
 
     ```python
-    from flaskr import *
-    db.create_all()
+    >>> from flaskr import *
+    >>> db.create_all()
     ```
 
 ## Εισαγωγή χρηστών
@@ -369,13 +373,13 @@ class User(db.Model):
 
     ```python
 
-    user_1 = User("louridas", "Panos", "Louridas", "louridas@aueb.gr", "12345")
+    >>> user_1 = User("louridas", "Panos", "Louridas", "louridas@aueb.gr", "12345")
 
-    user_2 = User("johndoe", "John", "Doe", "johndoe@gmail.com", "54321")
+    >>> user_2 = User("johndoe", "John", "Doe", "johndoe@gmail.com", "54321")
 
-    db.session.add(user_1)
-    db.session.add(user_2)
-    db.session.commit()
+    >>> db.session.add(user_1)
+    >>> db.session.add(user_2)
+    >>> db.session.commit()
     ```
 	
 ## Εμφάνιση αναρτήσεων
@@ -791,8 +795,8 @@ def logout():
   μπορούμε πάλι να χρησιμοποιήσουμε τη γραμμή εντολών Python:
 
     ```python
-    from flaskr import db
-    db.create_all()
+    >>> from flaskr import db
+    >>> db.create_all()
     ```
 
 ## Δημιουργία πινάκων
