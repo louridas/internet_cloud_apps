@@ -714,7 +714,17 @@ def login():
 
 <div class="notes">
 
+Για να διαπιστώσουμε αν ένας χρήστης έχει δικαίωμα εισόδου στην
+εφαρμογή, πραγματοποιούμε αναζήτηση στη βάση με βάση το `username` που
+μας έχει δώσει. Οι αναζητήσεις στη βάση επιστρέφουν εν δυνάμει πολλά
+αποτελέσματα, οπότε εμείς ζητούμε απλώς το πρώτο (και μοναδικό). Αν
+δεν υπάρχει, επιστρέφουμε μήνυμα λάθους. Διαφορετικά, αν υπάρχει,
+ελέγχουμε αν ο κωδικός που έχει δώσει ο χρήστης συμφωνεί με τον κωδικό
+που έχει αποθηκευτεί στη βάση, και οποίος βρίσκεται πλέον στο πεδίο
+`user.password`. 
 
+Αν όλα πάνε καλά, εισάγουμε στο αντικείμενο `session` το `id` και το
+`username` του χρήστη.
 
 </div>
 
@@ -729,6 +739,14 @@ def logout():
     flash('You were logged out')
     return redirect(url_for('show_entries'))
 ```
+
+<div class="notes">
+
+Για την έξοδο, αντιστρόφως από την είσοδο, αφαιρούμε από το
+αντικείμενο `session` το `id` και το `username` του χρήστη.
+
+</div>
+
 
 ## Βασικό πρότυπο εμφάνισης
 
@@ -755,6 +773,15 @@ def logout():
       {% block body %}{% endblock %}
     </div>
     ```
+
+<div class="notes">
+
+Ο έλεγχος για τον χρήστη πραγματοποιείται πλέον με το πεδίο `user_id`
+του αντικειμένου `session`, αντί για το `logged_in` της προηγούμενης
+έκδοσης. 
+
+</div>
+
 
 ## Εμφάνιση αναρτήσεων
 
@@ -793,6 +820,14 @@ def logout():
   </ul>
 {% endblock %}
 ```
+
+<div class="notes">
+
+Στη νέα έκδοση εμφανίζουμε, εκτός από τον τίτλο και το περιεχόμενο
+κάθε ανάρτησης, το όνομα του χρήστη και τη χρονική στιγμή που έγινε η
+ανάρτηση. 
+
+</div>
 
 ## Είσοδος
 
@@ -857,6 +892,11 @@ def logout():
 
     ```
 
+## Εκκίνηση
+
+* Τα βήματα για την εκκίνηση της εφαρμογής παραμένουν ως είχαν και
+  προηγούμενως. 
+
 
 # Χειρισμός Κωδικών
 
@@ -876,10 +916,35 @@ def logout():
 
 ## Bcrypt
 
+* Για την κρυπτογράφηση των κωδικών θα χρησιμοποιήσουμε τη συνάρτηση
+  [bcrypt](https://en.wikipedia.org/wiki/Bcrypt).
+
+* Η συνάρτηση αυτή παίρνει ως είσοδο μια συμβολοσειρά και μία τυχαία
+  σειρά 128 bits που ονομάζεται *αλάτι* (salt).
+  
+* Με βάση αυτά, παράγει ως έξοδο μια σειρά από 60 bytes από τα οποία δεν
+  μπορούμε να βρούμε τι είχε δοθεί ως είσοδος.
+  
+<div class="notes">
+
+Το αλάτι είναι απαραίτητο για τον εξής λόγο. Κάποιος μπορεί απλώς να
+αρχίσει να μαντεύει δημοφιλείς κωδικούς. Αφού όμως στον κωδικό του
+χρήστη μπαίνει και το αλάτι, κάποιος θα πρέπει να μαντέψει εκτός από
+τον κωδικό και το αλάτι, που είναι πολύ απίθανο.
+
+Όταν θέλουμε να ελέγξουμε έναν κωδικό, τον εισάγουμε στη συνάρτηση
+ελέγχου, μαζί με το αλάτι, και περιμένουμε να βρούμε τον
+(κρυπτογραφημένο) κωδικό που έχουμε αποθηκεύσει.
+
+</div>
+
+
+## Εγκατάσταση bcrypt
+
 * Κατ' αρχήν θα πρέπει να εγκαταστήσουμε τη βιβλιοθήκη bcrypt.
 
     ```bash
-    pip3 install bcrypt
+    pip install bcrypt
     ```
 
 ## Φόρμα εγγραφής
@@ -923,33 +988,73 @@ def logout():
 
 ## Εγγραφή χρηστών
 
-* Ο χειρισμός της εγγραφής θα γίνεται από την παρακάτω συνάρτηση, η
+* Ο χειρισμός της εγγραφής θα γίνεται από την ακόλουθη συνάρτηση, η
   οποία θα απαντά σε αιτήσεις στο μονοπάτι `/register`.
-
+  
+* Προσέξτε ότι θα πρέπει στο προοίμιο της εφαρμογής να προσθέσετε τη
+  γραμμή:
+  
     ```python
-    @app.route('/register', methods=['GET', 'POST'])
-    def register():
-        error = None
-        if request.method == 'POST':
-            password = bcrypt.hashpw(request.form['password'].encode('utf8'),
-                                     bcrypt.gensalt())
-            user = User(request.form['username'],
-                        request.form['name'],
-                        request.form['surname'],
-                        request.form['email'],
-                        password)
-            db.session.add(user)
-            try:
-                db.session.commit()
-                session['user_id'] = user.id
-                session['username'] = user.username
-            except exc.SQLAlchemyError as ex:
-                error = 'Error inserting record in the database'
-            if not error:
-                flash('Registration successful')
-                return redirect(url_for('show_entries'))
-        return render_template('register.html', error=error)
-    ```
+	from sqlalchemy import exc
+	```
+  Αυτό θα το χρησιμοποιήσουμε για το χειρισμό λαθών.
+  
+ 
+## Κώδικας εγγραφής
+
+```python
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+	error = None
+	if request.method == 'POST':
+		password = bcrypt.hashpw(request.form['password'].encode('utf8'),
+								 bcrypt.gensalt())
+		user = User(request.form['username'],
+					request.form['name'],
+					request.form['surname'],
+					request.form['email'],
+					password)
+		db.session.add(user)
+		try:
+			db.session.commit()
+			session['user_id'] = user.id
+			session['username'] = user.username
+		except exc.SQLAlchemyError as ex:
+			error = 'Error inserting record in the database'
+		if not error:
+			flash('Registration successful')
+			return redirect(url_for('show_entries'))
+	return render_template('register.html', error=error)
+```
+
+<div class="notes">
+
+Η κρυπτογράφηση του κωδικού του χρήστη γίνεται με την εντολή:
+
+```python
+password = bcrypt.hashpw(request.form['password'].encode('utf8'),
+                         bcrypt.gensalt())
+```
+
+Η πρώτη παράμετρος της συνάρτησης είναι ο κωδικός. Αυτός είναι η
+συμβολοσειρά που έχει εισαχθεί από τον χρήστη. Η bcrypt όμως ως είσοδο
+παίρνει μια σειρά από bytes, και όχι χαρακτήρες. Συνεπώς μετατρέπουμε
+τη συμβολοσειρά σε σειρά από bytes με την κλήση
+`request.form['password'].encode('utf8')`. 
+
+Η δεύτερη παράμετρος της συνάρτησης είναι το αλάτι, το οποίο
+παράγεται με την κλήση `bcrypt.gensalt()`.
+
+Στη συνέχεια δημιουργούμε το αντικείμενο που θα αντιπροσωπεύει το
+χρήστη και το αποθηκεύουμε στη βάση. Υπάρχει πάντα η περίπτωση κάτι
+τέτοιο να μη γίνει: για παράδειγμα, κάποιος δίνει `username` το οποίο
+ήδη υπάρχει. Αν συμβεί οποιοδήποτε λάθος σχετικό με τη βάση δεδομένων,
+θα λάβουμε μία εξαίρεση `SQLAlchemyError`, συνεπώς τη χειριζόμαστε και
+εμφανίζουμε κατάλληλο μήνυμα. Μέχρι τώρα αδιαφορούσαμε για τέτοια
+προβλήματα, αλλά σιγά-σιγά θα πρέπει να αρχίσουμε να τα
+αντιμετωπίζουμε. 
+
+</div>
 
 ## Είσοδος
 
@@ -974,6 +1079,26 @@ def logout():
                 return redirect(url_for('show_entries'))
         return render_template('login.html', error=error)
     ```
+
+<div class="notes">
+
+Για τον έλεγχο του κωδικού χρησιμοποιούμε την εντολή:
+
+```python
+bcrypt.checkpw(request.form['password'].encode('utf8'),
+               user.password.encode('utf8'))
+```
+
+H συνάρτηση `bcrypt.checkpw` παίρνει ως πρώτη παράμετρο αυτό που
+θέλουμε να ελέγξουμε και ως δεύτερη αυτό με το οποίο θα πρέπει να
+είναι ίσο. Θέλουμε να ελέγξουμε τον κωδικό που έχει εισάγει ο χρήστης
+στη φόρμα, σε σχέση με τον κωδικό που έχει αποθηκευτεί στη βάση.
+Επειδή η `bcrypt.checkpw` λειτουργεί με bytes, και όχι με
+συμβολοσειρές, θα πρέπει να μετατρέψουμε τις τιμές των παραμέτρων σε
+bytes με την `encode('utf8')`.
+
+</div>
+
 
 ## Βασικό πρότυπο εμφάνισης
 
