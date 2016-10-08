@@ -1214,6 +1214,15 @@ bytes με την `encode('utf8')`.
 	python setup.py install
 	```
 
+<div class="notes">
+
+Σε μία επαγγελματική εφαρμογή, θα θέλατε να χρησιμοποιήσετε τον οδηγό
+με τις επεκτάσεις της γλώσσας C. Μπορείτε να βρείτε τις σχετικές
+οδηγίες [εδώ](https://dev.mysql.com/doc/connector-python/en/connector-python-installation-source.html).
+
+</div>
+
+
 ## Δημιουργία βάσης
 
 * Δημιουργείστε τη βάση `flaskr` εισάγοντας τις ακόλουθες εντολές SQL
