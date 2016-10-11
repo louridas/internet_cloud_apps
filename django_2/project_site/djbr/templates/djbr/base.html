@@ -20,7 +20,9 @@
       <div class="jumbotron">
         <h1>{% block heading %}Django Book Reviews{% endblock %}</h1>
       </div>
-      {% block content %}{% endblock %}
+      <div class="col-md-offset-1 col-md-6">
+        {% block content %}{% endblock %}
       </div>
+    </div>
   </body>
 </html>
