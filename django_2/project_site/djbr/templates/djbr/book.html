@@ -1,0 +1,23 @@
+{% extends "djbr/base.html" %}
+
+{% block content %}
+<ul>
+  <li>
+    Title: {{ book.title }}
+  </li>
+  <li>
+    Author:
+    <ul>
+      {% for author in book.author_set.all %}
+        <li>
+          <a href="{% url 'djbr:author' author.id %}">{{ author.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  <li>
+    Year published: {{ book.pub_year }}
+  </li>
+  <li>Reviews: <a href="{% url 'djbr:reviews' book.id %}">
+      {{ book.review_set.all.count }}</a></li>
+</ul>
+{% endblock %}
