@@ -1,11 +1,11 @@
 {% extends "djbr/base.html" %}
 
 {% block content %}
-<ul>
-  <li>
+<ul class="list-group">
+  <li class="list-group-item">
     Name: {{ author.name }}
   </li>
-  <li>
+  <li class="list-group-item">
     Books:
     <ul>
       {% for book in author.books.all %}
