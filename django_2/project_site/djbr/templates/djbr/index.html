@@ -1,0 +1,13 @@
+{% extends "djbr/base.html" %}
+
+{% block content %}
+{% if latest_books_published %}
+    <ul>
+    {% for book in latest_books_published %}
+        <li><a href= "{% url 'djbr:book' book.id %}">{{ book.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No books are available.</p>
+{% endif %}
+{% endblock %}

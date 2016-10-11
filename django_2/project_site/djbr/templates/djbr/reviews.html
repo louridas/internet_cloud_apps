@@ -1,0 +1,21 @@
+{% extends "djbr/base.html" %}
+
+{% block content %}
+{% if not book_reviews %}
+  No reviews yet.
+{% else %}
+  <ul>
+    {% for review in book_reviews %}
+      <li>
+        Review Title: {{ review.title }}
+        </li>
+      <li>
+        Review: {{ review.text }}
+        </li>
+      <li>
+        Date reviewed: {{ review.review_date }}
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+{% endblock %}
