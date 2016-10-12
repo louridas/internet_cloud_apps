@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if not book_reviews %}
-  No reviews yet.
+  <h2 class="bg-warning">No reviews yet.</h2>
 {% else %}
   <div class="list-group">
     {% for review in book_reviews %}

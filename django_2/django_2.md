@@ -4,6 +4,16 @@
 
 # Django 2
 
+## Συνέχεια της εφαρμογής μας
+
+* Θα εξελίξουμε την εφαρμογή μας υλοποιώντας πραγματικές λειτουργίες.
+
+* Θα χρησιμοποιήσουμε σχέσεις πολλά προς πολλά.
+
+* Θα δημιουργήσουμε σελίδες εμφάνισης των βιβλίων, συγγραφέων, και
+  κριτικών.
+
+
 # Σχέσεις πολλά προς πολλά
 
 ## Προσθήκη συγγραφέων
@@ -208,7 +218,7 @@
 * Συγκεκριμένα, θα την κάνουμε να δείχνει μια λίστα με τα υπάρχοντα
   βιβλία.
 
-## Kεντρική σελίδα (1)
+## Πρότυπα σελίδων 
 
 * Οι δυναμικές σελίδες στο Django δημιουργούνται με τα κατάλληλα
   πρότυπα.
@@ -216,25 +226,70 @@
 * Τα πρότυπά μας θα τα αποθηκεύσουμε σε έναν κατάλογο
   `djbr/templates/djbr`, τον οποίο θα πρέπει να δημιουργήσετε.
 
-* Στον κατάλογο αυτό, γράψτε όσα ακολουθούν σε ένα αρχείο
-  `index.html`.
+## Βασικό πρότυπο εμφάνισης
 
-## Kεντρική σελίδα (2)
+* Το βασικό πρότυπο εμφάνισης των σελίδων μας θα δίνεται από το αρχείο
+  `djbr/templates/djbr/base.html`:
 
-```html
-{% if latest_books_published %}
-    <ul>
-    {% for book in latest_books_published %}
-        <li><a href= "{% url 'djbr:book' book.id %}">{{ book.title }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No books are available.</p>
-{% endif %}
-```
+    ```html
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+          crossorigin="anonymous">
+
+        <script src="http://code.jquery.com/jquery-3.1.1.min.js"
+          integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+          crossorigin="anonymous"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+          integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+          crossorigin="anonymous"></script>
+
+        <title>{% block title %}Django Book Reviews{% endblock %}</title>
+      </head>
+
+      <body>
+        <div class="container theme-showcase">
+          <div class="jumbotron">
+            <h1>{% block heading %}Django Book Reviews{% endblock %}</h1>
+          </div>
+          <div class="col-md-offset-1 col-md-6">
+            {% block content %}{% endblock %}
+          </div>
+        </div>
+      </body>
+    </html>
+    ```
+
+## Kεντρική σελίδα
+
+* Η κεντρική σελίδα θα εμφανίζει τα 10 βιβλία που έχουν εκδοθεί
+  τελευταία (θα δούμε πώς προκύπτουν τα 10):
+
+    ```html
+    {% if latest_books_published %}
+        <ul>
+        {% for book in latest_books_published %}
+            <li><a href= "{% url 'djbr:book' book.id %}">{{ book.title }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No books are available.</p>
+    {% endif %}
+    ```
 
 ## Κώδικας κεντρικής σελίδας
-
 
 * Αλλάζουμε το αρχείο `views.py` ως εξής:
 
@@ -275,11 +330,14 @@
   παρακάτω περιεχόμενα:
 
     ```html
-    <ul>
-      <li>
+    {% extends "djbr/base.html" %}
+
+    {% block content %}
+    <ul class="list-group">
+      <li class="list-group-item">
         Title: {{ book.title }}
       </li>
-      <li>
+      <li class="list-group-item">
         Author:
         <ul>
           {% for author in book.author_set.all %}
@@ -288,15 +346,25 @@
             </li>
           {% endfor %}
         </ul>
-      <li>
+      <li class="list-group-item">
         Year published: {{ book.pub_year }}
       </li>
-      <li>Reviews: <a href="{% url 'djbr:reviews' book.id">
-        {{ book.review_set.all.count }}</a></li>
+      <li class="list-group-item"><span>Reviews:
+        <a class="badge" href="{% url 'djbr:reviews' book.id %}">
+          {{ book.review_set.all.count }}
+        </a></span>
+      </li>
     </ul>
+    {% endblock %}
     ```
 
 ## Σελίδα συγγραφέα
+
+* Για τη σελίδα κάθε συγγραφέα, θα χρειαστεί ομοίως εμπλουτίσουμε την
+  αντίστοιχη μέθοδο στο `djbr/views.py` και να γράψουμε το αντίστοιχο
+  πρότυπο της σελίδας.
+
+* Στο `dbjr/views.py` αλλάζουμε τη μέθοδο `author()` ως εξής:
 
     ```python
     def author(request, author_id):
@@ -304,52 +372,114 @@
         return render(request, 'djbr/author.html', {'author': author})
     ```
 
+* Επίσης θα πρέπει να προσαρμόσουμε τα imports:
+
+    ```python
+    from .models import Book, Author
+    ```
+
 ## Πρότυπο συγγραφέα
 
-```html
-<ul>
-  <li>
-    Name: {{ author.name }}
-  </li>
-  <li>
-    Books:
-    <ul>
-      {% for book in author.books.all %}
-        <li>
-          <a href="{% url 'djbr:book' book.id %}">{{ book.title }}</a>
-        </li>
-      {% endfor %}
-    </ul>
-</ul>
-```
+* Δημιουργούμε το αρχείο `djbr/templates/djbr/author.html` με τα
+  παρακάτω περιεχόμενα:
 
-## Σελίδα κριτικής
+    ```html
+    {% extends "djbr/base.html" %}
 
-```python
-def reviews(request, book_id):
-    book_reviews = Review.objects.filter(book_id=book_id)
-    return render(request, 'djbr/reviews.html',
-                  {'book_reviews': book_reviews })
-```
-
-## Πρότυπο κριτικής
-
-```html
-{% if not book_reviews %}
-  No reviews yet.
-{% else %}
-  <ul>
-    {% for review in book_reviews %}
-      <li>
-        Review Title: {{ review.title }}
-        </li>
-      <li>
-        Review: {{ review.text }}
-        </li>
-      <li>
-        Date reviewed: {{ review.review_date }}
+    {% block content %}
+    <ul class="list-group">
+      <li class="list-group-item">
+        Name: {{ author.name }}
       </li>
-    {% endfor %}
-  </ul>
-{% endif %}
-```
+      <li class="list-group-item">
+        Books:
+        <ul>
+          {% for book in author.books.all %}
+            <li>
+              <a href="{% url 'djbr:book' book.id %}">{{ book.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+    </ul>
+    {% endblock %}
+    ```
+
+## Σελίδα κριτικών
+
+* Τέλος, για τις κριτικές, θα κάνουμε αντίστοιχες αλλαγές στο
+  `djbr/views.py` και θα γράψουμε το αντίστοιχο πρότυπο της σελίδας:
+
+    ```python
+    def reviews(request, book_id):
+        book_reviews = Review.objects.filter(book_id=book_id)
+        return render(request, 'djbr/reviews.html',
+                      {'book_reviews': book_reviews })
+    ```
+
+* Δεν πρέπει να ξεχάσουμε να προσαρμόσουμε τα imports!
+
+    ```python
+    from .models import Book, Author, Review
+    ```
+
+## Πρότυπο κριτικών
+
+* Δημιουργούμε το αρχείο `djbr/templates/djbr/reviews.html` με τα
+  παρακάτω περιεχόμενα:
+
+    ```html
+    {% extends "djbr/base.html" %}
+
+    {% block content %}
+    {% if not book_reviews %}
+      <h2 class="bg-warning">No reviews yet.</h2>
+    {% else %}
+      <div class="list-group">
+        {% for review in book_reviews %}
+          <div class="list-group-item active">
+            Summary: {{ review.title }}
+          </div>
+          <div class="list-group-item">
+            Review: {{ review.text }}
+          </div>
+          <div class="list-group-item">
+            Date reviewed: {{ review.review_date }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% endblock %}
+    ```
+    
+## Μια λεπτομέρεια ακόμα
+
+* Αυτή τη στιγμή η εφαρμογή ακούει στα URL που ξεκινούν από 
+  `http://127.0.0.1:8000/djbr`.
+
+* Επίσης η εφαρμογή διαχείρισης ακούει στα URL που ξεκινούν από
+  `http://127.0.0.0.1:8000/admin`.
+
+* Αν λοιπόν ο χρήστης δώσει `http://127.0.0.0.1:8000/` θα πάρει λάθος.
+
+* Μπορούμε να το αλλάξουμε αυτό, ώστε αν δώσει
+  `http://127.0.0.0.1:8000/` να ανακατευνθεί στο
+  `http://127.0.0.1:8000/djbr/`.
+
+## Ανακατεύθυνση στο `djbr/`
+
+* Για να το πετύχουμε αυτό, πηγαίνουμε στο αρχείο
+  `project_site/urls.py` και το αλλάζουμε ώστε να είναι όπως παρακάτω:
+
+    ```python
+    from django.conf.urls import url, include
+    from django.contrib import admin
+
+    from django.http.response import HttpResponseRedirect
+
+    urlpatterns = [
+        url(r'^$', lambda r: HttpResponseRedirect('djbr/')),
+        url(r'^djbr/', include('djbr.urls')),
+        url(r'^admin/', admin.site.urls),
+    ]
+    ```
+
