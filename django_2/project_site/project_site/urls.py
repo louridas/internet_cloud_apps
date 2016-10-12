@@ -16,7 +16,10 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from django.http.response import HttpResponseRedirect
+
 urlpatterns = [
+    url(r'^$', lambda r: HttpResponseRedirect('djbr/')),
     url(r'^djbr/', include('djbr.urls')),
     url(r'^admin/', admin.site.urls),
 ]

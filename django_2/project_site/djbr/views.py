@@ -1,4 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
+
+from django.shortcuts import get_object_or_404
 
 from .models import Book, Author, Review
 
@@ -17,7 +19,7 @@ def reviews(request, book_id):
                   {'book_reviews': book_reviews })
 
 def author(request, author_id):
-    author = get_object_or_404(Author, pk=author_id)
+    author = get_object_or_404(Author, pk=book_id)
     return render(request, 'djbr/author.html', {'author': author})
 
 
