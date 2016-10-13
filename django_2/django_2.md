@@ -276,15 +276,21 @@
   τελευταία (θα δούμε πώς προκύπτουν τα 10):
 
     ```html
+    {% extends "djbr/base.html" %}
+
+    {% block content %}
     {% if latest_books_published %}
-        <ul>
+      <ul class="list-group">
         {% for book in latest_books_published %}
-            <li><a href= "{% url 'djbr:book' book.id %}">{{ book.title }}</a></li>
+          <li class="list-group-item">
+            <a href= "{% url 'djbr:book' book.id %}">{{ book.title }}</a>
+          </li>
         {% endfor %}
-        </ul>
+      </ul>
     {% else %}
-        <p>No books are available.</p>
+      <p>No books are available.</p>
     {% endif %}
+    {% endblock %}
     ```
 
 ## Κώδικας κεντρικής σελίδας
