@@ -19,7 +19,7 @@ def reviews(request, book_id):
                   {'book_reviews': book_reviews })
 
 def author(request, author_id):
-    author = get_object_or_404(Author, pk=book_id)
+    author = get_object_or_404(Author, pk=author_id)
     return render(request, 'djbr/author.html', {'author': author})
 
 
