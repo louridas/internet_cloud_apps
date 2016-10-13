@@ -160,10 +160,6 @@
     def author(request, author_id):
         response = "You are looking at author %s."
         return HttpResponse(response % author_id)
-
-    def author_books(request, author_id):
-        response = "You are looking at the books of author %s."
-        return HttpResponse(response % author_id)
     ```
     
 ## Δημιουργία URLs
@@ -194,7 +190,6 @@
     * `djbr/book/1/`
     * `djbr/book/1/reviews/`
     * `djbr/author/1/`
-    * `djbr/author/1/books`
 
 * Το πρόθεμα `djbr` το χειρίζεται το αρχείο `project_site/urls.py` που
   είχαμε δει την προηγούμενη φορά.
