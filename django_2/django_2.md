@@ -28,8 +28,8 @@
 
     ```python
     class Author(models.Model):
-    name = models.CharField(max_length=200)
-    books = models.ManyToManyField(Book)
+        name = models.CharField(max_length=200)
+        books = models.ManyToManyField(Book)
 
     def __str__(self):
         return self.name
@@ -62,6 +62,9 @@
 * Ανοίγουμε μία γραμμή εντολών Django και γράφουμε:
 
     ```python
+
+    from djbr.models import Author, Book 
+
     >>> a1 = Author(name="David Foster Wallace")
     >>> a1.save()
     >>> a2 = Author(name="James Joyce")
