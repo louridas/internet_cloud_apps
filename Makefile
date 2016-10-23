@@ -1,4 +1,4 @@
-SRC = $(shell find . -path ./reveal.js -prune -o -name *.md -print)
+SRC = $(shell find . -path ./reveal.js -maxdepth 2 -prune -o -name *.md -print)
 
 HTML = $(SRC:%.md=%.html)
 
