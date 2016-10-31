@@ -345,7 +345,7 @@
 
 ## Δεδομένα δοκιμών (2)
 
-* Δημιουργούμε το αρχείο `app/mock-book.ts`:
+* Δημιουργούμε το αρχείο `app/mock-books.ts`:
 
     ```javascript
     import { Book } from './book';
