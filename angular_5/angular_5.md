@@ -177,7 +177,7 @@ export class BookDetailComponent implements OnInit {
 * Στην `ngOnInit()` χρησιμοποιούμε μια μέθοδο `getBook()`, του
   `BookService`, την οποία όμως δεν την έχουμε υλοποιήσει ακόμα.
 
-* Συνεπώς την υλοποιούμε αμέσως ως εξής:
+* Συνεπώς την υλοποιούμε αμέσως στο `app/book.service.ts` ως εξής:
 
     ```javascript
     getBook(id: number): Promise<Book> {
@@ -335,7 +335,7 @@ export class BookDetailComponent implements OnInit {
 ## Πλοήγηση στο `BooksComponent`
 
 * Ακόμα δεν έχουμε υλοποιήσει τη μέθοδο `gotoDetail()` του
-  `BooksComponent`.
+  `BooksComponent` στο `app/books.component.ts`.
 
 * Η μέθοδος αυτή θα πλοηγεί το χρήστη στο βιβλίο που επιλέγει.
 
@@ -473,6 +473,10 @@ export class BookDetailComponent {
 
 * Για το dashboard, θα πρέπει να προσθέσουμε την εξής γραμμή στο
   `app/dashboard.component.ts`:
+
+    ```javascript
+    styleUrls: [ 'dashboard.component.css' ]
+    ```
 
 ## `dashboard.component.css` (2)
 
