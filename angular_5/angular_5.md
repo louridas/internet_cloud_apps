@@ -34,6 +34,7 @@
         node_modules/
         typings/
         app/
+            app-routing.module.ts
             app.component.css
             app.component.html
             app.component.ts
@@ -41,7 +42,7 @@
             book-detail.component.ts
             book-detail.component.html
             book-service.ts
-            book.ts
+            books.ts
             books.component.ts
             books.component.css
             books.component.html
@@ -65,7 +66,7 @@
     "version": "1.4.0",
     ```
 
-## Παραμετροποιημένη διαδρομή
+## 
 
 * Θα προσθέσουμε το `id` ενός βιβλίου στο URL.
 
@@ -164,7 +165,7 @@ export class BookDetailComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.forEach((params: Params) => {
       let id = +params['id'];
-      this.bookService.getΒοοκ(id)
+      this.bookService.getBook(id)
         .then(book => this.book = book);
     });
   }
@@ -281,7 +282,7 @@ export class BookDetailComponent implements OnInit {
 
 ## Προσαρμογή προτύπου `BooksComponent`
 
-* Αλλάζουμε το πρότυπο `app/books.component.ts`:
+* Αλλάζουμε το πρότυπο `app/books.component.html`:
 
     ```html
     <h2>Books</h2>
@@ -648,7 +649,7 @@ export class BookDetailComponent {
 * Για το σκοπό αυτό το Angular μας δίνει το μηχανισμό
   `routerLinkActive`.
 
-* Αλλάζουμε το πρότυπο `app/app.component.ts` αντίστοιχα:
+* Αλλάζουμε το πρότυπο `app/app.component.html` αντίστοιχα:
 
     ```html
     <h1>{{title}}</h1>
