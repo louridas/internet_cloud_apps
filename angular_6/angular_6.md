@@ -511,3 +511,262 @@ export class AppModule { }
 
 * Επιβεβαιώστε ότι πραγματικά μπορείτε να διαγράφετε βιβλία.
 
+
+# Αναζήτηση βιβλίων
+
+## Γενικά
+
+* Θα προσθέσουμε στην εφαρμογή μας τη δυνατότητα αναζήτησης βιβλίου.
+
+* Για να το κάνουμε αυτό, θα δημιουργήσουμε μια υπηρεσία αναζήτησης.
+
+* Επίσης, θα δούμε πώς εκτός από υποσχέσεις (promises) μπορούμε να
+  χρησιμοποιούμε και ένα άλλο είδους αντικειμένου, τα *παρατηρήσιμα*
+  (observables).
+
+
+## `Observable`
+
+* Ένα `Observable` είναι ένα αντικείμενο το οποίο μπορεί να μας
+  επιστρέψει, από τη στιγμή που το καλούμε και μετά, από καμμία έως
+  άπειρες τιμές.
+
+* Η βασική διαφορά με τις υποσχέσεις είναι ότι οι υποσχέσεις μπορεί να
+  επιστρέψουν μέχρι *μία* τιμή.
+
+* Για να λάβουμε τις τιμές ενός `Observable` πρέπει να γραφτούμε
+  συνδρομητές (subscribe) σε αυτό.
+
+
+## Υπηρεσία αναζήτησης
+
+* Θα γράψουμε το `BookSearchService` στο αρχείο
+  `app/book-search.service.ts`.
+
+* Στην κλάση αυτή, η μέθοδος `search()` θα επιστρέφει ένα `Objervable`
+  με τα αποτελέσματα της αναζήτησης.
+
+
+## `BookSearchService`
+
+```javascript
+import { Injectable } from '@angular/core';
+import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs';
+
+import { Book } from './book';
+
+@Injectable()
+export class BookSearchService {
+  
+  constructor(private http: Http) {}
+
+  search(term: string): Observable<Book[]> {
+    return this.http
+      .get(`app/books/?title=${term}`)
+      .map((r: Response) => r.json().data as Book[]);
+  }
+}
+```
+
+## Εξάρτημα αναζήτησης
+
+* Θα δημιουργήσουμε ένα εξάρτημα, `BookSearchComponent` το οποίο θα
+  χρησιμοποιεί ο χρήστης για τις αναζητήσεις.
+
+* Το εξάρτημα θα απαρτίζεται από τρία αρχεία:
+    * `app/book-search.component.html`
+    * `app/book-search.component.css`
+    * `app/book-search.component.ts`
+
+
+## `app/book-search.component.html` (1)
+
+```html
+<div id="search-component">
+  <h4>Book Search</h4>
+  <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
+  <div>
+    <div *ngFor="let book of books | async"
+         (click)="gotoDetail(book)" class="search-result" >
+      {{book.title}}
+    </div>
+  </div>
+</div>
+```
+
+## `app/book-search.component.html` (2)
+
+* Όταν ο χρήστης πληκτρολογεί έναν όρο αναζήτησης, καλείται η μέθοδος
+  `search()` του `BookSearchComponent`.
+
+* Τα βιβλία που θα εμφανίζονται θα βρίσκονται στην ιδιότητα `books` η
+  οποία θα είναι στιγμιότυπο της κλάσης `Observable`.
+
+* Για να τα χειριστούμε, τα διοχετεύουμε στο `async`, ώστε η λίστα των
+  βιβλίων να ενημερώνεται καθώς έρχονται αποτελέσματα.
+
+
+## Χειρισμός όρων αναζήτησης (1)
+
+* Για να χειριστούμε τους όρους αναζήτησης θα χρησιμοποιήσουμε την
+  κλάση `Subject`.
+
+* Ένα αντικείμενο τύπου `Subject` παράγει μία *παρατηρίσιμη*
+  (observable) ροή δεδομένων.
+
+* Εμείς λοιπόν θα χρησιμοποιήσουμε μια ροή δεδομένων η οποία θα δίνει
+  τους όρους αναζήτησης του χρήστη.
+
+
+## Χειρισμός όρων αναζήτησης (2)
+
+```javascript
+private searchTerms = new Subject<string>();
+
+// Push a search term into the observable stream.
+search(term: string): void {
+  this.searchTerms.next(term);
+}
+```
+
+## Αρχικοποίηση ιδιότητας `books` (1)
+
+* Όταν αρχικοποιείται η κλάση `BookSearchComponent` θα συνδέουμε τους
+  όρους αναζήτησης (`searchTerms`) με το `BookSearchService`.
+
+* Τα αποτελέσματα της αναζήτησης θα είναι με τη σειρά τους ένα
+  `Observable`, το οποίο θα χρησιμοποιεί το εξάρτημα για να εμφανίζει
+  ενημερωμένη τη λίστα των βιβλίων.
+
+
+## Αρχικοποίηση ιδιότητας `books` (2)
+
+```javascript
+books: Observable<Book[]>;
+
+ngOnInit(): void {
+  this.books = this.searchTerms
+    .debounceTime(300)        // wait for 300ms pause in events
+    .distinctUntilChanged()   // ignore if next search term is same as previous
+    .switchMap(term => term   // switch to new observable each time
+      // return the http search observable
+      ? this.bookSearchService.search(term)
+      // or the observable of empty books if no search term
+      : Observable.of<Book[]>([]))
+    .catch(error => {
+      // TODO: real error handling
+      console.log(error);
+      return Observable.of<Book[]>([]);
+    });
+}
+```
+
+## Αρχικοποίηση ιδιότητας `books` (3)
+
+* Το `debounceTime(300)` εισάγει μια καθυστέρηση 300ms μεταξύ της
+  εκπομπής των όρων αναζήτησης. 
+
+* Το `distinctUntilChanged()` εξασφαλίζει ότι αναζητήσεις θα
+  πραγματοποιούνται μόνο αν οι όροι αναζήτησης αλλάζουν.
+
+* Το `switchMap()` εξασφαλίζει ότι στην περίπτωση που γίνουν πολλαπλές
+  αιτήσεις, θα απορριφθούν τα αποτελέσματα όλων πλην της τελευταίας.
+
+
+## `BookSearchComponent`
+
+```javascript
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+
+import './rxjs-extensions';
+
+import { BookSearchService } from './book-search.service';
+import { Book } from './book';
+
+@Component({
+  moduleId: module.id,
+  selector: 'book-search',
+  templateUrl: 'book-search.component.html',
+  styleUrls: [ 'book-search.component.css' ],
+  providers: [BookSearchService]
+})
+export class BookSearchComponent implements OnInit {
+  books: Observable<Book[]>;
+  private searchTerms = new Subject<string>();
+  
+  constructor(private bookSearchService: BookSearchService,
+              private router: Router) { }
+  
+  // Push a search term into the observable stream.
+  search(term: string): void {
+    this.searchTerms.next(term);
+  }
+  
+  ngOnInit(): void {
+    this.books = this.searchTerms
+      .debounceTime(300)        // wait for 300ms pause in events
+      .distinctUntilChanged()   // ignore if next search term is same as prev
+      .switchMap(term => term   // switch to new observable each time
+        // return the http search observable
+        ? this.bookSearchService.search(term)
+        // or the observable of empty books if no search term
+        : Observable.of<Book[]>([]))
+      .catch(error => {
+        // TODO: real error handling
+        console.log(error);
+        return Observable.of<Book[]>([]);
+      });
+  }
+  
+  gotoDetail(book: Book): void {
+    let link = ['/detail', book.id];
+    this.router.navigate(link);
+  }
+}
+```
+
+## Εισαγωγή των μεθόδων RxJS
+
+* Για τη χρήση αντικειμένων `Observable` χρησιμοποιούμε μια σειρά
+  μεθόδων, όπως:
+      * `of`
+      * `filter`
+      * `map`
+      * `switchMap`
+      * `debounceTime`
+
+* Αυτές θα πρέπει να τις εισάγουμε στις κλάσεις που τις χρησιμοποιούν.
+
+* Θα φτιάξουμε ένα αρχείο `app/rxjs-extensions.ts` με όλα τα
+  απαραίτητα imports.
+
+* Αυτό το εισάγουμε στο `BookSearchComponent`.
+
+
+## `app/rxjs-extensions.ts`
+
+```javascript
+// Observable class extensions
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/throw';
+
+// Observable operators
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
+```
+
+## Έλεγχος της εφαρμογής
+
+* Ελέξτε ότι η εφαρμογή εξακολουθεί να λειτουργεί κανονικά.
+
+* Στο dashboard πλέον θα προσφέρεται στο χρήστη και η δυνατότητα
+  αναζήτησης. 
