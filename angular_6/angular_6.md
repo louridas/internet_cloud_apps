@@ -84,6 +84,7 @@
 
 ## `app/app.module.ts` (1)
 
+
 ```javascript
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -136,43 +137,43 @@ export class AppModule { }
 
 ## `app/app.module.ts` (2)
 
-    ```javascript
-    import { NgModule } from '@angular/core';
-    import { BrowserModule } from '@angular/platform-browser';
-    import { FormsModule } from '@angular/forms';
-    import { HttpModule } from '@angular/http';
+```javascript
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 
-    // Imports for loading & configuring the in-memory web api
-    import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-    import { InMemoryDataService } from './in-memory-data.service';
+// Imports for loading & configuring the in-memory web api
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService } from './in-memory-data.service';
 
-    import { AppComponent } from './app.component';
-    import { DashboardComponent } from './dashboard.component';
-    import { BookDetailComponent } from './book-detail.component';
-    import { BooksComponent } from './books.component';
-    import { BookService } from './book.service';
+import { AppComponent } from './app.component';
+import { DashboardComponent } from './dashboard.component';
+import { BookDetailComponent } from './book-detail.component';
+import { BooksComponent } from './books.component';
+import { BookService } from './book.service';
 
-    import  { AppRoutingModule } from './app-routing.module';
+import  { AppRoutingModule } from './app-routing.module';
 
-    @NgModule({
-      imports: [
-        BrowserModule,
-        FormsModule,
-        HttpModule,
-        InMemoryWebApiModule.forRoot(InMemoryDataService),
-        AppRoutingModule
-      ],
-      declarations: [
-        AppComponent,
-        DashboardComponent,
-        BookDetailComponent,
-        BooksComponent
-      ],
-      providers: [ BookService ],
-      bootstrap: [ AppComponent ]
-    })
-    export class AppModule { }
-    ```
+@NgModule({
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    InMemoryWebApiModule.forRoot(InMemoryDataService),
+    AppRoutingModule
+  ],
+  declarations: [
+    AppComponent,
+    DashboardComponent,
+    BookDetailComponent,
+    BooksComponent
+  ],
+  providers: [ BookService ],
+  bootstrap: [ AppComponent ]
+})
+export class AppModule { }
+```
 
 ## `InMemoryDataService`
 
@@ -187,27 +188,27 @@ export class AppModule { }
 
 ## `app/in-memory-data.service.ts`
 
-    ```javascript
-    import { InMemoryDbService } from 'angular-in-memory-web-api';
-    export class InMemoryDataService implements InMemoryDbService {
-      createDb() {
-        let books = [
-          { id: 11, title: 'Infinite Jest', pub_year: 1996},
-          { id: 12, title: 'Oblivion', pub_year: 2004 },
-          { id: 13, title: 'Ulysses', pub_year: 1922 },
-          { id: 14, title: 'The Crying of Lot 49', pub_year: 1966 },
-          { id: 15, title: 'City on Fire', pub_year: 2015 },
-          { id: 16, title: 'The Narrow Road to the Deep North', pub_year: 2013 },
-          { id: 17, title: 'The Dispossessed', pub_year: 1974 },
-          { id: 18, title: 'The Left Hand of Darkness', pub_year: 1969 },
-          { id: 19, title: 'A Death in the Family: My Struggle Book 1',
-            pub_year: 2013 },
-          { id: 20, title: 'A Man in Love: My Struggle Book 2', pub_year: 2013 }
-        ];
-        return { books };
-      }
-    }
-    ```
+```javascript
+import { InMemoryDbService } from 'angular-in-memory-web-api';
+export class InMemoryDataService implements InMemoryDbService {
+  createDb() {
+    let books = [
+      { id: 11, title: 'Infinite Jest', pub_year: 1996},
+      { id: 12, title: 'Oblivion', pub_year: 2004 },
+      { id: 13, title: 'Ulysses', pub_year: 1922 },
+      { id: 14, title: 'The Crying of Lot 49', pub_year: 1966 },
+      { id: 15, title: 'City on Fire', pub_year: 2015 },
+      { id: 16, title: 'The Narrow Road to the Deep North', pub_year: 2013 },
+      { id: 17, title: 'The Dispossessed', pub_year: 1974 },
+      { id: 18, title: 'The Left Hand of Darkness', pub_year: 1969 },
+      { id: 19, title: 'A Death in the Family: My Struggle Book 1',
+        pub_year: 2013 },
+      { id: 20, title: 'A Man in Love: My Struggle Book 2', pub_year: 2013 }
+    ];
+    return { books };
+  }
+}
+```
 
 ## Προσαρμογή `systemjs.config.js`
 
@@ -263,39 +264,39 @@ export class AppModule { }
 
 ## `app/book.service.ts`
 
-    ```javascript
-    import { Injectable } from '@angular/core';
-    import { Headers, Http } from '@angular/http';
+```javascript
+import { Injectable } from '@angular/core';
+import { Headers, Http } from '@angular/http';
 
-    import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/toPromise';
 
-    import { Book } from './book';
+import { Book } from './book';
 
-    @Injectable()
-    export class BookService {
+@Injectable()
+export class BookService {
 
-      private booksUrl = 'app/books';
+  private booksUrl = 'app/books';
 
-      constructor(private http: Http) { }
+  constructor(private http: Http) { }
 
-      getBooks(): Promise<Book[]> {
-        return this.http.get(this.booksUrl)
-          .toPromise()
-          .then(response => response.json().data as Book[])
-          .catch(this.handleError);
-      }
+  getBooks(): Promise<Book[]> {
+    return this.http.get(this.booksUrl)
+      .toPromise()
+      .then(response => response.json().data as Book[])
+      .catch(this.handleError);
+  }
 
-      getBook(id: number): Promise<Book> {
-        return this.getBooks()
-          .then(books => books.find(book => book.id === id));
-      }
+  getBook(id: number): Promise<Book> {
+    return this.getBooks()
+      .then(books => books.find(book => book.id === id));
+  }
 
-      private handleError(error: any): Promise<any> {
-        console.error('An error occurred', error); // for demo purposes only
-        return Promise.reject(error.message || error);
-      }
-    }
-    ```
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error); // for demo purposes only
+    return Promise.reject(error.message || error);
+  }
+}
+```
 
 ## Έλεγχος της εφαρμογής
 
