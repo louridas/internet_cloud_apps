@@ -765,6 +765,92 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 ```
 
+## `app/book-search.component.css`
+
+* Για το αισθητικό κομμάτι του `BookSearchComponent` θα
+  χρησιμοποιήσουμε το παρακάτω στυλ, στο αρχείο
+  `app/book-search.component.css`:
+
+```css
+.search-result{
+  border-bottom: 1px solid gray;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  width:295px;
+  height: 20px;
+  padding: 5px;
+  background-color: white;
+  cursor: pointer; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#search-box{
+  width: 200px;
+  height: 20px;
+}
+```
+
+## Προσαρμογή `app/app.module.ts`
+
+* Για να χρησιμοποιήσει η εφαρμογή μας το `BookSearchComponent`, όπως
+  και κάθε εξάρτημα, θα πρέπει να δηλωθεί στο `AppModule`.
+
+* Συνεπώς προσθέτουμε το κατάλληλο import:
+    ```javascript
+    import { BookSearchComponent } from './book-search.component';
+    ```
+
+* Και επίσης προσθέτουμε το `BookSearchComponent` μέσα στα
+  `declarations`.
+
+
+## `app/app.module.ts`
+
+
+```javascript
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+
+// Imports for loading & configuring the in-memory web api
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService } from './in-memory-data.service';
+
+import { AppComponent } from './app.component';
+import { DashboardComponent } from './dashboard.component';
+import { BookDetailComponent } from './book-detail.component';
+import { BooksComponent } from './books.component';
+import { BookService } from './book.service';
+
+import { BookSearchComponent } from './book-search.component';
+
+import  { AppRoutingModule } from './app-routing.module';
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    InMemoryWebApiModule.forRoot(InMemoryDataService),
+    AppRoutingModule
+  ],
+  declarations: [
+    AppComponent,
+    DashboardComponent,
+    BookDetailComponent,
+    BooksComponent,
+    BookSearchComponent
+  ],
+  providers: [ BookService ],
+  bootstrap: [ AppComponent ]
+})
+export class AppModule { }
+```
+
+
 ## Έλεγχος της εφαρμογής
 
 * Ελέξτε ότι η εφαρμογή εξακολουθεί να λειτουργεί κανονικά.
