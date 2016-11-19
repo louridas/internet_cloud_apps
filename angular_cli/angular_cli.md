@@ -212,14 +212,17 @@ import { Book } from './book';
 @Injectable()
 export class BookService {
 
-  private headers = new Headers({'Content-Type': 'application/json'});
+  private headers = new Headers({
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  });
 
   private booksUrl = 'api/books/';
 
   constructor(private http: Http) { }
 
   getBooks(): Promise<Book[]> {
-    return this.http.get(this.booksUrl)
+    return this.http.get(this.booksUrl, { headers: this.headers })
       .toPromise()
       .then(response => response.json() as Book[])
       .catch(this.handleError);
@@ -287,7 +290,7 @@ export class BookService {
 
 ```javascript
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 
 import { Book } from './book';
@@ -295,11 +298,16 @@ import { Book } from './book';
 @Injectable()
 export class BookSearchService {
 
+  private headers = new Headers({
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  });
+
   constructor(private http: Http) {}
 
   search(term: string): Observable<Book[]> {
     return this.http
-      .get(`api/books/?title=${term}`)
+      .get(`api/books/?title=${term}`, { headers: this.headers } )
       .map((r: Response) => r.json() as Book[]);
   }
 }
