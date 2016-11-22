@@ -117,36 +117,36 @@
 
 ## Προσαρμογή `app.component.css`
 
-    ```css
-    h1 {
-      font-size: 1.2em;
-      color: #999;
-      margin-bottom: 0;
-    }
-    h2 {
-      font-size: 2em;
-      margin-top: 0;
-      padding-top: 0;
-    }
-    nav a {
-      padding: 5px 10px;
-      text-decoration: none;
-      margin-top: 10px;
-      display: inline-block;
-      background-color: #eee;
-      border-radius: 4px;
-    }
-    nav a:visited, a:link {
-      color: #607D8B;
-    }
-    nav a:hover {
-      color: #039be5;
-      background-color: #CFD8DC;
-    }
-    nav a.active {
-      color: #039be5;
-    }
-    ```
+```css
+h1 {
+  font-size: 1.2em;
+  color: #999;
+  margin-bottom: 0;
+}
+h2 {
+  font-size: 2em;
+  margin-top: 0;
+  padding-top: 0;
+}
+nav a {
+  padding: 5px 10px;
+  text-decoration: none;
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #eee;
+  border-radius: 4px;
+}
+nav a:visited, a:link {
+  color: #607D8B;
+}
+nav a:hover {
+  color: #039be5;
+  background-color: #CFD8DC;
+}
+nav a.active {
+  color: #039be5;
+}
+```
 
 ## Δημιουργία κλάσης `Book`
 
@@ -737,6 +737,138 @@ export class BookSearchComponent implements OnInit {
 }
 ```
 
+## `DashboardComponent`
+
+* Για τη δημιουργία του `DashboardComponent` δίνουμε:
+    ```bash
+    ng generate component Dashboard
+    ```
+
+* Οπότε θα δημιουργηθούν τα:
+    ```bash
+    src/app/dashboard/dashboard.component.css
+    src/app/dashboard/dashboard.component.html
+    src/app/dashboard/dashboard.component.spec.ts
+    src/app/dashboard/dashboard.component.ts
+    ```
+
+## Προσαρμογή `dashboard.component.ts`
+
+    ```javascript
+    import { Component, OnInit } from '@angular/core';
+
+    import { Book } from '../book';
+    import { BookService } from '../book.service';
+
+    @Component({
+      selector: 'my-dashboard',
+      templateUrl: './dashboard.component.html',
+      styleUrls: [ './dashboard.component.css' ]
+    })
+    export class DashboardComponent implements OnInit {
+
+      books: Book[] = [];
+
+      constructor(private bookService: BookService) { }
+
+      ngOnInit(): void {
+        this.bookService.getBooks()
+          .then(books => this.books = books.slice(0, 4));
+      }
+
+    }
+    ```
+
+## Προσαρμογή `dashboard.component.html`
+
+```html
+<h3>Top Books</h3>
+<div class="grid grid-pad">
+  <a *ngFor="let book of books"
+       [routerLink]="['/detail', book.id]" class="col-1-4">
+    <div class="module book">
+      <h4>{{book.title}}</h4>
+    </div>
+  </a>
+</div>
+<book-search></book-search>
+```
+
+## Προσαρμογή `dashboard.component.css`
+
+```css
+[class*='col-'] {
+  float: left;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+[class*='col-']:last-of-type {
+  padding-right: 0;
+}
+a {
+  text-decoration: none;
+}
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+h3 {
+  text-align: center; margin-bottom: 0;
+}
+h4 {
+  position: relative;
+}
+.grid {
+  margin: 0;
+}
+.col-1-4 {
+  width: 25%;
+}
+.module {
+  padding: 20px;
+  text-align: center;
+  color: #eee;
+  max-height: 120px;
+  min-width: 120px;
+  background-color: #607D8B;
+  border-radius: 2px;
+}
+.module:hover {
+  background-color: #EEE;
+  cursor: pointer;
+  color: #607d8b;
+}
+.grid-pad {
+  padding: 10px 0;
+}
+.grid-pad > [class*='col-']:last-of-type {
+  padding-right: 20px;
+}
+@media (max-width: 600px) {
+  .module {
+    font-size: 10px;
+    max-height: 75px; }
+}
+@media (max-width: 1024px) {
+  .grid {
+    margin: 0;
+  }
+  .module {
+    min-width: 60px;
+  }
+}
+```
+
+# Τελικές αλλαγές
+
+## Γενικά
+
+* Θα ολοκληρώσουμε τις απαιτούμενες αλλαγές με τα:
+    * `app.module.ts`
+    * τις διαδρομές της εφαρμογής
+    * τα καθολικά στυλ της εφαρμογής
+
 ## Προσαρμογή `app.module.ts`
 
 ```javascript
@@ -957,3 +1089,26 @@ export class AppModule { }
     can be found in the LICENSE file at http://angular.io/license
     */
     ```
+
+# Εγκατάσταση της εφαρμογής
+
+## Γενικά
+
+* Η εφαρμογή μας θα τρέχει σε έναν server (π.χ. Django).
+
+* Όλα τα αρχεία που την απαρτίζουν θα πρέπει λοιπόν να συγκεντρωθούν
+  και να αντιγραφούν στον server ο οποίος θα τα διαθέτει.
+
+## Build
+
+* Για να δημιουργήσουμε τα πακέτα της εφαρμογής θα πρέπει να
+  εκτελέσουμε την εντολή:
+    ```bash
+    ng build
+    ```
+* Τα αρχεία της εφαρμογής θα δημιουργηθούν στον κατάλογο `dist`.
+
+* Στη συνέχεια τα αντιγράφουμε στον κατάλληλο κατάλογο του server που
+  θα χρησιμοποιήσουμε (π.χ. `static` στο Django).
+
+
