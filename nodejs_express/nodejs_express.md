@@ -174,6 +174,8 @@ module.exports = router;
     sudo apt-get update
     ```
 
+## Εγκατάσταση σε Ubuntu (3)
+
 * Εγκαθιστούμε τα πακέτα της MongoDB:
     ```bash
     sudo apt-get install -y mongodb-org
@@ -423,6 +425,22 @@ router.route('/books')
 
 module.exports = router;
 ```
+
+## POST με Postman
+
+* Για να κάνουμε ένα  HTTP POST request με το postman, πρέπει να
+  ορίσουμε σωστά την αίτηση.
+
+* Επιλέγουμε τύπο αίτησης POST.
+
+* Επιλέγουμε Body.
+
+* Από κάτω, επιλέγουμε raw.
+
+* Στο dropdown menu που θα εμφανιστεί, επιλέγουμε JSON
+  (application/json)
+
+* Από κάτω εισάγουμε σε JSON το σώμα της αίτησης.
 
 ## Εύρεση συγκεκριμένου βιβλίου
 
