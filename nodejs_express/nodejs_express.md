@@ -109,10 +109,9 @@ const books = [
   { id: 20, title: 'A Man in Love: My Struggle Book 2', pub_year: 2013 }
 ];
 
-router.route('/books')
-  .get(function(req, res) {
-    res.json(books);
-  });
+router.get('/books', function(req, res) {
+  res.json(books);
+});
 
 module.exports = router;
 ```
@@ -362,12 +361,12 @@ db.books.insert({ title: "A Man in Love: My Struggle Book 2", pub_year: 2013 });
     const mongoose = require('mongoose');
     const Schema = mongoose.Schema;
 
-    var BookSchema = new Schema({
+    var bookSchema = new Schema({
       title: String,
       pub_year: Number
     }, { toJSON: { virtuals: true } });
 
-    module.exports = mongoose.model('Book', BookSchema);
+    module.exports = mongoose.model('Book', bookSchema);
     ```
 * Η παράμετρος `toJson: { virtuals: true }` σημαίνει ότι σε κάθε
     βιβλίο, όταν μετατρέπεται σε JSON, θα προστίθεται ένα πεδίο `id`
@@ -391,39 +390,57 @@ db.books.insert({ title: "A Man in Love: My Struggle Book 2", pub_year: 2013 });
     module.exports = router;
     ```
 
+## Ανάκτηση όλων των βιβλίων
+
+* Για την ανάκτηση όλων των βιβλίων, θα υλοποιήσουμε ένα χειριστή της
+  μεθόδου GET.
+
+* Ο χειριστής απλά θα εκτελεί μια αναζήτηση στη βάση για το σύνολο των
+  βιβλίων και στη συνέχεια θα τα επιστρέφει.
+
+* Για να το κάνουμε αυτό, φτιάχνουμε ένα αρχείο
+  `routes/books-router.js` όπως ακολούθως.
+
 ## `routes/books-router.js`
 
 ```javascript
-const express = require('express');
-const router = express.Router();
-
-const Book = require('../models/book');
-
-router.route('/books')
-  .get(function(req, res) {
-    Book.find(function(err, books) {
-      if (err) {
-        res.send(err);
-      }
-    res.json(books);
-    });
+router.get('/books', function(req, res) {
+  Book.find({}, function(err, books) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(books);
+    }
   });
-
-router.route('/books')
-  .post(function(req, res) {
-    var book = new Book();
-    book.title = req.body.title;
-    book.pub_year = req.body.pub_year;
-    
-    book.save(function(err) {
-      if (err) {
-        res.send(err);
-      }
-      res.json(book);
-    });
-  });
+});
 
 module.exports = router;
+```
+
+## Εισαγωγή βιβλίου
+
+* Για την εισαγωγή ενός βιβλίου, θα υλοποιήσουμε ένα χειριστή της
+  μεθόδου POST.
+
+* Για να το κάνουμε αυτό, θα προσθέσουμε στο αρχείο
+  `routes/books-router.js` τα ακόλουθα, πριν από το `module.exports =
+  router;`.
+
+## `routes/books-router.js`
+
+```javascript
+router.post('/books', function(req, res) {
+  var book = new Book();
+  book.title = req.body.title;
+  book.pub_year = req.body.pub_year;
+  book.save(function(err) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(book);
+    }
+  });
+});
 ```
 
 ## POST με Postman
@@ -455,15 +472,15 @@ module.exports = router;
 ## `routes/books-router.js`
 
 ```javascript
-router.get('/books/:book_id')
-  .get(function(req, res) {
-    Book.findById(req.params.book_id, function(err, book) {
-      if (err) {
-        res.send(err);
-      }
+router.get('/books/:book_id', function(req, res) {
+  Book.findById(req.params.book_id, function(err, book) {
+    if (err) {
+      res.send(err);
+    } else {
       res.json(book);
-    });
+    }
   });
+});
 ```
 ## Διαγραφή βιβλίου
 
@@ -478,17 +495,17 @@ router.get('/books/:book_id')
 ## `routes/books-router.js`
 
 ```javascript
-router.route('/books/:book_id').
-  delete(function(req, res) {
-    Book.remove({
-      _id: req.params.book_id
-    }, function(err, result) {
-      if (err) {
-        res.send(err);
-      }
+router.delete('/books/:book_id', function(req, res) {
+  Book.remove({
+    _id: req.params.book_id
+  }, function(err, result) {
+    if (err) {
+      res.send(err);
+    } else {
       res.json(result);
-    });
+    }
   });
+});
 ```
 
 ## Αναζήτηση βιβλίου με βάση τίτλο
@@ -504,26 +521,19 @@ router.route('/books/:book_id').
 ## `routes/books-router.js`
 
 ```javascript
-router.route('/books')
-  .get(function(req, res) {
-    if (req.query.title) {
-      Book.find({
-        title: new RegExp(req.query.title)
-      }, function(err, books) {
-        if (err) {
-          res.send(err);
-        }
-        res.json(books);
-      });
+router.get('/books', function(req, res) {
+  var query = Book.find({});
+  if (req.query.title) {
+    query.where('title').equals(new RegExp(req.query['title']));
+  }
+  query.exec(function(err, books) {
+    if (err) {
+      res.send(err);
     } else {
-      Book.find(function(err, books) {
-        if (err) {
-          res.send(err);
-        }
-        res.json(books);
-      });
+      res.json(books);
     }
   });
+});
 ```
 
 ## Προσαρμογή Angular front-end (1)
@@ -550,3 +560,11 @@ router.route('/books')
     ```
 * Επίσης, μάλλον είναι καλό να μην τα εμφανίζουμε πλέον στον χρήστη,
   αφού δεν έχουν κάποια άμεση σημασία (και είναι μακρινάρια).
+
+## Ξεκαθάρισμα της εφαρμογής
+
+* Προσέξτε ότι ο σκελετός της εφαρμογής δημιούργησε αρχεία τα οποία
+  δεν χρησιμοποιούμε (π.χ. `users.js`).
+
+* Αυτά μπορούμε να τα σβήσουμε, σβήνοντας αντίστοιχα και τις αναφορές
+  τους στο `app.js`.
