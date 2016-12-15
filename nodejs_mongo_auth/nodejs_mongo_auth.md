@@ -195,51 +195,49 @@ module.exports = mongoose.model('User', userSchema);
 ## `create_user.js`
 
 ```javascript
+const prompt = require('prompt');
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const bcrypt = require('bcrypt');
-const SALT_ROUNDS = 10;
+const User = require('../models/user');
 
-var userSchema = new Schema({
-  username: { type: String, index: { unique: true} },
-  first_name: String,
-  last_name: String,
-  password: String
-});
+mongoose.connect('mongodb://bangular:12345@127.0.0.1/bangular');
 
-userSchema.pre('save', true, function(next, done) {
+prompt.message = '';
+prompt.colors = false;
 
-  var user = this;
-  
-  if (!this.isModified('password')) {
-    next();
-    done();
-  } else {
-    bcrypt.hash(this.password, SALT_ROUNDS, function(err, hash) {
+prompt.start();
+
+prompt.get([{
+    name: 'username',
+    required: true
+  }, {
+    name: 'first_name',
+    required: true
+  }, {
+    name: 'last_name',
+    required: true
+  }, {
+    name: 'password',
+    replace: '*',
+    hidden: true
+  }], function (err, result) {
+    var user = new User();
+    
+    user.username = result.username;
+    user.first_name = result.first_name;
+    user.last_name = result.last_name;
+    user.password = result.password;
+    
+    user.save(function(err) {
       if (err) {
-        next(err);
+        console.log(err);
+        process.exit(1);
       } else {
-        user.password = hash;
-        next();
-        done();
+        console.log('User created');
+        process.exit(0);
       }
     });
-  }
-});
-
-userSchema.methods.checkPassword = function(plaintextPassword, callback) {
-  bcrypt.compare(plaintextPassword, this.password, function(err, res) {
-    if (err) {
-      callback(err);
-      console.log('Could not check password');
-    } else {
-      callback(null, res);
-    }
   });
-};
-  
-module.exports = mongoose.model('User', userSchema);
 ```
 
 ## Εγκατάταση jsonwebtoken
