@@ -158,6 +158,107 @@ http://www.google.com ή http://www.google.com/. Παρακάτω θα δούμ�
 
 </div>
 
+## Διακοσμητές (Decorators)
+
+* Οι διακοσμητές περιτυλίγουν μια συνάρτηση αλλάζοντας τη συμπεριφορά
+  της.
+
+* Στην ουσία, όταν γράφουμε:
+
+    ```python
+    @my_decorator
+    def my_function():
+        pass
+    ```
+
+είναι το ίδιο με το:
+
+    ```python
+    my_function = decorator(my_function)
+    ```
+
+## Παράδειγμα Διακοσμητή
+
+* Έστω ότι θέλουμε να φτιάξουμε ένα μηχανισμό με τον οποίο να
+  χρονομετρούμε μια συνάρτηση.
+  
+* Αυτό μπορεί να γίνει με έναν διακοσμητή ως εξής:
+
+    ```python
+    import time
+
+    def time_execution(f):
+
+        def decorator(*args, **kwargs):
+            start = time.time()
+            r = f(*args, **kwargs)
+            end = time.time()
+            print(end - start)
+            return r
+
+        return decorator
+
+    def fib(n):
+        a, b = 0, 1
+        for i in range(2, n):
+            a, b = b, a + b
+        return b
+
+    fib = time_execution(fib)
+    result = fib(1000)
+    print(result)
+    ```
+
+## Διακοσμητής με Συντακτική Ζάχαρη
+
+* Αντί να γράφουμε το προηγούμενο, χρησιμοποιούμε την παρακάτω
+  συντακτική ζάχαρη (syntactic sugar):
+  
+    ```python
+    import time
+
+    def time_execution(f):
+
+        def decorator(*args, **kwargs):
+            start = time.time()
+            r = f(*args, **kwargs)
+            end = time.time()
+            print(end - start)
+            return r
+
+        return decorator
+
+    @time_execution
+    def fib(n):
+        a, b = 0, 1
+        for i in range(2, n):
+            a, b = b, a + b
+        return b
+
+    result = fib(1000)
+    print(result)
+    ```
+
+## Διακοσμητές στο Flask
+
+* Στην ουσία το `route()` που είδαμε στην Flask είναι λοιπόν απλώς ο
+  διακοσμητής που βλέπετε παρακάτω.
+  
+* Αυτό που κάνει είναι μάλιστα πιο απλό από το προηγούμενο. 
+
+* Δεν αλλάζει καν τη συμπεριφορά της συνάρτηση που του περνάμε. Απλώς
+  καλεί τη συνάρτηση `add_url_rule`, η οποία καταγράφει το μονοπάτι
+  στα μονοπάτια που γνωρίζει η εφαρμογή.
+
+    ```python
+    def route(self, rule, **options):
+         def decorator(f):
+             endpoint = options.pop('endpoint', None)
+             self.add_url_rule(rule, endpoint, f, **options)
+             return f
+         return decorator
+    ```
+
 ## Εκτέλεση
 
 * Εκτελούμε το πρόγραμμα
@@ -304,17 +405,19 @@ Hello user Panos!.
 * Η εφαρμογή για να λειτουργήσει θα χρειαστεί τις παρακάτω ρυθμίσεις:
 
     ```python
-    # Load default config and override config from an environment variable
-
+    # Load default config. 
+    # This adds into the configuration all uppercase variable settings.
     app.config.from_object(__name__)
 
-    app.config.update(dict(
+    app.config.update({
         DATABASE=os.path.join(app.root_path, 'flaskr.db'),
         SECRET_KEY='development key',
         USERNAME='admin',
         PASSWORD='default'
-    ))
+    })
 
+    # Update config from file pointed by environment variable.
+    # Do not complain for missing files.
     app.config.from_envvar('FLASKR_SETTINGS', silent=True)
     ```
 
@@ -370,7 +473,12 @@ Hello user Panos!.
 Ενσωματωμένη σημαίνει ότι δεν εγκαθίσταται ως ανεξάρτητη εφαρμογή,
 στην οποία έχει πρόσβαση το πρόγραμμά μας, αλλά ενσωματώνεται μέσα στο
 ίδιο το πρόγραμμα. Στην περίπτωσή μας, μας εξυπηρετεί για να
-μπορέσουμε να δοκιμάσουμε γρήγορα τον κώδικά μας.
+μπορέσουμε να δοκιμάσουμε γρήγορα τον κώδικά μας. Για να
+χρησιμοποιήσουμε την SQLite με την Python δεν χρειάζεται να κάνουμε
+κάτι ιδιαίτερο. Αναλόγως του λειτουργικού μας συστήματος, είτε
+περιλαμβάνεται στην εγκατάσταση της Python, είτε η εγκατάσταση της
+Python χρησιμοποιεί την SQLite που βρίσκεται ήδη εγκατεστημένη στο
+σύστημα. 
 
 Ανεξαρτήτως ποιας βάσης χρησιμοποιούμε, κάθε φορά που θέλουμε να
 διαβάσουμε ή να γράψουμε δεδομένα σε αυτήν πρέπει να *συνδεθούμε* με

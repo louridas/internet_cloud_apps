@@ -6,19 +6,20 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 
 # create our little application :)
 app = Flask(__name__)
-print(__name__)
 
-# Load default config and override config from an environment variable
-
+# Load default config.
+# This adds into the configuration all uppercase variable settings.
 app.config.from_object(__name__)
 
-app.config.update(dict(
+app.config.update({
     DATABASE=os.path.join(app.root_path, 'flaskr.db'),
     SECRET_KEY='development key',
     USERNAME='admin',
     PASSWORD='default'
-))
+})
 
+# Update config from file pointed by environment variable.
+# Do not complain for missing files.
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
 def connect_db():
