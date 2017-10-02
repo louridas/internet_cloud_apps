@@ -170,12 +170,12 @@ http://www.google.com ή http://www.google.com/. Παρακάτω θα δούμ�
     def my_function():
         pass
     ```
-
 είναι το ίδιο με το:
 
     ```python
     my_function = decorator(my_function)
     ```
+
 
 ## Παράδειγμα Διακοσμητή
 
@@ -320,7 +320,7 @@ Hello user Panos!.
 * Εφαρμογή microblogging.
 
 * Προσαρμοσμένο από την
-  [τεκμηρίωση του Flask](http://flask.pocoo.org/docs/0.11/tutorial/).
+  [τεκμηρίωση του Flask](http://flask.pocoo.org/docs/0.12/tutorial/).
 
 ## Δημιουργία περιβάλλοντος
 
@@ -409,11 +409,12 @@ Hello user Panos!.
     # This adds into the configuration all uppercase variable settings.
     app.config.from_object(__name__)
 
+    # Update default config.
     app.config.update({
-        DATABASE=os.path.join(app.root_path, 'flaskr.db'),
-        SECRET_KEY='development key',
-        USERNAME='admin',
-        PASSWORD='default'
+        'DATABASE': os.path.join(app.root_path, 'flaskr.db'),
+        'SECRET_KEY': 'development key',
+        'USERNAME': 'admin',
+        'PASSWORD': 'default'
     })
 
     # Update config from file pointed by environment variable.
@@ -660,6 +661,8 @@ Python χρησιμοποιεί την SQLite που βρίσκεται ήδη �
 εκτελούμε τις εντολές SQL που βρίσκονται στο αρχείο αυτό. Στο τέλος
 πρέπει να επιβεβαιώσουμε (commit) τις αλλαγές μας.
 
+</div>
+
 ## Εντολή δημιουργίας της βάσης
 
 * Για να δημιουργούμε τη βάση κατά βούληση από τη γραμμή εντολών,
@@ -824,6 +827,51 @@ Python. Αν ο χρήστης έχει ταυτοποιηθεί, τότε στ�
 
 </div>
 
+## Έλεγχος Εισόδου με Διακοσμητή
+
+* Σημειώστε ότι σε μια πιο ώριμη εφαρμογή θα χρησιμοποιούσαμε έναν
+  διακοσμητή για να ελέγξουμε ότι ο χρήστης έχει ταυτοποιηθεί στην
+  εφαρμογή κανονικά.
+  
+* Ο διακοσμητής θα ήταν της μορφής:
+
+    ```python
+    from functools import wraps
+    from flask import g, request, redirect, url_for
+
+    def login_required(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if g.user is None:
+                return redirect(url_for('login', next=request.url))
+            return f(*args, **kwargs)
+        return decorated_function
+    ```
+    
+* Οπότε θα τον χρησιμοποιούσαμε απλώς ως εξής:
+
+    ```python
+    @app.route('/secret_page')
+    @login_required
+    def secret_page():
+        pass
+    ```
+    
+<div class="notes">
+
+Στον διακοσμητή μέσα χρησιμοποιήσαμε έναν άλλο διακοσμητή, τον
+διακοσμητή `@wraps`. Ο σκοπός του `@wraps` είναι ο εξής. Μια συνάρτηση
+στην Python είναι ένα αντικείμενο το οποίο, εκτός από τον κώδικα που
+εκτελεί έχει και διάφορα άλλα στοιχεία, όπως το όνομά της, τεκμηρίωση
+(docstring), κ.λπ. Ο διακοσμητής `@wraps` εξασφαλίζει ότι όλα αυτά τα
+στοιχεία της αρχικής συνάρτησης θα περάσουν στη διακοσμημένη· άρα η
+διακοσμημένη συνάρτηση θα έχει πλέον το όνομα, την τεκμηρίωση, και όλα
+τα υπόλοιπα στοιχεία της συνάρτησης που διακοσμεί. Διαφορετικά στην
+περίπτωσή μας αν δίναμε `print(secret_page.__name__)`, θα εμφανιζόταν
+ως όνομα της συνάρτησης το `decorated_function`.
+
+</div>
+
 ## Έξοδος
 
 * Η έξοδος από την εφαρμογή θα γίνεται από το μονοπάτι `/logout`:
@@ -870,7 +918,7 @@ Python. Αν ο χρήστης έχει ταυτοποιηθεί, τότε στ�
         <div class=flash>{{ message }}</div>
       {% endfor %}
       {% block body %}{% endblock %}
-    </div>
+</div>
     ```
 
 <div class="notes">
@@ -977,6 +1025,7 @@ Python. Αν ο χρήστης έχει ταυτοποιηθεί, τότε στ�
       </form>
     {% endblock %}
     ```
+
 <div class="notes">
 
 Αντίστοιχα, η σελίδα `login.html` επεκτείνει τη `layout.html`,
@@ -984,7 +1033,6 @@ Python. Αν ο χρήστης έχει ταυτοποιηθεί, τότε στ�
 κωδικού του χρήστη.
 
 </div>
-
 
 
 ## Στυλ
@@ -1013,5 +1061,3 @@ Python. Αν ο χρήστης έχει ταυτοποιηθεί, τότε στ�
     .error          { background: #f0d6d6; padding: 0.5em; }
 
     ```
-
-    
