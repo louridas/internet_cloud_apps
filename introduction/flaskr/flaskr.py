@@ -12,12 +12,12 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 # Update default config.
-app.config.update(dict(
-    DATABASE=os.path.join(app.root_path, 'flaskr.db'),
-    SECRET_KEY='development key',
-    USERNAME='admin',
-    PASSWORD='default'
-))
+app.config.update({
+    'DATABASE': os.path.join(app.root_path, 'flaskr.db'),
+    'SECRET_KEY': 'development key',
+    'USERNAME': 'admin',
+    'PASSWORD': 'default'
+})
 
 # Update config from file pointed by environment variable.
 # Do not complain for missing files.
