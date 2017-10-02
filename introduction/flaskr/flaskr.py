@@ -11,6 +11,7 @@ app = Flask(__name__)
 # This adds into the configuration all uppercase variable settings.
 app.config.from_object(__name__)
 
+# Update default config.
 app.config.update({
     DATABASE=os.path.join(app.root_path, 'flaskr.db'),
     SECRET_KEY='development key',
