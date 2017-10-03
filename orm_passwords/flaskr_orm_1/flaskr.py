@@ -23,10 +23,6 @@ class Entry(db.Model):
     title = db.Column(db.String(120), nullable=False)
     text = db.Column(db.Text(), nullable=False)
 
-    def __init__(self, title="", text=""):
-        self.title = title
-        self.text = text
-
     def __repr__(self):
         return '<Entry %r %r>' % (self.title, self.text)
 
@@ -39,7 +35,7 @@ def show_entries():
 def add_entry():
     if not session.get('logged_in'):
         abort(401)
-    entry = Entry(request.form['title'], request.form['text'])
+    entry = Entry(title=request.form['title'], text=request.form['text'])
     db.session.add(entry)
     db.session.commit()
     flash('New entry was successfully posted')
