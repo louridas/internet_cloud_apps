@@ -31,12 +31,6 @@ class Entry(db.Model):
     
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, title, text, user_id, datetime):
-        self.title = title
-        self.text = text
-        self.user_id = user_id
-        self.datetime = datetime
-
     def __repr__(self):
         return '<Entry %r %r %r %r>' % (self.title, self.text,
                                         self.user_id, self.datetime)
@@ -52,15 +46,7 @@ class User(db.Model):
     name = db.Column(db.String(20), nullable=False)
     surname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(30), nullable=False)
-    entries = db.relationship('Entry', backref='user',
-                              lazy='dynamic')
-
-    def __init__(self, username, name, surname, email, password):
-        self.username = username
-        self.name = name
-        self.surname = surname
-        self.email = email
-        self.password = password
+    entries = db.relationship('Entry', backref='user', lazy=True)
 
     def __repr__(self):
         return '<User %r %r %r %r>' % (self.username, self.email,
@@ -76,11 +62,11 @@ def add_entry():
     user_id = session.get('user_id')
     if user_id is None:
         abort(401)
-    entry = Entry(request.form['title'],
-                  request.form['text'],
-                  user_id,
-                  datetime.now()
-    )
+    entry = Entry(title=request.form['title'],
+                  text=request.form['text'],
+                  user_id=user_id,
+                  datetime=datetime.now())
+    
     db.session.add(entry)
     db.session.commit()
     flash('New entry was successfully posted')
@@ -112,11 +98,11 @@ def register():
         else:
             password = bcrypt.hashpw(request.form['password'].encode('utf8'),
                                      bcrypt.gensalt())
-            user = User(request.form['username'],
-                        request.form['name'],
-                        request.form['surname'],
-                        request.form['email'],
-                        password)
+            user = User(username=request.form['username'],
+                        name=request.form['name'],
+                        surname=request.form['surname'],
+                        email=request.form['email'],
+                        password=password)
             db.session.add(user)
             try:
                 db.session.commit()
@@ -124,6 +110,7 @@ def register():
                 session['username'] = user.username
             except exc.SQLAlchemyError as ex:
                 error = 'Error inserting record in the database'
+                app.logger.error(ex)
         if not error:
             flash('Registration successful')
             return redirect(url_for('show_entries'))
