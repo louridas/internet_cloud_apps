@@ -51,7 +51,7 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r %r %r %r>' % (self.username, self.email,
                                        self.name, self.surname)
-
+        
 @app.route('/')
 def show_entries():
     entries = Entry.query.order_by(Entry.datetime.desc()).all()
@@ -76,11 +76,12 @@ def add_entry():
 def login():
     error = None
     if request.method == 'POST':
-        user = User.query.filter_by(username=request.form['username']).first()
+        user = User.query.filter_by(
+            username=request.form['username']).one_or_none()
         if user is None:
             error = 'Invalid username'
         elif not bcrypt.checkpw(request.form['password'].encode('utf8'),
-                                user.password.encode('utf8')):
+                                user.password):
             error = 'Invalid password'
         else:
             session['user_id'] = user.id
