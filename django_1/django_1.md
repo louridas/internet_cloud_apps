@@ -42,13 +42,13 @@ pip install Django
 * Τότε θα δημιουργηθεί η ακόλουθη δομή καταλόγων:
 
     ```
-    project_site/
-        manage.py
-        project_site/
-            __init__.py
-            settings.py
-            urls.py
-            wsgi.py
+    project_site
+    ├── manage.py
+    └── project_site
+        ├── __init__.py
+        ├── settings.py
+        ├── urls.py
+        └── wsgi.py
     ```
 
 <div class="notes">
@@ -58,7 +58,7 @@ pip install Django
   σημασία για το Django.
 
 * Το `manage.py` είναι ένα εργαλείο το οποίο μας επιτρέπει να
-  [αλληλεπιδράσουμε και να διαχειριστούμε το Django](https://docs.djangoproject.com/en/1.10/ref/django-admin/).
+  [αλληλεπιδράσουμε και να διαχειριστούμε το Django](https://docs.djangoproject.com/en/1.11/ref/django-admin/).
   Θα δούμε στη συνέχεια πώς χρησιμοποιείται.
 
 * Ο εσωτερικός κατάλογος `project_site` περιέχει το
@@ -74,11 +74,11 @@ pip install Django
 
 * Το αρχείο `project_site/settings.py` περιέχει τις ρυθμίσεις για το
   σύνολο του έργου μας. Οι
-  [ρυθμίσεις](https://docs.djangoproject.com/en/1.10/topics/settings/)
+  [ρυθμίσεις](https://docs.djangoproject.com/en/1.11/topics/settings/)
   αφορούν τις συνδέσεις με τη βάση δεδομένων, τη ζώνη ώρας, κ.ά.
 
 * Το αρχείο `project_site/urls.py` δηλώνει τα
-  [URLs τα οποία θα διαχειρίζεται το έργο μας](https://docs.djangoproject.com/en/1.10/topics/http/urls/).
+  [URLs τα οποία θα διαχειρίζεται το έργο μας](https://docs.djangoproject.com/en/1.11/topics/http/urls/).
   Στην ουσία είναι ένας "πίνακας περιεχόμενων" για το έργο μας.
 
 * Το αρχείο `project_site/wsgi.py` χρησιμοποιείται για τη μεταφορά του
@@ -97,16 +97,24 @@ pip install Django
 
 * Ο εξυπηρετητής θα ξεκινήσει στη διεύθυνση `http://127.0.0.1:8000/`
 
+* Τη στιγμή αυτή αφού δεν έχουμε φτιάξει κάτι, θα πάρουμε απλώς μια
+  πληροφοριακή σελίδα.
+
 <div class="notes">
 
 Λέμε *εξυπηρετής ανάπτυξης* (development server) γιατί ο συγκεκριμένος
 εξυπηρετητής είναι βολικός για τη συγγραφή της εφαρμογής μας, αλλά
 *δεν* είναι κατάλληλος για την παραγωγική χρήση της εφαρμογής μας.
 
+Στην οθόνη του τερματικού μας θα δούμε ένα μήνυμα που θα προειδοποιεί
+ότι δεν έχουμε εφαρμόσει κάποιες μεταγωγές (You have unapplied
+migrations). Θα δούμε στη συνέχεια τι σημαίνει αυτό.
+
 Όταν θέλουμε να βγάλουμε την υπηρεσία μας στην παραγωγή θα πρέπει να
 χρησιμοποιήσουμε άλλους εξυπηρετητές, και συγκεκριμένα είτε τον
 [Apache](https://httpd.apache.org/) 
 είτε τον [nginx](https://www.nginx.com/resources/wiki/).
+
 
 </div>
 
@@ -128,14 +136,14 @@ pip install Django
 
     ```
     djbr/
-        __init__.py
-        admin.py
-        apps.py
-        migrations/
-            __init__.py
-        models.py
-        tests.py
-        views.py
+    ├── __init__.py
+    ├── admin.py
+    ├── apps.py
+    ├── migrations
+    │   └── __init__.py
+    ├── models.py
+    ├── tests.py
+    └── views.py
     ```
 
 <div class="notes">
@@ -175,12 +183,12 @@ pip install Django
 αντικείμενο `HttpResponse`, το οποίο απλώς θα εμφανίσει στον browser
 το μήνυμα που της περάσαμε.
 
-Στα αγγλικά δεν μιλάμε για σελίδα, αλλά για εικόνα (view). Ο όρος
+Στα αγγλικά δεν μιλάμε για σελίδα, αλλά για όψη (view). Ο όρος
 προέρχεται από την αρχιτεκτονική
 [Model-View Controller (MVC)](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller).
 Στην αρχιτεκτονική αυτή, μια εφαρμογή απαρτίζεται από *μοντέλα*
-(models), *εικόνες* (views), και *ελεγκτές* (controllers). Στα
-ελληνικά όμως ο όρος εικόνας ίσως δεν φαίνεται πολύ καλά, οπότε θα
+(models), *όψεις* (views), και *ελεγκτές* (controllers). Στα
+ελληνικά όμως ο όρος όψη ίσως δεν φαίνεται πολύ καλά, οπότε θα
 μιλάμε για σελίδα.
 
 * Μια σελίδα λοιπόν είναι αυτό το οποίο βλέπει ο χρήστης. Στο Django
@@ -201,7 +209,25 @@ pip install Django
 * Για να μπορεί ο χρήστης να βλέπει τη σελίδα, θα πρέπει να την
   αντιστοιχίσουμε σε ένα URL.
 
-* Δημιουργούμε το αρχείο `djbr/urls.py` στο οποίο γράφουμε:
+* Δημιουργούμε το αρχείο `djbr/urls.py`. Αυτό σημαίνει ότι η δομή
+  καταλόγων μας θα έχει γίνει:
+  
+    ```
+    djbr/
+    ├── __init__.py
+    ├── admin.py
+    ├── apps.py
+    ├── migrations
+    │   └── __init__.py
+    ├── models.py
+    ├── tests.py
+    ├── urls.py
+    └── views.py
+    ```
+
+## Περιεχόμενα `urls.py`
+
+* Στο αρχείο `djbr/urls.py` γράφουμε:
 
     ```python
     from django.conf.urls import url
@@ -217,8 +243,8 @@ pip install Django
 
 * Η πρώτη παράμετρος της συνάρτησης `url()` είναι μια
   [κανονική έκφραση (regular expression)](https://en.wikipedia.org/wiki/Regular_expression),
-  η οποία αντιστοιχεί στο μονοπάτι που θέλουμε να αντιστοιχίσουμε στην
-  εικόνα. Αν δεν γνωρίζετε τι είναι μια κανονική έκφραση, θα πρέπει να
+  η οποία αντιστοιχεί στο μονοπάτι που θέλουμε να αντιστοιχίσουμε στη
+  σελίδα. Αν δεν γνωρίζετε τι είναι μια κανονική έκφραση, θα πρέπει να
   αφιερώσετε λίγο χρόνο να μάθετε, δεδομένου ότι χρησιμοποιούνται πάρα
   πολύ στην ανάπτυξη εφαρμογών (διαδικτυακών και μη). Ειδικότερα για
   τη χρήση κανονικών εκφράσεων σε Python, μπορείτε να δείτε τη
@@ -240,7 +266,7 @@ pip install Django
 
 * Μπορούμε να περάσουμε και άλλες παραμέτρους με τη μορφή `key=value`.
   Οι παράμετροι αυτοί θα χρησιμοποιηθούν από τη συνάρτηση χειρισμού
-  της εικόνας.
+  της σελίδας.
 
 </div>
 
@@ -378,6 +404,15 @@ pip install Django
     python manage.py migrate
     ```
 
+<div class="notes">
+
+Με την εντολή αυτή θα δημιουργηθούν οι απαραίτητοι πίνακες στη βάση.
+Στην οθόνη του τερματικού μας θα εμφανιστούν κάποια μηνύματα τα οποία
+μας ενημερώνουν για τη σχετική τρόπο μέσω των μεταγωγών που
+εφαρμόζονται. Το τι είναι οι μεταγωγές θα το δούμε σε λίγο.
+
+</div>
+
 # Δημιουργία μοντέλων
 
 ## Βασικές οντότητες
@@ -389,6 +424,20 @@ pip install Django
 * Η οντότητα `Review` θα αντιπροσωπεύει μια κριτική για ένα βιβλίο.
 
 * Γράφουμε στο αρχείο `djbr/models.py` τα παρακάτω.
+
+<div class="notes">
+
+Το Django έχει ενσωματωμένες δυνατότητες αντιστοίχισης μεταξύ
+αντικειμένων Python και οντοτήτων στη βάση (Object-Relational Mapping,
+ORM). Οι κλάσεις μας που θα αποθηκευτούν στη βάση ονομάζονται
+*μοντέλα* (models) και είναι παιδιά της κλάσης `Model`. 
+
+Κάθε ένα μοντέλο είναι μία κλάση τα πεδία της οποία θα αντιστοιχιστούν
+σε στήλες του αντίστοιχου πίνακα της βάσης. Κάθε πεδίο έχει έναν τύπο
+που προσδιορίζει πώς ακριβώς θα αποθηκευτεί στη βάση (ως ακέραιος,
+συμβολοσειρά, κ.ά.)
+
+</div>
 
 
 ## Κώδικας βασικών οντοτήτων
@@ -421,17 +470,20 @@ class Review(models.Model):
 
 ## Ρύθμιση `INSTALLED_APPS`
 
-```python
-INSTALLED_APPS = [
-    'djbr.apps.DjbrConfig',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-]
-```
+* Στο αρχείο `project_site/settings.py` αλλάζουμε τη ρύθμιση
+  `INSTALLED_APPS` ως εξής:
+
+    ```python
+    INSTALLED_APPS = [
+        'djbr.apps.DjbrConfig',
+        'django.contrib.admin',
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.messages',
+        'django.contrib.staticfiles',
+    ]
+    ```
 
 <div class="notes">
 
@@ -503,12 +555,15 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
     -- Create model Book
     --
     CREATE TABLE "djbr_book" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "title" varchar(200) NOT NULL, "year" integer NOT NULL);
+    "title" varchar(200) NOT NULL, 
+    "year" integer NOT NULL);
     --
     -- Create model Review
     --
     CREATE TABLE "djbr_review" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "title" varchar(200) NOT NULL, "review_date" datetime NOT NULL,
+    "title" varchar(200) NOT NULL, 
+    "text" text NOT NULL,
+    "review_date" datetime NOT NULL,
     "book_id" integer NOT NULL REFERENCES "djbr_book" ("id"));
     CREATE INDEX "djbr_review_0a4572cc" ON "djbr_review" ("book_id");
     COMMIT;
@@ -527,22 +582,9 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
 
     ```bash
     Operations to perform:
-    Apply all migrations: admin, auth, contenttypes, djbr, sessions
+      Apply all migrations: admin, auth, contenttypes, djbr, sessions
     Running migrations:
-    Applying contenttypes.0001_initial... OK
-    Applying auth.0001_initial... OK
-    Applying admin.0001_initial... OK
-    Applying admin.0002_logentry_remove_auto_add... OK
-    Applying contenttypes.0002_remove_content_type_name... OK
-    Applying auth.0002_alter_permission_name_max_length... OK
-    Applying auth.0003_alter_user_email_max_length... OK
-    Applying auth.0004_alter_user_username_opts... OK
-    Applying auth.0005_alter_user_last_login_null... OK
-    Applying auth.0006_require_contenttypes_0002... OK
-    Applying auth.0007_alter_validators_add_error_messages... OK
-    Applying auth.0008_alter_user_username_max_length... OK
-    Applying djbr.0001_initial... OK
-    Applying sessions.0001_initial... OK
+      Applying djbr.0001_initial... OK
     ```
 
 ## Κύκλος μεταγωγών
@@ -584,36 +626,13 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
   ρυθμίσεις για να έχουμε πρόσβαση στα αντικείμενα του Django και τις
   εφαρμογής μας. Για το λόγο αυτό θα τη λέμε "γραμμή εντολών Django".
 
+<div class="notes">
 
-## Χρήση IPython (1)
+Αν έχουμε εγκαταστήσει το IPython στον υπολογιστή μας η παραπάνω
+εντολή θα ξεκινήσει μία γραμμή εντολών IPython&ndash;άρα ένας λόγος
+ακόμα να εγκαταστήσετε το IPython αν δεν το έχετε κάνει ήδη.
 
-* Ακόμα καλύτερα, μπορούμε να χρησιμοποιήσουμε το IPython αντί για την
-  απλή γραμμή εντολών της Python.
-
-* Για να το κάνουμε αυτό εγκαθιστούμε το πακέτο Django Extensions:
-
-    ```python
-    python install django_extensions
-    ```
-
-## Χρήση IPython (2)
-
-* Κσι στη συνέχεια προσθέτουμε το πακέτο στη λίστα των
-  `INSTALLED_APPS` στις ρυθμίσεις του Django:
-
-    ```python
-    INSTALLED_APPS = [
-    ...,
-    'django_extensions',
-    ]
-    ```
-
-* Οπότε μπορούμε να ξεκινήσουμε γραμμή εντολών IPython με τις
-  ρυθμίσεις του Django ως εξής:
-  
-    ```bash
-    python manage.py shell_plus --ipython
-    ```
+</div>
 
 ## Αναζήτηση βιβλίων
 
@@ -635,7 +654,7 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
   αντικειμένων `Book` και στη συνέχεια τη μέθοδο `save()`.
 
     ```python
-    >>> b = Book(title="The Great Greek Novel", pub_year=2015)
+    >>> b = Book(title="Conversation with Friends", pub_year=2017)
     >>> b.save()
     ```
 
@@ -648,9 +667,9 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
     >>> b.id
     1
     >>> b.title
-    'The Great Greek Novel'
+    'Conversation with Friends'
     >>> b.pub_year
-    2015
+    2017
     ```
 
 ## Αλλαγές στα πεδία
@@ -658,10 +677,24 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
 * Ομοίως μπορούμε να τα αλλάξουμε κατά βούληση.
 
     ```python
-    >>> b.title = "The Great Greek Novel, Vol. 2"
+    >>> b.title = "Conversations with Friends"
     >>> b.save()
     >>> Book.objects.all()
     <QuerySet [<Book: Book object>]>
+    ```
+
+## Προσθήκη και άλλων βιβλίων
+
+* Ας προσθέσουμε δύο ακόμα βιβλία για να έχουμε λίγα περισσότερα
+  δεδομένα στη βάση.
+
+    ```python
+    >>> b = Book(title="City on Fire", pub_year=2015)
+    >>> b.save()
+    >>> b = Book(title="La Vérité sur l'affaire Harry Quebert", pub_year=2012)
+    >>> b.save()
+    >>> Book.objects.all()
+    <QuerySet [<Book: Book object>, <Book: Book object>, <Book: Book object>]>
     ```
 
 ## Εμφάνιση αντικειμένων
@@ -696,12 +729,23 @@ class Book(models.Model):
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
+    text = models.TextField(default="")
     review_date = models.DateTimeField('review date')
 
     def __str__(self):
-        return "%s %s" % (self.title, self.review_date)
+        return "%s %s %s" % (self.title, self.text, self.review_date)
 ```
 
+## Βελτιωμένη εμφάνιση αντικειμένων
+
+* Τώρα μπορούμε να διαπιστώσουμε ότι τα βιβλία μας εμφανίζονται
+  καλύτερα:
+  
+```python
+>>> Book.objects.all()
+<QuerySet [<Book: Conversations with Friends 2017>, <Book: City on Fire 2015>, <Book: La Vérité sur l'affaire Harry Quebert 2012>]>
+```
+   
 ## Επιπλέον μέθοδοι
 
 * Φυσικά μπορούμε να εισάγουμε επιπλέον μεθόδους στις κλάσεις μας.
@@ -717,9 +761,8 @@ class Review(models.Model):
         title = models.CharField(max_length=200)
         pub_year = models.IntegerField('year published', default=2000)
 
-
         def was_published_recently(self):
-            return self.pub_year >= timezone.now().year - 1)
+            return (self.pub_year >= timezone.now().year - 1)
 
         def __str__(self):
             return "%s %s" % (self.title, self.pub_year)
@@ -730,41 +773,41 @@ class Review(models.Model):
 * Ξαναρχίζουμε μια γραμμή εντολή Django προκειμένου να δοκιμάσουμε τα
   αντικείμενά μας.
   
-* Απλή αναζήτηση όλων:
+* Ας θυμηθούμε την απλή αναζήτηση όλων:
 
     ```python
     >>> from djbr.models import Book, Review
 
     >>> Book.objects.all()
-<QuerySet [<Book: The Great Greek Novel, Vol. 2 2015>]>
+    <QuerySet [<Book: Conversations with Friends 2017>, <Book: City on Fire 2015>, <Book: La Vérité sur l'affaire Harry Quebert 2012>]>
     ```
 
 * Αναζήτηση με βάση συγκεκριμένο πεδίο:
 
     ```python
     >>> Book.objects.filter(id=1)
-    <QuerySet [<Book: The Great Greek Novel, Vol. 2 2015>]>
+    <QuerySet [<Book: Conversations with Friends 2017>]>
     ```
 
 ## Αναζήτηση ενός αντικειμένου με άλλα φίλτρα
 
-* Έστω ότι θέλουμε να βρούμε τα βιβλίο που ο τίτλος τους αρχίζει με "The":
+* Έστω ότι θέλουμε να βρούμε τα βιβλίο που ο τίτλος τους αρχίζει με "City":
 
     ```
-    >>> Book.objects.filter(title__startswith='The')
-    <QuerySet [<Book: The Great Greek Novel, Vol. 2 2015>]>
+    >>> Book.objects.filter(title__startswith='City')
+    <QuerySet [<Book: City on Fire 2015>]>
     ```
 
-* Ή ότι θέλουμε να βρούμε τα βιβλία τα οποία έχουν εκδοθεί τον
-  τελευταίο χρόνο.
+* Ή ότι θέλουμε να βρούμε τα βιβλία τα οποία έχουν εκδοθεί τα τελευταία
+  δύο χρόνια (βρισκόμαστε στο 2017):
 
     ```python
     >>> from django.utils import timezone
 
-    >>> last_year = timezone.now().year - 1
+    >>> pub_year = timezone.now().year - 2
 
-    >>> Book.objects.filter(pub_year__gte=last_year)
-    <Book: The Great Greek Novel, Vol. 2 2015>
+    >>> Book.objects.filter(pub_year__gte=pub_year)
+    <QuerySet [<Book: Conversations with Friends 2017>, <Book: City on Fire 2015>]>
     ```
 
 <div class="notes">
@@ -776,10 +819,10 @@ class Review(models.Model):
 
 Η συγκεκριμένη παράμετρος σημαίνει: "βρες τα βιβλία των οποίων το
 πεδίο `pub_year` είναι μεγαλύτερο ή ίσο (`gte`) από τη μεταβλητή
-`last_year`". Οι τελεστές της αναζήτησης χωρίζονται από τα πεδία της
+`pub_year`". Οι τελεστές της αναζήτησης χωρίζονται από τα πεδία της
 αναζήτησης με `__`. Υπάρχουν πολλοί τελεστές αναζήτησης, έτσι ώστε να
 μπορούν να καλυφθούν διάφορα σενάρια. Για να τους βρείτε, δείτε την
-[τεκμηρίωση του QuerySet](https://docs.djangoproject.com/en/1.10/ref/models/querysets/).
+[τεκμηρίωση του QuerySet](https://docs.djangoproject.com/en/1.11/ref/models/querysets/).
 
 </div>
 
@@ -790,7 +833,7 @@ class Review(models.Model):
   εξαίρεση τύπου `DoesNotExist`:
 
     ```python
-    >>> Book.objects.get(id=2)
+    >>> Book.objects.get(id=10)
     ...
 
     DoesNotExist: Book matching query does not exist.
@@ -814,7 +857,7 @@ class Review(models.Model):
 
     ```python
     >>> Book.objects.get(pk=1)
-    <Book: The Great Greek Novel, Vol. 2 2015>
+    <Book: Conversations with Friends 2017>
     ```
 
 * Με την ευκαιρία, μπορούμε να δοκιμάσουμε αν δουλεύει η μέθοδος
@@ -838,56 +881,66 @@ class Review(models.Model):
     
 * Ας προσθέσουμε λοιπόν τρεις κριτικές:
 
-    ```python
-    >>> b.review_set.create(title="Excellent", text="Best book read this year", review_date=timezone.now())
-    <Review: Excellent 2016-10-09 15:44:22.452253+00:00>
+```python
+>>> b.review_set.create(title="A New Kind of Adultery Novel",
+text='Sally Rooney\'s début, "Conversations with Friends", is a bracing study of ideas. But it\'s even smarter about people. By Alexandra Schwartz in The New Yorker', 
+review_date="2017-07-31 00:00:00-05:00")
+<Review: A New Kind of Adultery Novel Sally Rooney's début, "Conversations with Friends", is a bracing study of ideas. But it's even smarter about people. By Alexandra Schwartz in The New Yorker 2017-07-31 00:00:00-05:00>
 
-    >>> b.review_set.create(title="Not bad", text="Good stuff to fill some afternoons", review_date=timezone.now())
-    <Review: Not bad 2016-10-09 15:45:34.550851+00:00>
+>>>b.review_set.create(title="Conversations with Friends by Sally Rooney review - young, gifted and self-destructive",
+text='A menage a quatre in post-crash Dublin tests the bonds between close friends. By Claire Kilroy in The Guardian',
+review_date="2017-06-01 00:00:00+00:00")
+<Review: Conversations with Friends by Sally Rooney review - young, gifted and self-destructive A menage a quatre in post-crash Dublin tests the bonds between close friends. By Claire Kilroy in The Guardian 2017-06-01 00:00:00+00:00>
 
-    >>> r = b.review_set.create(title="Awful", text="Trivial pulp", review_date=timezone.now())
-    Out[4]: <Review: Awful 2016-10-09 15:46:39.238401+00:00>
-    ```
+>>> r = b.review_set.create(title="Tell Me I'm Interesting",
+text='Sally Rooney’s debut novel is a remarkably charming exploration of that very uncharming subject: the human ego. By Katy Waldman in The Slate',
+review_date="2017-08-03 12:28:00-05:00")
+```
 
+<div class="notes">
+
+Δημιουργούμε τρεις κριτικές, οι οποίες αποθηκεύονται αμέσως στη βάση
+δεδομένων μας. Το Django επιστρέφει κάθε αντικείμενο που δημιουργεί,
+οπότε το βλέπουμε στην οθόνη μας. Εκμεταλλευόμαστε το γεγονός αυτό για
+να αποθηκεύσουμε την τρίτη κριτική και σε μία μεταβλητή στο πρόγραμμά
+μας.
+
+</div>
 
 ## Πλοήγηση μεταξύ αντικειμένων
 
 * Σε μία σχέση ένα προς πολλά μπορούμε πάντα να πάμε από τη μεριά των
   πολλών στη μεριά του ενός:
 
-    ```python
-    >>> r.book
-    <Book: The Great Greek Novel, Vol. 2 2016-10-08 17:57:55.646201+00:00>
-    ```
+```python
+>>> r.book
+<Book: Conversations with Friends 2017>
+```
 
 * Ενώ φυσικά μπορούμε πάντα να πάμε από τη μεριά του ενός στα πολλά:
 
-    ```python
-    >>> b.review_set.all()
-    <QuerySet [<Review: Excellent 2016-10-09 15:44:22.452253+00:00>,
-    <Review: Not bad 2016-10-09 15:45:34.550851+00:00>,
-    <Review: Awful 2016-10-09 15:50:01.586050+00:00>]>
-    >>> b.review_set.count()
-    3
-    ```
+```python
+>>> b.review_set.all()
+<QuerySet [<Review: A New Kind of Adultery Novel Sally Rooney's début, "Conversations with Friends", is a bracing study of ideas. But it's even smarter about people. By Alexandra Schwartz in The New Yorker 2017-07-31 05:00:00+00:00>, <Review: Conversations with Friends by Sally Rooney review - young, gifted and self-destructive A menage a quatre in post-crash Dublin tests the bonds between close friends. By Claire Kilroy in The Guardian 2017-06-01 00:00:00+00:00>, <Review: Tell Me I'm Interesting Sally Rooney’s debut novel is a remarkably charming exploration of that very uncharming subject: the human ego. By Katy Waldman in The Slate 2017-08-03 17:28:00+00:00>]>
+
+>>> b.review_set.count()
+3
+```
 
 ## Πλοήγηση και φίλτρα
 
 * Επίσης, μπορούμε να πλοηγηθούμε μέσω αντικειμένων και στα φίλτρα
   αναζητήσεων:
 
-    ```python
-    >>> Review.objects.filter(book__pub_year=last_year)
-    <QuerySet [<Review: Excellent 2016-10-09 15:44:22.452253+00:00>,
-    <Review: Not bad 2016-10-09 15:45:34.550851+00:00>,
-    <Review: Awful 2016-10-09 15:50:01.586050+00:00>]>
-    ```
+```python
+>>> Review.objects.filter(book__pub_year=2017)
+<QuerySet [<Review: A New Kind of Adultery Novel Sally Rooney's début, "Conversations with Friends", is a bracing study of ideas. But it's even smarter about people. By Alexandra Schwartz in The New Yorker 2017-07-31 05:00:00+00:00>, <Review: Conversations with Friends by Sally Rooney review - young, gifted and self-destructive A menage a quatre in post-crash Dublin tests the bonds between close friends. By Claire Kilroy in The Guardian 2017-06-01 00:00:00+00:00>, <Review: Tell Me I'm Interesting Sally Rooney’s debut novel is a remarkably charming exploration of that very uncharming subject: the human ego. By Katy Waldman in The Slate 2017-08-03 17:28:00+00:00>]>
+```
 
 <div class="notes">
 
 Το παραπάνω φίλτρο διαβάζεται ως: "βρες τις κριτικές που αντιστοιχούν
-σε βιβλία των οποίων το πεδίο `pub_year` είναι ίσο με τη μεταβλητή
-`last_year`". 
+σε βιβλία των οποίων το πεδίο `pub_year` είναι ίσο με 2017". 
 
 </div>
 
@@ -896,10 +949,15 @@ class Review(models.Model):
 * Η διαγραφή αντικειμένων γίνεται με τη μέθοδο `delete()`:
 
     ```python
-    >>> r = b.review_set.filter(text__startswith='Trivial')
+    >>> r = b.review_set.filter(text__startswith='Sally')
+    >>> r.delete()
+    (2, {'djbr.Review': 2})
+    
+    >>> r = b.review_set.filter(text__startswith='A menage')
     >>> r.delete()
     (1, {'djbr.Review': 1})
     ```
+
 
 # Μεταφορά σε MySQL
 
@@ -916,6 +974,13 @@ class Review(models.Model):
     GRANT ALL PRIVILEGES ON djbr.* TO 'djbr_user'@'localhost';
     ```
 
+<div class="notes">
+
+Στη πρώτη εντολή, το `CHARACTER SET utf8 COLLATE utf8_general_ci`
+χρειάζεται για να χειριστεί σωστά η MySQL χαρακτήρες Unicode (άρα
+ελληνικά όπως και άλλες γλώσσες).
+
+</div>
 
 ## Εγκατάσταση οδηγού
 
@@ -936,11 +1001,14 @@ class Review(models.Model):
     ```
     (ή όποιο άλλο είναι το μονοπάτι)
 
+   * Για να είναι πάντοτε διαθέσιμες οι εντολές της MySQL, μπορούμε να
+   βάλουμε την παραπάνω εντολή στο τέλος του αρχείου `.bash_profile`
+   στον βασικό μας κατάλογο στο σύστημά μας.
 
 ## Ρυθμίσεις Django
 
 * Θα φτιάξουμε ένα αρχείο `site_config.py` στον κατάλογο
-  `project_settings/project_settings` με τα εξής περιεχόμενα:
+  `project_site/project_site` με τα εξής περιεχόμενα:
 
     ```python
     DATABASES = {
@@ -987,8 +1055,8 @@ class Review(models.Model):
 ## `SECRET_KEY`
 
 * Με την ευκαιρία, στο ίδιο αρχείο `site_config.py` αποθηκεύουμε την
-  τιμή της μεταβλητής `SECRET_KEY` που *δεν* θέλουμε να παραμείνει όσο
-  το δυνατόν μυστική.
+  τιμή της μεταβλητής `SECRET_KEY` που *θέλουμε να παραμείνει όσο
+  το δυνατόν μυστική*.
 
     ```python
     SECRET_KEY = '#8*xfqx#w(k@*fr9i=50i1k&wt2xr1b5k!f9%rq@^ewb2%l69*'
