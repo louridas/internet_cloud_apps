@@ -285,7 +285,7 @@ migrations). Θα δούμε στη συνέχεια τι σημαίνει αυ�
     from django.contrib import admin
 
     urlpatterns = [
-        url(r'^djbr/', include('djbr.urls'))
+        url(r'^djbr/', include('djbr.urls')),
         url(r'^admin/', admin.site.urls),
     ]
     ```
