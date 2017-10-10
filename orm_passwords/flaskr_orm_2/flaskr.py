@@ -73,7 +73,8 @@ def add_entry():
 def login():
     error = None
     if request.method == 'POST':
-        user = User.query.filter_by(username=request.form['username']).first()
+        user = User.query.filter_by(
+            username=request.form['username']).one_or_none():
         if user is None:
             error = 'Invalid username'
         elif request.form['password'] != user.password:

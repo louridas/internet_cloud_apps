@@ -118,6 +118,19 @@ module.exports = mongoose.model('Book', bookSchema);
 * Στο μοντέλο θα περιγράψουμε τα πεδία των χρηστών, όσο και τη λογική
   χειρισμού των κωδικών τους.
 
+## Mongoose hooks
+
+* Στο Mongoose μπορούμε να ορίσουμε μεθόδους οι οποίες εκτελούνται σε
+  συγκεκριμένα σημεία και γεγονότα.
+
+* Οι μέθοδοι αυτοί ονομάζονται *hooks* ή *middleware*.
+
+* Εμείς θα χρησιμοποιήσουμε μία μέθοδο η οποία θα εκτελείται πριν
+  αποθηκευτεί ένας χρήστης στη βάση και θα ελέγχει αν ο κωδικός του
+  είναι ίδιος με αυτόν που έχει αποθηκευτεί.
+
+* Αν όχι, θα τον κρυπτογραφεί πριν τον αποθηκεύσει.
+
 ## `user.js`
 
 ```javascript
@@ -176,7 +189,6 @@ module.exports = mongoose.model('User', userSchema);
 
 * Για το σκοπό αυτό θα χρησιμοποιήσουμε τη βιβλιοθήκη
   [prompt](https://www.npmjs.com/package/prompt).
-
 * Την εγκαθιστούμε δίνοντας:
     ```bash
     npm install --save prompt
@@ -192,9 +204,38 @@ module.exports = mongoose.model('User', userSchema);
     mkdir management
     ```
 
-## `create_user.js`
+## Ρυθμίσεις ασφαλείας
+
+* Tο script που θα φτιάξουμε θα συνδέεται και αυτό με τη βάση.
+
+* Για να μην αποθηκεύουμε σε πολλά μέρη τους κωδικούς πρόσβασης στη
+  βάση, θα τους βάλουμε σε ένα ξεχωριστό αρχείο `config.js` στον
+  κεντρικό κατάλογο της εφαρμογής.
+
+## `config.js`
 
 ```javascript
+module.exports = {
+  'database': 'mongodb://bangular:12345@127.0.0.1/bangular',
+};
+```
+
+## Χρήση `config.js`
+
+* Στην αρχή του `app.js` προσθέτουμε:
+    ```javascript
+    const config = require('./config');
+    ```
+
+* Στο τέλος, πριν από την τελευταία γραμμή με το `module.exports`,
+  θα αντικαταστήσουμε το υπάρχον `mongoose.connect()` και θα βάλουμε:
+    ```javascript
+    mongoose.connect(config.database);
+    ```
+
+## `create_user.js`
+
+```
 const prompt = require('prompt');
 const mongoose = require('mongoose');
 
@@ -218,9 +259,11 @@ prompt.get([{
     required: true
   }, {
     name: 'password',
+    required: true,
     replace: '*',
     hidden: true
-  }], function (err, result) {
+  }],
+  function (err, result) {
     var user = new User();
     
     user.username = result.username;
@@ -237,8 +280,17 @@ prompt.get([{
         process.exit(0);
       }
     });
-  });
+  }
+);
 ```
+
+## Χρήση `create_user.js`
+
+* Για να χρησιμοποιήσουμε το `create_user.js` δίνουμε απλώς:
+    ```bash
+    node management/create_user.js
+    ```
+* Στη συνέχεια απαντάμε στις προτροπές που θα μας εμφανιστούν.
 
 ## Εγκατάταση jsonwebtoken
 
@@ -251,19 +303,15 @@ prompt.get([{
 
 * Για να την εγκαταστήσουμε δίνουμε:
     ```bash
-    npm install --save jswonwebtoken
+    npm install --save jsonwebtoken
     ```
 
 ## Ρυθμίσεις ασφαλείας
 
 * Το JWT λειτουργεί με ένα μυστικό το οποίο θέτουμε στον εξυπηρετητή.
 
-* Επίσης, πρέπει να θυμηθούμε ότι στον εξυπηρετητή δίνουμε το όνομα
-  και τον κωδικό του χρήστη.
-
-* Γενικώς δεν είναι καλό να τα έχουμε αυτά σε κοινή θέα, οπότε θα τα
-  βάλουμε σε ένα ξεχωριστό αρχείο `config.js` στον κεντρικό κατάλογο
-  της εφαρμογής.
+* Το μυστικό αυτό θα το αποθηκεύσουμε στο `config.js` που φτιάξαμε
+  προηγουμένως. 
 
 ## `config.js`
 
@@ -276,16 +324,9 @@ module.exports = {
 
 ## Χρήση `config.js`
 
-* Στην αρχή του `app.js` προσθέτουμε:
+* Στο τέλος του `app.js` , πριν από την τελευταία γραμμή με το
+  `module.exports`, βάζουμε:
     ```javascript
-    const config = require('./config');
-    ```
-
-* Στο τέλος, πριν από την τελευταία γραμμή με το `module.exports`,
-  βάζουμε:
-    ```javascript
-    mongoose.connect(config.database);
-
     app.set('jwt_secret', config.jwt_secret);
     ```
 
@@ -308,33 +349,33 @@ const router = express.Router();
 
 const User = require('../models/user');
 
-router.route('/')
-  .post(function(request, response) {
-    User.findOne({
-      username: request.body.username
-      }, function(err, user) {
-      if (err) {
-        response.send(err);
-      } else if (!user) {
-        response.json({ success: false, message: 'User not found' });
-      } else {
-        user.checkPassword(request.body.password, function (err, res) {
-          if (err) {
-            response.json({ success: false, message: err});
+router.post('/', function(request, response) {
+  User.findOne({
+    username: request.body.username
+  },
+  function(err, user) {
+    if (err) {
+      response.send(err);
+    } else if (!user) {
+      response.json({ success: false, message: 'User not found' });
+    } else {
+      user.checkPassword(request.body.password, function (err, res) {
+        if (err) {
+          response.json({ success: false, message: err});
+        } else {
+          if (!res) {
+            response.json({ success: false, message: 'Invalid password' });
           } else {
-            if (!res) {
-              response.json({ success: false, message: 'Invalid password' });
-            } else {
-              var token = jwt.sign(user, request.app.settings['jwt_secret'], {
-                expiresIn: "1 day"
-              });
-              response.json({ success: true, token: token });
-            }
+            var token = jwt.sign(user, request.app.settings['jwt_secret'], {
+              expiresIn: "1 day"
+            });
+            response.json({ success: true, token: token });
           }
-        });
-      }
-    });
+        }
+      });
+    }
   });
+});
 
 module.exports = router;
 ```
@@ -437,6 +478,92 @@ router.use(reviews_router);
 module.exports = router;
 ```
 
+## Προσαρμογή `books-router.js`
+
+* Χρειάζεται προσοχή κατά τη διαγραφή ενός βιβλίου.
+
+* Όταν διαγράφεται ένα βιβλίο, θα πρέπει να διαγράφονται και όλες οι
+  κριτικές που το αφορούν.
+
+* Θα πρέπει λοιπόν να προσθέσουμε την αντίστοιχη λογική στη μέθοδο
+  `router.delete()` του `books-router.js`
+
+## `books-router.js`
+
+```javascript
+const express = require('express');
+const router = express.Router();
+
+const Book = require('../models/book');
+const Review = require('../models/review');
+
+router.get('/books', function(req, res) {
+  if (req.query.title) {
+    Book.find({
+      title: new RegExp(req.query.title)
+    }, function(err, books) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.json(books);
+      }
+    });
+  } else {
+    Book.find(function(err, books) {
+      if (err) {
+        res.send(err);
+      }
+      res.json(books);
+    });
+  }
+});
+
+router.post('/books', function(req, res) {
+  var book = new Book();
+  book.title = req.body.title;
+  book.pub_year = req.body.pub_year;
+  book.save(function(err) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(book);
+    }
+  });
+});
+
+router.get('/books/:book_id', function(req, res) {
+  Book.findById(req.params.book_id, function(err, book) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(book);
+    }
+  });
+});
+
+router.delete('/books/:book_id', function(req, res) {
+  Review.remove({
+    book: req.params.book_id
+  }, function(err, result) {
+    if (err) {
+      res.send(err);
+    } else {
+      Book.remove({
+        _id: req.params.book_id
+      }, function(err, result) {
+        if (err) {
+          res.send(err);
+        } else {
+        res.json(result);
+        }
+      });
+    }
+  });
+});
+
+module.exports = router;
+```
+
 ## Έλεγχος πρόσβασης στο backend
 
 * Αυτή τη στιγμή ο έλεγχος πρόσβασης γίνεται μόνο στο front-end.
@@ -462,58 +589,128 @@ module.exports = router;
 
 * Στην ουσία, καλούμε τη `next()` στα κατάλληλα σημεία.
 
-## `reviews-router.js`
+* Αυτή είναι μια περίπτωση χρήση middleware στο Node (για ακρίβεια,
+  στο Express).
+
+## Διαγραφή κριτικών μαζί με βιβλίο
+
+* Όταν θέλουμε να διαγράψουμε ένα βιβλίο θα πρέπει να διαγράφουμε και
+  τις κριτικές που έχουν αποθηκευτεί γι' αυτό.
+
+* Για να το κάνουμε αυτό, θα γράψουμε την κατάλληλη hook μέθοδο η
+  οποία θα εκτελείται πριν διαγραφεί ένα βιβλίο.
+
+## `book.js`
+
+```javascript
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const Review = require('./review');
+
+var bookSchema = new Schema({
+  title: String,
+  pub_year: Number
+}, { toJSON: { virtuals: true } });
+
+bookSchema.index({ title: 1, pub_year: 1}, { unique: true });
+
+bookSchema.pre('remove', true, function(next, done) {
+  
+  var book = this;
+
+  Review.remove({
+    book: book._id
+  }, function(err, result) {
+    if (err) {
+      console.log('Could not remove associated reviews');
+      next(err);
+      done();
+    } else {
+      next();
+      done();
+    }
+  });
+});
+
+module.exports = mongoose.model('Book', bookSchema);
+```
+
+## Προσαρμογή `books-router.js`
+
+* Για να καλείται η μέθοδος που μόλις γράψαμε, θα πρέπει να
+  προσαρμόσουμε τη διαγραφή του αντικειμένου στο `books-router.js`.
+
+* Συγκεκριμένα, η μέθοδος `router.delete()` θα πρέπει πρώτα να αναζητά
+  το προς διαγραφή βιβλίο και όταν το βρει να καλεί σε αυτό τη μέθοδο
+  `remove()`.
+
+## `books-router.js`
 
 ```javascript
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const router = express.Router();
+
+const Book = require('../models/book');
 const Review = require('../models/review');
 
-router.get('/books/:book_id/reviews', function(req, res) {
-  Review.find({ book: req.params.book_id })
-    .sort({ review_datetime: -1 })
-    .exec(function(err, reviews) {
+router.get('/books', function(req, res) {
+  if (req.query.title) {
+    Book.find({
+      title: new RegExp(req.query.title)
+    }, function(err, books) {
       if (err) {
         res.send(err);
-      }
-      res.json(reviews);
-    });
-});
-
-router.post('/books/:book_id/reviews', function(req, res, next) {
-  var token = req.get('authorization');
-  
-  if (token && token.startsWith("JWT ")) {
-    token = token.slice(4);
-    jwt.verify(token, req.app.get('jwt_secret'), function(err, decoded) {
-      if (err) {
-        res.status(401).json({ success: false,
-                               message: 'Invalid token.'
-                             });
       } else {
-        req.decoded = decoded;
-        next();
+        res.json(books);
       }
     });
   } else {
-    res.status(403).send({ 
-      success: false, 
-      message: 'No token provided.' 
+    Book.find(function(err, books) {
+      if (err) {
+        res.send(err);
+      }
+      res.json(books);
     });
   }
 });
 
-router.post('/books/:book_id/reviews', function(req, res) {
-  var review = new Review();
-  review.title = req.body.title;
-  review.text = req.body.text;
-  review.book = req.params.book_id;
-  review.save(function(err) {
+router.post('/books', function(req, res) {
+  var book = new Book();
+  book.title = req.body.title;
+  book.pub_year = req.body.pub_year;
+  book.save(function(err) {
     if (err) {
-        res.send(err);
+      res.send(err);
+    } else {
+      res.json(book);
     }
-    res.json(review);
+  });
+});
+
+router.get('/books/:book_id', function(req, res) {
+  Book.findById(req.params.book_id, function(err, book) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(book);
+    }
+  });
+});
+
+router.delete('/books/:book_id', function(req, res) {
+  Book.findById(req.params.book_id, function(err, book) {
+    if (err) {
+      res.send(err);
+    } else {
+      book.remove(function(err, book) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.json(book);
+        }
+      });
+    }
   });
 });
 

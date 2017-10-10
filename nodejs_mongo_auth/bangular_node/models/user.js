@@ -15,13 +15,14 @@ userSchema.pre('save', true, function(next, done) {
 
   var user = this;
   
-  if (!this.isModified('password')) {
+  if (!user.isModified('password')) {
     next();
     done();
   } else {
-    bcrypt.hash(this.password, SALT_ROUNDS, function(err, hash) {
+    bcrypt.hash(user.password, SALT_ROUNDS, function(err, hash) {
       if (err) {
         next(err);
+        done();
       } else {
         user.password = hash;
         next();
@@ -35,7 +36,7 @@ userSchema.methods.checkPassword = function(plaintextPassword, callback) {
   bcrypt.compare(plaintextPassword, this.password, function(err, res) {
     if (err) {
       callback(err);
-      console.log('Could not check password');
+      console.log(err);
     } else {
       callback(null, res);
     }

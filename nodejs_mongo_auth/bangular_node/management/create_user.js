@@ -21,9 +21,11 @@ prompt.get([{
     required: true
   }, {
     name: 'password',
+    required: true,
     replace: '*',
     hidden: true
-  }], function (err, result) {
+  }],
+  function (err, result) {
     var user = new User();
     
     user.username = result.username;
@@ -40,7 +42,8 @@ prompt.get([{
         process.exit(0);
       }
     });
-  });
+  }
+);
 
   
             

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Book = require('../models/book');
+const Review = require('../models/review');
 
 router.get('/books', function(req, res) {
   if (req.query.title) {
@@ -48,13 +49,17 @@ router.get('/books/:book_id', function(req, res) {
 });
 
 router.delete('/books/:book_id', function(req, res) {
-  Book.remove({
-    _id: req.params.book_id
-  }, function(err, result) {
+  Book.findById(req.params.book_id, function(err, book) {
     if (err) {
       res.send(err);
     } else {
-      res.json(result);
+      book.remove(function(err, book) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.json(book);
+        }
+      });
     }
   });
 });
