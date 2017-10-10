@@ -67,6 +67,7 @@
       djbr/migrations/0002_author.py
         - Create model Author
     ```
+
 <div class="notes">
 
 Κάνοντας αυτό, θα δημιουργηθεί ένας πίνακας `djbr_author_books` που θα
@@ -275,8 +276,8 @@
           </div>
         </div>
 
-         <!-- Optional JavaScript for Bootstrap --> <!-- jQuery first,
-        then Popper.js, then Bootstrap JS -->
+         <!-- Optional JavaScript for Bootstrap --> 
+         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -376,7 +377,8 @@
       </li>
       <li class="list-group-item"><span>Reviews:
         <a href="{% url 'djbr:reviews' book.id %}">
-          <span class="badge badge-secondary">{{ book.review_set.all.count }}</span>
+          <span class="badge badge-secondary">{{ book.review_set.all.count }}
+          </span>
       </li>
     </ul>
     {% endblock %}
@@ -506,4 +508,3 @@
         url(r'^admin/', admin.site.urls),
     ]
     ```
-
