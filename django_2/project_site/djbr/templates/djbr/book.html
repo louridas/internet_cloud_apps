@@ -18,8 +18,8 @@
     Year published: {{ book.pub_year }}
   </li>
   <li class="list-group-item"><span>Reviews:
-    <a class="badge" href="{% url 'djbr:reviews' book.id %}">
-      {{ book.review_set.all.count }}
+    <a href="{% url 'djbr:reviews' book.id %}">
+      <span class="badge badge-secondary">{{ book.review_set.all.count }}</span>
     </a></span>
   </li>
 </ul>
