@@ -103,9 +103,9 @@ Python ευκολότερη. Επιγραμματικά:
 
 * Δημιουργείστε την παρακάτω δομή καταλόγων.
 
-* Στους καταλόγους `static`
-  και `templates` θα αντιγράψετε τα αρχεία που δημιουργήσατε στην
-  έκδοση του microblog που είδαμε στην πρώτη διάλεξη.
+* Στους καταλόγους `static` και `templates` θα αντιγράψετε τα αρχεία
+  που δημιουργήσατε στην έκδοση του microblog που είδαμε στην πρώτη
+  διάλεξη.
 
     ```
     /flaskr_orm_1
@@ -151,13 +151,13 @@ Python ευκολότερη. Επιγραμματικά:
 * Οι ρυθμίσεις για τη βάση αλλάζουν. Το `SQLALCHEMY_DATABASE_URI`
   δείχνει την τοποθεσία της βάσης. Στη συγκεκριμένη περίπτωση, θα
   είναι το αρχείο `flaskr.db` στον κατάλογο της εφαρμογής μας.
-  
-* Η ρύθμιση για το `SQLALCHEMY_TRACK_MODIFICATIONS` είναι μια τεχνική
-  λεπτομέρεια. Αφορά ένα λεπτό χαρακτηριστικό του SQLAlchemy, δεν
-  χρειάζεται να σας απασχολήσει.
+
+* Η ρύθμιση `SQLALCHEMY_TRACK_MODIFICATIONS = False` είναι μια τεχνική
+  λεπτομέρεια και δεν χρειάζεται να μας απασχολήσει τώρα.
 
 * Η γραμμή `db = SQLAlchemy(app)` δημιουργεί το αντικείμενο `db` με το
   οποίο θα αλληλεπιδρούμε με τη βάση δεδομένων μας.
+
 
 </div>
 
@@ -174,10 +174,6 @@ Python ευκολότερη. Επιγραμματικά:
         id = db.Column(db.Integer, primary_key=True)
         title = db.Column(db.String(120), nullable=False)
         text = db.Column(db.Text(), nullable=False)
-
-        def __init__(self, title="", text=""):
-            self.title = title
-            self.text = text
 
         def __repr__(self):
             return '<Entry %r %r>' % (self.title, self.text)
@@ -201,17 +197,10 @@ Python ευκολότερη. Επιγραμματικά:
 ιδιότητες, όπως αν πρόκειται για κλειδί, αν επιτρέπονται οι τιμές
 null, κ.λπ. Περισσότερες πληροφορίες μπορείτε να βρείτε
 στην
-[τεκμηρίωση του Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.1/models/#simple-example).
+[τεκμηρίωση του Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/models/#simple-example).
 Αν θέλετε να εμβαθύνετε, δείτε
 την
 [τεκμηρίωση του SQLAlchemy](http://docs.sqlalchemy.org/en/latest/index.html).
-
-Η κλάση που ορίζουμε θα πρέπει να έχει έναν κατασκευαστή
-(constructor), ο οποίος όπως πάντα στην Python ορίζεται με τη μέθοδο
-`__init()__`. Ο κατασκευαστής αυτός συνήθως δεν κάνει τίποτε άλλο από
-αρχικοποίηση των πεδίων με τις παραμέτρους που του περνάμε. Το πεδίο
-`id` συνήθως δεν χρειάζεται αρχικοποίηση, καθώς το χειρίζεται
-αυτομάτως η βάση.
 
 Η μέθοδος `__repr__()` θα μας εκτυπώνει μια αναπάρασταση του
 κάθε αντικειμένου τύπου `Entry`. Μοιάζει με τη μέθοδο `__str__`,
@@ -244,6 +233,14 @@ null, κ.λπ. Περισσότερες πληροφορίες μπορείτε 
     >>> db.create_all()
     ```
 
+## Διαγραφή Βάσης
+
+* Αν θέλουμε να διαγράψουμε τους πίνακες μιας βάσης δίνουμε:
+
+    ```python
+    >>> db.drop_all()
+    ```
+
 ## Εισαγωγή δεδομένων
 
 * Τώρα μπορούμε να χειριστούμε πλήρως τη βάση μας από τη γραμμή
@@ -254,8 +251,8 @@ null, κ.λπ. Περισσότερες πληροφορίες μπορείτε 
     ```python
     >>> from flaskr import Entry
 
-    >>> entry_1 = Entry("First Entry", "This is the first entry")
-    >>> entry_2 = Entry("Second Entry", "This is the second entry")
+    >>> entry_1 = Entry(title="First Entry", text="This is the first entry")
+    >>> entry_2 = Entry(title="Second Entry", text="This is the second entry")
 
     >>> db.session.add(entry_1)
     >>> db.session.add(entry_2)
@@ -269,51 +266,60 @@ null, κ.λπ. Περισσότερες πληροφορίες μπορείτε 
     ```python
     >>> entries = Entry.query.all()
     ```
-	
-<div class="notes">
 
-Στο συγκεκριμένο παράδειγμα αναζητούμε το σύνολο των δεδομένων. Φυσικά
-μπορούμε να κάνουμε πιο λεπτομερείες και περίπλοκες αναζητήσεις. Δείτε
-τη
-[σχετική τεκμηρίωση του Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.1/queries/#querying-records) και
-την [πλήρη τεκμηρίωση του SQLAlchemy](http://docs.sqlalchemy.org/en/latest/orm/tutorial.html#common-filter-operators).
-
-</div>
-	
 * Πράγματι, ενόσω είμαστε στη γραμμή εντολών μπορούμε να
   επιβεβαιώσουμε τις εγγραφές:
 
     ```python
     >>> entries
-    ```
-
-## Διαγραφή δεδομένων
-
-* Για να διαγράψουμε τα δεδομένα, γράφουμε:
-
-    ```python
-    >>> Entry.query.delete()
-    >>> db.session.commit()
+    
+    [<Entry 'First Entry' 'This is the first entry'>,
+     <Entry 'Second Entry' 'This is the second entry'>]
     ```
 
 <div class="notes">
 
-* Πάλι σβήνουμε το σύνολο των εγγραφών στον πίνακα `entries`. Αν
-  θέλαμε να σβήσουμε μία συγκεκριμένη εγγραφή, έστω την `entry_1`, θα
-  δίναμε:
+Στο συγκεκριμένο παράδειγμα αναζητούμε το σύνολο των δεδομένων. Φυσικά
+μπορούμε να κάνουμε πιο λεπτομερείς και περίπλοκες αναζητήσεις. Δείτε
+τη
+[σχετική τεκμηρίωση του Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/queries/#querying-records) και
+την [πλήρη τεκμηρίωση του SQLAlchemy](http://docs.sqlalchemy.org/en/latest/orm/tutorial.html#common-filter-operators).
 
-    ```python
-    >>> print("Hello")
-    >>> db.session.delete(entry_1)
-    ```
-	
 </div>
 
-* Και πάλι επιβεβαιώνουμε:
+## Εμφάνιση Εντολών SQL
+
+* Αν θέλουμε να δούμε τις εντολές που δημιουργεί και εκτελεί το
+  SQLAlchemy, προσθέτουμε το παρακάτω στις ρυθμίσεις αρχικοποίησης
+  μέσα στην κλήση `app.config.update()`.
+  
+    ```python
+    SQLALCHEMY_ECHO = True
+    ```
+
+## Διαγραφή δεδομένων
+
+* Για να σβήσουμε μια συγκεκριμένη εγγραφή, έστω την `entry_1`, δίνουμε:
+
+    ```python
+    >>> db.session.delete(entry_1)
+    >>> db.session.commit()
+    ```
+
+
+* Για να διαγράψουμε όλες τις εγγραφές ενός πίνακα δίνουμε:
+
+    ```python
+    >>> Entry.query.delete()
+    1
+    >>> db.session.commit()
+    ```
+* Επιβεβαιώνουμε:
 
     ```python
     >>> entries = Entry.query.all()
     >>> entries
+    []
     ```
 
 
@@ -349,7 +355,7 @@ null, κ.λπ. Περισσότερες πληροφορίες μπορείτε 
     def add_entry():
         if not session.get('logged_in'):
             abort(401)
-        entry = Entry(request.form['title'], request.form['text'])
+        entry = Entry(title=request.form['title'], text=request.form['text'])
         db.session.add(entry)
         db.session.commit()
         flash('New entry was successfully posted')
@@ -374,26 +380,11 @@ null, κ.λπ. Περισσότερες πληροφορίες μπορείτε 
 * Συνεπώς, απλώς αντιγράψτε τες από την προηγούμενη έκδοση της
   εφαρμογής.
 
-* Για να τρέξετε την εφαρμογή δίνετε ότι και στην προηγούμενη έκδοση.
+* Για να τρέξετε την εφαρμογή δίνετε ό,τι και στην προηγούμενη έκδοση.
 
 <div class="notes">
 
 Υπενθυμίζουμε:
-
-*  Για να ξεκινήσουμε την εφαρμογή σε MS-Windows πρέπει καταρχήν να δώσουμε
-  από τη γραμμή εντολών:
-
-    ```
-    set FLASK_APP=flaskr.py
-    set FLASK_DEBUG=1
-    ```
-
-* Στη συνέχεια για να ξεκινήσουμε την εφαρμογή θα πρέπει να βρισκόμαστε μέσα
-  στον κατάλογο `flaskr` και να δώσουμε:
-
-    ```bash
-    python -m flask run
-    ```
 
 * Για να ξεκινήσουμε την εφαρμογή σε Mac και Linux πρέπει καταρχήν να δώσουμε
   από τη γραμμή εντολών:
@@ -409,7 +400,21 @@ null, κ.λπ. Περισσότερες πληροφορίες μπορείτε 
     ```bash
     flask run
     ```
-	 
+
+*  Για να ξεκινήσουμε την εφαρμογή σε MS-Windows πρέπει καταρχήν να δώσουμε
+  από τη γραμμή εντολών:
+
+    ```
+    set FLASK_APP=flaskr.py
+    set FLASK_DEBUG=1
+    ```
+
+* Στη συνέχεια για να ξεκινήσουμε την εφαρμογή θα πρέπει να βρισκόμαστε μέσα
+  στον κατάλογο `flaskr` και να δώσουμε:
+
+    ```bash
+    python -m flask run
+    ```	 
 </div>
 
 # Microblog με Πολλαπλούς Χρήστες
@@ -501,12 +506,6 @@ class Entry(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, title, text, user_id, datetime):
-        self.title = title
-        self.text = text
-        self.user_id = user_id
-        self.datetime = datetime
-
     def __repr__(self):
         return '<Entry %r %r %r %r>' % (self.title, self.text,
                                         self.user_id, self.datetime)
@@ -547,15 +546,7 @@ class User(db.Model):
     name = db.Column(db.String(20), nullable=False)
     surname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(30), nullable=False)
-    entries = db.relationship('Entry', backref='user',
-                              lazy='dynamic')
-
-    def __init__(self, username, name, surname, email, password):
-        self.username = username
-        self.name = name
-        self.surname = surname
-        self.email = email
-        self.password = password
+    entries = db.relationship('Entry', backref='user', lazy=True)
 
     def __repr__(self):
         return '<User %r %r %r %r>' % (self.username, self.email,
@@ -574,13 +565,13 @@ class User(db.Model):
 στην οποία θα δείχνει. Επιπλέον, με την παράμετρο `backref='user'`
 ορίζουμε ότι στην κλάση `Entry` θα δημιουργηθεί δυναμικά ένα πεδίο
 `user` το οποίο θα δείχνει στον χρήστη που έκανε τη συγκεκριμένη
-ανάρτηση. Η παράμετρος `lazy='dynamic'` ορίζει ότι οι αναρτήσεις για
+ανάρτηση. Η παράμετρος `lazy=True` ορίζει ότι οι αναρτήσεις για
 έναν χρήστη θα διαβάζονται από τη βάση μόνο όταν ζητηθούν, και όχι
 απλώς όταν διαβάζουμε έναν χρήστη. Ο τρόπος με τον οποίο διαβάζονται
 από τη βάση τα αντικείμενα μιας σχέσης μπορεί να είναι σημαντικός
 παράγοντας βελτιστοποίησης. Για περισσότερες πληροφορίες, βλ. τη
 σχετική τεκμηρίωση του
-[lask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.1/models/#one-to-many-relationships) και
+[Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/models/#one-to-many-relationships) και
 του [SQLAlchemy](http://docs.sqlalchemy.org/en/latest/orm/tutorial.html#building-a-relationship).
 
 </div>
@@ -605,9 +596,17 @@ class User(db.Model):
 
     ```python
 
-    >>> user_1 = User("louridas", "Panos", "Louridas", "louridas@aueb.gr", "12345")
+    >>> user_1 = User(username="louridas",
+        name="Panos",
+        surname="Louridas",
+        email="louridas@aueb.gr",
+        password="12345")
 
-    >>> user_2 = User("johndoe", "John", "Doe", "johndoe@gmail.com", "54321")
+    >>> user_2 = User(username="johndoe", 
+        name="John", 
+        surname="Doe", 
+        email="johndoe@gmail.com", 
+        password="54321")
 
     >>> db.session.add(user_1)
     >>> db.session.add(user_2)
@@ -637,10 +636,10 @@ class User(db.Model):
 <div class="notes">
 
 Εδώ βλέπετε ένα επιπλέον χαρακτηριστικό των αναζητήσεων: μπορείτε να
-ορίσετε διαφόρους τρόπους ταξινόμησης των αποτελεσμάτων. Όπως συνήθως,
-περισσότερες πληφορορίες θα βρείτε στην τεκμηρίωση
+ορίσετε διαφόρους τρόπους ταξινόμησης των αποτελεσμάτων. Όπως πάντα,
+περισσότερες πληροφορίες θα βρείτε στην τεκμηρίωση
 του
-[Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.1/queries/#querying-records) και
+[Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/queries/#querying-records) και
 του
 [SQLAlchemy](http://docs.sqlalchemy.org/en/latest/orm/tutorial.html#querying). 
 
@@ -655,7 +654,7 @@ class User(db.Model):
       * ποιος χρήστης έκανε την ανάρτηση
       * ποια ακριβώς χρονική στιγμή
 
-* Ταυτόχρονα, η εισαγωγή θα γίνει μέσω SQLAlchemy.
+* Η εισαγωγή θα γίνει μέσω SQLAlchemy.
 
 
 ## Κώδικας προσθήκης
@@ -666,11 +665,11 @@ def add_entry():
     user_id = session.get('user_id')
     if user_id is None:
         abort(401)
-    entry = Entry(request.form['title'],
-                  request.form['text'],
-                  user_id,
-                  datetime.now()
-    )
+    entry = Entry(title=request.form['title'],
+                  text=request.form['text'],
+                  user_id=user_id,
+                  datetime=datetime.now())
+
     db.session.add(entry)
     db.session.commit()
     flash('New entry was successfully posted')
@@ -699,7 +698,8 @@ def add_entry():
 def login():
     error = None
     if request.method == 'POST':
-        user = User.query.filter_by(username=request.form['username']).first()
+        user = User.query.filter_by(
+            username=request.form['username']).one_or_none():
         if user is None:
             error = 'Invalid username'
         elif request.form['password'] != user.password:
@@ -964,6 +964,15 @@ def logout():
 
 </div>
 
+## Δημιουργία βάσης
+
+* Όπως και πριν, δίνουμε:
+
+    ```python
+    >>> from flaskr import db
+    >>> db.create_all()
+    ```
+
 ## Φόρμα εγγραφής
 
 * Αυτή τη φορά θα εμπλουτίσουμε την εφαρμογή με τη δυνατότητα online
@@ -1016,32 +1025,40 @@ def logout():
 	```
   Αυτό θα το χρησιμοποιήσουμε για το χειρισμό λαθών.
   
- 
+* Συγκεκριμένα, θα χειριστούμε προβλήματα τα οποία μπορεί να
+  εμφανιστούν κατά την εισαγωγή χρηστών στη βάση δεδομένων· η βάση δεν
+  θα επιτρέψει την εισαγωγή δύο χρηστών με το ίδιο username και αυτό
+  θα το λάβουμε ως μία εξαίρεση (exception) από το SQLAlchemy.
+
 ## Κώδικας εγγραφής
 
 ```python
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-	error = None
-	if request.method == 'POST':
-		password = bcrypt.hashpw(request.form['password'].encode('utf8'),
-								 bcrypt.gensalt())
-		user = User(request.form['username'],
-					request.form['name'],
-					request.form['surname'],
-					request.form['email'],
-					password)
-		db.session.add(user)
-		try:
-			db.session.commit()
-			session['user_id'] = user.id
-			session['username'] = user.username
-		except exc.SQLAlchemyError as ex:
-			error = 'Error inserting record in the database'
-		if not error:
-			flash('Registration successful')
-			return redirect(url_for('show_entries'))
-	return render_template('register.html', error=error)
+    error = None
+    if request.method == 'POST':
+        if request.form['password'] != request.form['repeat-password']:
+            error = 'Passwords do not match'
+        else:
+            password = bcrypt.hashpw(request.form['password'].encode('utf8'),
+                                     bcrypt.gensalt())
+            user = User(username=request.form['username'],
+                        name=request.form['name'],
+                        surname=request.form['surname'],
+                        email=request.form['email'],
+                        password=password)
+            db.session.add(user)
+            try:
+                db.session.commit()
+                session['user_id'] = user.id
+                session['username'] = user.username
+            except exc.SQLAlchemyError as ex:
+                error = 'Error inserting record in the database'
+                app.logger.error(ex)
+        if not error:
+            flash('Registration successful')
+            return redirect(url_for('show_entries'))
+    return render_template('register.html', error=error)
 ```
 
 <div class="notes">
@@ -1083,11 +1100,12 @@ password = bcrypt.hashpw(request.form['password'].encode('utf8'),
     def login():
         error = None
         if request.method == 'POST':
-            user = User.query.filter_by(username=request.form['username']).first()
+            user = User.query.filter_by(
+                username=request.form['username']).one_or_none():
             if user is None:
                 error = 'Invalid username'
             elif not bcrypt.checkpw(request.form['password'].encode('utf8'),
-                                    user.password.encode('utf8')):
+                user.password):
                 error = 'Invalid password'
             else:
                 session['user_id'] = user.id
@@ -1280,7 +1298,7 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 ## Δημιουργία πινάκων
 
 * Για να δημιουργήσουμε τους πίνακες της βάσης μας (entries, users)
-  μπορούμε πάλι να χρησιμοποιήσουμε τη γραμμή εντολών Python:
+  μπορούμε και πάλι να χρησιμοποιήσουμε τη γραμμή εντολών Python:
 
     ```python
     >>> from flaskr import db

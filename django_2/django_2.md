@@ -31,11 +31,11 @@
         name = models.CharField(max_length=200)
         books = models.ManyToManyField(Book)
 
-    def __str__(self):
-        return self.name
+        def __str__(self):
+            return self.name
     ```
 
-## Δημιουργία και εφαρμογή μεταγωγής
+## Δημιουργία μεταγωγής
 
 * Όπως έχουμε πει, για να δημιουργήσουμε μια μεταγωγή που περιέχει τις
   αλλαγές μας, δίνουμε:
@@ -44,12 +44,30 @@
     python manage.py makemigrations
     ```
 
-* Και στη συνέχεια για να την εφαρμόσουμε δίνουμε:
+* Θα δούμε τότε ότι πράγματι θα δημιουργηθεί μία δεύτερη μεταγωγή:
+
+    ```
+    Migrations for 'djbr':
+      djbr/migrations/0002_author.py
+        - Create model Author
+    ```
+ 
+## Εφαρμογή μεταγωγής
+ 
+* Στη συνέχεια για να την εφαρμόσουμε δίνουμε:
 
     ```bash
     python manage.py migrate
     ```
 
+* Στην οθόνη θα πληροφορηθούμε για την εφαρμογή της:
+
+    ```
+    Migrations for 'djbr':
+      djbr/migrations/0002_author.py
+        - Create model Author
+    ```
+    
 <div class="notes">
 
 Κάνοντας αυτό, θα δημιουργηθεί ένας πίνακας `djbr_author_books` που θα
@@ -80,8 +98,7 @@
     ```python
     >>> b1 = Book(title="Infinite Jest", pub_year=1996)
     >>> b1.save()
-    >>> b2 = Book(title="Oblivion: Stories",
-        pub_year=2004)
+    >>> b2 = Book(title="Oblivion: Stories", pub_year=2004)
     >>> b2.save()
     ```
 
@@ -117,8 +134,7 @@
     >>> dennis = Author(name="Dennis Ritchie")
     >>> brian.save()
     >>> dennis.save()
-    >>> c = Book(title="The C Programming Language, 2nd edition",
-        pub_year=1988)
+    >>> c = Book(title="The C Programming Language, 2nd edition", pub_year=1988)
     >>> c.save()
     >>> c.author_set.add(brian, dennis)
     >>> c.author_set.all()
@@ -141,7 +157,7 @@
 
 Γενικώς, μπορείτε να κάνετε ό,τι θέλετε με τις σχέσεις πολλά προς
 πολλά. Για περισσότερες πληροφορίες, δείτε τη
-[σχετική τεκμηρίωση](https://docs.djangoproject.com/en/1.10/topics/db/examples/many_to_many/). 
+[σχετική τεκμηρίωση](https://docs.djangoproject.com/en/1.11/topics/db/examples/many_to_many/). 
 
 </div>
 
@@ -233,32 +249,25 @@
     <!DOCTYPE html>
     <html lang="en">
       <head>
+
+        <!-- Required meta tags for Bootstrap -->
+        <meta charset="utf-8">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-          crossorigin="anonymous">
-
-        <!-- Optional theme -->
-        <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-          crossorigin="anonymous">
-
-        <script src="http://code.jquery.com/jquery-3.1.1.min.js"
-          integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-          crossorigin="anonymous"></script>
-
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-          integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-          crossorigin="anonymous"></script>
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+        crossorigin="anonymous"> 
 
         <title>{% block title %}Django Book Reviews{% endblock %}</title>
       </head>
 
       <body>
-        <div class="container theme-showcase">
+        <div class="container">
           <div class="jumbotron">
             <h1>{% block heading %}Django Book Reviews{% endblock %}</h1>
           </div>
@@ -266,6 +275,18 @@
             {% block content %}{% endblock %}
           </div>
         </div>
+
+         <!-- Optional JavaScript for Bootstrap -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+        integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+        crossorigin="anonymous"></script> 
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+        integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+        crossorigin="anonymous"></script> 
       </body>
     </html>
     ```
@@ -273,7 +294,8 @@
 ## Kεντρική σελίδα
 
 * Η κεντρική σελίδα θα εμφανίζει τα 10 βιβλία που έχουν εκδοθεί
-  τελευταία (θα δούμε πώς προκύπτουν τα 10):
+  τελευταία (θα δούμε πώς προκύπτουν τα 10). Ο σκελετός της κεντρικής
+  σελίδας θα αποθηκευτεί στο αρχείο `djbr/templates/djbr/index.html`:
 
     ```html
     {% extends "djbr/base.html" %}
@@ -354,8 +376,8 @@
         Year published: {{ book.pub_year }}
       </li>
       <li class="list-group-item"><span>Reviews:
-        <a class="badge" href="{% url 'djbr:reviews' book.id %}">
-          {{ book.review_set.all.count }}
+        <a href="{% url 'djbr:reviews' book.id %}">
+          <span class="badge badge-secondary">{{ book.review_set.all.count }}</span>
         </a></span>
       </li>
     </ul>
