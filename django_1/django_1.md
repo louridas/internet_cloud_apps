@@ -126,7 +126,7 @@ migrations). Θα δούμε στη συνέχεια τι σημαίνει αυ�
 * Για να φτιάξουμε τον σκελετό της εφαρμογής μας δίνουμε, μέσα στον
   εξωτερικό κατάλογο `project_site` που φτιάξαμε:
 
-    ```python
+    ```bash
     python manage.py startapp djbr
     ```
 
@@ -580,7 +580,7 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
 
 * Τότε θα δούμε στην οθόνη:
 
-    ```bash
+    ```
     Operations to perform:
       Apply all migrations: admin, auth, contenttypes, djbr, sessions
     Running migrations:
@@ -642,7 +642,7 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
 * Κατ΄ αρχήν θα πρέπει να εισάγουμε τα αντίστοιχα αντικείμενα στο
   περιβάλλον μας, οπότε ξεκινάμε με τα κατάλληλα imports.
 
-    ```python
+    ```pythonconsole[python3]
     >>> from djbr.models import Book, Review
     >>> Book.objects.all()
     <QuerySet []>
@@ -653,7 +653,7 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
 * Για να δημιουργήσουμε βιβλία, απλώς καλούμε τον κατασκευαστή των
   αντικειμένων `Book` και στη συνέχεια τη μέθοδο `save()`.
 
-    ```python
+    ```pythonconsole[python3]
     >>> b = Book(title="Conversation with Friends", pub_year=2017)
     >>> b.save()
     ```
@@ -663,7 +663,7 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
 * Έχουμε πρόσβαση στα πεδία των αντικειμένων ως απλά πεδία στην
   Python. 
 
-    ```python
+    ```pythonconsole[python3]
     >>> b.id
     1
     >>> b.title
@@ -676,7 +676,7 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
 
 * Ομοίως μπορούμε να τα αλλάξουμε κατά βούληση.
 
-    ```python
+    ```pythonconsole[python3]
     >>> b.title = "Conversations with Friends"
     >>> b.save()
     >>> Book.objects.all()
@@ -688,7 +688,7 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
 * Ας προσθέσουμε δύο ακόμα βιβλία για να έχουμε λίγα περισσότερα
   δεδομένα στη βάση.
 
-    ```python
+    ```pythonconsole[python3]
     >>> b = Book(title="City on Fire", pub_year=2015)
     >>> b.save()
     >>> b = Book(title="La Vérité sur l'affaire Harry Quebert", pub_year=2012)
@@ -741,7 +741,7 @@ class Review(models.Model):
 * Τώρα μπορούμε να διαπιστώσουμε ότι τα βιβλία μας εμφανίζονται
   καλύτερα:
   
-```python
+```pythonconsole[python3]
 >>> Book.objects.all()
 <QuerySet [<Book: Conversations with Friends 2017>, <Book: City on Fire 2015>, <Book: La Vérité sur l'affaire Harry Quebert 2012>]>
 ```
@@ -775,7 +775,7 @@ class Review(models.Model):
   
 * Ας θυμηθούμε την απλή αναζήτηση όλων:
 
-    ```python
+    ```pythonconsole[python3]
     >>> from djbr.models import Book, Review
 
     >>> Book.objects.all()
@@ -784,7 +784,7 @@ class Review(models.Model):
 
 * Αναζήτηση με βάση συγκεκριμένο πεδίο:
 
-    ```python
+    ```pythonconsole[python3]
     >>> Book.objects.filter(id=1)
     <QuerySet [<Book: Conversations with Friends 2017>]>
     ```
@@ -793,7 +793,7 @@ class Review(models.Model):
 
 * Έστω ότι θέλουμε να βρούμε τα βιβλίο που ο τίτλος τους αρχίζει με "City":
 
-    ```
+    ```pythonconsole[python3]
     >>> Book.objects.filter(title__startswith='City')
     <QuerySet [<Book: City on Fire 2015>]>
     ```
@@ -801,7 +801,7 @@ class Review(models.Model):
 * Ή ότι θέλουμε να βρούμε τα βιβλία τα οποία έχουν εκδοθεί τα τελευταία
   δύο χρόνια (βρισκόμαστε στο 2017):
 
-    ```python
+    ```pythonconsole[python3]
     >>> from django.utils import timezone
 
     >>> pub_year = timezone.now().year - 2
@@ -832,7 +832,7 @@ class Review(models.Model):
   μέθοδο `get()`. Αν το αντικείμενο δεν υπάρχει θα πάρουμε μια
   εξαίρεση τύπου `DoesNotExist`:
 
-    ```python
+    ```pythonconsole[python3]
     >>> Book.objects.get(id=10)
     ...
 
@@ -855,7 +855,7 @@ class Review(models.Model):
 * Επειδή η αναζήτηση με το πρωτεύον κλειδί είναι πολύ συνηθισμένη, το
   Django προσφέρει μια συντόμευση γι' αυτήν.
 
-    ```python
+    ```pythonconsole[python3]
     >>> Book.objects.get(pk=1)
     <Book: Conversations with Friends 2017>
     ```
@@ -863,7 +863,7 @@ class Review(models.Model):
 * Με την ευκαιρία, μπορούμε να δοκιμάσουμε αν δουλεύει η μέθοδος
   `was_published_recently()` που προσθέσαμε:
 
-    ```python
+    ```pythonconsole[python3]
     >>> b = Book.objects.get(pk=1)
     >>> b.was_published_recently()
     True
@@ -874,14 +874,14 @@ class Review(models.Model):
 * Αυτή τη στιγμή το βιβλίο μας δεν έχει καμμία κριτική:
 
 
-    ```python
+    ```pythonconsole[python3]
     >>> b.review_set.all()
     <QuerySet []>
     ```
     
 * Ας προσθέσουμε λοιπόν τρεις κριτικές:
 
-```python
+```pythonconsole[python3]
 >>> b.review_set.create(title="A New Kind of Adultery Novel",
 text='Sally Rooney\'s début, "Conversations with Friends", is a bracing study of ideas. But it\'s even smarter about people. By Alexandra Schwartz in The New Yorker', 
 review_date="2017-07-31 00:00:00-05:00")
@@ -912,14 +912,14 @@ review_date="2017-08-03 12:28:00-05:00")
 * Σε μία σχέση ένα προς πολλά μπορούμε πάντα να πάμε από τη μεριά των
   πολλών στη μεριά του ενός:
 
-```python
+```pythonconsole[python3]
 >>> r.book
 <Book: Conversations with Friends 2017>
 ```
 
 * Ενώ φυσικά μπορούμε πάντα να πάμε από τη μεριά του ενός στα πολλά:
 
-```python
+```pythonconsole[python3]
 >>> b.review_set.all()
 <QuerySet [<Review: A New Kind of Adultery Novel Sally Rooney's début, "Conversations with Friends", is a bracing study of ideas. But it's even smarter about people. By Alexandra Schwartz in The New Yorker 2017-07-31 05:00:00+00:00>, <Review: Conversations with Friends by Sally Rooney review - young, gifted and self-destructive A menage a quatre in post-crash Dublin tests the bonds between close friends. By Claire Kilroy in The Guardian 2017-06-01 00:00:00+00:00>, <Review: Tell Me I'm Interesting Sally Rooney’s debut novel is a remarkably charming exploration of that very uncharming subject: the human ego. By Katy Waldman in The Slate 2017-08-03 17:28:00+00:00>]>
 
@@ -932,7 +932,7 @@ review_date="2017-08-03 12:28:00-05:00")
 * Επίσης, μπορούμε να πλοηγηθούμε μέσω αντικειμένων και στα φίλτρα
   αναζητήσεων:
 
-```python
+```pythonconsole[python3]
 >>> Review.objects.filter(book__pub_year=2017)
 <QuerySet [<Review: A New Kind of Adultery Novel Sally Rooney's début, "Conversations with Friends", is a bracing study of ideas. But it's even smarter about people. By Alexandra Schwartz in The New Yorker 2017-07-31 05:00:00+00:00>, <Review: Conversations with Friends by Sally Rooney review - young, gifted and self-destructive A menage a quatre in post-crash Dublin tests the bonds between close friends. By Claire Kilroy in The Guardian 2017-06-01 00:00:00+00:00>, <Review: Tell Me I'm Interesting Sally Rooney’s debut novel is a remarkably charming exploration of that very uncharming subject: the human ego. By Katy Waldman in The Slate 2017-08-03 17:28:00+00:00>]>
 ```
@@ -948,7 +948,7 @@ review_date="2017-08-03 12:28:00-05:00")
 
 * Η διαγραφή αντικειμένων γίνεται με τη μέθοδο `delete()`:
 
-    ```python
+    ```pythonconsole[python3]
     >>> r = b.review_set.filter(text__startswith='Sally')
     >>> r.delete()
     (2, {'djbr.Review': 2})
@@ -1087,7 +1087,7 @@ review_date="2017-08-03 12:28:00-05:00")
 * Μπορούμε να επιβεβαιώσουμε τι δημιουργήθηκε από το MySQL Workbench
   ως εξής:
 
-    ```bash
+    ```sql
     USE djbr;
 
     SHOW TABLES;
@@ -1122,19 +1122,19 @@ Django για την εφαρμογή τους.
     ```
 * Θα μας ζητηθεί να δώσουμε το όνομα του χρήστη:
 
-    ```bash
+    ```
     Username (leave blank to use 'panos'): admin
     ```
 
 * Και στη συνέχεια τη διεύθυνση ηλεκτρονικού ταχυδρομείου του:
 
-    ```bash
+    ```
     Email address: louridas@aueb.gr
     ```
 
 * Τέλος, θα πρέπει να εισάγουμε δύο φορές τον κωδικό εισόδου:
 
-    ```bash
+    ```
     Password:
     Password (again):
     Superuser created successfully.
