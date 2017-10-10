@@ -189,6 +189,7 @@ module.exports = mongoose.model('User', userSchema);
 
 * Για το σκοπό αυτό θα χρησιμοποιήσουμε τη βιβλιοθήκη
   [prompt](https://www.npmjs.com/package/prompt).
+
 * Την εγκαθιστούμε δίνοντας:
     ```bash
     npm install --save prompt
@@ -236,6 +237,11 @@ module.exports = {
 ## `create_user.js`
 
 ```
+=======
+## `create_user.js`
+
+```javascript
+>>>>>>> 9654dffe7c212f1a17bc2c218cd7e8b2c701255b
 const prompt = require('prompt');
 const mongoose = require('mongoose');
 
@@ -312,6 +318,13 @@ prompt.get([{
 
 * Το μυστικό αυτό θα το αποθηκεύσουμε στο `config.js` που φτιάξαμε
   προηγουμένως. 
+  
+* Επίσης, πρέπει να θυμηθούμε ότι στον εξυπηρετητή δίνουμε το όνομα
+  και τον κωδικό του χρήστη.
+
+* Γενικώς δεν είναι καλό να τα έχουμε αυτά σε κοινή θέα, οπότε θα τα
+  βάλουμε σε ένα ξεχωριστό αρχείο `config.js` στον κεντρικό κατάλογο
+  της εφαρμογής.
 
 ## `config.js`
 
@@ -327,6 +340,14 @@ module.exports = {
 * Στο τέλος του `app.js` , πριν από την τελευταία γραμμή με το
   `module.exports`, βάζουμε:
     ```javascript
+    const config = require('./config');
+    ```
+
+* Στο τέλος, πριν από την τελευταία γραμμή με το `module.exports`,
+  βάζουμε:
+    ```javascript
+    mongoose.connect(config.database);
+
     app.set('jwt_secret', config.jwt_secret);
     ```
 
@@ -671,6 +692,45 @@ router.get('/books', function(req, res) {
         res.send(err);
       }
       res.json(books);
+=======
+## `reviews-router.js`
+
+```javascript
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const router = express.Router();
+const Review = require('../models/review');
+
+router.get('/books/:book_id/reviews', function(req, res) {
+  Review.find({ book: req.params.book_id })
+    .sort({ review_datetime: -1 })
+    .exec(function(err, reviews) {
+      if (err) {
+        res.send(err);
+      }
+      res.json(reviews);
+    });
+});
+
+router.post('/books/:book_id/reviews', function(req, res, next) {
+  var token = req.get('authorization');
+  
+  if (token && token.startsWith("JWT ")) {
+    token = token.slice(4);
+    jwt.verify(token, req.app.get('jwt_secret'), function(err, decoded) {
+      if (err) {
+        res.status(401).json({ success: false,
+                               message: 'Invalid token.'
+                             });
+      } else {
+        req.decoded = decoded;
+        next();
+      }
+    });
+  } else {
+    res.status(403).send({ 
+      success: false, 
+      message: 'No token provided.' 
     });
   }
 });
@@ -711,6 +771,17 @@ router.delete('/books/:book_id', function(req, res) {
         }
       });
     }
+
+router.post('/books/:book_id/reviews', function(req, res) {
+  var review = new Review();
+  review.title = req.body.title;
+  review.text = req.body.text;
+  review.book = req.params.book_id;
+  review.save(function(err) {
+    if (err) {
+        res.send(err);
+    }
+    res.json(review);
   });
 });
 
