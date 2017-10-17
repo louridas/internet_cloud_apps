@@ -1,0 +1,21 @@
+{% extends "djbr/base.html" %}
+
+{% block content %}
+{% if not book_reviews %}
+  <h2 class="bg-warning">No reviews yet.</h2>
+{% else %}
+  <div class="list-group">
+    {% for review in book_reviews %}
+      <div class="list-group-item active">
+        Summary: {{ review.title }}
+      </div>
+      <div class="list-group-item">
+        Review: {{ review.text }}
+      </div>
+      <div class="list-group-item">
+        Date reviewed: {{ review.review_date }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+{% endblock %}

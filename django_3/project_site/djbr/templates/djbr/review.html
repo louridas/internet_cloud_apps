@@ -1,0 +1,24 @@
+{% extends "djbr/base.html" %}
+
+{% block content %}
+{% if review_id %}
+<form action="{% url 'djbr:review' book_id review_id %}"  method="post">
+{% else %}
+<form action="{% url 'djbr:review' book_id %}"  method="post">
+{% endif %}
+  {% csrf_token %}
+    <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title"
+           class="form-control" placeholder="Title" value="{{ title }}"/>
+  </div>
+  <div class="form-group">
+    <label for="text">Content</label>
+    <textarea id="text" name="text"
+              class="form-control" placeholder="content" rows="10">{{ text }}
+    </textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>  
+{% endblock %}
+

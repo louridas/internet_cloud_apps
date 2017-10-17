@@ -1,0 +1,19 @@
+{% extends "djbr/base.html" %}
+
+{% block content %}
+<ul class="list-group">
+  <li class="list-group-item">
+    Name: {{ author.name }}
+  </li>
+  <li class="list-group-item">
+    Books:
+    <ul>
+      {% for book in author.books.all %}
+        <li>
+          <a href="{% url 'djbr:book' book.id %}">{{ book.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+</ul>
+{% endblock %}
+
