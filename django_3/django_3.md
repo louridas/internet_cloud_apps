@@ -67,7 +67,7 @@ Host: www.example.com
 * Πάντως ένα URL είναι ένα URI το οποίο δείχνει και τον τρόπο με τον
   οποίο μπορούμε να έχουμε πρόσβαση σε έναν συγκεκριμένο πόρο.
 
-* Το `www.example.com/index.html` είναι URI, αλλά όχι URL,
+* Το `www.example.com/index.html` είναι URI, αλλά όχι URL.
 
 * Το `http://www.example.com/index.html` είναι και URL και URI.
 
@@ -555,3 +555,49 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
       <span class="fa fa-pencil" aria-hidden="true"></span>
     </a>
     ```
+
+<div class="notes">
+
+## Αν κάτι πάει στραβά
+
+* Προσοχή. Αν δούμε ότι το εικονίδιο δεν εμφανίζεται, ενώ ταυτόχρονα στο
+  τερματικό του Django εμφανίζεται ένα μήνυμα όπως:
+    ```
+    GET /static/djbr/css/font-awesome.min.css HTTP/1.1" 404 110
+    ```
+  τότε προφανώς κάτι δεν έχει πάει καλά.
+  
+* Εξασφαλίζουμε ότι η δομή των καταλόγων είναι σωστή και έχουν
+  πραγματικά αντιγραφεί τα αρχεία όπως περιγράψαμε.
+  
+* Εξασφαλίζουμε επίσης ότι το Django δεν βρίσκεται σε κατάσταση
+  εκσφαλμάτωσης (debug mode), δηλαδή δεν υπάρχει `DEBUG = True` στις
+  ρυθμίσεις μας.
+  
+## Στατικοί πόροι στην παραγωγή
+
+* Όταν βγάλουμε την εφαρμογή μας στην παραγωγή δεν θα χρησιμοποιούμε
+  μόνο του το Django.
+  
+* Το Django θα βρίσκεται πίσω από έναν άλλο web server, όπως ο
+  [Apache](https://httpd.apache.org/) ή ο
+  [nginx](https://nginx.org/en/) (o NGINX[https://www.nginx.com/]
+  είναι η εμπορική έκδοση), ο οποίος θα λειτουργεί ως [reverse
+  proxy](https://en.wikipedia.org/wiki/Reverse_proxy).
+  
+* O reverse proxy θα είναι υπεύθυνος, ανάμεσα στα άλλα, για τη διάθεση
+  των στατικών πόρων.
+  
+* Τους συλλέγουμε από το Django με την εντολή:
+    ```bash
+    python manage.py collectstatic
+    ```
+    και στη συνέχεια τους αντιγράφουμε στον κατάλληλο κατάλογο του web
+    server που έχουμε επιλέξει.
+    
+* Η διαδικασία αυτή μπορεί να αυτοματοποιηθεί. Για περισσότερες
+  λεπτομέρειες, βλ.
+  [εδώ](https://docs.djangoproject.com/en/1.11/howto/static-files/)
+  και
+  [εδώ](https://docs.djangoproject.com/en/1.11/howto/static-files/deployment/).
+    
