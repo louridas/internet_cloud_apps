@@ -393,7 +393,7 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
 * Θα ήταν κομψότερο αν αντί γι΄ αυτό είχαμε ένα κατάλληλο εικονίδιο.
 
 * Θα χρησιμοποιήσουμε το εικονίδιο "μολύβι" (pencil) από το σύνολο εικονιδίων
-  [Open Iconic](https://useiconic.com/open/).
+  [Font Awesome](http://fontawesome.io/icons/).
 
 
 ## Στατικοί πόροι
@@ -446,15 +446,14 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
 
 ## Αντιγραφή των στατικών πόρων
 
-* Κατεβάζουμε το
-  [αρχείο](https://github.com/iconic/open-iconic/archive/master.zip)
-  που περιέχει το σύνολο της συλλογής Open Ionic.
+* Κατεβάζουμε τη συλλογή των εικονιδίων [Font
+  Awesome](http://fontawesome.io/get-started/#modal-download).
   
 * Αφού το αποσυμπιέσουμε, αντιγράφουμε:
-    * το αρχείο `open-iconic-bootstrap.min.css` στον υποκατάλογο
+    * το αρχείο `font-awesome.min.css` στον υποκατάλογο
       `static/djbr/css`
-    * το αρχείο `open-iconic.woff` στον υποκατάλογο
-      `static/djbr/fonts`
+    * τα αρχεία του υποκαταλόγου `fonts` του Font Awesome στον
+      υποκατάλογο `static/djbr/fonts`
     
 ## Προσαρμογή του αρχείου `base.html`
 
@@ -467,9 +466,9 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
 * Στη συνέχεια προσθέτουμε το παρακάτω:
 
 ```html
-<!-- Open Ionic -->
- <link rel="stylesheet"
-       href="{% static "/djbr/css/open-iconic-bootstrap.min.css" %}"/>
+<!-- Font Awesome -->
+<link rel="stylesheet"
+      href="{% static "/djbr/css/font-awesome.min.css" %}"/>
 ```
 
 <div class="notes">
@@ -477,9 +476,9 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
 Το `{% load static %}` δίνει τη δυνατότητα στο Django να κατασκευάζει
 σωστά τα URLs τα οποία θα αντιστοιχούν στους στατικούς πόρους. Έτσι,
 στη συνέχεια το 
-`href="{% static "/djbr/css/open-iconic-bootstrap.min.css" %}"` 
+`href="{% static "/djbr/css/font-awesome.min.css" %}"` 
 θα κατασκευάσει σωστά το URL που θα αντιστοιχεί στο
-`open-iconic-bootstrap.min.cs`, όπου κι αν βρίσκεται αυτό μέσα στην
+`font-awesome.min.cs`, όπου κι αν βρίσκεται αυτό μέσα στην
 ιεραρχία των καταλόγων του υπολογιστή.
 
 </div>
@@ -507,9 +506,9 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
           crossorigin="anonymous"/>
 
-    <!-- Open Ionic -->
+    <!-- Font Awesome -->
     <link rel="stylesheet"
-          href="{% static "/djbr/css/open-iconic-bootstrap.min.css" %}"/>
+          href="{% static "/djbr/css/font-awesome.min.css" %}"/>
       
     <title>{% block title %}Django Book Reviews{% endblock %}</title>
   </head>
@@ -553,6 +552,6 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
     σε
     ```html
     <a href="{% url 'djbr:review' book.id %}">
-      <span class="oi oi-pencil"></span>
+      <span class="fa fa-pencil" aria-hidden="true"></span>
     </a>
     ```
