@@ -685,7 +685,7 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
   
 * Το Django θα βρίσκεται πίσω από έναν άλλο web server, όπως ο
   [Apache](https://httpd.apache.org/) ή ο
-  [nginx](https://nginx.org/en/) (o NGINX[https://www.nginx.com/]
+  [nginx](https://nginx.org/en/) (o [NGINX](https://www.nginx.com/)
   είναι η εμπορική έκδοση), ο οποίος θα λειτουργεί ως [reverse
   proxy](https://en.wikipedia.org/wiki/Reverse_proxy).
   
