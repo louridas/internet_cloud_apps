@@ -13,3 +13,4 @@ urlpatterns = [
     url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review'),
     url(r'^author/(?P<author_id>[0-9]+)/$', views.author, name='author'),
 ]
+

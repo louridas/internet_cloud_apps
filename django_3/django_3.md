@@ -50,7 +50,7 @@ GET /index.html HTTP/1.1
 Host: www.example.com
 ```
 
-* Η πρώτη γραμμή ξεκινάει με τη μέθοδο, ακολουθεί ένα URI που υποδυκνείει τον
+* Η πρώτη γραμμή ξεκινάει με τη μέθοδο, ακολουθεί ένα URI που υποδεικνύει τον
   πόρο που θέλουμε και στο τέλος δίνεται η έκδοση του πρωτοκόλλου.
 
 * Στις επόμενες γραμμές μπαίνουν διάφορες επικεφαλλίδες, όπως η
@@ -184,18 +184,37 @@ urlpatterns = [
 * Τα URLs εφαρμόζονται με τη σειρά, μέχρι να βρεθεί κάποιο που να
   ταιριάζει.
 
-* To 5o URL είναι πιο γενικό από το 4o URL. Συνεπώς, αν ήταν σε
-  αντίστροφη σειρά δεν θα εφαρμοζόταν ποτέ.
+* Έστω ότι το 4ο και το 5ο URL δεν τελείωναν στον χαρακτήρα `$`. Τότε,
+  τo 5o URL θα ήταν πιο γενικό από το 4o URL. Συνεπώς, αν ήταν σε
+  αντίστροφη σειρά και το:
+  
+    ```
+    ^book/(?P<book_id>[0-9]+)/review/(?P<review_id>[0-9]+)
+    ```
+  ήταν μετά το:
+    ```
+    ^book/(?P<book_id>[0-9]+)/review/
+    ```
+  το
+    ```
+    ^book/(?P<book_id>[0-9]+)/review/(?P<review_id>[0-9]+)
+    ```
+  δεν θα εφαρμοζόταν ποτέ.
 
 * Πράγματι, τα URLs του τύπου `book/1/review` είναι γενικότερα από τα
   URLs του τύπου `book/1/review/2`.
 
 * To 4o URL παίρνει δύο παραμέτρους, τον κωδικό του βιβλίου και τον
   κωδικό της κριτικής: αφορά τη λειτουργία που θέλουμε να εκτελεστεί
-  για *αλλαγή* υπάρχουσας κριτικής.
+  για *αλλαγή* υπάρχουσας κριτικής. To 5o URL παίρνει μόνο μία
+  παράμετρο, τον κωδικό του βιβλίου: αφορά τη λειτουργία που θέλουμε
+  να εκτελεστεί για προσθήκη νέας κριτικής.
 
-* To 5o URL παίρνει μόνο μία παράμετρο, τον κωδικό του βιβλίου: αφορά
-  τη λειτουργία που θέλουμε να εκτελεστεί για προσθήκη νέας κριτικής.
+* Για το λόγο αυτό είναι πάντα καλό να βάζουμε τα URLs ώστε τα πιο
+  γενικά να βρίσκονται μετά από τα πιο ειδικά. Στην περίπτωσή μας που
+  τα URLs τελειώνουν σε `$` δεν έχουμε πρόβλημα, αλλά καλό είναι να το
+  βάζουμε πάντα τα ειδικότερα πριν τα γενικότερα για να μην βρεθούμε
+  προ εκπλήξεων.
 
 </div>
 
@@ -392,8 +411,8 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
 
 * Θα ήταν κομψότερο αν αντί γι΄ αυτό είχαμε ένα κατάλληλο εικονίδιο.
 
-* Θα χρησιμοποιήσουμε το εικονίδιο "μολύβι" (pencil) από το σύνολο εικονιδίων
-  [Font Awesome](http://fontawesome.io/icons/).
+* Θα χρησιμοποιήσουμε το εικονίδιο "συν σε κύκλο" (plus-circle) από το
+  σύνολο εικονιδίων [Font Awesome](http://fontawesome.io/icons/).
 
 
 ## Στατικοί πόροι
@@ -458,18 +477,16 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
 ## Προσαρμογή του αρχείου `base.html`
 
 * Στο τμήμα `<head> ... </head>` προσθέτουμε στην αρχή τη γραμμή:
-
-```html
-{% load static %}
-```
+    ```html
+    {% load static %}
+    ```
 
 * Στη συνέχεια προσθέτουμε το παρακάτω:
-
-```html
-<!-- Font Awesome -->
-<link rel="stylesheet"
-      href="{% static "/djbr/css/font-awesome.min.css" %}"/>
-```
+    ```html
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="{% static "/djbr/css/font-awesome.min.css" %}"/>
+    ```
 
 <div class="notes">
 
@@ -552,11 +569,98 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
     σε
     ```html
     <a href="{% url 'djbr:review' book.id %}">
-      <span class="fa fa-pencil" aria-hidden="true"></span>
+      <span class="fa fa-plus-circle" aria-hidden="true"></span>
     </a>
     ```
 
-<div class="notes">
+## Αλλαγή κριτικής
+
+* Έχουμε δώσει τη δυνατότητα στους χρήστες να προσθέτουν νέες κριτικές
+  σε ένα βιβλίο, αλλά όχι ακόμα τη δυνατότητα να αλλάζουν μια
+  υπάρχουσα κριτική.
+  
+* Αυτό θα το κάνουμε προσθέτοντας τον κατάλληλο σύνδεσμο δίπλα στον
+  τίτλο της κάθε κριτικής που εμφανίζεται στη λίστα όλων των κριτικών
+  του κάθε βιβλίου.
+  
+* Ο σύνδεσμός μας αυτή τη φορά θα εμφανίζεται ως ένα λευκό μολυβάκι.
+
+## Δημιουργία συνδέσμου αλλαγής κριτικής
+
+* Για τη δημιουργία συνδέσμου θα προσθέσουμε στον σκελετό
+  `djbr/templates/reviews.html` τον παρακάτω κώδικα στο κατάλληλο
+  σημείο:
+    ```html
+    <a href="{% url 'djbr:review' review.book.id review.id %}">
+      <span class="fa fa-inverse fa-pencil" aria-hidden="true"></span>
+    </a>
+    ```
+* Η πρώτη γραμμή θα δημιουργήσει το σωστό σύνδεσμο της μορφής
+  `djbr/book/<book_id>/review/<review_id>`.
+  
+* Η δεύτερη γραμμή θα εισάγει το λευκό μολυβάκι.
+
+* Χρειάζονται επίσης κάποιες στυλιστικές αλλαγές, μπορείτε να δείτε το
+  σύνολο των αλλαγών στη συνέχεια.
+  
+## Το αρχείο `reviews.html`
+
+```html
+{% extends "djbr/base.html" %}
+
+{% block content %}
+{% if not book_reviews %}
+  <h2 class="bg-warning">No reviews yet.</h2>
+{% else %}
+  <div class="list-group">
+    {% for review in book_reviews %}
+      <div class="list-group-item list-group-item-action flex-column
+                  align-items-start active">
+        <div class="d-flex w-100 justify-content-between">
+          <span class="mb=1">Summary: {{ review.title }}</span>
+          <span>
+            <a href="{% url 'djbr:review' review.book.id review.id %}">
+              <span class="fa fa-inverse fa-pencil" aria-hidden="true"></span>
+            </a>
+        </span>
+        </div>
+      </div>
+      <div class="list-group-item">
+        Review: {{ review.text }}
+      </div>
+      <div class="list-group-item">
+        Date reviewed: {{ review.review_date }}
+        {{ review.id }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+{% endblock %}
+```
+
+## Προσθήκη `djbr.css`
+
+* Με την ευκαιρία, θα δημιουργήσουμε το αρχείο `static/djbr/djbr.css`
+  το οποίο θα χρησιμοποιήσουμε για την προσαρμογή του στυλ της
+  εφαρμογής μας.
+  
+* Προς το παρόν θα είναι στοιχειώδες:
+    ```css
+    body {
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+    ```
+    
+* Για να το χρησιμοποιήσουν οι σελίδες της εφαρμογής μας, προσθέτουμε
+  το παρακάτω στο τμήμα `<head> ... </head>` του σκελετού `base.html` (για
+  παράδειγμα, κάτω ακριβώς από το σημείο που δηλώσαμε το
+  `font-awesome.min.css`):
+    ```html
+    <!-- DJBR -->
+    <link rel="stylesheet"
+          href="{% static "/djbr/css/djbr.css" %}"/>
+    ```
 
 ## Αν κάτι πάει στραβά
 
@@ -571,7 +675,7 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
   πραγματικά αντιγραφεί τα αρχεία όπως περιγράψαμε.
   
 * Εξασφαλίζουμε επίσης ότι το Django δεν βρίσκεται σε κατάσταση
-  εκσφαλμάτωσης (debug mode), δηλαδή δεν υπάρχει `DEBUG = True` στις
+  εκσφαλμάτωσης (debug mode), δηλαδή δεν υπάρχει `DEBUG = False` στις
   ρυθμίσεις μας.
   
 ## Στατικοί πόροι στην παραγωγή
@@ -601,3 +705,5 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
   και
   [εδώ](https://docs.djangoproject.com/en/1.11/howto/static-files/deployment/).
     
+
+

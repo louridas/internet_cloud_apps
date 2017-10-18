@@ -6,14 +6,23 @@
 {% else %}
   <div class="list-group">
     {% for review in book_reviews %}
-      <div class="list-group-item active">
-        Summary: {{ review.title }}
+      <div class="list-group-item list-group-item-action flex-column
+                  align-items-start active">
+        <div class="d-flex w-100 justify-content-between">
+          <span class="mb=1">Summary: {{ review.title }}</span>
+          <span>
+            <a href="{% url 'djbr:review' review.book.id review.id %}">
+              <span class="fa fa-inverse fa-pencil" aria-hidden="true"></span>
+            </a>
+        </span>
+        </div>
       </div>
       <div class="list-group-item">
         Review: {{ review.text }}
       </div>
       <div class="list-group-item">
         Date reviewed: {{ review.review_date }}
+        {{ review.id }}
       </div>
     {% endfor %}
   </div>
