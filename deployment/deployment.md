@@ -1107,3 +1107,14 @@ sudo shutdown -r now
     ```
   (φυσικά θα βάλετε τη διεύθυνση του δικού σας μηχανήματος).
   
+* Αν θέλουμε να μη χρειάζεται να βάζουμε το `/djbr` στο τέλος του URL,
+  μπορούμε να προσθέσουμε μέσα στο τμήμα `server` του
+  `/etc/nginx/sites-available/default` τη γραμμή:
+    ```
+    rewrite ^/$ /djbr;
+    ```
+    
+* Μετά δίνουμε:
+    ```bash
+    sudo systemctl reload nginx
+    ```
