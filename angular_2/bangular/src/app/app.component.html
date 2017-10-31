@@ -1,4 +1,5 @@
 <h1>{{title}}</h1>
+
 <h2>Books</h2>
 <ul class="books">
   <li *ngFor="let book of books"
@@ -7,6 +8,7 @@
     <span class="badge">{{book.id}}</span> {{book.title}}
   </li>
 </ul>
+
 <div *ngIf="selectedBook">
   <h2>{{selectedBook.title}} details:</h2>
   <div><label>id: </label>{{selectedBook.id}}</div>

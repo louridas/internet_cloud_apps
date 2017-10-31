@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 export class Book {
   id: number;
   title: string;
-  pub_year: number;  
+  pub_year: number;
 }
 
 const BOOKS: Book[] = [
@@ -21,10 +21,9 @@ const BOOKS: Book[] = [
 ];
 
 @Component({
-  moduleId: module.id,
-  selector: 'my-app',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.css']
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   title = 'Bangular';
