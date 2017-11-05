@@ -110,7 +110,8 @@
 θα θέλαμε το `AppComponent` να είναι υπεύθυνο *μόνο* για τη λίστα των
 βιβλίων, και ένα άλλο εξάρτημα για την εμφάνιση ενός συγκεκριμένου
 βιβλίου. 
-</div<
+
+</div>
 
 
 ## `book-detail.component.ts` (1)
@@ -176,7 +177,7 @@
 
 * Προσθέτουμε λοιπόν την ιδιότητα `book` στο `BookDetailComponent`:
 
-    ```html
+    ```javascript
     import { Component, Input } from '@angular/core';
 
     @Component({
