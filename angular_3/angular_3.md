@@ -667,7 +667,7 @@ constructor(private bookService: BookService) { }
     import { Component, OnInit } from '@angular/core';
     ```
 
-* Μέτα, μέσα στην κλάση `AppComponent` γράφουμε τη μέθοδο `ngInit()`:
+* Μέτα, μέσα στην κλάση `AppComponent` γράφουμε τη μέθοδο `ngOnInit()`:
 
     ```javascript
     ngOnInit(): void {
