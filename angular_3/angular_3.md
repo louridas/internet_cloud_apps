@@ -10,10 +10,6 @@
 
 * Μια κανονική εφαρμογή όμως αποτελείται κατά κανόνα από περισσότερα.
 
-# Angular bangular tutorial 2
-
-## Γενικά
-
 * Συνεχίζουμε προσαρμόζοντας το 
   [online tutorial](https://angular.io/docs/ts/latest/tutorial/)
   της Google.
@@ -62,8 +58,7 @@
 ## Αλλαγή της έκδοσης
 
 * Στο αρχείο `package.json` ενημερώνουμε τον αριθμό έκδοσης,
-  αλλάζοντας την κατάλληλη γραμμή σε:
-
+αλλάζοντας την κατάλληλη γραμμή σε:
     ```javascript
     "version": "1.1.0",
     ```
@@ -173,21 +168,22 @@
   συγκεκριμένο βιβλίο, άρα μετονομάσαμε την ιδιότητα αυτή απλώς σε
   `book`.
 
+
 ## Προσθήκη ιδιότητας `book`
 
-* Προσθέτουμε λοιπόν την ιδιότητα `book` στο `BookDetailComponent`:
+Προσθέτουμε λοιπόν την ιδιότητα `book` στο `BookDetailComponent`:
 
-    ```javascript
-    import { Component, Input } from '@angular/core';
+```javascript
+import { Component, Input } from '@angular/core';
 
-    @Component({
-      selector: 'book-detail',
-      templateUrl: 'book-detail.component.html',
-    })
-    export class BookDetailComponent {
-      book: Book
-    }
-    ```
+@Component({
+  selector: 'book-detail',
+  templateUrl: 'book-detail.component.html',
+})
+export class BookDetailComponent {
+  book: Book
+}
+```
 
 ## Δημιουργία ανεξάρτητου αρχείου `book.ts`
 
@@ -324,6 +320,7 @@
 
 </div>
 
+
 ## Δομή της εφαρμογής
 
 * Επιβεβαιώνουμε ότι η εφαρμογή μας τώρα έχει την ακόλουθη δομή:
@@ -370,7 +367,7 @@
 ## Εκκίνηση της εφαρμογής
 
 * Ελέγχουμε ότι όλα πάνε καλά και ότι παρ' όλες τις αλλαγές η εφαρμογή
-  παραμένει λειτουργική με:
+παραμένει λειτουργική με:
     ```bash
     ng serve --open
     ```
@@ -390,7 +387,7 @@
 ## Αλλαγή της έκδοσης
 
 * Στο αρχείο `package.json` ενημερώνουμε τον αριθμό έκδοσης,
-  αλλάζοντας την κατάλληλη γραμμή σε:
+αλλάζοντας την κατάλληλη γραμμή σε:
 
     ```javascript
     "version": "1.2.0",
@@ -444,6 +441,7 @@
 ## Δεδομένα δοκιμών (2)
 
 * Δημιουργούμε το αρχείο `mock-books.ts`:
+
     ```javascript
     import { Book } from './book';
 
@@ -477,9 +475,9 @@
 
 ## Παροχή των δεδομένων δοκιμών
 
-* Τώρα επιστρέφουμε στο `book.service.ts` και κάνουμε τις
-  απαραίτητες αλλαγές ώστε η μέθοδος `getBooks()` να επιστρέφει τα
-  δεδομένα δοκιμών:
+* Τώρα επιστρέφουμε στο `book.service.ts` και κάνουμε τις απαραίτητες
+  αλλαγές ώστε η μέθοδος `getBooks()` να επιστρέφει τα δεδομένα
+  δοκιμών:
 
     ```javascript
     import { Injectable } from '@angular/core';
@@ -502,9 +500,9 @@
 * Για να μπορέσουμε να χρησιμοποιήσουμε την υπηρεσία που φτιάξαμε, την
   εισάγουμε στο `AppComponent`, βάζοντας κάπου στην αρχή:
 
-    ```javascript
-    import { BookService } from './book.service';
-    ```
+```javascript
+import { BookService } from './book.service';
+```
 
 ## Χρήση της υπηρεσίας (2)
 
@@ -516,13 +514,19 @@
     bookService = new BookService(); // don't do this
     ```
 
+## Χρήση της υπηρεσίας (3)
+
 * Πράγματι, αν κάναμε κάτι τέτοιο:
     * Το `AppComponent` θα έπρεπε να ξέρει ακριβώς πώς να κατασκευάζει
-      ένα `BookService`.
+      ένα `BookService`. Αν αλλάξουμε τον κατασκευαστή (constructor)
+      του `BookService`, μπορεί να χρειαστεί να αλλάξουμε τον κώδικα
+      σε κάθε σημείο που καλείται.
     * Κάθε φορά δημιουργείται ένα νέο `BookService`, ενώ μπορεί να
       θέλουμε να υπάρχει μόνο ένα για όλα τα εξαρτήματα της εφαρμογής.
     * Το `AppComponent` δένεται πολύ στενά με τη συγκεκριμένη
-      υλοποίηση του `BookService`.
+      υλοποίηση του `BookService`. Δεν διευκολύνει την εναλλαγή
+      διαφορετικών υλοποιήσεων (π.χ. άλλη για ελέγχους και άλλη για
+      παραγωγή). 
 
 
 ## Ένθεση εξάρτησης
@@ -709,6 +713,44 @@ constructor(private bookService: BookService) { }
 
 * Αν η υπόσχεση απορριφθεί, μπορούμε να πάρουμε το λόγο απόρριψης
   (κάποιο λάθος) με τη μέθοδο `catch`.
+
+
+## Παράδειγμα Υπόσχεσης (1)
+
+* Χωρίς υποσχέσεις, η ανάγνωση ενός αρχείου θα γινόταν κάπως έτσι:
+
+    ```javascript
+    fs.readFile('config.json',
+      function (error, text) {
+        if (error) {
+          console.error('Error while reading config file');
+        } else {
+          try {
+            const obj = JSON.parse(text);
+            console.log(JSON.stringify(obj, null, 4));
+          } catch (e) {
+            console.error('Invalid JSON in file');
+          }
+        }
+    });
+    ```
+
+
+## Παράδειγμα Υπόσχεσης (2)
+
+* Με υποσχέσεις, θα γράφαμε κάτι όπως:
+
+    ```javascript
+    readFilePromisified('config.json')
+    .then(function (text) { // (A)
+      const obj = JSON.parse(text);
+      console.log(JSON.stringify(obj, null, 4));
+    })
+    .catch(function (error) { // (B)
+      // File read error or JSON SyntaxError
+      console.error('An error occurred', error);
+    });
+    ```
 
 ## Υπόσχεση στο `AppComponent`
 
