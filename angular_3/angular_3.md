@@ -409,6 +409,31 @@ export class BookDetailComponent {
   μας χρειάζεται, είναι καλό να τον βάλουμε.
 
 
+## Αυτοματοποιημένη δημιουργία της υπηρεσίας
+
+* Εναλλακτικά, θα μπορούσαμε να δημιουργήσουμε το αρχείο με το Angular
+  CLI ως εξής:
+    ```bash
+    ng generate service book
+    ```
+    
+* Σε αυτήν την περίπτωση το Angular CLI θα δημιουργήσει το ακόλουθα
+  αρχεία:
+      * `book.service.ts`
+      * `book.service.spec.ts`
+
+* Το `book.service.ts` είναι παρόμοιο με αυτό που φτιάξαμε με το χέρι:
+    ```javascript
+    import { Injectable } from '@angular/core';
+
+    @Injectable()
+    export class MybookService {
+
+      constructor() { }
+
+    }
+    ```
+
 ## Παροχή βιβλίων
 
 * Το `BookService` θα είναι αρμόδιο για την παροχή βιβλίων στα
@@ -668,11 +693,58 @@ constructor(private bookService: BookService) { }
     import { Component, OnInit } from '@angular/core';
     ```
 
-* Μέτα, μέσα στην κλάση `AppComponent` γράφουμε τη μέθοδο `ngOnInit()`:
+* Αλλάζουμε τη δήλωση του `AppComponent` για να υλοποιεί τη διεπαφή
+  `OnInit`:
+    ```javascript
+    export class AppComponent implements OnInit {
+    /* ... */
+    }
+    ```
+
+* Μετά, μέσα στην κλάση `AppComponent` γράφουμε τη μέθοδο `ngOnInit()`:
 
     ```javascript
     ngOnInit(): void {
       this.getBooks();
+    }
+    ```
+
+## `app.component.ts`
+
+* Το `app.component.ts` θα είναι τότε:
+    ```javascript
+    import { Component, OnInit } from '@angular/core';
+
+    import { BookDetailComponent } from './book-detail.component';
+    import { BookService } from './book.service';
+
+    import { Book } from './book';
+
+    @Component({
+      selector: 'app-root',
+      templateUrl: './app.component.html',
+      styleUrls: ['./app.component.css'],
+      providers: [BookService]
+    })
+    export class AppComponent implements OnInit {
+      title = 'Bangular';
+      books: Book[];
+      selectedBook: Book;
+
+      constructor(private bookService: BookService) { }
+
+      ngOnInit(): void {
+          this.getBooks();
+      }
+
+      onSelect(book: Book): void {
+        this.selectedBook = book;
+      }
+
+      getBooks(): void {
+        this.bookService.getBooks().then(books => this.books = books);
+      }
+
     }
     ```
 
