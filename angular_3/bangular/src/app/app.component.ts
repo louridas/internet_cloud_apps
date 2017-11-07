@@ -11,7 +11,7 @@ import { Book } from './book';
   styleUrls: ['./app.component.css'],
   providers: [BookService]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Bangular';
   books: Book[];
   selectedBook: Book;
