@@ -785,6 +785,9 @@ h3 {
 h4 {
   position: relative;
 }
+.dashboard {
+  width: 50%;
+}
 .grid {
   margin: 0;
 }
