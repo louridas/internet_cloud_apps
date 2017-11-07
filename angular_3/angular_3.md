@@ -565,7 +565,7 @@ import { BookService } from './book.service';
 private bookService: BookService;
 
 constructor(bookService: BookService) {
-  this book.Service = BookService;
+  this.bookService = BookService;
 }
 ```
 είναι το ίδιο με αυτό:
