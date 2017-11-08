@@ -125,7 +125,7 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
 * Έστω ότι θέλουμε να την αλλάξουμε σε «Welcome to My First Angular
   App!».
 
-* Ανοίγουμε το αρχείο `src/app/app.component.ts`.
+* Ανοίγουμε το αρχείο `app.component.ts`.
 
 * Αλλάζουμε τη γραμμή:
     ```javascript
@@ -144,7 +144,7 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
 
 * Έστω επίσης ότι θέλουμε να αλλάξουμε το στυλ της σελίδας.
 
-* Ανοίγουμε το αρχείο `src/app/app.component.css` (το οποίο είναι
+* Ανοίγουμε το αρχείο `app.component.css` (το οποίο είναι
   άδειο) και γράφουμε:
     ```css
     h1 {
@@ -406,7 +406,7 @@ src/
 
 * Κάθε εφαρμογή έχει τουλάχιστον ένα άρθρωμα, το root module.
 
-* Στην εφαρμογή μας βρίσκεται στο αρχείο `src/app/app.module.ts`.
+* Στην εφαρμογή μας βρίσκεται στο αρχείο `app.module.ts`.
 
 ## Root module (2)
 
@@ -463,9 +463,9 @@ export class AppModule { }
 * Για να ξεκινήσει μια εφαρμογή Angular, πρέπει να ξεκινήσουμε το root
   module.
   
-* Αυτό γίνεται στο αρχείο `src/main.ts`.
+* Αυτό γίνεται στο αρχείο `main.ts` του καταλόγου `src`.
 
-## `src/main.ts`
+## `main.ts`
 
 ```javascript
 import { enableProdMode } from '@angular/core';
@@ -494,7 +494,7 @@ platformBrowserDynamic().bootstrapModule(AppModule)
 
 * Στην εφαρμογή μας θα έχουμε μόνο ένα εξάρτημα.
 
-* Αυτό βρίσκεται στο αρχείο `src/app/app.component.ts`:
+* Αυτό βρίσκεται στο αρχείο `app.component.ts`:
 
     ```javascript
     import { Component } from '@angular/core';
@@ -551,10 +551,10 @@ platformBrowserDynamic().bootstrapModule(AppModule)
   Angular. 
   
 * Στην εφαρμογή μας, το πρότυπο του (μοναδικού) αρθρώματός μας
-  βρίσκεται στο αρχείο `src/app/app.component.html`.
+  βρίσκεται στο αρχείο `app.component.html`.
   
 
-## `src/app/app.component.html`
+## `app.component.html`
 
 ```html
 <!--The content below is only a placeholder and can be replaced.-->
@@ -598,13 +598,13 @@ platformBrowserDynamic().bootstrapModule(AppModule)
 
   
 * Στην εφαρμογή μας, το πρότυπο του (μοναδικού) αρθρώματός μας
-  βρίσκεται στο αρχείο `src/app/app.component.css`.
+  βρίσκεται στο αρχείο `app.component.css`.
 
 
 ## Έλεγχοι μονάδας
 
 * Οι έλεγχοι μονάδας (unit tests) για το άρθρωμα βρίσκονται στο αρχείο
-  `src/app/app.component.spec.ts`.
+  `app.component.spec.ts`.
   
 * Οι έλεγχοι αυτοί επιβεβαιώνουν ότι:
   * η εφαρμογή δημιουργείται
@@ -616,7 +616,7 @@ platformBrowserDynamic().bootstrapModule(AppModule)
     ng test
     ```
     
-## `src/app/app.component.spec.ts`
+## `app.component.spec.ts`
 
 ```javascript
 import { TestBed, async } from '@angular/core/testing';
@@ -654,24 +654,26 @@ describe('AppComponent', () => {
 Προσέξτε ότι το αρχείο `app.component.spec.ts` όπως κατασκευάστηκε
 αρχικά περνάει τους ελέγχους με τον *αρχικό* τίτλο της εφαρμογής μας.
 Όμως στο μεταξύ τον αλλάξαμε. Άρα θα πρέπει να κάνουμε τις εξής
-προσαρμογές στο αρχικό αρχείο
-    * Η γραμμή:
-    ```javascript
-    expect(app.title).toEqual('app');
-    ```
-    θα γίνει:
-    ```javascript
-    expect(app.title).toEqual('My First Angular App');
-    ```
-    * Η γραμμή:
-    ```javascript
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to app!');
-    ```
-    θα γίνει:
-    ```javascript
-    expect(compiled.querySelector('h1').textContent)
-      .toContain('Welcome to My First Angular App!');
-    ```
+προσαρμογές στο αρχικό αρχείο:
+
+* Η γραμμή:
+```javascript
+expect(app.title).toEqual('app');
+```
+θα γίνει:
+```javascript
+expect(app.title).toEqual('My First Angular App');
+```
+
+* Η γραμμή:
+```javascript
+expect(compiled.querySelector('h1').textContent).toContain('Welcome to app!');
+```
+θα γίνει:
+```javascript
+expect(compiled.querySelector('h1').textContent)
+  .toContain('Welcome to My First Angular App!');
+```
 
 Αυτές τις αλλαγές τις έχουμε κάνει στον παραπάνω κώδικα.
 
