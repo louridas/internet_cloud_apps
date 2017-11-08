@@ -13,20 +13,17 @@
 * Για να γίνει αυτό θα πρέπει να δούμε σε περισσότερη λεπτομέρεια
   διάφορα στοιχεία του Angular.
 
-
-# Angular bangular tutorial
-
-## Γενικά
-
 * Θα προσαρμόσουμε το 
   [online tutorial](https://angular.io/docs/ts/latest/tutorial/)
   της Google.
 
 
-## Αρχικό στήσιμο
+# Αρχικό στήσιμο
 
-* Ξεκινάμε φτιάχνοντας μια εφαρμογή η οποία θα χειρίζεται βιβλία,
-  κριτικές, κ.λπ.
+## Γενικά
+
+* Θα φτιάξουμε μια εφαρμογή η οποία θα χειρίζεται βιβλία, κριτικές,
+  κ.λπ.
   
 * Θα ονομάσουμε την εφαρμογή μας bangular (= books Angular).
   
@@ -52,6 +49,7 @@
     ```
   και στη συνέχεια να πλοηγηθούμε στη διεύθυνση
     `http://localhost:4200/`.
+
 
 ## Scripts και `package.json`
 
@@ -87,91 +85,44 @@ mode). Έτσι, όποτε αλλάζουμε ένα αρχείο TypeScript, �
 
 </div>
 
-## Εμφάνιση βιβλίου (1)
 
-* Ξεκινάμε αλλάζοντας την κλάση `AppComponent` στο αρχείο
-  `app.component.ts` ως εξής:
+## Κέλυφος της εφαρμογής
 
-    ```javascript
-    export class AppComponent {
-      title = 'Bangular';
-      book = 'Infinite Jest';
-    }
-    ```
-
-## Εμφάνιση βιβλίου (2)
-
-* Στη συνέχεια αλλάζουμε το πρότυπο στο αρχείο `app.component.html`:
-
-    ```html
-    <h1>{{title}}</h1><h2>{{book}} details!</h2>
-    ```
-
-* Οι χαρακτήρες `{{` και `}}` ειδοποιούν το Angular ότι στο σημείο
-  αυτό θα τοποθετηθούν οι αντίστοιχες τιμές από το εξάρτημα
-  (component) του προτύπου.
-
-* Αυτό ονομάζεται *μονόδρομη σύνδεση δεδομένων* (one-way data binding).
-
-* Μπορείτε να επιβεβαιώσετε ότι η εμφάνιση της σελίδας στον browser
-  έχει αλλάξει.
-
-
-## Εναλλακτική δήλωση HTML
-
-* Εναλλακτικά, αν ο κώδικας HTML που αντιστοιχεί σε ένα εξάρτημα είναι
-  μικρός, μπορούμε να τον συμπεριλάβουμε κατευθείαν στο εξάρτημα αντί
-  να τον έχουμε σε ξεχωριστό αρχείο.
+* Αυτή τη στιγμή έχουμε κατασκευάσει το *κέλυφος* (shell) της
+  εφαρμογής μας. 
   
-* Στην περίπτωσή μας, θα γράφαμε:
+* Το κέλυφος της εφαρμογής ελέγχεται από ένα εξάρτημα το οποίο
+  ονομάζεται `AppComponent`.
+  
+* Η υλοποίηση του εξαρτήματος αυτού μοιράζεται στα αρχεία:
+    * `app.component.ts`: ο κώδικας της κλάσης του εξαρτήματος, σε TypeScript.
+    * `app.component.html`: το πρότυπο του εξαρτήματος, σε HTML.
+    * `app.compponent.css`: το στυλ του εξαρτήματος, σε CSS.
+
+
+## Αλλαγή του τίτλου της εφαρμογής
+
+* Για να αλλάξουμε τον τίτλο της εφαρμογής αλλάζουμε αναλόγως το αρχείο
+  `app.compopnent.ts`:
     ```javascript
+    import { Component } from '@angular/core';
+
     @Component({
       selector: 'app-root',
-      template: `<h1>{{title}}</h1><h2>{{book}} details!</h2>`
+      templateUrl: './app.component.html',
       styleUrls: ['./app.component.css']
     })
     export class AppComponent {
       title = 'Bangular';
-      book: Book = {
-        id: 1,
-        title: 'Infinite Jest',
-        pub_year: 1996
-      };
     }
     ```
-
-* Προσέξτε τα backticks (` `). Μπορούμε να βάλουμε και ' ' ή " ",
-    αλλά τα backticks στην TypeScript μας επιτρέπουν να έχουμε
-    συμβολοσειρές πολλών γραμμών. 
-
-## Μοντελοποίηση βιβλίων (1)
-
-* Προς το παρόν, κάθε βιβλίο έχει μόνο έναν τίτλο.
-
-* Θέλουμε όμως να έχει περισσότερες ιδιότητες.
-
-* Για το σκοπό αυτό θα χρησιμοποιήσουμε μια κλάση ώστε τα βιβλία να
-  είναι αντικείμενα αυτής της κλάσης.
-
-
-## Μοντελοποίηση βιβλίων (2)
-
-* Πάλι στο αρχείο `app.component.ts` προσθέτουμε την παρακάτω
-  κλάση κάτω από το `import` της πρώτης γραμμής:
-
-    ```javascript
-    export class Book {
-      id: number;
-      title: string;
-      pub_year: number;
-    }
-    ```
-
+    
 <div class="notes">
 
-Η λέξη `export` που βλέπουμε μπροστά από το `class Book` σημαίνει ότι
-η κλάση αυτή μπορεί να χρησιμοποιηθεί και από άλλα JavaScript
-αρθρώματα (modules) με τη χρήση της αντίστοιχης εντολής `import`.
+Η λέξη `export` που βλέπουμε μπροστά από το `class AppComponent`
+σημαίνει ότι η κλάση αυτή μπορεί να χρησιμοποιηθεί και από άλλα
+JavaScript αρθρώματα (modules) με τη χρήση της αντίστοιχης εντολής
+`import`.
 
 Οι εντολές `import` και `export`, όπως και η έννοια των αρθρωμάτων στη
 JavaScript είναι σχετικά νέα. Σε κάθε περίπτωση υποστηρίζονται πλήρως
@@ -188,6 +139,307 @@ browsers.
 λειτουργικότητας με εξαρτήματα, πρότυπα, κ.λπ.
 
 </div>
+    
+    
+## Αλλαγή προτύπου κελύφους
+
+* Επίσης θα αλλάξουμε το `app.component.html`, το οποίο θα γίνει
+  απλώς:
+    ```html
+    <h1>{{title}}</h1>
+    ```
+
+## Καθολικό στυλ
+
+* Στο αρχείο `styles.css` θα ορίσουμε το καθολικό στυλ της εφαρμογής.
+
+* Το αρχείο θα γίνει ως εξής (διάφορα στοιχεία θα μας χρειαστούν στη
+  συνέχεια):
+    ```css
+    /* Master Styles */
+    h1 {
+      color: #369;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 250%;
+    }
+    
+    h2, h3 {
+      color: #444;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: lighter;
+    }
+    
+    body {
+      margin: 2em;
+    }
+    
+    body, input[text], button {
+      color: #888;
+      font-family: Cambria, Georgia;
+    }
+    
+    a {
+      cursor: pointer;
+      cursor: hand;
+    }
+    
+    button {
+      font-family: Arial;
+      background-color: #eee;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      cursor: hand;
+    }
+    
+    button:hover {
+      background-color: #cfd8dc;
+    }
+    
+    button:disabled {
+      background-color: #eee;
+      color: #aaa;
+      cursor: auto;
+    }
+
+    /* Navigation link styles */
+    nav a {
+      padding: 5px 10px;
+      text-decoration: none;
+      margin-right: 10px;
+      margin-top: 10px;
+      display: inline-block;
+      background-color: #eee;
+      border-radius: 4px;
+    }
+    
+    nav a:visited, a:link {
+      color: #607D8B;
+    }
+    
+    nav a:hover {
+      color: #039be5;
+      background-color: #CFD8DC;
+    }
+    
+    nav a.active {
+      color: #039be5;
+    }
+
+    /* everywhere else */
+    * {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+
+    /*
+    Copyright 2017 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license
+    */
+    ```
+
+# Χειρισμός βιβλίου
+
+## Γενικά
+
+* Θα προχωρήσουμε στην κατασκευή του εξαρτήματος για την εμφάνιση και
+  το χειρισμό βιβλίων.
+  
+* Αυτό θα γίνει μέσω του Angular CLI.
+
+
+## Κατασκευή σκελετού εξαρτήματος
+
+* Για να κατασκευάσουμε ένα νέο εξάρτημα, δίνουμε:
+    ```bash
+    ng generate component books
+    ```
+    
+* Η εντολή αυτή θα δημιουργήσει έναν νέο κατάλογο, `src/app/books`, με
+  τα εξής αρχεία:
+    * `books.component.css`
+    * `books.component.html`
+    * `books.component.spec.ts`
+    * `books.component.ts`
+
+* Επίσης ενημερώνει κατάλληλα το αρχείο `app.module.ts` (θα δούμε μετά
+  πώς ακριβώς).
+
+
+## `books.component.ts`
+
+* Το αρχείο `books.component.ts` είναι ως εξής:
+    ```javascript
+    import { Component, OnInit } from '@angular/core';
+
+    @Component({
+      selector: 'app-books',
+      templateUrl: './books.component.html',
+      styleUrls: ['./books.component.css'],
+    })
+    export class BooksComponent implements OnInit {
+
+      constructor() { }
+
+      ngOnInit() {
+      }
+
+    }
+    ```
+ 
+<div class="notes">
+
+Στην αρχή του εξαρτήματος πρέπει να εισάγουμε τον διακοσμητή
+`@Component`, προκειμένου να τον εφαρμόσουμε στην κλάση που θέλουμε.
+Επίσης, πρέπει να εισάγουμε το `OnInit`, ώστε να μπορούμε να γράψουμε
+τυχόν κώδικα αρχικοποίησης σε μία μέθοδο που ονομάζεται `ngOnInit`. Το
+Angular θα καλέσει αυτή τη μέθοδο λίγο μετά τη δημιουργία του
+εξαρτήματος. Θα δούμε την ακριβή λειτουργία αργότερα.
+
+Το εξάρτημα, δηλώνει στα μεταδεδομένα του:
+ 
+   * Τον επιλογέα του (`selector`), με τον οποίο θα μπορούμε να το
+     χρησιμοποιούμε στον κώδικα HTML.
+   * Το πρότυπό του (`templateURL`).
+   * Τα στυλ του (`styleUrls`).
+   
+Προσοχή: αναλόγως την έκδοση του Angular CLI που χρησιμοποιούμε,
+μπορεί στα μεταδεδομένα να εμφανίζεται και η γραμμή:
+
+```javascript
+encapsulation: ViewEncapsulation.None
+```
+    
+Αν εμφανίζεται, *τη σβήνουμε*. Είναι *bug* το οποίο ο διδάσκων έχει
+αναφέρει στην ομάδα ανάπτυξης του Angular, συνεπώς μπορεί τη στιγμή
+που διαβάζετε αυτές τις γραμμές να έχει ήδη διορθωθεί.
+
+Αν αναρωτιέστε τι κάνει, ορίζει κατά πόσο θέλουμε τα στυλ που θα
+χρησιμοποιήσουμε στο εξάρτημά μας να φαίνονται στο σύνολο της
+εφαρμογής μας ή όχι. Αυτό ορίζεται με τις τρεις δυνατές τιμές της
+ιδιότητας `encapsulation`:
+
+  * `ViewEncapsulation.None`: το στυλ προστίθεται στα συνολικά στυλ
+     της εφαρμογής και άρα είναι ορατό στο σύνολο της εφαρμογής.
+
+  * `ViewEncapsulation.Emulated`: το στυλ δεν είναι ορατό στην
+     υπόλοιπη εφαρμογή, χρησιμοποιώντας εξομοίωση της τεχνικής
+     [Shadow
+     DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Shadow_DOM).
+     Είναι η προκαθορισμένη (default) τιμή.
+   
+  * `ViewEncapsulation.Native`: το στυλ είναι ορατό στην υπόλοιπη
+     εφαρμογή, χρησιμοποιώντας τις δυνατότητες Shadow DOM του browser.
+
+</div>
+
+
+## Εμφάνιση βιβλίου (1)
+
+* Προσθέτουμε στο `books.component.ts` μια ιδιότητα `title` με τον
+  τίτλο ενός βιβλίου:
+    ```javascript
+    import { Component, OnInit } from '@angular/core';
+
+    @Component({
+      selector: 'app-books',
+      templateUrl: './books.component.html',
+      styleUrls: ['./books.component.css'],
+    })
+    export class BooksComponent implements OnInit {
+
+      title = 'Infinite Jest';
+
+      constructor() { }
+
+      ngOnInit() {
+      }
+
+    }
+    ```
+  
+## Εμφάνιση βιβλίου (2)
+
+* Στη συνέχεια αλλάζουμε το πρότυπο στο αρχείο `books.component.html`:
+
+    ```html
+    {{title}}
+    ```
+
+* Οι χαρακτήρες `{{` και `}}` ειδοποιούν το Angular ότι στο σημείο
+  αυτό θα τοποθετηθούν οι αντίστοιχες τιμές από το εξάρτημα
+  (component) του προτύπου.
+
+* Αυτό ονομάζεται *μονόδρομη σύνδεση δεδομένων* (one-way data
+  binding).
+
+
+## Προσαρμογή `app.component.html`
+
+* Για να χρησιμοποιήσουμε το εξάρτημα που φτιάξαμε, θα πρέπει να το
+  βάλουμε στο κατάλληλο σημείου του προτύπου που θέλουμε.
+
+* Θα το βάλουμε στο πρότυπο του κελύφους της εφαρμογής, άρα το αρχείο
+  `app.component.html` θα γίνει:
+    ```html
+    <h1>{{title}}</h1>
+    <app-books></app-books>
+    ```
+
+* Μπορείτε να επιβεβαιώσετε ότι η εμφάνιση της σελίδας στον browser
+  έχει αλλάξει.
+
+
+## Εναλλακτική δήλωση HTML
+
+* Εναλλακτικά, αν ο κώδικας HTML που αντιστοιχεί σε ένα εξάρτημα είναι
+  μικρός, μπορούμε να τον συμπεριλάβουμε κατευθείαν στο εξάρτημα αντί
+  να τον έχουμε σε ξεχωριστό αρχείο.
+  
+* Στην περίπτωσή μας, θα γράφαμε στο `app.component.ts`:
+    ```javascript
+    import { Component } from '@angular/core';
+    
+    @Component({
+      selector: 'app-root',
+      template: `<h1>{{title}}</h1>
+                <app-books></app-books>`
+      styleUrls: ['./app.component.css']
+    })
+    export class AppComponent {
+      title = 'Bangular';
+    }
+    ```
+
+* Προσέξτε τα backticks (` `). Μπορούμε να βάλουμε και ' ' ή " ",
+    αλλά τα backticks στην TypeScript μας επιτρέπουν να έχουμε
+    συμβολοσειρές πολλών γραμμών. 
+
+
+## Μοντελοποίηση βιβλίων (1)
+
+* Προς το παρόν, δείχνουμε μόνο έναν τίτλο ενός βιβλίου.
+
+* Θέλουμε όμως ένα βιβλίο να έχει περισσότερες ιδιότητες.
+
+* Για το σκοπό αυτό θα χρησιμοποιήσουμε μια κλάση ώστε τα βιβλία να
+  είναι αντικείμενα αυτής της κλάσης.
+
+
+## Μοντελοποίηση βιβλίων (2)
+
+* Φτιάχνουμε στον κατάλογο `src/app` ένα αρχείο `book.ts` με τα
+  ακόλουθα περιεχόμενα:
+
+    ```javascript
+    export class Book {
+      id: number;
+      title: string;
+      pub_year: number;
+    }
+    ```
 
 ## Τύποι μεταβλητών στην TypeScript
 
@@ -195,6 +447,7 @@ browsers.
   ιδιότητες (πεδία) και τύπους.
   
 * Στην TypeScript οι μεταβλητές έχουν τύπους. Οι τύποι είναι:
+    * `number`
     * `boolean`
     * `string`
     * Array
@@ -211,80 +464,87 @@ browsers.
 * Από τη στιγμή που έχουμε στη διάθεσή μας μια κλάση `Book`, μπορούμε
   να κατασκευάσουμε ένα αντικείμενο αυτής της κλάσης.
 
-* Συγκεκριμένα, η ιδιότητα `book` του `AppComponent` θα είναι ένα
+* Συγκεκριμένα, η ιδιότητα `book` του `BooksComponent` θα είναι ένα
   αντικείμενο: 
 
     ```javascript
+    import { Component, OnInit } from '@angular/core';
+
+    import { Book } from '../book';
+
     @Component({
-      selector: 'app-root',
-      templateUrl: './app.component.html',
-      styleUrls: ['./app.component.css']
+      selector: 'app-books',
+      templateUrl: './books.component.html',
+      styleUrls: ['./books.component.css'],
     })
-    export class AppComponent {
-      title = 'Bangular';
+    export class BooksComponent implements OnInit {
+
       book: Book = {
         id: 1,
         title: 'Infinite Jest',
         pub_year: 1996
       };
+
+      constructor() { }
+
+      ngOnInit() {
+      }
+
     }
     ```
+
+<div class="notes">
+
+Προσέξτε ότι για να χρησιμοποιήσουμε την κλάση `Book` στο
+`BookComponent` θα πρέπει να την εισάγουμε με το κατάλληλο `import`.
+
+</div>
 
 ## Δημιουργία βιβλίου (2)
 
 * Μπορούμε να παρατηρήσουμε ότι τώρα η σελίδα μας δεν εμφανίζεται
-  σωστά (εμφανίζει «[object Object] details!»).
+  σωστά.
 
-* Θα πρέπει ταυτόχρονα να αλλάξουμε και το πρότυπο `app.component.html`, ώστε να
-  χρησιμοποιεί πλέον αυτό το βιβλίο:
+* Θα πρέπει ταυτόχρονα να αλλάξουμε και το πρότυπο
+  `books.component.html`, ώστε να χρησιμοποιεί πλέον αυτό το βιβλίο:
     ```html
-    <h1>{{title}}</h1><h2>{{book.title}} details!</h2>
+    <h2>{{ book.title | uppercase }} Details </h2>
+    <div><span>id: </span>{{ book.id }}</div>
+    <div><span>title: </span>{{ book.title }}</div>
+    <div><span>publication year: </span>{{ book.pub_year }}</div>
     ```
 
-## Περισσότερη HTML
+## Διοχετεύσεις
 
-* Θέλουμε να δούμε όλα τα δεδομένα για το βιβλίο μας, οπότε μπορούμε
-  να προσθέσουμε το `id`, το `title`, και το `pub_date` σε διαφορετικά
-  `div`:
-
+* Για την επικεφαλίδα με τον τίτλο χρησιμοποιήσαμε τον κώδικα:
     ```html
-    <h1>{{title}}</h1>
-    <h2>{{book.title}} details!</h2>
-    <div><label>id: </label>{{book.id}}</div>
-    <div><label>Publication year: </label>{{book.pub_year}}</div>
+    <h2>{{ book.title | uppercase }} Details </h2>
     ```
+    
+* Το `uppercase` είναι μία οδηγία (directive) *διοχέτευση* (pipe).
 
-## Αλλαγές στο βιβλίο (1)
+* Το Angular έχει ένα σύνολο έτοιμων διοχετεύσεων που μπορούμε να
+  χρησιμοποιήσουμε για τη μορφοποίηση συμβολοσειρών, ημερομηνιών,
+  χρηματικών ποσών, κ.λπ. 
+  
+* Για περισσότερες πληροφορίες δείτε τη [σχετική
+  τεκμηρίωση](https://angular.io/guide/pipes).
+
+
+## Αλλαγές στο βιβλίο
 
 * Στη συνέχεια, θέλουμε να μπορούμε να αλλάξουμε τον τίτλο του
   βιβλίου.
 
-* Για το σκοπό αυτό αλλάζουμε πάλι το πρότυπο ώστε να μας δίνει τη
-  δυνατότητα να εισάγουμε τον τίτλο:
+* Για να το κάνουμε αυτό, θα πρέπει να δώσουμε τη δυνατότητα στο
+  χρήστη να μπορεί να αλλάζει τα δεδομένα που εμφανίζονται στην οθόνη,
+  όπως περίπου με τις κλασικές φόρμες (αλλά πιο δυναμικά).
+  
+* Για το σκοπό αυτό πρέπει να χρησιμοποιήσουμε το `FormsModule` που
+  μας δίνει η Angular.
 
-    ```html
-    <h1>{{title}}</h1>
-    <h2>{{book.title}} details!</h2>
-    <div><label>id: </label>{{book.id}}</div>
-    <div>
-      <label>title: </label>
-      <input value="{{book.title}}" placeholder="name">
-    </div>
-    <div><label>Publication year: </label>{{book.pub_year}}</div>
-    ```
 
-## Αλλαγές στο βιβλίο (2)
-
-* Το πρόβλημα είναι ότι αλλάζουμε μεν τον τίτλο του βιβλίου, αλλά η
-  αλλαγή δεν αντικατοπτρίζεται και στον τίτλο που εμφανίζεται.
-
-* Αυτό συμβαίνει γιατί μέχρι στιγμής χρησιμοποιούμε μονόδρομη σύνδεση
-  δεδομένων.
-
-* Στην περίπτωσή μας, χρειαζόμαστε *αμφίδρομη σύνδεση δεδομένων*
-  (two-way data binding).
-
-## Αμφίδρομη σύνδεση (1)
+## `FormsModule`
 
 * Για να ενεργοποιήσουμε την αμφίδρομη σύνδεση, θα πρέπει να
   χρησιμοποιήσουμε το πακέτο `FormsModule`. Για το σκοπό αυτό πρέπει
@@ -293,13 +553,15 @@ browsers.
     ```javascript
     import { BrowserModule } from '@angular/platform-browser';
     import { NgModule } from '@angular/core';
-    import { FormsModule }   from '@angular/forms';
+    import { FormsModule } from '@angular/forms';
 
     import { AppComponent } from './app.component';
+    import { BooksComponent } from './books/books.component';
 
     @NgModule({
       declarations: [
-        AppComponent
+        AppComponent,
+        BooksComponent
       ],
       imports: [
         BrowserModule,
@@ -328,17 +590,39 @@ JavaScript. Στην περίπτωσή μας όμως, το `FormsModule` εί
 
 </div>
 
-## Αμφίδρομη σύνδεση (2)
 
-* Στη συνέχεια, αλλάζουμε αντίστοιχα το `app.component.html`:
+## Δήλωση εξαρτημάτων
 
+* Στο Angular, κάθε εξάρτημα πρέπει να δηλώνεται σε ακριβώς ένα
+  άρθρωμα (module).
+  
+* Αυτό ισχύει και για το `BooksComponent`.
+
+* Δεν χρειάστηκε να το δηλώσουμε εμείς γιατί το Angular CLI έκανε τις
+  απαραίτητες αλλαγές στο `app.module.ts` όταν δημιουργήσαμε το
+  `BooksComponent`. 
+  
+* Πράγματι, μπορείτε να δείτε ότι εισάγεται (`import`), και ότι
+  περιλαμβάνεται στον πίνακα `imports` και `declarations`.
+  
+
+## Αμφίδρομη σύνδεση (1)
+
+* Στη συνέχεια, αλλάζουμε το `books.component.html`:
     ```html
-    <input [(ngModel)]="book.title" placeholder="name">
+    <h2>{{ book.title | uppercase }} Details </h2>
+    <div><span>id: </span>{{ book.id }}</div>
+    <div>
+      <label>title:
+        <input [(ngModel)]="book.title" placeholder="name">
+      </label>
+    <div><span>publication year: </span>{{ book.pub_year }}</div>
     ```
+
 * Τώρα, οι αλλαγές που κάνουμε φαίνονται αμέσως στον τίτλο.
 
 
-## Αμφίδρομη σύνδεση (3)
+## Αμφίδρομη σύνδεση (2)
 
 * Για να δείξουμε στο Angular ότι η σύνδεση μεταξύ δεδομένων και
   οθόνης είναι αμφίδρομη, χρησιμοποιούμε τη σύνταξη `[()]`.
@@ -365,27 +649,24 @@ JavaScript. Στην περίπτωσή μας όμως, το `FormsModule` εί
   ίδια* με τα μοντέλα που μπορεί να έχουμε στο back-end. 
   
 
-# Master / Detail
+# Λίστα βιβλίων
 
 ## Γενικά
 
-* Θέλουμε να εξελίξουμε την εφαρμογή μας ώστε να έχει μια δομή master
-  / detail.
-  
-* Συγκεκριμένα, η λίστα των βιβλίων θα εμφανίζεται στο πάνω μέρος
-  (master).
-  
-* Αν ο χρήστης επιλέξει ένα βιβλίο, οι λεπτομέρειες αυτού θα
-  εμφανίζονται από κάτω (detail).
+* Μέχρι τώρα έχουμε μόνο ένα βιβλίο στην εφαρμογή μας.
+
+* Τώρα θέλουμε να την εξελίξουμε ώστε να έχουμε μία λίστα από βιβλία.
 
 
 ## Δημιουργία βιβλίων
 
 * Θα ξεκινήσουμε προσθέτοντας έναν πίνακα από βιβλία στο αρχείο
-  `app.components.ts` (κάτω από τον ορισμό της κλάσης `Book`):
+  `mock-books.ts`, στον κατάλογο `src/app`:
 
     ```javascript
-    const BOOKS: Book[] = [
+    import { Book } from './book';
+
+    export const BOOKS: Book[] = [
       { id: 11, title: 'Infinite Jest', pub_year: 1996},
       { id: 12, title: 'Oblivion', pub_year: 2004 },
       { id: 13, title: 'Ulysses', pub_year: 1922 },
@@ -409,30 +690,63 @@ back-end, θα την ταΐσουμε με όσα δεδομένα χρειαζ
 
 </div>
 
+
 ## Δήλωση βιβλίων
 
-* Μέσα στην κλάση `AppComponent`, στο αρχείο `app.component.ts`,
+* Μέσα στην κλάση `BooksComponent`, στο αρχείο `books.component.ts`,
   δηλώνουμε μία ιδιότητα που αναφέρεται στα βιβλία που φτιάξαμε:
 
     ```javascript
     books = BOOKS;
     ```
 
-<div class="notes">
+* Αντιστρόφως δεν χρειαζόμαστε πλέον την ιδιότητα `book` που είχαμε
+  βάλει προηγουμένως.
+  
+* Αν' αυτής θα προσθέσουμε μια ιδιότητα `selectedBook` που θα
+  αντιστοιχεί στο βιβλίο που επιλέγει ο χρήστης.
 
-Τη λίστα των βιβλίων την έχουμε δηλώσει έξω από την κλάση
-`AppComponent`, οπότε φτιάχνουμε ένα πεδίο (ιδιότητα) της κλάσης που
-δείχνει στη λίστα.
+* Επίσης θα χρειαστεί να εισάγουμε τα βιβλία που ορίσαμε, άρα στην
+  αρχή θα προσθέσουμε:
+    ```javascript
+    import { BOOKS } from '../mock-books';
+    ```
 
-</div>
+
+
+## `books.component.ts`
+
+* Το αρχείο `books.component.ts` θα είναι τότε:
+    ```javascript
+    import { Component, OnInit } from '@angular/core';
+
+    import { Book } from '../book';
+    import { BOOKS } from '../mock-books';
+
+    @Component({
+      selector: 'app-books',
+      templateUrl: './books.component.html',
+      styleUrls: ['./books.component.css'],
+    })
+    export class BooksComponent implements OnInit {
+
+      books = BOOKS;
+      selectedBook : Book;
+
+      constructor() { }
+
+      ngOnInit() {
+      }
+
+    }
+    ```
+
 
 ## Εξέλιξη προτύπου βιβλίων
 
-* Για να δούμε όλα τα βιβλία, αλλάζουμε το  `app.component.html` ως εξής:
+* Για να δούμε όλα τα βιβλία, αλλάζουμε το  `books.component.html` ως εξής:
 
     ```html
-    <h1>{{title}}</h1>
-    
     <h2>Books</h2>
     <ul class="books">
       <li *ngFor="let book of books"
@@ -443,13 +757,22 @@ back-end, θα την ταΐσουμε με όσα δεδομένα χρειαζ
     </ul>
     
     <div *ngIf="selectedBook">
-      <h2>{{selectedBook.title}} details:</h2>
+      <h2>{{ selectedBook.title }} details:</h2>
       <div><label>id: </label>{{selectedBook.id}}</div>
-      <label>title: </label>
-      <input [(ngModel)]="selectedBook.title" placeholder="name">
+      <div>
+        <label>title: </label>
+        <input [(ngModel)]="selectedBook.title" placeholder="name">
+      </div>
       <div><label>Publication year: </label>{{selectedBook.pub_year}}</div>
     </div>
     ```
+
+<div class="notes">
+
+Αφαιρέσαμε τη διοχέτευση `uppercase` γιατί αισθητικά δεν πήγαινε και
+πολύ καλά.
+
+</div>
 
 ## Δομικές οδηγίες
 
@@ -477,7 +800,7 @@ back-end, θα την ταΐσουμε με όσα δεδομένα χρειαζ
   βιβλίο.
   
 * Συγκεκριμένα, το `books` είναι το πεδίο `books` που ορίσαμε στο
-  `AppComponent`.
+  `BookComponent`.
   
 * Το `book` είναι μια μεταβλητή που σε κάθε επανάληψη θα πάρει την
   τιμή ενός βιβλίου από το `books`.
@@ -492,7 +815,7 @@ back-end, θα την ταΐσουμε με όσα δεδομένα χρειαζ
     
 * Αυτό σημαίνει ότι το `<div>` και τα περιεχόμενά του θα εισαχθούν
   στην HTML σελίδα (για την ακρίβεια, στο DOM), αν το πεδίο
-  `selectedBook` της κλάσης `AppComponent` είναι αληθής.
+  `selectedBook` του `BookComponent` είναι αληθής.
 
 
 ## Διασύνδεση κλάσης CSS
@@ -504,8 +827,13 @@ back-end, θα την ταΐσουμε με όσα δεδομένα χρειαζ
 
 * Αυτή είναι ένα παράδειγμα *διασύνδεσης κλάσης* (class binding).
 
-* Η ιδιότητα class του συγκεκριμένου HTML στοιχείου θα πάρει την τιμή
-  που θα προκύψει από την έκφραση `book === selectedBook`.
+* Στην ιδιότητα class του συγκεκριμένου HTML στοιχείου θα προστεθεί ή
+  θα αφαιρεθεί η τιμή `selected` αναλόγως της τιμής της έκφρασης `book
+  === selectedBook`.
+  
+* Γενικότερα, με την έκφραση `[class.some-css-class]="some-condition"`
+  στο στοιχείο θα προστίθεται ή θα αφαιρείται η κλάση `some-css-class`
+  αναλόγως της τιμής της έκφρασης `some-condition`.
 
 
 ## Εκφράσεις προτύπων
@@ -556,17 +884,33 @@ operators](https://angular.io/guide/template-syntax#expression-operators))
 * Όταν ο χρήστης επιλέγει ένα βιβλίο που θέλει να δει, θα εκτελείται ο
   αντίστοιχος χειριστής του γεγονότος (event handler).
 
-* Αυτόν τον προσθέτουμε στην κλάση `AppComponent`:
+* Αυτόν τον προσθέτουμε στην κλάση `BooksComponent`:
 
     ```javascript
-    export class AppComponent {
-      title = 'Bangular';
+    import { Component, OnInit } from '@angular/core';
+
+    import { Book } from '../book';
+    import { BOOKS } from '../mock-books';
+
+    @Component({
+      selector: 'app-books',
+      templateUrl: './books.component.html',
+      styleUrls: ['./books.component.css'],
+    })
+    export class BooksComponent implements OnInit {
+
       books = BOOKS;
-      selectedBook: Book;
+      selectedBook : Book;
+
+      constructor() { }
+
+      ngOnInit() {
+      }
 
       onSelect(book: Book): void {
         this.selectedBook = book;
       }
+
     }
     ```
 
@@ -574,9 +918,9 @@ operators](https://angular.io/guide/template-syntax#expression-operators))
 ## Στυλ βιβλίων
 
 * Για τη βελτίωση της εμφάνισης της σελίδας μας, θα δημιουργήσουμε ένα
-  ξεχωριστό αρχείο CSS ειδικά για τα βιβλία.
+  ξεχωριστό αρχείο CSS ειδικά για τη λίστα των βιβλίων.
 
-* Το αρχείο αυτό θα είναι το `app.component.css`:
+* Το αρχείο αυτό θα είναι το `books.component.css`:
 
     ```css
     .selected {
@@ -635,4 +979,10 @@ operators](https://angular.io/guide/template-syntax#expression-operators))
         margin-right: .8em;
         border-radius: 4px 0 0 4px;
     }
+    
+    /*
+    Copyright 2017 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license
+    */
     ```
