@@ -152,6 +152,17 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
       font-family: Arial, Helvetica, sans-serif;
       font-size: 250%;
     }
+
+    h2 {
+      color: #444;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: lighter;
+    }
+    
+    a {
+      cursor: pointer;
+      cursor: hand;
+    }
     ```
 
 * Και πάλι οι αλλαγές θα εφαρμοστούν μόλις σώσουμε το αρχείο.
@@ -587,17 +598,8 @@ platformBrowserDynamic().bootstrapModule(AppModule)
 
   
 * Στην εφαρμογή μας, το πρότυπο του (μοναδικού) αρθρώματός μας
-  βρίσκεται στο αρχείο `src/app/app.component.css`
+  βρίσκεται στο αρχείο `src/app/app.component.css`.
 
-## `src/app/app.component.css`
-
-```css
-h1 {
-  color: #369;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 250%;
-}
-```
 
 ## Έλεγχοι μονάδας
 
@@ -646,6 +648,35 @@ describe('AppComponent', () => {
   }));
 });
 ```
+
+<div class="notes">
+
+Προσέξτε ότι το αρχείο `app.component.spec.ts` όπως κατασκευάστηκε
+αρχικά περνάει τους ελέγχους με τον *αρχικό* τίτλο της εφαρμογής μας.
+Όμως στο μεταξύ τον αλλάξαμε. Άρα θα πρέπει να κάνουμε τις εξής
+προσαρμογές στο αρχικό αρχείο
+    * Η γραμμή:
+    ```javascript
+    expect(app.title).toEqual('app');
+    ```
+    θα γίνει:
+    ```javascript
+    expect(app.title).toEqual('My First Angular App');
+    ```
+    * Η γραμμή:
+    ```javascript
+    expect(compiled.querySelector('h1').textContent).toContain('Welcome to app!');
+    ```
+    θα γίνει:
+    ```javascript
+    expect(compiled.querySelector('h1').textContent)
+      .toContain('Welcome to My First Angular App!');
+    ```
+
+Αυτές τις αλλαγές τις έχουμε κάνει στον παραπάνω κώδικα.
+
+
+</div>
 
 # Άλλα αρχεία στον κατάλογο `src`
 
@@ -738,3 +769,17 @@ src/
 
 * `typings.d.ts`: TypeScript type definition file: δεν χρειάζεται να
   το πειράξουμε. Χρησιμοποιείται από το μεταγλωττιστή της TypeScript.
+
+
+## Καθολικό στυλ
+
+* Για να ρυθμίσουμε το καθολικό στυλ της εφαρμογής μας, βάζουμε τα
+  παρακάτω στο αρχείο `styles.css`:
+    ```css
+    body {
+      margin: 2em;
+      color: #888;
+      font-family: Cambria, Georgia;
+    }
+    ```
+
