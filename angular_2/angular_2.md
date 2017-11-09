@@ -1106,5 +1106,5 @@ operators](https://angular.io/guide/template-syntax#expression-operators))
     ```
   την κάνουμε:
     ```html
-    <h2 appItalics>{{ selectedBook.title }} details:</h2>
+    <h2><span appItalics> {{ selectedBook.title }}</span> details:</h2>
     ```
