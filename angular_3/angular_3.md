@@ -708,55 +708,35 @@ callback για το ιδίωμα αυτό.
     }
     ```
     
-## Χρήση του `MessageService` από το `BooksComponent`
+## Χρήση του `MessageService` από το `BookService`
 
-* Για να ενθέσουμε το `MessageService` στο `BooksComponent`, θα πρέπει
+* Για να ενθέσουμε το `MessageService` στο `BookService`, θα πρέπει
   πρώτα να το εισάγουμε σε αυτό.
   
 * Στη συνέχεια, θα δηλώσουμε ένα πεδίο `MessageService` δίνοντάς το ως
-  παράμετρο στον κατασκευαστή του `BooksComponent`. 
-  
-* Όταν τελικά έρθουν τα βιβλία, το `BooksComponent` θα στείλει το
-  κατάλληλο μήνυμα.
+  παράμετρο στον κατασκευαστή του `BookService`. 
   
 
-## `books.component.ts`
+## `book.service.ts`
 
-* Άρα το `BooksComponent` θα γίνει:
+* Άρα το `BookService` θα γίνει:
     ```javascript
-    import { Component, OnInit } from '@angular/core';
+    import { Injectable } from '@angular/core';
 
-    import { Book } from '../book';
-    import { BookService } from '../book.service';
-    import { MessageService } from '../message.service';
+    import { MessageService } from './message.service';
 
-    @Component({
-      selector: 'app-books',
-      templateUrl: './books.component.html',
-      styleUrls: ['./books.component.css'],
-    })
-    export class BooksComponent implements OnInit {
+    import { Book } from './book';
+    import { BOOKS } from './mock-books';
 
-      books: Book[];
-      selectedBook : Book;
+    @Injectable()
+    export class BookService {
 
-      constructor(private bookService: BookService,
-                  private messageService: MessageService) { }
-
-      ngOnInit() {
-        this.getBooks();
+      getBooks(): Promise<Book[]> {
+        this.messageService.add('BookService: fetched books');
+        return Promise.resolve(BOOKS);
       }
 
-      onSelect(book: Book): void {
-        this.selectedBook = book;
-      }
-
-      getBooks(): void {
-        this.bookService.getBooks().then(books => {
-          this.books = books;
-          this.messageService.add('BookService: fetched books');
-        });
-      }
+      constructor(private messageService: MessageService) { }
 
     }
     ```
