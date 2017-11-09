@@ -4,12 +4,14 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { BooksComponent } from './books/books.component';
+import { ItalicsDirective } from './italics.directive';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    BooksComponent
+    BooksComponent,
+    ItalicsDirective,
   ],
   imports: [
     BrowserModule,
