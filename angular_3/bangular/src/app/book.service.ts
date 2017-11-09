@@ -6,7 +6,10 @@ import { BOOKS } from './mock-books';
 @Injectable()
 export class BookService {
 
-    getBooks(): Promise<Book[]> {
-      return Promise.resolve(BOOKS);
-    }
+  getBooks(): Promise<Book[]> {
+    return Promise.resolve(BOOKS);
+  }
+
+  constructor() { }
+
 }

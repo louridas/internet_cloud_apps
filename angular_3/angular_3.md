@@ -14,213 +14,117 @@
   [online tutorial](https://angular.io/docs/ts/latest/tutorial/)
   της Google.
 
-## Αρχικό στήσιμο
-
-* Ξεκινάμε από την τελευταία έκδοση της εφαρμογής `bangular` που
-  είχαμε φτιάξει.
-
-* Αυτό σημαίνει ότι έχουμε μία δομή όπως η παρακάτω:
-    ```
-    bangular/
-    ├── README.md
-    ├── e2e
-    │   ├── app.e2e-spec.ts
-    │   ├── app.po.ts
-    │   └── tsconfig.e2e.json
-    ├── karma.conf.js
-    ├── node_modules [753 entries exceeds filelimit, not opening dir]
-    ├── package.json
-    ├── protractor.conf.js
-    ├── src
-    │   ├── app
-    │   │   ├── app.component.css
-    │   │   ├── app.component.html
-    │   │   ├── app.component.spec.ts
-    │   │   ├── app.component.ts
-    │   │   ├── app.module.ts
-    │   ├── assets
-    │   ├── environments
-    │   │   ├── environment.prod.ts
-    │   │   └── environment.ts
-    │   ├── favicon.ico
-    │   ├── index.html
-    │   ├── main.ts
-    │   ├── polyfills.ts
-    │   ├── styles.css
-    │   ├── test.ts
-    │   ├── tsconfig.app.json
-    │   ├── tsconfig.spec.json
-    │   └── typings.d.ts
-    ├── tsconfig.json
-    └── tslint.json
-    ```
-
-## Αλλαγή της έκδοσης
-
-* Στο αρχείο `package.json` ενημερώνουμε τον αριθμό έκδοσης,
-αλλάζοντας την κατάλληλη γραμμή σε:
-    ```javascript
-    "version": "1.1.0",
-    ```
-
 ## Δημιουργία εξαρτήματος λεπτομερειών
 
-* Αυτή τη στιγμή το εξάρτημα `AppComponent` είναι αρμόδιο τόσο για την
+* Αυτή τη στιγμή το εξάρτημα `BooksComponent` είναι αρμόδιο τόσο για την
   εμφάνιση της λίστας των βιβλίων, όσο και την εμφάνιση των
   λεπτομερειών κάθε βιβλίου.
 
 * Θα κάνουμε τις απαραίτητες αλλαγές ώστε να έχουμε ξεχωριστό εξάρτημα
   για την εμφάνιση των λεπτομερειών.
 
-## `app.component.html`
 
-* Ας θυμηθούμε λοιπόν πώς είναι το `app.component.html`:
-    ```javascript
-    <h1>{{title}}</h1>
+## Δημιουργία `BookDetailComponent`
 
-    <h2>Books</h2>
-    <ul class="books">
-      <li *ngFor="let book of books"
-          [class.selected]="book === selectedBook"
-          (click)="onSelect(book)">
-        <span class="badge">{{book.id}}</span> {{book.title}}
-      </li>
-    </ul>
-
-    <div *ngIf="selectedBook">
-      <h2>{{selectedBook.title}} details:</h2>
-      <div><label>id: </label>{{selectedBook.id}}</div>
-      <label>title: </label>
-      <input [(ngModel)]="selectedBook.title" placeholder="name">
-      <div><label>Publication year: </label>{{selectedBook.pub_year}}</div>
-    </div>
+* Αρχίζουμε δημιουργώντας ένα νέο εξάρτημα:
+    ```bash
+    ng generate component book-detail
     ```
+    
+* Με την εντολή αυτή θα δημιουργηθεί ο κατάλογος `src/app/book-detail`
+  και μέσα σε αυτόν θα δημιουργηθούν τα αρχεία:
+    * `book-detail.component.css`
+    * `book-detail.component.html`
+    * `book-detail.component.spec.ts`
+    * `book-detail.component.ts`
+    
+* Επίσης θα γίνουν οι απαραίτητες αλλαγές (εισαγωγή και δήλωση) στο
+  αρχείο `app.module.ts`.
 
-<div class="notes">
+## Αλλαγές στα πρότυπα
 
-Πράγματι, βλέπουμε ότι περιγράφει την εμφάνιση τόσο της λίστας των
-βιβλίων, όσο και του επιλεγμένου βιβλίου. Αλλά η λογική πίσω από τα
-εξαρτήματα είναι ότι το κάθε ένα αυτά είναι υπεύθυνο για την εμφάνιση
-συγκεκριμένων δεδομένων σε συγκεκριμένο σημείο της οθόνης. Εδώ λοιπόν
-θα θέλαμε το `AppComponent` να είναι υπεύθυνο *μόνο* για τη λίστα των
-βιβλίων, και ένα άλλο εξάρτημα για την εμφάνιση ενός συγκεκριμένου
-βιβλίου. 
-
-</div>
-
-
-## `book-detail.component.ts` (1)
-
-* Δημιουργούμε το αρχείο `book-detail.component.ts` στο οποίο
-δηλώνουμε το `BookDetailComponent`:
-
-    ```javascript
-    import { Component, Input } from '@angular/core';
-
-    @Component({
-      selector: 'book-detail'
-      templateUrl: 'book-detail.component.html',
-    })
-    export class BookDetailComponent {
-    }
-    ```
+* Θα μεταφέρουμε το κάτω μέρος του προτύπου `books.component.html` στο
+  `book-detail.component.html`.
+  
+* Θα αλλάξουμε τη μεταβλητή `selectedBook` σε `book`, αφού το
+  `BookComponent` θα είναι αρμόδιο για την εμφάνιση ενός οποιουδήποτε
+  βιβλίου. 
 
 
-## `book-detail.component.ts` (2)
+## `book-detail.component.html`
 
-* Εισάγουμε το διακοσμητή `Component`, αφού τον χρησιμοποιούμε άμεσα
-  στη δήλωση του `BookDetailComponent`.
-
-* Ο διακοσμητής `Input` δεν μας χρειάζεται ακόμα, αλλά θα μας
-  χρειαστεί σύντομα.
-
-* Δηλώνουμε το όνομα, `book-detail`, που θα έχει το στοιχείο HTML το
-  οποίο θα αντιστοιχεί στο εξάρτημα που κατασκευάζουμε.
-
-* Επίσης δίνουμε και το όνομα του προτύπου. `book.component.html`, το
-  οποίο θα έχει τον κώδικα HTML για την εμφάνιση του βιβλίου.
-
-* Εξάγουμε το `BookDetailComponent` ώστε να μπορούν να το
-  χρησιμοποιήσουν και άλλα μέρη της εφαρμογής μας.
-
-
-## Πρότυπο του `BookDetailComponent` (1)
-
-* Όπως είπαμε, το `BookDetailComponent` θα έχει το δικό του πρότυπο, στο αρχείο
-  `book-detail.component.html`:
-
+* Έτσι, το αρχείο `book-detail.component.html` θα είναι:
     ```html
     <div *ngIf="book">
-      <h2>{{book.title}} details:</h2>
-      <div><label>id: </label>{{book.id}}</div>
+    <h2><span appItalics> {{ book.title }}</span> details:</h2>
+    <div><label>id: </label>{{book.id}}</div>
+    <div>
       <label>title: </label>
-      <input [(ngModel)]="book.title" placeholder="title">
-      <div><label>Publication year: </label>{{book.pub_year}}</div>
+      <input [(ngModel)]="book.title" placeholder="name">
+    </div>
+    <div><label>Publication year: </label>{{book.pub_year}}</div>
     </div>
     ```
 
-## Πρότυπο του `BookDetailComponent` (2)
+## Σκελετός εξαρτήματος
 
-* Προσέξτε ότι προηγουμένως χρησιμοποιούσαμε τη μεταβλητή `selectedBook` στο
-  `app.component.html` για να αναφερόμαστε στο επιλεγμένο βιβλίο.
+* Ο σκελετός του εξαρτήματος, όπως έχει δημιουργηθεί από το Angular
+    CLI, είναι ο εξής:
+    ```javascript
+    import { Component, OnInit } from '@angular/core';
 
-* Το `BookDetailComponent` ούτως ή άλλως θα αναφέρεται σε ένα
-  συγκεκριμένο βιβλίο, άρα μετονομάσαμε την ιδιότητα αυτή απλώς σε
-  `book`.
+    @Component({
+      selector: 'app-book-detail',
+      templateUrl: './book-detail.component.html',
+      styleUrls: ['./book-detail.component.css']
+    })
+    export class BookDetailComponent implements OnInit {
 
+      constructor() { }
+
+      ngOnInit() {
+      }
+
+    }
+    ```
 
 ## Προσθήκη ιδιότητας `book`
 
-Προσθέτουμε λοιπόν την ιδιότητα `book` στο `BookDetailComponent`:
-
-```javascript
-import { Component, Input } from '@angular/core';
-
-@Component({
-  selector: 'book-detail',
-  templateUrl: 'book-detail.component.html',
-})
-export class BookDetailComponent {
-  book: Book
-}
-```
-
-## Δημιουργία ανεξάρτητου αρχείου `book.ts`
-
-* Το πρόβλημα τώρα είναι ότι η κλάση `Book` βρίσκεται μόνο μέσα στο
-  `AppComponent`, ενώ τη χρειαζόμαστε και στο `BookDetailComponent`.
-
-* Για να το λύσουμε αυτό, τη βγάζουμε από το `AppComponent` και τη
-  βάζουμε στο δικό της αρχείο, `book.ts`:
-
+* Αφού το `BookDetailComponent` είναι υπεύθυνο για την εμφάνιση ενός
+βιβλίου, προσθέτουμε μια ιδιότητα `book` στο `BookDetailComponent`:
     ```javascript
-    export class Book {
-      id: number;
-      title: string;
-      pub_year: number;
+    import { Component, OnInit } from '@angular/core';
+
+    import { Book } from '../book';
+
+    @Component({
+      selector: 'app-book-detail',
+      templateUrl: './book-detail.component.html',
+      styleUrls: ['./book-detail.component.css']
+    })
+    export class BookDetailComponent implements OnInit {
+
+      book: Book;
+
+      constructor() { }
+
+      ngOnInit() {
+      }
+
     }
     ```
-    
-## Εισαγωγή της κλάσης `Book`
 
-* Τώρα, θα πρέπει να εισαχθεί η κλάση `Book` τόσο στο `AppComponent`
-  όσο και στο `BookDetailComponent`.
+* Προσοχή, θα πρέπει να την εισάγουμε κιόλας (δείτε το σχετικό
+  `import` κοντά στην αρχή).
 
-* Για να το κάνουμε αυτό, βάζουμε κοντά στην αρχή του
-  `app.component.ts` και του `book-detail.component.ts` την
-  εξής γραμμή:
-
-    ```javascript
-    import { Book } from './book';
-    ```
 
 ## Αλληλεπίδραση των εξαρτημάτων
 
 * To `BookDetailComponent` πρέπει να ξέρει ποιο βιβλίο θα παρουσιάσει.
 
-* Αυτό θα του το πει το `AppComponent`.
+* Αυτό θα του το πει το `BooksComponent`.
 
-* Συγκεκριμένα, το πρότυπο `app.component.html` θα αλλάξει και θα
+* Συγκεκριμένα, το πρότυπο `books.component.html` θα αλλάξει και θα
   γίνει:
 
     ```html
@@ -233,31 +137,44 @@ export class BookDetailComponent {
         <span class="badge">{{book.id}}</span> {{book.title}}
       </li>
     </ul>
-    <book-detail [book]="selectedBook"></book-detail>
+    
+    <app-book-detail [book]="selectedBook"></app-book-detail>
     ```
 
-## Δήλωση ιδιότητας εισόδου
+## Δήλωση ιδιότητας εισόδου (1)
 
 * Η ιδιότητα `book` είναι ο *αποδέκτης* (target) της διασύνδεσης.
 
 * Αυτό φαίνεται από τη χρήση των `[ ]` γύρω από το όνομά της. Με τον
   τρόπο αυτό την καθιστούμε *ιδιότητα εισόδου* (input property).
 
+
+## Δήλωση ιδιότητας εισόδου (2)
+
 * Για να λειτουργήσει όμως ως ιδιότητα εισόδου, θα πρέπει να κάνουμε
-  την αντίστοιχη δήλωση και στο `BookDetailComponent`:
+  την αντίστοιχη δήλωση και στο `BookDetailComponent` χρησιμοποιώντας
+  το διακοσμητή `@Input()`:
 
     ```javascript
-    import { Component, Input } from '@angular/core';
+    import { Component, OnInit, Input } from '@angular/core';
 
-    import { Book } from './book';
+    import { Book } from '../book';
 
     @Component({
-      selector: 'book-detail',
-      templateUrl: 'book-detail.component.html'
+      selector: 'app-book-detail',
+      templateUrl: './book-detail.component.html',
+      styleUrls: ['./book-detail.component.css']
     })
-    export class BookDetailComponent {
+    export class BookDetailComponent implements OnInit {
+
       @Input()
       book: Book;
+
+      constructor() { }
+
+      ngOnInit() {
+      }
+
     }
     ```
 
@@ -267,100 +184,13 @@ export class BookDetailComponent {
 της μεταβλητής `book`. Κανονικά δεν έχουμε πρόσβαση στα δεδομένα ενός
 εξαρτήματος *παρά μόνο από το ίδιο το εξάρτημα*. Εμείς όμως θέλουμε
 τώρα να έχουμε πρόσβαση στη μεταβλητή `book` του εξαρτήματος
-`BookDetailComponent` από το εξάρτημα `AppComponent`. Για να γίνει
+`BookDetailComponent` από το εξάρτημα `BooksComponent`. Για να γίνει
 αυτό πρέπει να το επιτρέψουμε ρητώς. Αυτό ακριβώς κάνει ο διακοσμητής
 `@Input()`: υποδεικνύει ότι άλλα εξαρτήματα μπορούν να αλλάξουν την
-τιμή της μεταβλητής `book`.
+τιμή της μεταβλητής `book`. Προσέξτε ότι θα πρέπει να εισάγουμε το
+`Input` για να μπορούμε να το χρησιμοποιήσουμε.
 
 </div>
-
-## Δήλωση του `BookDetailComponent` (1)
-
-* Για να δέσουν όλα μεταξύ τους, θα πρέπει να εισαχθεί το
-  `BookDetailComponent` στο `AppComponent`, οπότε προσθέτουμε, κοντά
-  στην αρχή του `AppComponent`:
-
-    ```javascript
-    import { BookDetailComponent } from './book-detail.component';
-    ```
-
-## Δήλωση του `BookDetailComponent` (2)
-
-* Επίσης, πρέπει να το προσθέσουμε στα εξαρτήματα που χρησιμοποιεί το
-  `AppComponent`, οπότε το `app.module.ts` θα γίνει:
-    ```javascript
-    import { NgModule }      from '@angular/core';
-    import { BrowserModule } from '@angular/platform-browser';
-    import { FormsModule }   from '@angular/forms';
-
-    import { AppComponent }   from './app.component';
-    import { BookDetailComponent }   from './book-detail.component';
-
-    @NgModule({
-      imports:      [
-        BrowserModule,
-        FormsModule
-      ],
-      declarations: [
-        AppComponent,
-        BookDetailComponent
-      ],
-      bootstrap:    [ AppComponent ]
-    })
-    export class AppModule { }
-    ```
-
-<div class="notes">
-
-Γενικότερα, ο πίνακας `declarations` περιέχει όλα τα εξαρτήματα
-(μεταξύ άλλων) που ανήκουν στο συγκεκριμένο άρθρωμα (module). Ένα
-εξάρτημα πρέπει να δηλωθεί εκεί προκειμένου να είναι ορατό σε άλλα
-εξαρτήματα· δεν αρκεί απλώς να το εισάγουμε σε αυτά.
-
-</div>
-
-
-## Δομή της εφαρμογής
-
-* Επιβεβαιώνουμε ότι η εφαρμογή μας τώρα έχει την ακόλουθη δομή:
-
-    ```
-    bangular/
-    ├── README.md
-    ├── e2e
-    │   ├── app.e2e-spec.ts
-    │   ├── app.po.ts
-    │   └── tsconfig.e2e.json
-    ├── karma.conf.js
-    ├── node_modules [753 entries exceeds filelimit, not opening dir]
-    ├── package.json
-    ├── protractor.conf.js
-    ├── src
-    │   ├── app
-    │   │   ├── app.component.css
-    │   │   ├── app.component.html
-    │   │   ├── app.component.spec.ts
-    │   │   ├── app.component.ts
-    │   │   ├── app.module.ts
-    │   │   ├── book-detail.component.html
-    │   │   ├── book-detail.component.ts
-    │   │   ├── book.ts
-    │   ├── assets
-    │   ├── environments
-    │   │   ├── environment.prod.ts
-    │   │   └── environment.ts
-    │   ├── favicon.ico
-    │   ├── index.html
-    │   ├── main.ts
-    │   ├── polyfills.ts
-    │   ├── styles.css
-    │   ├── test.ts
-    │   ├── tsconfig.app.json
-    │   ├── tsconfig.spec.json
-    │   └── typings.d.ts
-    ├── tsconfig.json
-    └── tslint.json
-    ```
 
 
 ## Εκκίνηση της εφαρμογής
@@ -372,7 +202,7 @@ export class BookDetailComponent {
     ```
 
 
-# Δημιουργία υπηρεσίας
+# Δημιουργία υπηρεσιών
 
 ## Γενικά
 
@@ -383,126 +213,61 @@ export class BookDetailComponent {
   βιβλία να παρέχονται από μία υπηρεσία στα εξαρτήματα που τα
   χρειάζονται.
 
-## Αλλαγή της έκδοσης
-
-* Στο αρχείο `package.json` ενημερώνουμε τον αριθμό έκδοσης,
-αλλάζοντας την κατάλληλη γραμμή σε:
-
-    ```javascript
-    "version": "1.2.0",
-    ```
-
-## Δημιουργία της υπηρεσίας
-
-* Δημιουργούμε το αρχείο `book.service.ts`:
-
-    ```javascript
-    import { Injectable } from '@angular/core';
-
-    @Injectable()
-    export class BookService {
-    }
-    ```
-
-* Ο διακοσμητής `@Injectable` μπορεί να χρησιμοποιηθεί για να
-  προσδώσουμε εξαρτήσεις στο `BookService`. Αν και αυτή τη στιγμή δεν
-  μας χρειάζεται, είναι καλό να τον βάλουμε.
+* Επίσης θα προσθέσουμε μια υπηρεσία για την εμφάνιση μηνυμάτων στον
+  χρήστη. 
 
 
-## Αυτοματοποιημένη δημιουργία της υπηρεσίας
+## Δημιουργία σκελετού υπηρεσίας
 
-* Εναλλακτικά, θα μπορούσαμε να δημιουργήσουμε το αρχείο με το Angular
+* Δημιουργούμε τον σκελετό της υπηρεσίας με το Angular
   CLI ως εξής:
     ```bash
     ng generate service book
     ```
     
 * Σε αυτήν την περίπτωση το Angular CLI θα δημιουργήσει το ακόλουθα
-  αρχεία:
+  αρχεία στον κατάλογο `src/app`:
       * `book.service.ts`
       * `book.service.spec.ts`
 
-* Το `book.service.ts` είναι παρόμοιο με αυτό που φτιάξαμε με το χέρι:
+* Το `book.service.ts` είναι:
     ```javascript
     import { Injectable } from '@angular/core';
 
     @Injectable()
-    export class MybookService {
+    export class BookService {
 
       constructor() { }
 
     }
     ```
 
+## `@Injectable()`
+
+* Ο διακοσμητής `@Injectable()` που βλέπουμε στον παραπάνω κώδικα
+  ενημερώνει το Angular ότι η παρούσα υπηρεσία μπορεί να
+  χρησιμοποιήσει άλλες υπηρεσίες μέσω της διαδικασίας *ένθεσης
+  εξαρτήσεων* (dependency injection).
+  
+* Η ένθεση εξαρτήσεων είναι ένα σημαντικό σχεδιαστικό πρότυπο (design
+  pattern) που διέπει τη λειτουργία του Angular.
+  
+* Στην ουσία με την ένθεση εξαρτήσεων οι υλοποιήσεις των εξαρτήσεων
+  ορίζονται *τη στιγμή της εκτέλεσης* της εφαρμογής.
+  
+* Για περισσότερα, δείτε τη [σχετική τεκμηρίωση του
+  Angular](https://angular.io/guide/dependency-injection) και
+  [γενικότερα στη
+  Wikipedia](https://en.wikipedia.org/wiki/Dependency_injection).
+
+
 ## Παροχή βιβλίων
 
 * Το `BookService` θα είναι αρμόδιο για την παροχή βιβλίων στα
   εξαρτήματα της εφαρμογής.
 
-* Αυτή τη στιγμή γράφουμε μια κενή μέθοδο, την οποία θα τη
-  συμπληρώσουμε στη συνέχεια:
-
-    ```javascript
-    import { Injectable } from '@angular/core';
-
-    @Injectable()
-    export class BookService {
-      getBooks(): void { } // stub
-    }
-    ```
-
-## Δεδομένα δοκιμών (1)
-
-* Έχουμε τοποθετήσει στοιχεία για μερικά βιβλία στο `AppComponent`.
-
-* Θα τα βγάλουμε από εκεί, και θα τα αποθηκεύσουμε σε ένα ξεχωριστό
-  αρχείο, από όπου θα τα διαβάζει το `BookService`.
-
-* Σε μία πραγματική εφαρμογή, το `BookService` θα τα διάβαζε ίσως από
-  έναν εξυπηρετητή ή μια βάση δεδομένων.
-
-
-## Δεδομένα δοκιμών (2)
-
-* Δημιουργούμε το αρχείο `mock-books.ts`:
-
-    ```javascript
-    import { Book } from './book';
-
-    export const BOOKS: Book[] = [
-      { id: 11, title: 'Infinite Jest', pub_year: 1996},
-      { id: 12, title: 'Oblivion', pub_year: 2004 },
-      { id: 13, title: 'Ulysses', pub_year: 1922 },
-      { id: 14, title: 'The Crying of Lot 49', pub_year: 1966 },
-      { id: 15, title: 'City on Fire', pub_year: 2015 },
-      { id: 16, title: 'The Narrow Road to the Deep North', pub_year: 2013 },
-      { id: 17, title: 'The Dispossessed', pub_year: 1974 },
-      { id: 18, title: 'The Left Hand of Darkness', pub_year: 1969 },
-      { id: 19, title: 'A Death in the Family: My Struggle Book 1',
-        pub_year: 2013 },
-      { id: 20, title: 'A Man in Love: My Struggle Book 2', pub_year: 2013 }
-    ];
-    ```
-
-## Δεδομένα δοκιμών (3)
-
-* Προσέξτε ότι εξάγουμε τον πίνακα `BOOKS`, ώστε να είναι ορατός από
-  την υπόλοιπη εφαρμογή μας.
-
-* Στη συνέχεια, στο `app.component.ts` σβήνουμε αυτό το κομμάτι
-  κώδικα και αλλάζουμε τη μεταβλητή `books` του `AppComponent` ώστε να
-  είναι απλώς ένας μη αρχικοποιημένος πίνακας:
-
-    ```javascript
-    books: Book[];
-    ```
-
-## Παροχή των δεδομένων δοκιμών
-
-* Τώρα επιστρέφουμε στο `book.service.ts` και κάνουμε τις απαραίτητες
-  αλλαγές ώστε η μέθοδος `getBooks()` να επιστρέφει τα δεδομένα
-  δοκιμών:
-
+* Αυτή τη στιγμή γράφουμε μια μέθοδο η οποία επιστρέφει τα δεδομένα
+  δοκιμών: 
     ```javascript
     import { Injectable } from '@angular/core';
 
@@ -519,45 +284,100 @@ export class BookDetailComponent {
     }
     ```
 
-## Χρήση της υπηρεσίας (1)
+## Δήλωση της υπηρεσίας
 
 * Για να μπορέσουμε να χρησιμοποιήσουμε την υπηρεσία που φτιάξαμε, την
   εισάγουμε στο `AppComponent`, βάζοντας κάπου στην αρχή:
+    ```javascript
+    import { BookService } from './book.service';
+    ```
 
-```javascript
-import { BookService } from './book.service';
-```
+* Επίσης, την προσθέτουμε στο πίνακα `providers` του `AppComponent`:
+    ```javascript
+    providers: [ BookService ],
+    ```
+    
+* Ο πίνακας `providers` υποδεικνύει στο Angular να δημιουργήσει ένα
+  μοναδικό στιγμιότυπο του `BookService` και να το παρέχει σε όποια
+  κλάση το χρειάζεται.
 
-## Χρήση της υπηρεσίας (2)
+<div class="notes">
 
-* Στη συνέχεια, θα πρέπει να δημιουργήσουμε ένα `BookService`.
+Προκειμένου να μπορεί να γίνει η ένθεση των υπηρεσιών που θέλουμε,
+πρέπει να καταγράψουμε (register) τους παρόχους (providers) των
+υπηρεσιών αυτών. Η καταγραφή αυτή γίνεται στον πίνακα `providers`. Η
+καταγραφή αυτή μπορεί να γίνει είτε στον πίνακα `providers` του
+`NgModule`, είτε στον αντίστοιχο πίνακα του επιμέρους εξαρτήματός μας. 
 
-* Αυτό δεν γίνεται απλώς με κάτι του τύπου:
+* Αν καταγράψουμε έναν πάροχο στο `NgModule`, η υπηρεσία που παρέχει
+  είναι διαθέσιμη στο σύνολο της εφαρμογής μας.
 
+* Αν καταγράψουμε έναν πάροχο σε ένα επιμέρους εξάρτημα, η υπηρεσία
+  που παρέχει είναι διαθέσιμη στο εξάρτημα αυτό και στα τυχόν παιδιά
+  του.
+
+</div>
+
+## Χρήση της υπηρεσίας
+
+* Στη συνέχεια, θα πρέπει να χρησιμοποιήσουμε το `BookService` στο
+  `BooksComponent`. Συγκεκριμένα, θα γίνει ως εξής:
+    ```javascript
+    import { Component, OnInit } from '@angular/core';
+
+    import { Book } from '../book';
+    import { BookService } from '../book.service';
+
+    @Component({
+      selector: 'app-books',
+      templateUrl: './books.component.html',
+      styleUrls: ['./books.component.css'],
+    })
+    export class BooksComponent implements OnInit {
+
+      books: Book[];
+      selectedBook : Book;
+
+      constructor(private bookService: BookService) { }
+
+      ngOnInit() {
+        this.getBooks();
+      }
+
+      onSelect(book: Book): void {
+        this.selectedBook = book;
+      }
+
+      getBooks(): void {
+        this.books = this.bookService.getBooks();
+      }
+
+    }
+    ```
+
+## Ένθεση της υπηρεσίας
+
+* Βλέπουμε ότι η χρήση της υπηρεσίας δεν γίνεται απλώς με κάτι του τύπου:
     ```javascript
     bookService = new BookService(); // don't do this
     ```
-
-## Χρήση της υπηρεσίας (3)
-
 * Πράγματι, αν κάναμε κάτι τέτοιο:
-    * Το `AppComponent` θα έπρεπε να ξέρει ακριβώς πώς να κατασκευάζει
+    * Το `BooksComponent` θα έπρεπε να ξέρει ακριβώς πώς να κατασκευάζει
       ένα `BookService`. Αν αλλάξουμε τον κατασκευαστή (constructor)
       του `BookService`, μπορεί να χρειαστεί να αλλάξουμε τον κώδικα
       σε κάθε σημείο που καλείται.
     * Κάθε φορά δημιουργείται ένα νέο `BookService`, ενώ μπορεί να
       θέλουμε να υπάρχει μόνο ένα για όλα τα εξαρτήματα της εφαρμογής.
-    * Το `AppComponent` δένεται πολύ στενά με τη συγκεκριμένη
+    * Το `BooksComponent` δένεται πολύ στενά με τη συγκεκριμένη
       υλοποίηση του `BookService`. Δεν διευκολύνει την εναλλαγή
       διαφορετικών υλοποιήσεων (π.χ. άλλη για ελέγχους και άλλη για
       παραγωγή). 
 
-
 ## Ένθεση εξάρτησης
 
-* Για να αποφύγουμε τα παραπάνω προβλήματα, χρησιμοποιούμε ένα
-  σημαντικό *σχεδιαστικό πρότυπο* (design pattern), το οποίο
-  ονομάζεται *ένθεση εξάρτησης* (dependency injection).
+* Για να αποφύγουμε τα παραπάνω προβλήματα, χρησιμοποιούμε το
+  *σχεδιαστικό πρότυπο* (design pattern) *ένθεση εξάρτησης* (dependency
+  injection).
 
 * Στην πράξη φτιάχνουμε ένα κατασκευαστή (constructor) του
   `AppComponent` ο οποίος δηλώνει μία ιδιωτική ιδιότητα `bookService`:
@@ -565,17 +385,12 @@ import { BookService } from './book.service';
     ```javascript
     constructor(private bookService: BookService) { }
     ```
-* Μετά, δηλώνουμε το πώς θα μπορεί να κατασκευαστεί ένα `BookService`,
-  προσθέτοντας ένα πίνακα `providers` στο διακόσμητη `@Component` του
-  `AppComponent`:
 
-    ```javascript
-    providers: [BookService]
-    ```
+* Πλην όμως, αν προσέξετε, *δεν κατασκευάζουμε πουθενά εμείς ένα*
+  `BookService`. Το `BookService` κατασκευάζεται από το Angular και
+  γίνεται ένθεση (injection) μέσα στο `BookService` αυτομάτως.
 
 <div class="notes">
-
-### Ιδιότητες και κατασκευαστές στην TypeScript
 
 Στην TypeScript, όλες οι ιδιότητες μιας κλάσεις είναι δημόσιες
 (public), εκτός και αν ορίσουμε εμείς ότι είναι ιδιωτικές (private) ή
@@ -598,43 +413,12 @@ constructor(bookService: BookService) {
 constructor(private bookService: BookService) { }
 ```
 
-Ο πίνακας `providers` υποδεικνύει στο Angular να δημιουργεί ένα νέο
-`BookService` όταν δημιουργεί ένα `AppComponent`. Στη συνέχεια, το
-`AppComponent`, όπως και όλα τα τυχόν εξαρτήματα παιδιά του, θα μπορεί
-να χρησιμοποιήσει το `BookService`.
-
-### Ο πίνακας `providers`
-
-Προκειμένου να μπορεί να γίνει η ένθεση των υπηρεσιών που θέλουμε,
-πρέπει να καταγράψουμε (register) τους παρόχους (providers) των
-υπηρεσιών αυτών. Η καταγραφή αυτή γίνεται στον πίνακα `providers`. Η
-καταγραφή αυτή μπορεί να γίνει είτε στον πίνακα `providers` του
-`NgModule`, είτε στον αντίστοιχο πίνακα του επιμέρους εξαρτήματός μας. 
-
-* Αν καταγράψουμε έναν πάροχο στο `NgModule`, η υπηρεσία που παρέχει
-  είναι διαθέσιμη στο σύνολο της εφαρμογής μας.
-
-* Αν καταγράψουμε έναν πάροχο σε ένα επιμέρους εξάρτημα, η υπηρεσία
-  που παρέχει είναι διαθέσιμη στο εξάρτημα αυτό και στα τυχόν παιδιά
-  του.
-
 </div>
 
-## Κλήση της υπηρεσίας
-
-* Για να πάρουμε τα δεδομένα των βιβλίων στο `AppComponent`, γράφουμε
-  μια στοιχειώδη μέθοδο που απλώς καλεί την αντίστοιχη μέθοδο της
-  υπηρεσίας.
-
-    ```javascript
-      getBooks(): void {
-        this.books = this.bookService.getBooks();
-      }
-    ```
 
 ## Αρχικοποίηση βιβλίων
 
-* Το `AppComponent` πρέπει να διαβάζει τα βιβλία καλώντας τη συνάρτηση
+* Το `BooksComponent` πρέπει να διαβάζει τα βιβλία καλώντας τη συνάρτηση
   `getBooks()`.
 
 * Πότε όμως θα την καλεί;
@@ -686,69 +470,20 @@ constructor(private bookService: BookService) { }
 
 ## Υλοποίηση `OnInit`
 
-* Εισάγουμε τη διεπαφή `OnInit` στο `app.component.ts` κάνοντας
-  την πρώτη του γραμμή:
-
+* Για τους παραπάνω λόγους, στο `BooksComponent` υλοποιήσαμε την
+  `ngOnInit()`:
     ```javascript
-    import { Component, OnInit } from '@angular/core';
-    ```
-
-* Αλλάζουμε τη δήλωση του `AppComponent` για να υλοποιεί τη διεπαφή
-  `OnInit`:
-    ```javascript
-    export class AppComponent implements OnInit {
-    /* ... */
-    }
-    ```
-
-* Μετά, μέσα στην κλάση `AppComponent` γράφουμε τη μέθοδο `ngOnInit()`:
-
-    ```javascript
-    ngOnInit(): void {
+    ngOnInit() {
       this.getBooks();
     }
     ```
+    
+* Άρα η μέθοδος `getBooks()`, η οποία χρησιμοποιεί την υπηρεσία
+  `BookService`, θα κληθεί έχοντας εξασφαλίσει ότι το `BookService`
+  έχει δημιουργηθεί και αρχικοποιηθεί πλήρως.
 
-## `app.component.ts`
 
-* Το `app.component.ts` θα είναι τότε:
-    ```javascript
-    import { Component, OnInit } from '@angular/core';
-
-    import { BookDetailComponent } from './book-detail.component';
-    import { BookService } from './book.service';
-
-    import { Book } from './book';
-
-    @Component({
-      selector: 'app-root',
-      templateUrl: './app.component.html',
-      styleUrls: ['./app.component.css'],
-      providers: [BookService]
-    })
-    export class AppComponent implements OnInit {
-      title = 'Bangular';
-      books: Book[];
-      selectedBook: Book;
-
-      constructor(private bookService: BookService) { }
-
-      ngOnInit(): void {
-          this.getBooks();
-      }
-
-      onSelect(book: Book): void {
-        this.selectedBook = book;
-      }
-
-      getBooks(): void {
-        this.bookService.getBooks().then(books => this.books = books);
-      }
-
-    }
-    ```
-
-# Ασύγχρονες υπηρεσίες και υποσχέσεις
+# Ασύγχρονες υπηρεσίες
 
 ## Γενικά
 
@@ -765,10 +500,10 @@ constructor(private bookService: BookService) { }
 
 ## Υποσχέσεις
 
-* Ο τρόπος με τον οποίο χειριζόμαστε ασύγχρονες υπηρεσίες είναι μέσω
+* Ένας τρόπος με τον οποίο χειριζόμαστε ασύγχρονες υπηρεσίες είναι μέσω
   *υποσχέσεων* (promises).
 
-* Μια υπόσχεση είναι ένα αντικείμενο το οποίο αντικαθιστά τα
+* Μια υπόσχεση είναι ένα αντικείμενο το οποίο υποκαθιστά τα
   αποτελέσματα που περιμένουμε.
 
 
@@ -831,9 +566,10 @@ callback για το ιδίωμα αυτό.
 
 </div>
 
-## Υπόσχεση στο `AppComponent`
 
-* Αλλάζουμε τη μέθοδο `getBooks()` του `AppComponent` ώστε να
+## Υπόσχεση στο `BooksComponent`
+
+* Αλλάζουμε τη μέθοδο `getBooks()` του `BooksComponent` ώστε να
   χρησιμοποιήσει μια υπόσχεση που θα του δίνει το `BookService`:
 
     ```javascript
@@ -889,3 +625,242 @@ callback για το ιδίωμα αυτό.
 * Στην πραγματικότητα, η υπόσχεση αυτή θα εκπληρωνόταν όταν θα
   ολοκληρωνόταν η επικοινωνία με τη βάση δεδομένων ή τον εξυπηρετητή
   που έχει τα στοιχεία για τα βιβλία.
+
+## Υπηρεσία μηνυμάτων
+
+* Θα φτιάξουμε μια υπηρεσία η οποία θα εμφανίζει μηνύματα στον χρήστη.
+  
+* Η ιδιαιτερότητα είναι ότι τα μηνύματα αυτά θα είναι ασύγχρονα.
+
+
+## Δημιουργία σκελετού `MessagesComponent`
+
+* Χρησιμοποιούμε το Angular CLI για να δημιουργήσουμε τον σκελετό του
+  `MessagesComponent`: 
+    ```bash
+    ng generate component messages
+    ```
+  
+* Με την εντολή αυτή θα δημιουργηθεί ο κατάλογος `src/app/messages`
+  και μέσα σε αυτόν θα δημιουργηθούν τα αρχεία:
+    * `messages.component.css`
+    * `messages.component.html`
+    * `messages.component.spec.ts`
+    * `messages.component.ts` 
+
+* Επίσης θα γίνουν οι απαραίτητες αλλαγές (εισαγωγή και δήλωση) στο
+  αρχείο `app.module.ts`.
+
+
+## Προσαρμογή `app.component.html`
+
+* Για να εμφανίζεται το εξάρτημα των μηνυμάτων, αλλάζουμε κατάλληλα το
+  `app.component.html`: 
+    ```html
+    <h1>{{title}}</h1>
+    <app-books></app-books>
+    <app-messages></app-messages>
+    ```
+
+## Δημιουργία σκελετού `MessageService`
+
+* Χρησιμοποιούμε το Angular CLI για να δημιουργήσουμε τον σκελετό του
+  `MessagesComponent`: 
+    ```bash
+    ng generate service message --module=app
+    ```
+  
+* Με την εντολή αυτή θα δημιουργηθούν τα παρακάτω αρχεία στον κατάλογο
+  `src/app`: 
+    * `message.service.spec.ts`
+    * `message.service.ts`
+
+* Επίσης θα γίνουν οι απαραίτητες αλλαγές (εισαγωγή και δήλωση) στο
+  αρχείο `app.module.ts`.
+
+* Η παράμετρος `--module=app` δηλώνει ότι η υπηρεσία θα συμπεριληφθεί
+  στον πίνακα `providers` του `AppModule` (άρα δεν χρειάζεται να το
+  κάνουμε εμείς με το χέρι).
+  
+
+## Συγγραφή `MessageService`
+
+* Αλλάζουμε τα περιεχόμενα του `message.service.ts` ώστε να γίνει ως
+  εξής:
+    ```javascript
+    import { Injectable } from '@angular/core';
+
+    @Injectable()
+    export class MessageService {
+
+      messages: string[] = [];
+
+      add(message: string) {
+        this.messages.push(message);
+      }
+
+      clear() {
+        this.messages.length = 0;
+      }
+
+      constructor() { }
+
+    }
+    ```
+    
+## Χρήση του `MessageService` από το `BooksComponent`
+
+* Για να ενθέσουμε το `MessageService` στο `BooksComponent`, θα πρέπει
+  πρώτα να το εισάγουμε σε αυτό.
+  
+* Στη συνέχεια, θα δηλώσουμε ένα πεδίο `MessageService` δίνοντάς το ως
+  παράμετρο στον κατασκευαστή του `BooksComponent`. 
+  
+* Όταν τελικά έρθουν τα βιβλία, το `BooksComponent` θα στείλει το
+  κατάλληλο μήνυμα.
+  
+
+## `books.component.ts`
+
+* Άρα το `BooksComponent` θα γίνει:
+    ```javascript
+    import { Component, OnInit } from '@angular/core';
+
+    import { Book } from '../book';
+    import { BookService } from '../book.service';
+    import { MessageService } from '../message.service';
+
+    @Component({
+      selector: 'app-books',
+      templateUrl: './books.component.html',
+      styleUrls: ['./books.component.css'],
+    })
+    export class BooksComponent implements OnInit {
+
+      books: Book[];
+      selectedBook : Book;
+
+      constructor(private bookService: BookService,
+                  private messageService: MessageService) { }
+
+      ngOnInit() {
+        this.getBooks();
+      }
+
+      onSelect(book: Book): void {
+        this.selectedBook = book;
+      }
+
+      getBooks(): void {
+        this.bookService.getBooks().then(books => {
+          this.books = books;
+          this.messageService.add('BookService: fetched books');
+        });
+      }
+
+    }
+    ```
+    
+## Εμφάνιση του μηνύματος (1)
+
+* Το μήνυμα που αποστέλει το `BookService` θα εμφανίζεται από το
+  `MessagesComponent`. 
+  
+* Για να το κάνουμε αυτό, θα δηλώσουμε μια ιδιότητα `messageService`
+  μέσα στο `MessageComponent`.
+
+* Η ιδιότητα αυτή θα είναι *δημόσια* (public) γιατί θέλουμε να τη
+  χρησιμοποιήσουμε στο πρότυπο `messages.component.html`.
+
+
+## Εμφάνιση του μηνύματος (2)
+
+* To `MessagesComponent` λοιπόν θα γίνει:
+    ```javascript
+    import { Component, OnInit } from '@angular/core';
+
+    import { MessageService } from '../message.service';
+
+    @Component({
+      selector: 'app-messages',
+      templateUrl: './messages.component.html',
+      styleUrls: ['./messages.component.css'],
+    })
+    export class MessagesComponent implements OnInit {
+
+      constructor(public messageService: MessageService) {}
+
+      ngOnInit() {
+      }
+
+    }
+    ```
+    
+## Πρότυπο `messages.component.html`
+
+* Αλλάζουμε το αρχείο `messages.component.html` ώστε το πρότυπο του
+  `MessagesComponent` θα είναι ως εξής:
+    ```javascript
+    <div *ngIf="messageService.messages.length">
+
+      <h2>Messages</h2>
+      <button class="clear"
+              (click)="messageService.clear()">clear</button>
+      <div *ngFor='let message of messageService.messages'> {{message}} </div>
+
+    </div>
+    ```
+
+## Στυλ `MessagesComponent`
+
+* Για τη βελτίωση της εμφάνισης του `MessagesComponent` θα
+  χρησιμοποιήσουμε το παρακάτω αρχείο CSS:
+    ```css
+    /* MessagesComponent's private CSS styles */
+    h2 {
+      color: red;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: lighter;
+    }
+
+    body {
+      margin: 2em;
+    }
+
+    body, input[text], button {
+      color: crimson;
+      font-family: Cambria, Georgia;
+    }
+
+    button.clear {
+      font-family: Arial;
+      background-color: #eee;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      cursor: hand;
+    }
+
+    button:hover {
+      background-color: #cfd8dc;
+    }
+
+    button:disabled {
+      background-color: #eee;
+      color: #aaa;
+      cursor: auto;
+    }
+
+    button.clear {
+      color: #888;
+      margin-bottom: 12px;
+    }
+
+
+    /*
+    Copyright 2017 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license
+    */
+    ```
