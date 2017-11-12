@@ -9,7 +9,7 @@ import { BookDetailComponent } from './book-detail/book-detail.component';
 import { BookService } from './book.service';
 import { MessagesComponent } from './messages/messages.component';
 import { MessageService } from './message.service';
-import { AppRoutingModule } from './/app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
