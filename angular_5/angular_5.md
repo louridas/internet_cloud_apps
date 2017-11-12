@@ -2,816 +2,811 @@
 % Αν. Καθηγητής Π. Λουρίδας
 % Οικονομικό Πανεπιστήμιο Αθηνών
 
-# Angular2 5
+# Angular 5
 
 ## Γενικά
 
-* Θέλουμε να βελτιώσουμε την πλοήγηση στην εφαρμογή μας.
+* Η εφαρμογή μας διαβάζει τα δεδομένα που χρειάζεται από ένα στατικό
+  αρχείο που περιέχει τα βιβλία που εμφανίζει.
 
-* Συγκεκριμένα θέλουμε να:
-    * πηγαίνουμε από το dashboard σε ένα συγκεκριμένο βιβλίο
-    * πηγαίνουμε από τη λίστα των βιβλίων σε ένα συγκεκριμένο βιβλίο
-    * πηγαίνουμε κατ' ευθείαν σε ένα συγκεκριμένο βιβλίο εισάγοντας το
-      κατάλληλο URL στον browser.
+* Στην πραγματικότητα όμως, θα τα διαβάζει από κάποιον εξυπηρετητή.
 
-# Angular bangular tutorial 4
-
-## Γενικά
+* Η επικοινωνία μεταξύ του εξυπηρετητή και της εφαρμογής μας θα
+  γίνεται μέσω HTTP.
 
 * Συνεχίζουμε προσαρμόζοντας το 
   [online tutorial](https://angular.io/docs/ts/latest/tutorial/)
   της Google.
 
-## Αρχικό στήσιμο
 
-* Ξεκινάμε από την τελευταία έκδοση της εφαρμογής `bangular` που
-  είχαμε φτιάξει
+## Προσομοίωση εξυπηρετητή
 
-* Αυτό σημαίνει ότι έχουμε μία δομή όπως η παρακάτω:
+* Θα εξομοιώσουμε την επικοινωνία με έναν εξυπηρετητή.
 
+* Ενώ η εφαρμογή μας θα πιστεύει ότι επικοινωνεί με έναν εξυπηρετητή
+  που αποθηκεύει τα βιβλία, στην πραγματικότητα δεν θα συμβαίνει αυτό.
+  
+* Οι αιτήσεις προς τον εξυπηρετητή θα υποκλέπονται από μία βιβλιοθήκη
+  που θα εγκαταστήσουμε.
+
+* Η βιβλιοθήκη αυτή επίσης θα συνθέτει τις απαντήσεις που κανονικά θα
+  παίρναμε από τον εξυπηρετητή.
+  
+* Η βιβλιοθήκη αυτή ονομάζεται [In Memory Web
+  API](https://github.com/angular/in-memory-web-api).
+  
+  
+## Εγκατάσταση In Memory Web API
+
+* Για να εγκαταστήσουμε το In Memory Web API δίνουμε το εξής:
+    ```bash
+    npm install angular-in-memory-web-api --save
     ```
-    bangular/
-        node_modules/
-        typings/
-        app/
-            app-routing.module.ts
-            app.component.css
-            app.component.html
-            app.component.ts
-            app.module.ts
-            book-detail.component.ts
-            book-detail.component.html
-            book-service.ts
-            books.ts
-            books.component.ts
-            books.component.css
-            books.component.html
-            dashboard.component.ts
-            dashboard.component.css
-            dashboard.component.html
-            main.ts
-            mock-books.ts
-        package.json
-        systemjs.config.json
-        tsconfig.json
-        typings.json
-    ```
+    
+* Η παράμετρος `--save` σημαίνει ότι η βιβλιοθήκη στα προστεθεί στις
+  εξαρτήσεις της εφαρμογής.
+  
+* Αυτό θα γίνει προσθέτοντάς την στο τμήμα `dependencies` του αρχείου
+  `package.json`, το οποίο ακριβώς γίνεται με την παράμετρο `--save`.
 
-## Αλλαγή της έκδοσης
 
-* Στο αρχείο `package.json` ενημερώνουμε τον αριθμό έκδοσης,
-  αλλάζοντας την κατάλληλη γραμμή σε:
+## Χρήση του `HttpClient` και του In Memory Web API
 
+* Η επικοινωνία με τον εξυπηρετητή θα γίνεται με το `HTTPClient`, άρα
+  θα πρέπει να το εισάγουμε στο `AppModule`.
+
+* Όπως είπαμε, η επικοινωνία θα υποκλέπτεται από το In Memory Web API
+  οπότε θα το εισάγουμε και αυτό στο `AppModule`.
+  
+* Η υποκλοπή θα χρησιμοποιεί τα δεδομένα που θα χειρίζεται μια δική
+  μας υπηρεσία, η `InMemoryDataService`, την οποία θα γράψουμε σε
+  λίγο, και την εισάγουμε και αυτή.
+  
+
+## `app.module.ts`
+
+* Σύμφωνα με τα παραπάνω, το αρχείο `app.module.ts` Θα εξελιχθεί ως
+  εξής:
     ```javascript
-    "version": "1.4.0",
-    ```
+    import { BrowserModule } from '@angular/platform-browser';
+    import { NgModule } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
 
-## 
+    import { HttpClientModule }    from '@angular/common/http';
+    import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+    import { InMemoryDataService }  from './in-memory-data.service';
 
-* Θα προσθέσουμε το `id` ενός βιβλίου στο URL.
-
-* Συνεπώς θα έχουμε URL της μορφής:
-    ```
-    /detail/11
-    ```
-* Σε αυτά τα URL o αριθμός θα είναι το `id` του συγκεκριμένου βιβλίου.
-
-* Θα αναπαραστήσουμε αυτό το μεταβλητό μέρος του URL με μία
-  *παράμετρο* (parameter) ή *token* που αντιστοιχεί στο `id` του
-  βιβλίου.
-
-
-## Δημιουργία παραμετροποιημένης διαδρομής
-
-* Προσθέτουμε την παρακάτω παραμετροποιημένη διαδρομή στο
-  `app/app-routing.module.ts`:
-
-    ```javascript
-    { path: 'detail/:id', component: BookDetailComponent }
-    ```
-
-* Επίσης θα πρέπει να προσθέσουμε το κατάλληλο `import` στο αρχείο:
-
-    ```javascript
-    import { BookDetailComponent } from './book-detail.component';
-    ```
-
-## Προσαρμογή του `BookDetailComponent`
-
-* Στη συνέχεια θα προσαρμόσουμε αναλόγως το `BookDetailComponent`.
-
-* Συγκεκριμένα, το `BookDetailComponent` θα ξέρει ποιο βιβλίο να
-  εμφανίσει από την παράμετρο `id` που έχει επιλεγεί στην τρέχουσα
-  διαδρομή `detail/:id`.
-
-* Για το σκοπό αυτό θα χρησιμοποιήσουμε την υπηρεσία (service)
-  `ActivatedRoute`.
-
-
-## Υπηρεσία `ActivatedRoute`
-
-* Η υπηρεσία `ActivatedRoute` μας δίνει πληροφορίες για κάθε διαδρομή.
-
-* Ανάμεσα στις πληροφορίες που μας δίνει περιλαμβάνονται οι παράμετροι
-  της διαδρομής.
-
-* Οι παράμετροι της διαδρομής βρίσκονται στην ιδιότητα `params` του
-  αντικειμένου `ActivatedRoute`.
-
-
-## Εισαγωγή απαιτήσεων στο `BookDetailComponent`
-
-* Ξεκινάμε εισάγοντας τα προαπαιτούμενα στο `BookDetailComponent`:
-
-    ```javascript
-    import { Component, Input, OnInit } from '@angular/core';
-    import { ActivatedRoute, Params } from '@angular/router';
-    import { Location } from '@angular/common';
-
+    import { AppComponent } from './app.component';
+    import { BooksComponent } from './books/books.component';
+    import { ItalicsDirective } from './italics.directive';
+    import { BookDetailComponent } from './book-detail/book-detail.component';
     import { BookService } from './book.service';
+    import { MessagesComponent } from './messages/messages.component';
+    import { MessageService } from './message.service';
+    import { AppRoutingModule } from './/app-routing.module';
+    import { DashboardComponent } from './dashboard/dashboard.component';
+
+    @NgModule({
+      declarations: [
+        AppComponent,
+        BooksComponent,
+        ItalicsDirective,
+        BookDetailComponent,
+        MessagesComponent,
+        DashboardComponent,
+      ],
+      imports: [
+        BrowserModule,
+        FormsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        HttpClientInMemoryWebApiModule.forRoot(
+          InMemoryDataService, { dataEncapsulation: false }
+        )
+      ],
+      providers: [ BookService, MessageService ],
+      bootstrap: [AppComponent]
+    })
+    export class AppModule { }
     ```
+    
+<div class="notes">
 
-## Δημιουργία κατασκευαστή στο `BookDetailComponent`
-
-* Όπως και στις προηγούμενες περιπτώσεις, θα χρησιμοποιήσουμε έναν
-  κατασκευαστή (constructor) για να αποθηκεύσουμε τις υπηρεσίες
-  `ActivatedRoute`, `BookService`, και `Location` σε ιδιότητες του
-  `BookDetailComponent`:
-
-    ```javascript
-      constructor(private bookService: BookService,
-                  private route: ActivatedRoute,
-                  private location: Location) { }
-    ```
-
-## Υλοποίηση `OnInit` (1)
-
-* Το `BookDetailComponent` θα χρησιμοποιεί τη διεπαφή `OnInit`.
-
-* Στη μέθοδο `ngOnInit()` θα λαμβάνει την παράμετρο `id` από την
-  τρέχουσα διαδρομή.
-
-* Προσοχή: όλες οι παράμετροι είναι συμβολοσειρές. Για να μετατρέψουμε
-  την `id` σε αριθμό, θα πρέπει να χρησιμοποιήσουμε τον τελεστή `+`.
-
-
-## Υλοποίηση `OnInit` (2)
-
+Η επικοινωνία του Angular με τον εξυπηρετητή γίνεται μέσω της
+υπηρεσίας `HTTPClient`. Εμείς θα παρεμβάλουμε στην επικοινωνία την υπηρεσία
+`HttpClientInMemoryWebApiModule`. Η αρχικοποίησή της γίνεται με την εντολή:
 ```javascript
-export class BookDetailComponent implements OnInit {
-
-  /* ... */
-
-  ngOnInit(): void {
-    this.route.params.forEach((params: Params) => {
-      let id = +params['id'];
-      this.bookService.getBook(id)
-        .then(book => this.book = book);
-    });
-  }
-
-}
+        HttpClientInMemoryWebApiModule.forRoot(
+          InMemoryDataService, { dataEncapsulation: false }
+        )
 ```
 
-## Υλοποίηση του `BookService.getBook()`
+Στην εντολή αυτή δηλώνουμε ότι θα χρησιμοποιεί την υππηρεσία
+`InMemoryDataService`, που θα γράψουμε σε λίγο. Επίσης δηλώνουμε ότι η
+ιδιότητα `dataEncapsulation` θα είναι `false`. Η ιδιότητα
+`dataEncapsulation` έχει την εξής σημασία:
+  * αν είναι `true`, τότε τα δεδομένα της εφαρμογής θα επιστρέφονται
+    από το In Memory Web API μέσα σε ένα αντικείμενο με το όνομα
+    `data`.
+  * αν είναι `false`, τότε τα δεδομένα της εφαρμογής θα επιστρέφονται
+    από το In Memory Web API όπως είναι, χωρίς να εμπεριέχονται σε
+    κάποιο επιπλέον αντικείμενο.
+    
+</div>
 
-* Στην `ngOnInit()` χρησιμοποιούμε μια μέθοδο `getBook()`, του
-  `BookService`, την οποία όμως δεν την έχουμε υλοποιήσει ακόμα.
 
-* Συνεπώς την υλοποιούμε αμέσως στο `app/book.service.ts` ως εξής:
+## Δημιουργία `InMemoryDataService`
 
+* Δημιουργούμε το `InMemoryDataService` στο αρχείο
+  `in-memory-data.service.ts` στον κατάλογο `src/app`:
     ```javascript
-    getBook(id: number): Promise<Book> {
-      return this.getBooks()
-        .then(books => books.find(book => book.id === id));
+    import { InMemoryDbService} from 'angular-in-memory-web-api';
+
+    import { Book } from './book';
+
+    export class InMemoryDataService implements InMemoryDbService {
+      createDb() {
+
+        const BOOKS: Book[] = [
+          { id: 11, title: 'Infinite Jest', pub_year: 1996},
+          { id: 12, title: 'Oblivion', pub_year: 2004 },
+          { id: 13, title: 'Ulysses', pub_year: 1922 },
+          { id: 14, title: 'The Crying of Lot 49', pub_year: 1966 },
+          { id: 15, title: 'City on Fire', pub_year: 2015 },
+          { id: 16, title: 'The Narrow Road to the Deep North', pub_year: 2013 },
+          { id: 17, title: 'The Dispossessed', pub_year: 1974 },
+          { id: 18, title: 'The Left Hand of Darkness', pub_year: 1969 },
+          { id: 19, title: 'A Death in the Family: My Struggle Book 1',
+            pub_year: 2013 },
+          { id: 20, title: 'A Man in Love: My Struggle Book 2', pub_year: 2013 }
+        ];
+        return (books);
+      }
+    }
+    ```
+    
+* Επίσης σβήνουμε το αρχείο `mock-books.ts`, αφού δεν το χρειαζόμαστε
+  πλέον. 
+
+
+## Υπηρεσία HTTP
+
+* Η εφαρμογή μας θα επικοινωνεί μέσω HTTP προκειμένου να ανακτήσει τις
+  πληροφορίες των βιβλίων.
+
+* Για το σκοπό αυτό θα χρησιμοποιήσει την υπηρεσία `HTTPClient`
+  του Angular.
+
+* Από εδώ και στο εξής, ξεχνάμε τα πάντα περί υποκλοπών. Η εφαρμογή
+  μας νομίζει ότι επικοινωνεί με έναν εξυπηρετητή.
+
+
+## Κλήση HTTP από το `BookService` (1)
+
+* Για να γίνει η κλήση HTTP από το `BookService`, θα πρέπει να
+  εισάγουμε τα εξής:
+    ```javascript
+    import { HttpClient, HttpHeaders } from '@angular/common/http';
+    ```
+
+* Για να ενθέσουμε το `HttpClient` στο `BookService` θα το δηλώσουμε
+  σε μία ιδιωτική ιδιότητα στον κατασκευαστή:
+    ```javascript
+    constructor(
+      private http: HttpClient,
+      private messageService: MessageService) { }
+    ```
+    
+## Κλήση HTTP από το `BookService` (2)
+
+* Στη συνέχεια, θα προσθέσουμε μια ιδιότητα που θα δείχνει το URL το
+  οποίο θα χρησιμοποιούμε για να επικοινωνήσουμε με τον εξυπηρετητή:
+    ```javascript
+    private booksUrl = 'api/books';
+    ```
+    
+* Θα προσθέσουμε επίσης μια μέθοδο για να καταγράφουμε τη χρήση της
+  υπηρεσίας:
+    ```javascript
+    private log(message: string): void {
+      this.messageService.add('BookService: ' + message);
+    }
+    ```
+    
+## Η μέθοδος `getBooks()`
+
+* Για να διαβάσουμε βιβλία από τον εξυπηρετητή θα αλλάξουμε τη μέθοδο
+  `getBooks()` ώστε να είναι:
+    ```javascript
+    /** GET books from the server */
+    getBooks(): Observable<Book[]> {
+     return this.http.get<Book[]>(this.booksUrl)
+       .pipe(
+         tap(books => this.log(`fetched books`)),
+         catchError(this.handleError('getBooks', []))
+       );
     }
     ```
 
-## Πλοήγηση προς τα πίσω (1)
 
-* Πώς μπορεί να επιστρέψει ο χρήστης στην προηγούμενη οθόνη όταν
-  βλέπει ένα βιβλίο;
+## Η κλάση `Observable`
 
-* Μπορεί πάντοτε να πατήσει στο κουμπί back του browser.
+* Όπως μπορείτε να προσέξετε η μέθοδος `getBooks()` επιστρέφει ένα
+  `Observable`.
+  
+* Μέχρι τώρα για να χειριστούμε ασύγχρονα δεδομένα χρησιμοποιούσαμε
+  την κλάση `Promise`.
+  
+* Η υπηρεσία `HttpClient` χρησιμοποιεί την κλάση `Observable` αντ'
+  αυτής.
+  
+* Η κλάση `Observable` είναι η βασική κλάση της βιβλιοθήκης
+  [RxJS](http://reactivex.io/rxjs/) που χρησιμοποιείται στο Angular
+  αλλά και αλλού· είναι πολύ δημοφιλής.
 
-* Εναλλακτικά, θα του δώσουμε τη δυνατότητα να πατάει ένα κουμπί Back
-  στο εξάρτημα `BookDetailComponent`.
 
+## `Promise` και `Observable`
 
-## Πλοήγηση προς τα πίσω (2)
+* Αντικείμενα της κλάσης `Promise` μπορεί να επιστρέψουν κάποια τιμή
+  από τη στιγμή που θα κληθούν.
+  
+* Ένα αντικείμενο της κλάσης `Promise` μπορεί είτε να εκπληρωθεί είτε
+  να αθετηθεί.
 
-* Υλοποιούμε την παρακάτω μέθοδο στο `BookDetailComponent`:
+* Αντικείμενα της κλάσης `Observable` μπορεί να γυρίσουν από μηδέν
+  μέχρι (εν δυνάμει) άπειρες τιμές από τη στιγμή που θα κληθούν.
+  
+* Για να πάρουμε τις τιμές από ένα αντικείμενο `Observable` πρέπει να
+  *γραφτούμε συνδρομητές* σε αυτό.
+  
 
+## `books.component.ts`
+
+* Για να δουλέψει το `BooksComponent`, θα πρέπει να γραφτεί
+  συνδρομητής στο `Observable` που επιστρέφει το `BookService`:
     ```javascript
-    goBack(): void {
-      this.location.back();
+    getBooks(): void {
+      this.bookService.getBooks()
+        .subscribe(books => this.books = books);
     }
     ```
-* Για να δημιουργήσουμε το κατάλληλο κουμπί, προσθέτουμε το παρακάτω
-  στο κάτω μέρος του `app/book-detail.component.html` (πριν κλείσει το
-  εξωτερικό `div`):
 
-    ```html
-    <button (click)="goBack()">Back</button>
+## `dashboard.component.ts`
+
+* Ομοίως, για να δουλέψει το ταμπλό μας τώρα θα πρέπει να γραφτεί συνδρομητής
+  στο `Observable` που επιστρέφει το `BookService`:
+    ```javascript
+    getBooks(): void {
+      this.bookService.getBooks()
+        .subscribe(books => this.books = books.slice(1, 5));
+    }
     ```
 
-## Εκκίνηση της εφαρμογής
+## `book-detail.component.ts`
 
-* Ελέγχουμε ότι όλα πάνε καλά και ότι παρ' όλες τις αλλαγές η εφαρμογή
-  παραμένει λειτουργική με:
-
-    ```bash
-    npm start
+* Τέλος, για να δουλέψει η λίστα με τα βιβλία, το
+  `BookDetailComponent` θα γραφτεί συνδρομητής στο `Observable` που
+  επιστρέφει το `BookService`:
+    ```javascript
+    getBook(): void {
+      const id = +this.route.snapshot.paramMap.get('id');
+      this.bookService.getBook(id).subscribe(book => this.book = book);
+    }
     ```
 
-# Επιλογή βιβλίου από το dasbhoard
+## Η μέθοδος `handleError()`
+
+* Για τη διαχείριση τυχόν λαθών στην επικοινωνία μέσω HTTP θα
+  προσθέσουμε την παρακάτω μέθοδο:
+    ```javascript
+    /**
+     * Handle Http operation that failed.
+     * Let the app continue.
+     * @param operation - name of the operation that failed
+     * @param result - optional value to return as the observable result
+     */
+    private handleError<T> (operation = 'operation', result?: T) {
+      return (error: any): Observable<T> => {
+
+        console.error(error); // log to console instead
+
+        this.log(`${operation} failed: ${error.message}`);
+
+        // Let the app keep running by returning an empty result.
+        return of(result as T);
+      };
+    }
+    ```
+
+## Εύρεση ενός βιβλίου
+
+* Για την εύρεση των στοιχείων ενός βιβλίου, θα αλλάξουμε τη μέθοδο
+  `getHero()` του `HeroService`:
+    ```javascript
+    /** GET book by id. Will 404 if id not found */
+    getBook(id: number): Observable<Book> {
+      const url = `${this.booksUrl}/${id}`;
+      return this.http.get<Book>(url).pipe(
+        tap(_ => this.log(`fetched book id=${id}`)),
+        catchError(this.handleError<Book>(`getBook id=${id}`))
+      );
+    }
+    ```
+    
+# Ενημέρωση στοιχείων βιβλίου
 
 ## Γενικά
 
-* Όταν ο χρήστης επιλέγει ένα βιβλίο από το dashboard, η εφαρμογή θα
-  πρέπει να δείχνει το αντίστοιχο βιβλίο χρησιμοποιώντας το
-  `BookDetailComponent`.
+* Αν δοκιμάσουμε να αλλάξουμε τον τίτλο ενός βιβλίου, θα δούμε ότι
+  αυτός αλλάζει στην οθόνη με τις λεπτομέρειες του βιβλίου...
 
-* Αν και το dashboard εμφανίζει κουμπιά, στην πραγματικότητα αυτά θα
-  συμπεριφέρονται ως σύνδεσμοι.
+* ...αλλά αν επιστρέψουμε στη λίστα των βιβλίων, θα διαπιστώσουμε ότι
+  η αλλαγή δεν διατηρείται.
+
+* Ενώ στην προηγούμενη έκδοση αλλάζαμε τη λίστα που κρατούσε η
+  εφαρμογή στη μνήμη, τώρα τα βιβλία τα λαμβάνουμε μέσω HTTP.
+
+* Συνεπώς οι αλλαγές δεν διατηρούνται αν δεν εγγραφούν στον
+  εξυπηρετητή.
 
 
-## Δημιουργία δυναμικού συνδέσμου
+## Αποθήκευση στοιχείων βιβλίου (1)
 
-* Για να δημιουργήσουμε ένα δυναμικό σύνδεσμο, που θα περιέχει το `id`
-  του βιβλίου, αλλάζουμε το `app/dashboard.component.html` ως εξής:
+* Στο `book-detail.component.html` θα προσθέσουμε ένα κουμπί για
+  την αποθήκευση των στοιχείων του βιβλίου.
 
+    ```html
+    <button (click)="save()">Save</button>
+    ```
+
+## Αποθήκευση στοιχείων βιβλίου (2)
+
+* Θα υλοποιήσουμε τη μέθοδο `save()` στο `BookDetailComponent`:
+
+    ```javascript
+    save(): void {
+      this.bookService.updateBook(this.book)
+        .subscribe(() => this.goBack());
+    }
+    ```
+
+## Αποθήκευση στοιχείων βιβλίου (3)
+
+* Τέλος, θα υλοποιήσουμε τη μέθοδο `update()` στο `BookService`:
+
+    ```javascript
+    /** PUT: update the book on the server */
+    updateBook (book: Book): Observable<any> {
+      return this.http.put(this.booksUrl, book, httpOptions).pipe(
+        tap(_ => this.log(`updated book id=${book.id}`)),
+        catchError(this.handleError<any>('updateBook'))
+      );
+    }
+    ```
+
+## Η μέθοδος `HttpClient.put()`
+
+* Η μέθοδος `HttpClient.put()` παίρνει τρεις παραμέτρους:
+  * το URL
+  * τα δεδομένα προς ενημέρωση
+  * παραμέτρους
+  
+* Στις παραμέτρους μπορούμε να περάσουμε πράγματι όπως επικεφαλίδες
+  του πρωτοκόλλου ΗΤΤP.
+  
+* Στην περίπτωσή μας, πρέπει να περάσουμε τις εξής παραμέτρους, τις
+  οποίες τις δηλώνουμε στο αρχείο `book.service.ts` πριν τον ορισμό
+  της κλάσης `BookService`:
+    ```javascript
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    ```
+</div>
+
+
+# Προσθήκη βιβλίων
+
+## Γενικά
+
+* Εκτός από αλλαγές σε υπάρχοντα βιβλία, θέλουμε να μπορούμε και να
+  αποθηκεύουμε νέα βιβλία.
+
+* Για να προσθέσουμε ένα βιβλίο θα πρέπει να δώσουμε τον τίτλο και το
+  έτος έκδοσής του.
+
+
+## Προσθήκη βιβλίου (1)
+
+* Στο `books.component.html` θα προσθέσουμε στο πάνω μέρος τα πεδία
+  εισόδου και ένα κουμπί για την προσθήκη νέου βιβλίου.
+
+    ```html
+    <div>
+      <label>Book title:</label> <input #bookTitle />
+      <label>Publication date:</label> <input #bookPubDate />
+      <!-- (click) passes input values to add() and then clears input -->
+      <button (click)="add(bookTitle.value, bookPubDate.value);
+                       bookTitle.value=''; bookPubDate.value=''">
+        Add
+      </button>
+    </div>
+    ```
+
+## Προσθήκη βιβλίου (2)
+
+* Θα υλοποιήσουμε τη μέθοδο `add()` στο `BooksComponent`:
+
+    ```javascript
+    add(title: string, pubYearStr: string): void {
+      title = title.trim();
+      let pub_year = +pubYearStr;
+      if (!title || !pub_year) { return; }
+      this.bookService.addBook({ title, pub_year } as Book)
+        .subscribe(book => {
+          this.books.push(book);
+        });
+    }
+    ```
+
+## Προσθήκη βιβλίου (3)
+
+* Τέλος, θα υλοποιήσουμε τη μέθοδο `addBook()` στο `BookService`:
+
+    ```javascript
+    /** POST: add a new book to the server */
+    addBook (book: Book): Observable<Book> {
+      return this.http.post<Book>(this.booksUrl, book, httpOptions).pipe(
+        tap((book: Book) => this.log(`added book w/ id=${book.id}`)),
+        catchError(this.handleError<Book>('addBook'))
+      );
+    }
+    ```
+
+# Διαγραφή βιβλίων
+
+## Γενικά
+
+* Εκτός από αλλαγές σε υπάρχοντα βιβλία και προσθήκη βιβλίων, θέλουμε
+  να μπορούμε και να διαγράφουμε βιβλία.
+
+* Θα επιλέγουμε το προς διαγραφή βιβλίο από ένα κουμπί που θα
+  εμφανίζεται στο πλάι του στη λίστα των βιβλίων.
+
+
+## Διαγραφή βιβλίου (1)
+
+* Στο `app/books.component.html` θα προσθέσουμε στη λίστα των βιβλίων
+  δίπλα στον τίτλο κάθε βιβλίου ένα κουμπί για τη διαγραφή του:
+
+    ```javascript
+    <ul class="books">
+      <li *ngFor="let book of books">
+        <a routerLink="/detail/{{book.id}}">
+          <span class="badge">{{book.id}}</span> {{book.title}}
+        </a>
+        <button class="delete" title="delete book"
+                (click)="delete(book)">x</button>
+      </li>
+    </ul>
+    ```
+
+## Διαγραφή βιβλίου (2)
+
+* Θα υλοποιήσουμε τη μέθοδο `delete()` στο `BooksComponent`:
+
+    ```javascript
+    delete(book: Book): void {
+      this.books = this.books.filter(h => h !== book);
+      this.bookService.deleteBook(book).subscribe();
+    }
+    ```
+
+## Διαγραφή βιβλίου (3)
+
+* Στη συνέχεια, θα υλοποιήσουμε τη μέθοδο `deleteBook()` στο
+  `BookService`:
+
+    ```javascript
+    /** DELETE: delete the book from the server */
+    deleteBook (book: Book | number): Observable<Book> {
+      const id = typeof book === 'number' ? book : book.id;
+      const url = `${this.booksUrl}/${id}`;
+
+      return this.http.delete<Book>(url, httpOptions).pipe(
+        tap(_ => this.log(`deleted book id=${id}`)),
+        catchError(this.handleError<Book>('deleteBook'))
+      );
+    }
+    ```
+
+## Διαγραφή βιβλίου (4)
+
+* Τέλος, στο `app/books.component.css` θα προσθέσουμε τα κατάλληλα
+  στυλ ώστε το κουμπί να εμφανίζεται στα δεξιά του τίτλου:
+
+    ```css
+    .button {
+      background-color: #eee;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      cursor: hand;
+      font-family: Arial;
+    }
+
+    button:hover {
+      background-color: #cfd8dc;
+    }
+
+    button.delete {
+      position: relative;
+      left: 194px;
+      top: -32px;
+      background-color: gray !important;
+      color: white;
+    }
+    ```
+
+# Αναζήτηση βιβλίων
+
+## Γενικά
+
+* Θα προσθέσουμε στην εφαρμογή μας τη δυνατότητα αναζήτησης βιβλίου.
+
+* Για να το κάνουμε αυτό, θα δημιουργήσουμε μια υπηρεσία αναζήτησης.
+
+* Επίσης, θα δούμε πώς εκτός από υποσχέσεις (promises) μπορούμε να
+
+
+## Προσθήκη `searchBooks()`
+
+* Στο `BookService` προσθέτουμε τη μέθοδο `searchBooks()`:
+    ```javascript
+    /* GET books whose title contains search term */
+    searchBooks(term: string): Observable<Book[]> {
+      if (!term.trim()) {
+        // if not search term, return empty book array.
+        return of([]);
+      }
+      return this.http.get<Book[]>(`api/books/?title=${term}`).pipe(
+        tap(_ => this.log(`found books matching "${term}"`)),
+        catchError(this.handleError<Book[]>('searchBooks', []))
+      );
+    }
+    ```
+    
+## Προσθήκη αναζήτησης στο ταμπλό
+
+* Η αναζήτηση θα γίνεται μέσω του ταμπλό. Θα προσθέσουμε λοιπόν σε
+  αυτό τον επιλογέα του εξαρτήματος αναζήτησης, τον οποίο θα φτιάξουμε
+  αμέσως μετά. Το αρχείο `dashboard.component.html` θα γίνει:
     ```html
     <h3>Top Books</h3>
     <div class="grid grid-pad">
-      <a *ngFor="let book of books"
-           [routerLink]="['/detail', book.id]" class="col-1-4">
+      <a *ngFor="let book of books" class="col-1-4"
+         routerLink="/detail/{{book.id}}">
         <div class="module book">
           <h4>{{book.title}}</h4>
         </div>
       </a>
     </div>
+
+    <app-book-search></app-book-search>
     ```
 
-## Εκκίνηση της εφαρμογής
 
-* Ελέγχουμε ότι όλα πάνε καλά και ότι παρ' όλες τις αλλαγές η εφαρμογή
-  παραμένει λειτουργική με:
+## Δημιουργία εξαρτήματος αναζήτησης
 
+* Θα ξεκινήσουμε την κατασκευή του εξαρτήματος αναζήτησης χρησιμοποιώντας το
+  Angular CLI:
     ```bash
-    npm start
+    ng generate component book-search
     ```
+
+* Θα δημιουργηθεί ο κατάλογος `src/app/book-search` και μέσα σε αυτόν τα
+  αρχεία:
+    * `book-search.component.css`
+    * `book-search.component.html`
+    * `book-search.component.spec.ts`
+    * `book-search.component.ts`
     
-* Τώρα ο χρήστης μπορεί να πλοηγηθεί από το dashboard κατ' ευθείαν
-  στις λεπτομέρειες των βιβλίων.
+* Επίσης θα γίνουν οι απαραίτητες αλλαγές (εισαγωγή, δήλωση) στο
+  αρχείο `app.module.ts`.
 
 
-# Επιλογή βιβλίου στο `BooksComponent`
+## `book-search.component.html` (1)
 
-## Γενικά
-
-* Η εφαρμογή μας εμφανίζει μια λίστα με βιβλία και από κάτω εμφανίζει
-  τις λεπτομέρειες του επιλεγμένου βιβλίου.
-
-* Θα αλλάξουμε την εφαρμογή μας ώστε να δείχνει μόνο λίγες
-  λεπτομέρειες στη σελίδα της λίστας.
-
-* Αν ο χρήστης θέλει να δει τις πλήρεις λεπτομέρειες, θα πλοηγείται σε
-  διαφορετική σελίδα.
-
-
-## Προσαρμογή προτύπου `BooksComponent`
-
-* Αλλάζουμε το πρότυπο `app/books.component.html`:
-
-    ```html
-    <h2>Books</h2>
-    <ul class="books">
-      <li *ngFor="let book of books"
-          [class.selected]="book === selectedBook"
-          (click)="onSelect(book)">
-        <span class="badge">{{book.id}}</span> {{book.title}}
-      </li>
-    </ul>
-    <div *ngIf="selectedBook">
-      <h2>
-        {{selectedBook.title | uppercase}}
-      </h2>
-      <button (click)="gotoDetail()">View Details</button>
+```html
+<div id="search-component">
+  <h4>Book Search</h4>
+  <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
+  <div>
+    <div *ngFor="let book of books$ | async"
+         (click)="gotoDetail(book)" class="search-result" >
+      {{book.title}}
     </div>
-    ```
+  </div>
+</div>
+```
 
-## Διοχετεύσεις (1)
+## `book-search.component.html` (2)
 
-* Προσέξτε την έκφραση:
+* Όταν ο χρήστης πληκτρολογεί έναν όρο αναζήτησης, καλείται η μέθοδος
+  `search()` του `BookSearchComponent`.
 
-    ```html
-    <h2>
-      {{selectedBook.title | uppercase}}
-    </h2>
-    ```
-* Πρόκειται για μία *διοχέτευση* (pipe), που μετατρέπει την έκφραση
-  στα αριστερά στα κεφαλαία.
+* Τα βιβλία που θα εμφανίζονται θα βρίσκονται στην ιδιότητα `books$` η
+  οποία θα είναι στιγμιότυπο της κλάσης `Observable`.
+  
+* Η κατάληξη `$` είναι σύμβαση που δείχνει ότι το `books$` είναι ένα
+  `Observable`, όχι απλώς ένας πίνακας.
 
-* Το Angular μας επιτρέπει να δημιουργούμε τις δικές μας διοχετεύσεις,
-  ή να χρησιμοποιήσουμε μία από τις έτοιμες.
-
-
-## Διοχετεύσεις (2)
-
-* Το Angular προσφέρει τις παρακάτω έτοιμες διοχετεύσεις:
-    * `AsyncPipe`
-    * `CurrencyPipe`
-    * `DatePipe`
-    * `DecimalPipe`
-    * `I18nPluralPipe`
-    * `I18nSelectPipe`
-    * `JsonPipe`
-    * `LowerCasePipe`
-    * `PercentPipe`
-    * `SlicePipe`
-    * `UpperCasePipe`
+* Για να τα χειριστούμε, τα διοχετεύουμε στο `async`, ώστε η λίστα των
+  βιβλίων να ενημερώνεται καθώς έρχονται αποτελέσματα.
+  
+* Το `async` αντιστοιχεί στη διοχέτευση `AsyncPipe` του Angular. Αυτή
+  γράφεται συνδρομητής στο `Observable` ώστε να χειρίζεται τα δεδομένα
+  όπως έρχονται.
 
 
-## Πλοήγηση στο `BooksComponent`
+## Χειρισμός όρων αναζήτησης (1)
 
-* Ακόμα δεν έχουμε υλοποιήσει τη μέθοδο `gotoDetail()` του
-  `BooksComponent` στο `app/books.component.ts`.
+* Για να χειριστούμε τους όρους αναζήτησης θα χρησιμοποιήσουμε την
+  κλάση `Subject`.
 
-* Η μέθοδος αυτή θα πλοηγεί το χρήστη στο βιβλίο που επιλέγει.
+* Ένα αντικείμενο τύπου `Subject` είναι ένα `Observable` στο οποίο
+  μπορούμε, εκτός από το να γραφτούμε συνδρομητές, να του σπρώξουμε
+  τιμές. 
 
-* Για το σκοπό θα πρέπει να εισάγουμε την κλάση `Router`:
 
-    ```javascript
-    import { Router } from '@angular/router';
-    ```
-    
-* Οπότε η υλοποίηση θα είναι:
+## Χειρισμός όρων αναζήτησης (2)
 
-    ```javascript
-    gotoDetail(): void {
-      this.router.navigate(['/detail', this.selectedBook.id]);
-    }
-    ```
+```javascript
+private searchTerms = new Subject<string>();
 
-## `BooksComponent`
+// Push a search term into the observable stream.
+search(term: string): void {
+  this.searchTerms.next(term);
+}
+```
+
+## Αρχικοποίηση ιδιότητας `books` (1)
+
+* Όταν αρχικοποιείται η κλάση `BookSearchComponent` θα συνδέουμε τους
+  όρους αναζήτησης (`searchTerms`) με το `BookSearchService`.
+
+* Τα αποτελέσματα της αναζήτησης θα είναι με τη σειρά τους ένα
+  `Observable`, το οποίο θα χρησιμοποιεί το εξάρτημα για να εμφανίζει
+  ενημερωμένη τη λίστα των βιβλίων.
+
+
+## Αρχικοποίηση ιδιότητας `books$` (2)
+
+```javascript
+ngOnInit(): void {
+  this.books$ = this.searchTerms.pipe(
+    // wait 300ms after each keystroke before considering the term
+    debounceTime(300),
+
+    // ignore new term if same as previous term
+    distinctUntilChanged(),
+
+    // switch to new search observable each time the term changes
+    switchMap((term: string) => this.bookService.searchBooks(term)),
+  );
+}
+```
+
+## Αρχικοποίηση ιδιότητας `books` (3)
+
+* Το `debounceTime(300)` εισάγει μια καθυστέρηση 300ms μεταξύ της
+  εκπομπής των όρων αναζήτησης. 
+
+* Το `distinctUntilChanged()` εξασφαλίζει ότι αναζητήσεις θα
+  πραγματοποιούνται μόνο αν οι όροι αναζήτησης αλλάζουν.
+
+* Το `switchMap()` εξασφαλίζει ότι στην περίπτωση που γίνουν πολλαπλές
+  αιτήσεις, θα απορριφθούν τα αποτελέσματα όλων πλην της τελευταίας.
+
+
+## `BookSearchComponent`
 
 ```javascript
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
-import { Book } from './book';
+import { Observable } from 'rxjs/Observable';
+import { Subject }    from 'rxjs/Subject';
+import { of }         from 'rxjs/observable/of';
 
-import { BookDetailComponent } from './book-detail.component';
+import {
+   debounceTime, distinctUntilChanged, switchMap
+ } from 'rxjs/operators';
 
-import { BookService } from './book.service';
+import { Book } from '../book';
+import { BookService } from '../book.service';
 
 @Component({
-  moduleId: module.id,
-  selector: 'my-books',
-  templateUrl: 'books.component.html',
-  styleUrls: ['books.component.css'],
-  providers: [BookService]
+  selector: 'app-book-search',
+  templateUrl: './book-search.component.html',
+  styleUrls: [ './book-search.component.css' ]
 })
-export class BooksComponent implements OnInit {
-  books: Book[];
-  selectedBook: Book;
+export class BookSearchComponent implements OnInit {
+  books$: Observable<Book[]>;
+  private searchTerms = new Subject<string>();
 
-  constructor(private router: Router,
-              private bookService: BookService) { }
+  constructor(private bookService: BookService) {}
 
-  getBooks(): void {
-    this.bookService.getBooks().then(books => this.books = books);
+  // Push a search term into the observable stream.
+  search(term: string): void {
+    this.searchTerms.next(term);
   }
 
   ngOnInit(): void {
-    this.getBooks();
-  }
+    this.books$ = this.searchTerms.pipe(
+      // wait 300ms after each keystroke before considering the term
+      debounceTime(300),
 
-  onSelect(book: Book): void {
-    this.selectedBook = book;
-  }
+      // ignore new term if same as previous term
+      distinctUntilChanged(),
 
-  gotoDetail(): void {
-    this.router.navigate(['/detail', this.selectedBook.id]);
+      // switch to new search observable each time the term changes
+      switchMap((term: string) => this.bookService.searchBooks(term)),
+    );
   }
 }
 ```
 
-## Καθάρισμα `BookDetailComponent` (1)
 
-* Θυμηθείτε ότι είχαμε δηλώσει στο `BookDetailComponent` το `book` ως
-  ιδιότητα εισόδου (input property).
+## `book-search.component.css`
 
-* Αυτό χρειαζόταν γιατί είχαμε στο `app/books.component.html` το εξής:
-
-    ```html
-    <book-detail [book]="selectedBook"></book-detail>
-    ```
-    
-* Αυτό όμως πια δεν υπάρχει, οπότε μπορούμε να βγάλουμε το `@Input()`
-  και το αντίστοιχο `import`.
-
-
-## Καθάρισμα `BookDetailComponent` (2)
-
-```javascript
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { Location } from '@angular/common';
-
-import { BookService } from './book.service';
-
-import { Book } from './book';
-
-@Component({
-  moduleId: module.id,
-  selector: 'book-detail',
-  templateUrl: 'book-detail.component.html'
-})
-export class BookDetailComponent {
-  book: Book;
-
-  constructor(private bookService: BookService,
-              private route: ActivatedRoute,
-              private location: Location) { }
-
-  ngOnInit(): void {
-    this.route.params.forEach((params: Params) => {
-      let id = +params['id'];
-      this.bookService.getBook(id)
-        .then(book => this.book = book);
-    });
-  }
-
-  goBack(): void {
-    this.location.back();
-  }
-
-}
-```
-
-## Εκκίνηση της εφαρμογής
-
-* Ελέγχουμε ότι όλα πάνε καλά και ότι παρ' όλες τις αλλαγές η εφαρμογή
-  παραμένει λειτουργική με:
-
-    ```bash
-    npm start
-    ```
-    
-# Βελτίωση της αισθητικής
-
-
-## Γενικά
-
-* Η αισθητική της εφαρμογής μας καθορίζεται από αρχεία CSS.
-
-* Στη συνέχεια θα προσθέσουμε τα σχετικά αρχεία.
-
-
-## `dashboard.component.css` (1)
-
-* Για το dashboard, θα πρέπει να προσθέσουμε την εξής γραμμή στο
-  `app/dashboard.component.ts`:
-
-    ```javascript
-    styleUrls: [ 'dashboard.component.css' ]
-    ```
-
-## `dashboard.component.css` (2)
-
-* Και μετά δημιουργούμε το αρχείο `app/dashboard.component.css`:
-
+* Για το αισθητικό κομμάτι του `BookSearchComponent` θα
+  χρησιμοποιήσουμε το παρακάτω στυλ, στο αρχείο
+  `book-search.component.css`:
     ```css
-    [class*='col-'] {
-      float: left;
-      padding-right: 20px;
-      padding-bottom: 20px;
-    }
-    [class*='col-']:last-of-type {
-      padding-right: 0;
-    }
-    a {
-      text-decoration: none;
-    }
-    *, *:after, *:before {
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-    }
-    h3 {
-      text-align: center; margin-bottom: 0;
-    }
-    h4 {
-      position: relative;
-    }
-    .grid {
-      margin: 0;
-    }
-    .col-1-4 {
-      width: 25%;
-    }
-    .module {
-      padding: 20px;
-      text-align: center;
-      color: #eee;
-      max-height: 120px;
-      min-width: 120px;
-      background-color: #607D8B;
-      border-radius: 2px;
-    }
-    .module:hover {
-      background-color: #EEE;
+    /* BookSearch private styles */
+    .search-result li {
+      border-bottom: 1px solid gray;
+      border-left: 1px solid gray;
+      border-right: 1px solid gray;
+      width:195px;
+      height: 16px;
+      padding: 5px;
+      background-color: white;
       cursor: pointer;
-      color: #607d8b;
+      list-style-type: none;
     }
-    .grid-pad {
-      padding: 10px 0;
+
+    .search-result li:hover {
+      background-color: #607D8B;
     }
-    .grid-pad > [class*='col-']:last-of-type {
-      padding-right: 20px;
-    }
-    @media (max-width: 600px) {
-      .module {
-        font-size: 10px;
-        max-height: 75px; }
-    }
-    @media (max-width: 1024px) {
-      .grid {
-        margin: 0;
-      }
-      .module {
-        min-width: 60px;
-      }
-    }
-    ```
 
-## `book-detail.component.css` (1)
-
-* Για το `BookDetailComponent`, θα πρέπει να προσθέσουμε την εξής γραμμή στο
-  `app/book-detail.component.ts`:
-  
-    ```javascript
-    styleUrls: [ 'book-detail.component.css' ]
-    ```
-
-## `book-detail.component.css` (2)
-
-* Και μετά δημιουργούμε το αρχείο `app/book-detail.component.css`:
-
-    ```css
-    label {
-      display: inline-block;
-      width: 3em;
-      margin: .5em 0;
-      color: #607D8B;
-      font-weight: bold;
-    }
-    input {
-      height: 2em;
-      font-size: 1em;
-      padding-left: .4em;
-    }
-    button {
-      margin-top: 20px;
-      font-family: Arial;
-      background-color: #eee;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer; cursor: hand;
-    }
-    button:hover {
-      background-color: #cfd8dc;
-    }
-    button:disabled {
-      background-color: #eee;
-      color: #ccc; 
-      cursor: auto;
-    }
-    ```
-
-
-## `app.component.css` (1)
-
-* Στο `AppComponent` θα δώσουμε τα απαραίτητα στυλ ώστε να λειτουργούν
-  καλύτερα οι σύνδεσμοι, τους οποίους έχουμε βάλει σε στοιχεία
-  `<nav>`. 
-
-* Έτσι, στο `AppComponent`, θα πρέπει να προσθέσουμε την εξής γραμμή στο
-  `app/app.component.ts`:
-  
-    ```javascript
-    styleUrls: [ 'app.component.css' ]
-    ```
-
-## `app.component.css` (2)
-
-* Μετά δημιουργούμε το αρχείο `app/app.component.css`:
-
-    ```css
-    h1 {
-      font-size: 1.2em;
-      color: #999;
-      margin-bottom: 0;
-    }
-    h2 {
-      font-size: 2em;
-      margin-top: 0;
-      padding-top: 0;
-    }
-    nav a {
-      padding: 5px 10px;
-      text-decoration: none;
-      margin-top: 10px;
-      display: inline-block;
-      background-color: #eee;
-      border-radius: 4px;
-    }
-    nav a:visited, a:link {
-      color: #607D8B;
-    }
-    nav a:hover {
-      color: #039be5;
-      background-color: #CFD8DC;
-    }
-    nav a.active {
-      color: #039be5;
-    }
-    ```
-
-## Τρέχουσα διαδρομή
-
-* Θέλουμε να φαίνεται στο dashboard ότι είναι επιλεγμένη η τρέχουσα
-  διαδρομή.
-
-* Για το σκοπό αυτό το Angular μας δίνει το μηχανισμό
-  `routerLinkActive`.
-
-* Αλλάζουμε το πρότυπο `app/app.component.html` αντίστοιχα:
-
-    ```html
-    <h1>{{title}}</h1>
-    <nav>
-      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-      <a routerLink="/books" routerLinkActive="active">Books</a>
-    </nav>
-    <router-outlet></router-outlet>
-    ```
-
-## Καθολικά στυλ εφαρμογής
-
-* Τέλος, θα χρησιμοποιήσουμε και τα εξής καθολικά στυλ, στο αρχείο
-  `app/styles.css`:
-
-    ```css
-    /* Master Styles */
-    h1 {
-      color: #369;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 250%;
-    }
-    h2, h3 {
-      color: #444;
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: lighter;
-    }
-    body {
-      margin: 2em;
-    }
-    body, input[text], button {
+    .search-result li a {
       color: #888;
-      font-family: Cambria, Georgia;
-    }
-    a {
-      cursor: pointer;
-      cursor: hand;
-    }
-    button {
-      font-family: Arial;
-      background-color: #eee;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      cursor: hand;
-    }
-    button:hover {
-      background-color: #cfd8dc;
-    }
-    button:disabled {
-      background-color: #eee;
-      color: #aaa;
-      cursor: auto;
-    }
-
-    /* Navigation link styles */
-    nav a {
-      padding: 5px 10px;
+      display: block;
       text-decoration: none;
-      margin-top: 10px;
-      display: inline-block;
-      background-color: #eee;
-      border-radius: 4px;
-    }
-    nav a:visited, a:link {
-      color: #607D8B;
-    }
-    nav a:hover {
-      color: #039be5;
-      background-color: #CFD8DC;
-    }
-    nav a.active {
-      color: #039be5;
     }
 
-    /* items class */
-    .items {
-      margin: 0 0 2em 0;
-      list-style-type: none;
-      padding: 0;
-      width: 24em;
-    }
-    .items li {
-      cursor: pointer;
-      position: relative;
-      left: 0;
-      background-color: #EEE;
-      margin: .5em;
-      padding: .3em 0;
-      height: 1.6em;
-      border-radius: 4px;
-    }
-    .items li:hover {
-      color: #607D8B;
-      background-color: #DDD;
-      left: .1em;
-    }
-    .items li.selected:hover {
-      background-color: #BBD8DC;
+    .search-result li a:hover {
       color: white;
     }
-    .items .text {
-      position: relative;
-      top: -3px;
-    }
-    .items {
-      margin: 0 0 2em 0;
-      list-style-type: none;
-      padding: 0;
-      width: 24em;
-    }
-    .items li {
-      cursor: pointer;
-      position: relative;
-      left: 0;
-      background-color: #EEE;
-      margin: .5em;
-      padding: .3em 0;
-      height: 1.6em;
-      border-radius: 4px;
-    }
-    .items li:hover {
-      color: #607D8B;
-      background-color: #DDD;
-      left: .1em;
-    }
-    .items li.selected {
-      background-color: #CFD8DC;
+    .search-result li a:active {
       color: white;
+    }
+    #search-box {
+      width: 200px;
+      height: 20px;
     }
 
-    .items li.selected:hover {
-      background-color: #BBD8DC;
-    }
-    .items .text {
-      position: relative;
-      top: -3px;
-    }
-    .items .badge {
-      display: inline-block;
-      font-size: small;
-      color: white;
-      padding: 0.8em 0.7em 0 0.7em;
-      background-color: #607D8B;
-      line-height: 1em;
-      position: relative;
-      left: -1px;
-      top: -4px;
-      height: 1.8em;
-      margin-right: .8em;
-      border-radius: 4px 0 0 4px;
-    }
-    /* everywhere else */
-    * {
-      font-family: Arial, Helvetica, sans-serif;
+
+    ul.search-result {
+      margin-top: 0;
+      padding-left: 0;
     }
 
 
     /*
-    Copyright 2016 Google Inc. All Rights Reserved.
+    Copyright 2017 Google Inc. All Rights Reserved.
     Use of this source code is governed by an MIT-style license that
     can be found in the LICENSE file at http://angular.io/license
     */
-    ```
