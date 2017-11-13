@@ -176,6 +176,8 @@ HttpClientInMemoryWebApiModule.forRoot(
   πλέον.
 
 
+# Ανάκτηση βιβλίων
+
 ## Υπηρεσία HTTP
 
 * Η εφαρμογή μας θα επικοινωνεί μέσω HTTP προκειμένου να ανακτήσει τις
@@ -245,6 +247,8 @@ HttpClientInMemoryWebApiModule.forRoot(
 
 * Για να πάρουμε τις τιμές από ένα αντικείμενο `Observable` πρέπει να
   *γραφτούμε συνδρομητές* σε αυτό.
+  
+* Ένας συνδρομητής ονομάζεται *παρατηρητής* (observer).
 
 
 ## Τιμές από `Observable`
@@ -279,6 +283,26 @@ HttpClientInMemoryWebApiModule.forRoot(
 
 <div class="notes">
 
+Η μέθοδος `HttpClient.get()` επιστρέφει ένα `Observable`. Εμείς
+θέλουμε στη συνέχεια να εφαρμόσουμε δύο τελεστές επάνω του:
+  * `tap`
+  * `catchError`
+  
+Για να το κάνουμε αυτό, τους καλούμε μέσα στη μέθοδο `pipe()`. Το
+`Observable` που προέρχεται από την κλήση της `HttpClient.get()`
+διοχετεύεται στον τελεστή `tap`· ο τελεστής επιστρέφει ένα
+`Observable` το οποίο με τη σειρά του διοχετεύεται στον τελεστή
+`catchError`. 
+
+</div>
+
+
+## Τελεστής `tap` / `do`
+
+<img src="do.png" alt="tap" style="width: 800px;"/>
+
+<div class="notes">
+
 Ο τελεστής `tap` παίρνει τις τιμές του `Observable` όπως έρχονται και
 εκτελεί τον κώδικα που του έχουμε δώσει *χωρίς να αλλάζει τις τιμές*.
 Αυτός είναι και ο λόγος που ονομάζεται `tap`: κρυφακούει, σαν να
@@ -298,18 +322,25 @@ TypeScript δεν θα μπορούσαμε να το χρησιμοποιήσο
     δεδομένων που μας έρχεται
 
 Συνεπώς, το `tap` είναι ένας τρόπος να έχουμε παράπλευρες ενέργειες
-(side effects) παράλληλα με τα δεδομένα που έρχονται.
+(side effects) παράλληλα με τα δεδομένα που έρχονται. Επιστρέφει το
+`Observable` που δέχεται, έχοντας κάνει ό,τι επιπλέον του έχουμε ζητήσει.
+
 </div>
 
 
-## Τελεστής `tap` / `do`
-
-<img src="do.png" alt="tap" style="width: 800px;"/>
 
 ## Τελεστής `catchError`
 
 <img src="catch.png" alt="catch" style="width: 800px;"/>
 
+<div class="notes">
+
+Ο τελεστής `catchError` λαμβάνει μια ειδοποίηση λάθους από το
+`Observable` από το οποίο διαβάζει τιμές και, αντί να το διανείμει
+στους συνδρομητές του, τα αντικαθιστά με κάτι άλλο, ώστε να επιτρέψει
+τη συνέχιση της εκτέλεσης του προγράμματος.
+
+</div>
 
 ## `books.component.ts`
 
@@ -321,6 +352,13 @@ TypeScript δεν θα μπορούσαμε να το χρησιμοποιήσο
       .subscribe(books => this.books = books);
   }
   ```
+
+* Όταν έρθουν τα βιβλία από το `Observable`, τότε τα αποθηκεύουμε στη
+  μεταβλητή `books` του `BooksComponent`.
+  
+* Στην περίπτωσή μας λοιπόν το `Observable` διανείμει μια τιμή, τα
+  βιβλία που έχουν αποθηκευτεί.
+
 
 ## `dashboard.component.ts`
 
@@ -441,7 +479,7 @@ TypeScript δεν θα μπορούσαμε να το χρησιμοποιήσο
 
 ## Αποθήκευση στοιχείων βιβλίου (3)
 
-* Τέλος, θα υλοποιήσουμε τη μέθοδο `update()` στο `BookService`:
+* Τέλος, θα υλοποιήσουμε τη μέθοδο `updateBook()` στο `BookService`:
   ```javascript
   /** PUT: update the book on the server */
   updateBook (book: Book): Observable<any> {
@@ -457,10 +495,7 @@ TypeScript δεν θα μπορούσαμε να το χρησιμοποιήσο
 * Η μέθοδος `HttpClient.put()` παίρνει τρεις παραμέτρους:
   * το URL
   * τα δεδομένα προς ενημέρωση
-  * παραμέτρους
-
-* Στις παραμέτρους μπορούμε να περάσουμε πράγματα όπως επικεφαλίδες
-  του πρωτοκόλλου ΗΤΤP.
+  * παραμέτρους για το πρωτόκολλο HTTP
 
 * Στην περίπτωσή μας, πρέπει να περάσουμε τις εξής παραμέτρους, τις
   οποίες τις δηλώνουμε στο αρχείο `book.service.ts` πριν τον ορισμό
@@ -508,9 +543,11 @@ variable](https://angular.io/guide/template-syntax#ref-vars). Αυτή
 μπορούμε να τη χρησιμοποιήσουμε στο υπόλοιπο πρότυπο (χωρίς το `#`). Η
 τιμής της δίνεται από την ιδιότητα `value`.
 
+</div>
+
 ## Προσθήκη βιβλίου (2)
 
-* Θα υλοποιήσουμε τη μέθοδο `add()` στο `BooksComponent`:
+* Στη συνέχεια θα υλοποιήσουμε τη μέθοδο `add()` στο `BooksComponent`:
   ```javascript
   add(title: string, pubYearStr: string): void {
     title = title.trim();
@@ -522,9 +559,6 @@ variable](https://angular.io/guide/template-syntax#ref-vars). Αυτή
       });
   }
   ```
-
-</div>
-
 
 ## Προσθήκη βιβλίου (3)
 
@@ -578,6 +612,10 @@ variable](https://angular.io/guide/template-syntax#ref-vars). Αυτή
 
 <div class="notes">
 
+Αρχικά σβήνουμε το βιβλίο από τον πίνακα που διατηρούμε στη μεταβλητή
+`this.books`. Στη συνέχεια καλούμε τη μέθοδο `deleteBook()` του
+`BookService`.
+
 Αν και το `BooksComponent` δεν χρησιμοποιεί πουθενά το `Observable`
 που επιστρέφει το `deleteBook()`, πρέπει παρ' όλα αυτά να γραφτεί
 συνδρομητής σε αυτό. Αυτό συμβαίνει γιατί ένα `Observable` δεν κάνει
@@ -593,7 +631,7 @@ variable](https://angular.io/guide/template-syntax#ref-vars). Αυτή
   `BookService`:
   ```javascript
   /** DELETE: delete the book from the server */
-  deleteBook (book: Book | number): Observable<Book> {
+  deleteBook(book: Book | number): Observable<Book> {
     const id = typeof book === 'number' ? book : book.id;
     const url = `${this.booksUrl}/${id}`;
 
@@ -603,6 +641,17 @@ variable](https://angular.io/guide/template-syntax#ref-vars). Αυτή
     );
   }
   ```
+
+<div class="notes">
+
+Το `book: Book | number` είναι ένα παράδειγμα *ένωσης τύπων* [(union
+type)](https://www.typescriptlang.org/docs/handbook/advanced-types.html#union-types)
+στην TypeScript. Αυτό σημαίνει ότι το `book` μπορεί να είναι είτε
+τύπου `Book` είτε τύπου `number`. Στη συνέχεια, στην πρώτη γραμμή της
+συνάρτησης, συμπεριφερόμαστε αναλόγως για να πάρουμε τον κωδικό του
+βιβλίου. 
+
+</div>
 
 ## Διαγραφή βιβλίου (4)
 
@@ -661,8 +710,9 @@ variable](https://angular.io/guide/template-syntax#ref-vars). Αυτή
 ## Προσθήκη αναζήτησης στο ταμπλό
 
 * Η αναζήτηση θα γίνεται μέσω του ταμπλό. Θα προσθέσουμε λοιπόν σε
-  αυτό τον επιλογέα του εξαρτήματος αναζήτησης, τον οποίο θα φτιάξουμε
-  αμέσως μετά. Το αρχείο `dashboard.component.html` θα γίνει:
+  αυτό τον επιλογέα του εξαρτήματος αναζήτησης `app-book-search`, το
+  οποίο θα φτιάξουμε αμέσως μετά. Το αρχείο `dashboard.component.html` 
+  θα γίνει:
   ```html
   <h3>Top Books</h3>
   <div class="grid grid-pad">
@@ -685,8 +735,8 @@ variable](https://angular.io/guide/template-syntax#ref-vars). Αυτή
   ng generate component book-search
   ```
 
-* Θα δημιουργηθεί ο κατάλογος `src/app/book-search` και μέσα σε αυτόν τα
-  αρχεία:
+* Θα δημιουργηθεί ο κατάλογος `src/app/book-search` και μέσα σε αυτόν
+  τα αρχεία:
   * `book-search.component.css`
   * `book-search.component.html`
   * `book-search.component.spec.ts`
@@ -722,7 +772,7 @@ variable](https://angular.io/guide/template-syntax#ref-vars). Αυτή
 `search()` του `BookSearchComponent`.
 
 * Τα βιβλία που θα εμφανίζονται θα βρίσκονται στην ιδιότητα `books$` η
-οποία θα είναι στιγμιότυπο της κλάσης `Observable`.
+οποία θα είναι τύπου `Observable`.
 
 * Η κατάληξη `$` είναι σύμβαση που δείχνει ότι το `books$` είναι ένα
   `Observable`, όχι απλώς ένας πίνακας.
@@ -764,11 +814,22 @@ variable](https://angular.io/guide/template-syntax#ref-vars). Αυτή
   }
   ```
 
+<div class="notes">
+
+Κάθε φορά που ο χρήστης πληκτρολογεί κάτι στο πεδίο εισόδου, καλείται
+η συνάρτηση `search()` με παράμετρο τα περιεχόμενα του πεδίου εισόδου.
+Χρησιμοποιούμε τη μεταβλητή `searchTerms`, που είναι τύπου `Subject`,
+για να εκπέμψουμε τον όρο αναζήτησης. Αυτό σημαίνει ότι οι συνδρομητές
+της `searchTerms` θα μπορούν να λαμβάνουν τους όρους αναζήτησης, όπως
+τους εισάγει ο χρήστης.
+
+</div>
+
 ## Αρχικοποίηση ιδιότητας `books` (1)
 
 * Όταν αρχικοποιείται η κλάση `BookSearchComponent`, στη μέθοδο
   `ngOnInit()`, θα συνδέουμε τους όρους αναζήτησης (`searchTerms`) με
-  το `BookSearchService`:
+  τη μεταβλητή `books$` του `BookSearchService`:
   ```javascript
   ngOnInit(): void {
     this.books$ = this.searchTerms.pipe(
@@ -784,17 +845,26 @@ variable](https://angular.io/guide/template-syntax#ref-vars). Αυτή
   }
   ```
 
-## Αρχικοποίηση ιδιότητας `books` (2)
+<div class="notes">
 
-* Το `debounceTime(300)` εισάγει μια καθυστέρηση 300ms μεταξύ της
-  εκπομπής των όρων αναζήτησης. Εκπέμπει μια τιμή μόνο αν έχει περάσει
-  ένα συγκεκριμένο χρονικό διάστημα χωρίς άλλη εκπομπή.
+Στην αρχικοποίηση του `BookSearchComponent` διοχετεύουμε τις τιμές του
+`searchTerms` σε μία σειρά τελεστών:
 
-* Το `distinctUntilChanged()` εξασφαλίζει ότι αναζητήσεις θα
-  πραγματοποιούνται μόνο αν οι όροι αναζήτησης αλλάζουν.
+  * Το `debounceTime(300)` εισάγει μια καθυστέρηση 300ms μεταξύ της
+    εκπομπής των όρων αναζήτησης. Εκπέμπει μια τιμή μόνο αν έχει περάσει
+    ένα συγκεκριμένο χρονικό διάστημα χωρίς άλλη εκπομπή.
 
-* Το `switchMap()` εξασφαλίζει ότι στην περίπτωση που γίνουν πολλαπλές
-  αιτήσεις, θα απορριφθούν τα αποτελέσματα όλων πλην της τελευταίας.
+  * Το `distinctUntilChanged()` εξασφαλίζει ότι αναζητήσεις θα
+    πραγματοποιούνται μόνο αν οι όροι αναζήτησης αλλάζουν.
+
+  * Το `switchMap()` εξασφαλίζει ότι στην περίπτωση που γίνουν πολλαπλές
+    αιτήσεις, θα απορριφθούν τα αποτελέσματα όλων πλην της τελευταίας.
+
+Έτσι το `Observable` `books$` θα εκπέμπει τα αποτελέσματα των
+αναζητήσεων που γίνονται αφού τηρηθούν τα παραπάνω.
+
+
+</div>
 
 
 ## `debounceTime`
