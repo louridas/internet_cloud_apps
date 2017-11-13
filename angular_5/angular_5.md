@@ -219,25 +219,7 @@ HttpClientInMemoryWebApiModule.forRoot(
   }
   ```
 
-## Η μέθοδος `getBooks()`
-
-* Για να διαβάσουμε βιβλία από τον εξυπηρετητή θα αλλάξουμε τη μέθοδο
-  `getBooks()` ώστε να είναι:
-  ```javascript
-  /** GET books from the server */
-  getBooks(): Observable<Book[]> {
-   return this.http.get<Book[]>(this.booksUrl)
-     .pipe(
-       tap(books => this.log(`fetched books`)),
-       catchError(this.handleError('getBooks', []))
-     );
-  }
-  ```
-
 ## Η κλάση `Observable`
-
-* Όπως μπορείτε να προσέξετε η μέθοδος `getBooks()` επιστρέφει ένα
-  `Observable`.
 
 * Μέχρι τώρα για να χειριστούμε ασύγχρονα δεδομένα χρησιμοποιούσαμε
   την κλάση `Promise`.
@@ -263,6 +245,70 @@ HttpClientInMemoryWebApiModule.forRoot(
 
 * Για να πάρουμε τις τιμές από ένα αντικείμενο `Observable` πρέπει να
   *γραφτούμε συνδρομητές* σε αυτό.
+
+
+## Τιμές από `Observable`
+
+* Υπάρχουν τριών τύπων τιμές που μπορεί να διανείμει ένα `Observable`
+  στους συνδρομητές του:
+  * `next`: διανείμει την επόμενη τιμή (`Number`, `String`, `Object`,
+    κ.λπ.) 
+  * `error`: διανείμει ένα λάθος ή μια εξαίρεση
+  * `complete`: δείχνει ότι έχει ολοκληρωθεί
+  
+  
+## Βολοδιάγραμμα (Marble Diagram)
+
+<img src="observable.png" alt="Observable" style="width: 800px;"/>
+
+
+## Η μέθοδος `getBooks()`
+
+* Για να διαβάσουμε βιβλία από τον εξυπηρετητή θα αλλάξουμε τη μέθοδο
+  `getBooks()` στο `BookService` ώστε να είναι:
+  ```javascript
+  /** GET books from the server */
+  getBooks(): Observable<Book[]> {
+   return this.http.get<Book[]>(this.booksUrl)
+     .pipe(
+       tap(books => this.log(`fetched books`)),
+       catchError(this.handleError('getBooks', []))
+     );
+  }
+  ```
+
+<div class="notes">
+
+Ο τελεστής `tap` παίρνει τις τιμές του `Observable` όπως έρχονται και
+εκτελεί τον κώδικα που του έχουμε δώσει *χωρίς να αλλάζει τις τιμές*.
+Αυτός είναι και ο λόγος που ονομάζεται `tap`: κρυφακούει, σαν να
+είχαμε βάλει κοριό (wire tap). Ο τελεστής `tap` ονομάζεται επίσης
+`do`, αλλά επειδή υπάρχει η δομή `do...while` στην JavaScript και
+TypeScript δεν θα μπορούσαμε να το χρησιμοποιήσουμε εδώ (μπορούμε να
+το χρησιμοποιήσουμε γενικώς ως `.do()`).
+
+Εδώ χρησιμοποιούμε το `tap` με μία συνάρτηση, αλλά μπορούμε να του
+δώσουμε μέχρι τρεις:
+
+  * η πρώτη δίνει τι θέλουμε να εκτελεστεί για κάθε δεδομένο που μας
+    έρχεται 
+  * η δεύτερη δίνει τι θέλουμε να εκτελεστεί σε περίπτωση κάποιου
+    λάθους
+  * η τρίτη δίνει τι θέλουμε να εκτελεστεί αν τελειώσει η σειρά των
+    δεδομένων που μας έρχεται
+
+Συνεπώς, το `tap` είναι ένας τρόπος να έχουμε παράπλευρες ενέργειες
+(side effects) παράλληλα με τα δεδομένα που έρχονται.
+</div>
+
+
+## Τελεστής `tap` / `do`
+
+<img src="do.png" alt="tap" style="width: 800px;"/>
+
+## Τελεστής `catchError`
+
+<img src="catch.png" alt="catch" style="width: 800px;"/>
 
 
 ## `books.component.ts`
@@ -302,7 +348,7 @@ HttpClientInMemoryWebApiModule.forRoot(
 ## Η μέθοδος `handleError()`
 
 * Για τη διαχείριση τυχόν λαθών στην επικοινωνία μέσω HTTP θα
-  προσθέσουμε την παρακάτω μέθοδο στο `BookService` 
+  προσθέσουμε την παρακάτω μέθοδο στο `BookService`:
   ```javascript 
   /**
    * Handle Http operation that failed.
@@ -322,6 +368,18 @@ HttpClientInMemoryWebApiModule.forRoot(
     };
   }
   ```
+
+<div class="notes">
+
+Στην JavaScript όλες οι παράμετροι μιας συνάρτησης είναι προαιρετικές.
+Για να δηλώσουμε ότι μια παράμετρος μιας συνάρτησης είναι προαιρετική
+στην TypeScript, προσθέτουμε το `?` στο τέλος του ονόματός της.
+
+Ο τελεστής `of` του RxJS κατασκευάζει ένα `Observable` από το
+αντικείμενο που του περνάμε ως παράμετρο. Έτσι εδώ θα επιστρέψει ένα
+`Observable` το οποίο θα παραδώσει την τιμή του `result`.
+
+</div>
 
 ## Εύρεση ενός βιβλίου
 
@@ -440,6 +498,16 @@ HttpClientInMemoryWebApiModule.forRoot(
   </div>
   ```
 
+<div class="notes">
+
+Η σύνταξη `#bookTitle` είναι δήλωση μιας *αναφοράς* ([template
+reference
+variable](https://angular.io/guide/template-syntax#ref-vars). Αυτή
+μπορεί να αναφέρεται είτε ένα στοιχείο του DOM είτε μία οδηγία ή
+εξάρτημα του Angular. Αφού δηλώσουμε μια αναφορά, στη συνέχεια
+μπορούμε να τη χρησιμοποιήσουμε στο υπόλοιπο πρότυπο (χωρίς το `#`). Η
+τιμής της δίνεται από την ιδιότητα `value`.
+
 ## Προσθήκη βιβλίου (2)
 
 * Θα υλοποιήσουμε τη μέθοδο `add()` στο `BooksComponent`:
@@ -454,6 +522,9 @@ HttpClientInMemoryWebApiModule.forRoot(
       });
   }
   ```
+
+</div>
+
 
 ## Προσθήκη βιβλίου (3)
 
