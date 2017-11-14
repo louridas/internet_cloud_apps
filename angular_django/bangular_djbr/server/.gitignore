@@ -1,0 +1,14 @@
+# Emacs
+*~
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff:
+*.log
+.static_storage/
+.media/
+static/
+site_config.py
