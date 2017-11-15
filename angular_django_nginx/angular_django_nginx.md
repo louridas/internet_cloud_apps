@@ -481,28 +481,29 @@ export class AppModule { }
   STATIC_URL = '/static/'
   ```
   τις γραμμές:
-  ```python
-  STATIC_URL = '/static/'
-
+  ```
   from pathlib import Path
   STATICFILES_DIRS = (
-      os.path.join(Path(BASE_DIR).parents[0], 'client/dist'),
+      os.path.join(str(Path(BASE_DIR).parents[0]), os.path.join('client', 'dist')),
   )
 
   STATIC_ROOT = os.path.join(BASE_DIR, 'dist')
   ```
   
 <div class="notes">
+
 Με τις γραμμές:
 ```python
 from pathlib import Path
 STATICFILES_DIRS = (
-    os.path.join(Path(BASE_DIR).parents[0], os.path.join('client', 'dist')),
+    os.path.join(str(Path(BASE_DIR).parents[0]), os.path.join('client', 'dist')),
 )
 ```
 ενημερώνουμε το Django ώστε να αναζητά τα στατικά αρχεία και στον
 κατάλογο `../client/dist`, όπου έχουμε συγκεντρώσει την εφαρμογή
-Angular. 
+Angular. Με το `Path(BASE_DIR).parents[0]` παίρνουμε ένα αντικείμενο
+που αντιστοιχεί στον κατάλογο γονέα του τρέχοντος καταλόγου· σε αυτόν,
+ενώνουμε το `client/dist`.
 
 Η γραμμή:
 ```python
@@ -512,6 +513,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'dist')
 στατικά αρχεία και θα θέλουμε να τα μεταφέρουμε στον εξυπηρετητή μας.
 
 </div>
+
 
 ## Προσαρμογή `project_site/urls.py`
 
@@ -555,7 +557,80 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'dist')
   nginx.
   
 
-## Προαπαιτούμενα
+## Δημιουργία `production_settings.py`
+
+* Στον εξυπηρετητή παραγωγής μπορεί να θέλουμε να έχουμε διαφορετικές
+  ρυθμίσεις για το Django από ό,τι στον υπολογιστή ανάπτυξης.
+
+* Για το σκοπό αυτό δημιουργούμε ένα αρχείο `production_settings.py`,
+  στον ίδιο κατάλογο με το `project_settings.py`.
+  
+* Στη συνέχεια αλλαγές που αφορούν τον εξυπηρετητή παραγωγής θα τις
+  κάνουμε στο `production_settings.py`.
+
+
+## Προσαρμογή `production_settings.py`
+
+* Στο αρχείο `production_settings.py` αλλάζουμε τη γραμμή:
+  ```python
+  STATIC_URL = '/static/'
+  ```
+  σε:
+  ```python
+  STATIC_URL = '/'
+  ```
+
+* Αυτό χρειάζεται γιατί στον εξυπηρετητή παραγωγής τα στατικά αρχεία
+  δεν θα διατίθενται μέσω διαδρομής που ξεκινά από `/static`.
+  
+<div class="notes">
+
+Φυσικά μπορούμε να κάνουμε και ό,τι άλλες αλλαγές χρειάζεται για να
+λειτουργήσει η εφαρμογή μας στην παραγωγή.
+
+</div>
+
+
+## Ενεργοποίηση ρυθμίσεων παραγωγής
+
+* Για να ενεργοποιείται αυτομάτως το αρχείο των ρυθμίσεων παραγωγής
+  αλλάζουμε το αρχείο `/etc/systemd/system/gunicorn.service` ώστε να
+  είναι: 
+  ```
+  [Unit]
+  Description=gunicorn daemon
+  After=network.target
+
+  [Service]
+  User=user
+  Group=www-data
+  WorkingDirectory=/home/user/project_site
+  Environment=DJANGO_SETTINGS_MODULE=project_site.production_settings
+  ExecStart=/home/user/project_site/env/bin/gunicorn --workers 3 --bind unix:/home/user/project_site/project_site.sock project_site.wsgi:application
+
+  [Install]
+  WantedBy=multi-user.target
+  ```
+  
+* Με αυτόν τον τρόπο, όταν τρέχει το Django, η μεταβλητή συστήματος
+  `DJANGO_SETTINGS_MODULE` θα υποδεικνύει το αρχείο ρυθμίσεων της
+  παραγωγής.
+  
+* Το Django τότε χρησιμοποιεί ως αρχείο ρυθμίσεων αυτό που
+  υποδεικνύεται από το `DJANGO_SETTINGS_MODULE`.
+
+<div class="notes">
+
+Αυτό που κάναμε ήταν να προσθέσουμε τη γραμμή:
+```
+Environment=DJANGO_SETTINGS_MODULE=project_site.production_settings
+```
+μέσα στο αρχείο.
+
+</div>
+
+
+## Εγκατάσταση Django REST framework
 
 * Θα πρέπει να εγκαταστήσουμε το Django REST framework στον
   εξυπηρετητή που φιλοξενεί τον nginx.
@@ -615,12 +690,19 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'dist')
   User=user
   Group=www-data
   WorkingDirectory=/home/user/project_site
-  ExecStart=/home/user/project_site/env/bin/gunicorn --workers 3 --bind unix:/home/user/project_site/p
-  roject_site.sock --log-config /home/user/project_site/logging.conf project_site.wsgi:application
+  Environment=DJANGO_SETTINGS_MODULE=project_site.production_settings  
+  ExecStart=/home/user/project_site/env/bin/gunicorn --workers 3 --bind unix:/home/user/project_site/project_site.sock --log-config /home/user/project_site/logging.conf project_site.wsgi:application
 
   [Install]
   WantedBy=multi-user.target
   ```
+  
+<div class="notes">
+
+Προσθέσαμε το `--log-config /home/user/project_site/logging.conf` στη
+γραμμή που ξεκινά με `ExecStart`.
+
+</div>
   
 ## Αρχεία καταγραφής (2)
 
@@ -698,6 +780,7 @@ args=('/home/user/project_site/log/gunicorn.access.log',)
   `location` και στη θέση τους γράφουμε:
   ```
   location = /favicon.ico { access_log off; log_not_found off; }
+  
   location /static/ {
           root /srv/books;
   }
@@ -734,27 +817,7 @@ args=('/home/user/project_site/log/gunicorn.access.log',)
   ```
   sudo cp -r dist /srv/books
   ```
-  
-## Προσαρμογή ρυθμίσεων Django
-
-* Στο αρχείο `site-config.py`, στο οποίο δίνουμε τις ρυθμίσεις του
-  Django που θέλουμε να είναι μυστικές, προσθέτουμε τη γραμμή:
-  ```python
-  ALLOWED_HOSTS = ['snf-779124.vm.okeanos.grnet.gr', 'localhost', '127.0.0.1', '[::1]']
-  ```
-  
-* Στην παραπάνω γραμμή, στη θέση του `snf-779124.vm.okeanos.grnet.gr`
-  βάζετε το όνομα του δικού σας εξυπηρετητή.
-  
-* Στο κεντρικό αρχείο ρυθμίσεων του Django αλλάζετε τη γραμμή:
-  ```python
-  STATIC_ROOT = '/static/'
-  ```
-  σε:
-  ```python
-  STATIC_ROOT = '/'
-  ```
-  
+    
 ## Εκκίνηση 
 
 * Για να ξαναξεκινήσουμε τον nginx δίνουμε:
@@ -767,7 +830,14 @@ args=('/home/user/project_site/log/gunicorn.access.log',)
   ```
   αν δεν θέλουμε να διακοπούν οι υπάρχουσες συνδέσεις.
 
-* Για να ξακαξεκινήσουμε τον gunicorn δίνουμε:
+* Επειδή αλλάξαμε το αρχείο περιγραφής της υπηρεσίας `gunicorn`
+  (`/etc/systemd/system/gunicorn.service`), θα
+  πρέπει να ξαναφορτώσουμε το systemd:
+  ```
+  sudo systemctl daemon-reload
+  ```
+
+* Για να ξαναξεκινήσουμε τον gunicorn δίνουμε:
   ```
   sudo servicectl restart gunicorn
   ```
@@ -803,5 +873,3 @@ args=('/home/user/project_site/log/gunicorn.access.log',)
   περιεχόμενα του `server/project_site` του υπολογιστή μας στο
   `/home/user/project_site` στον εξυπηρετητή.
 
-* Στην περίπτωση αυτή, θα πρέπει να προσέξουμε στο `settings.py` να
-  είναι το `STATIC_URL = '/'`.
