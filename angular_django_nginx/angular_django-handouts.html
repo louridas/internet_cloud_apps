@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Αν. Καθηγητής Π. Λουρίδας" />
+  <title>Διαδικτυακές και Νεφοϋπολογιστικές Εφαρμογές</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      div.line-block{white-space: pre-line;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; }
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource div.sourceLine, .numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource div.sourceLine::before, .numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em; }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; color: #aaaaaa;  padding-left: 4px; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; color: initial; }
+}
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.bn { color: #40a070; } /* BaseN */
+code span.fl { color: #40a070; } /* Float */
+code span.ch { color: #4070a0; } /* Char */
+code span.st { color: #4070a0; } /* String */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.ot { color: #007020; } /* Other */
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.fu { color: #06287e; } /* Function */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code span.cn { color: #880000; } /* Constant */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.im { } /* Import */
+code span.va { color: #19177c; } /* Variable */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.op { color: #666666; } /* Operator */
+code span.bu { } /* BuiltIn */
+code span.ex { } /* Extension */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.at { color: #7d9029; } /* Attribute */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <style type="text/css">body {
+margin: auto;
+padding-right: 1em;
+padding-left: 1em;
+max-width: 60%; border-left: 1px solid black;
+border-right: 1px solid black;
+color: black;
+font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+font-size: 100%;
+line-height: 140%;
+color: #333; }
+pre {
+border: 1px dotted gray;
+background-color: #ececec;
+color: #1111111;
+padding: 0.5em;
+}
+code {
+font-family: 'Lucida Console', Monaco, monospace;
+font-size: 100%;
+}
+a {
+color: #336666;
+} h1 a, h2 a, h3 a, h4 a, h5 a { text-decoration: none;
+color: #7a5ada; }
+h1, h2, h3, h4, h5 {
+font-family: Roboto;
+font-weight: bold;
+}
+h1 {
+font-size: 130%;
+padding: 0.5em;
+border-bottom: 1px dotted black;
+}
+h2 {
+font-size: 110%;
+}
+h3 {
+font-size: 95%;
+}
+h4 {
+font-size: 90%;
+font-style: italic;
+}
+h5 {
+font-size: 90%;
+font-style: italic;
+}
+h1.title {
+font-size: 200%;
+font-weight: bold;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+text-align: left;
+border: none;
+}
+dt code {
+font-weight: bold;
+}
+dd p {
+margin-top: 0;
+}
+#footer {
+padding-top: 1em;
+font-size: 70%;
+color: gray;
+text-align: center;
+}
+</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">Διαδικτυακές και Νεφοϋπολογιστικές Εφαρμογές</h1>
+<p class="author">Αν. Καθηγητής Π. Λουρίδας</p>
+<p class="date">Οικονομικό Πανεπιστήμιο Αθηνών</p>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#angular-django">Angular &amp; Django</a><ul>
+<li><a href="#γενικά">Γενικά</a></li>
+<li><a href="#δύο-εφαρμογές-σε-μία">Δύο εφαρμογές σε μία</a></li>
+<li><a href="#δομή-καταλόγων">Δομή καταλόγων</a></li>
+</ul></li>
+<li><a href="#δημιουργία-εντολής-στο-django">Δημιουργία εντολής στο Django</a><ul>
+<li><a href="#σκοπός">Σκοπός</a></li>
+<li><a href="#δομή-καταλόγου-εντολών">Δομή καταλόγου εντολών</a></li>
+<li><a href="#seed_db.py"><code>seed_db.py</code></a></li>
+<li><a href="#χρήση-seed_db.py">Χρήση <code>seed_db.py</code></a></li>
+</ul></li>
+<li><a href="#διαμοιρασμός-αρμοδιοτήτων">Διαμοιρασμός αρμοδιοτήτων</a><ul>
+<li><a href="#django-και-angular">Django και Angular</a></li>
+<li><a href="#rest-api">REST API</a></li>
+<li><a href="#django-rest-framework">Django REST Framework</a></li>
+<li><a href="#ρυθμίσεις-djbrsettings.py-1">Ρυθμίσεις <code>djbr/settings.py</code> (1)</a></li>
+<li><a href="#serializers">Serializers</a></li>
+<li><a href="#δημιουργία-serializer">Δημιουργία serializer</a></li>
+<li><a href="#δημιουργία-views">Δημιουργία views</a></li>
+<li><a href="#views.py"><code>views.py</code></a></li>
+<li><a href="#δημιουργία-djbrurls.py">Δημιουργία <code>djbr/urls.py</code></a></li>
+<li><a href="#προσαρμογή-bangular_projecturls.py">Προσαρμογή <code>bangular_project/urls.py</code></a></li>
+<li><a href="#εκκίνηση-της-εφαρμογής">Εκκίνηση της εφαρμογής</a></li>
+<li><a href="#έλεγχος-της-εφαρμογής">Έλεγχος της εφαρμογής</a></li>
+<li><a href="#httpie">HTTPie</a></li>
+<li><a href="#λήψη-των-βιβλίων">Λήψη των βιβλίων</a></li>
+<li><a href="#αποθήκευση-και-ενημέρωση">Αποθήκευση και ενημέρωση</a></li>
+<li><a href="#αναζήτηση-βιβλίων">Αναζήτηση βιβλίων</a></li>
+<li><a href="#έλεγχος-μέσω-του-browser">Έλεγχος μέσω του browser</a></li>
+<li><a href="#χρήση-του-browsable-api">Χρήση του browsable API</a></li>
+<li><a href="#απενεργοποίηση-του-browsable-api">Απενεργοποίηση του browsable API</a></li>
+</ul></li>
+<li><a href="#angular-django-1">Angular &amp; Django</a><ul>
+<li><a href="#ολοκλήρωση">Ολοκλήρωση</a></li>
+<li><a href="#app.module.ts-1"><code>app.module.ts</code> (1)</a></li>
+<li><a href="#app.module.ts-2"><code>app.module.ts</code> (2)</a></li>
+<li><a href="#συμμάζεμα-αρχείων">Συμμάζεμα αρχείων</a></li>
+<li><a href="#προσαρμογή-settings.py">Προσαρμογή <code>settings.py</code></a></li>
+<li><a href="#προσαρμογή-project_siteurls.py">Προσαρμογή <code>project_site/urls.py</code></a></li>
+<li><a href="#έλεγχος-εφαρμογής">Έλεγχος εφαρμογής</a></li>
+</ul></li>
+<li><a href="#εγκατάσταση-σε-nginx">Εγκατάσταση σε nginx</a><ul>
+<li><a href="#εγκατάσταση-παραγωγής">Εγκατάσταση παραγωγής</a></li>
+<li><a href="#προαπαιτούμενα">Προαπαιτούμενα</a></li>
+<li><a href="#κατάλογος-εφαρμογής">Κατάλογος εφαρμογής</a></li>
+<li><a href="#μεταφορά-των-αρχείων-της-εφαρμογής">Μεταφορά των αρχείων της εφαρμογής</a></li>
+<li><a href="#αρχεία-καταγραφής-1">Αρχεία καταγραφής (1)</a></li>
+<li><a href="#αρχεία-καταγραφής-2">Αρχεία καταγραφής (2)</a></li>
+<li><a href="#ρυθμίσεις-nginx-1">Ρυθμίσεις nginx (1)</a></li>
+<li><a href="#ρυθμίσεις-nginx-2">Ρυθμίσεις nginx (2)</a></li>
+<li><a href="#αντιγραφή-στατικών-αρχείων.">Αντιγραφή στατικών αρχείων.</a></li>
+<li><a href="#προσαρμογή-ρυθμίσεων-django">Προσαρμογή ρυθμίσεων Django</a></li>
+<li><a href="#εκκίνηση">Εκκίνηση</a></li>
+<li><a href="#παρακολούθηση-της-εφαρμογής-μας">Παρακολούθηση της εφαρμογής μας</a></li>
+<li><a href="#ενημερώσεις-της-εφαρμογής">Ενημερώσεις της εφαρμογής</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="angular-django">Angular &amp; Django</h1>
+<h2 id="γενικά">Γενικά</h2>
+<ul>
+<li><p>Μέχρι τώρα δεν έχουμε χρησιμοποιήσει κάποιον κανονικό εξυπηρετητεί ο οποίος θα ακούει τις αιτήσεις της εφαρμογής μας.</p></li>
+<li><p>Τώρα θα χρησιμοποιήσουμε το Angular στο frontend και το Django στο backend.</p></li>
+</ul>
+<h2 id="δύο-εφαρμογές-σε-μία">Δύο εφαρμογές σε μία</h2>
+<ul>
+<li><p>Αν θυμηθούμε, είχαμε φτιάξει μια εφαρμογή, την <code>djbr</code>, χρησιμοποιώντας το Django.</p></li>
+<li><p>Επίσης έχουμε φτιάξει μια εφαρμογή, την <code>bangular</code>, χρησιμοποιώντας το Angular.</p></li>
+<li><p>Τώρα θα τις συνδέσουμε.</p></li>
+</ul>
+<h2 id="δομή-καταλόγων">Δομή καταλόγων</h2>
+<ul>
+<li><p>Φτιάχνουμε έναν κατάλογο <code>bangular_djbr</code>.</p></li>
+<li><p>Μέσα στον κατάλογο αυτό μεταφέρουμε την εφαρμογή <code>djbr</code>, σε έναν κατάλογο που τον ονομάζουμε <code>server</code>.</p></li>
+<li><p>Επίσης μεταφέρουμε την εφαρμογή <code>bangular</code> σε έναν κατάλογο που τον ονομάζουμε <code>client</code>.</p></li>
+<li><p>Θα έχουμε λοιπόν μια δομή καταλόγων που τα δύο πρώτα επίπεδά της θα είναι:</p>
+<pre><code>├── client/
+│  ├── README.md
+│  ├── e2e/
+│  ├── karma.conf.js
+│  ├── node_modules/
+│  ├── package.json
+│  ├── protractor.conf.js
+│  ├── src/
+│  ├── tsconfig.json
+│  └── tslint.json
+└── server/
+    ├── djbr/
+    ├── manage.py
+    ├── project_site/
+    └── static/</code></pre></li>
+</ul>
+<h1 id="δημιουργία-εντολής-στο-django">Δημιουργία εντολής στο Django</h1>
+<h2 id="σκοπός">Σκοπός</h2>
+<ul>
+<li><p>Μέχρι τώρα χρησιμοποιούμε διάφορες εντολές του Django, όπως <code>runserver</code>, <code>migrate</code>, κ.λπ.</p></li>
+<li><p>Δεν είναι δύσκολο να φτιάξουμε μια δική μας εντολή για κάτι που θέλουμε να κάνουμε.</p></li>
+<li><p>Στη συγκεκριμένη περίπτωση, θα φτιάξουμε μια εντολή με την οποία θα μπορούμε να τροφοδοτούμε τη βάση μας με δεδομένα.</p></li>
+</ul>
+<h2 id="δομή-καταλόγου-εντολών">Δομή καταλόγου εντολών</h2>
+<ul>
+<li><p>Για να φτιάξουμε νέες εντολές δημιουργούμε τον κατάλογο <code>djbr/management/commands</code>.</p></li>
+<li><p>Το Django θα δημιουργεί μια εντολή του <code>manage.py</code> για κάθε αρχείο της Python που βρίσκεται σε αυτόν τον κατάλογο και το όνομά του δεν αρχίζει από <code>_</code>.</p></li>
+<li><p>Μέσα σε ένα τέτοιο αρχείο θα πρέπει να ορίσουμε μια κλάση <code>Command</code> η οποία είναι παιδί της <code>BaseCommand</code> ή κάποιου απογόνου της.</p></li>
+</ul>
+<h2 id="seed_db.py"><code>seed_db.py</code></h2>
+<ul>
+<li><p>Θα δημιουργήσουμε λοιπόν το ακόλουθο αρχείο <code>seed_db.py</code>, το οποίο υλοποιεί την εντολή που θέλουμε:</p>
+<pre class="sourceCode python" id="cb2"><code class="sourceCode python"><div class="sourceLine" id="cb2-1" data-line-number="1"><span class="im">from</span> django.core.management.base <span class="im">import</span> BaseCommand, CommandError</div>
+<div class="sourceLine" id="cb2-2" data-line-number="2"></div>
+<div class="sourceLine" id="cb2-3" data-line-number="3"><span class="im">import</span> inspect</div>
+<div class="sourceLine" id="cb2-4" data-line-number="4"></div>
+<div class="sourceLine" id="cb2-5" data-line-number="5"><span class="im">from</span> djbr <span class="im">import</span> models</div>
+<div class="sourceLine" id="cb2-6" data-line-number="6"></div>
+<div class="sourceLine" id="cb2-7" data-line-number="7"><span class="im">import</span> csv</div>
+<div class="sourceLine" id="cb2-8" data-line-number="8"></div>
+<div class="sourceLine" id="cb2-9" data-line-number="9"><span class="kw">class</span> Command(BaseCommand):</div>
+<div class="sourceLine" id="cb2-10" data-line-number="10">    <span class="bu">help</span> <span class="op">=</span> <span class="st">'Seeds the database with the specified file'</span></div>
+<div class="sourceLine" id="cb2-11" data-line-number="11"></div>
+<div class="sourceLine" id="cb2-12" data-line-number="12">    <span class="kw">def</span> add_arguments(<span class="va">self</span>, parser):</div>
+<div class="sourceLine" id="cb2-13" data-line-number="13">        parser.add_argument(<span class="st">'model'</span>, <span class="bu">type</span><span class="op">=</span><span class="bu">str</span>)</div>
+<div class="sourceLine" id="cb2-14" data-line-number="14">        parser.add_argument(<span class="st">'seed_file'</span>, <span class="bu">type</span><span class="op">=</span><span class="bu">str</span>)</div>
+<div class="sourceLine" id="cb2-15" data-line-number="15"></div>
+<div class="sourceLine" id="cb2-16" data-line-number="16">    <span class="kw">def</span> handle(<span class="va">self</span>, <span class="op">*</span>args, <span class="op">**</span>options):</div>
+<div class="sourceLine" id="cb2-17" data-line-number="17">        djbr_models <span class="op">=</span> inspect.getmembers(models, inspect.isclass)</div>
+<div class="sourceLine" id="cb2-18" data-line-number="18">        to_seed <span class="op">=</span> <span class="va">None</span></div>
+<div class="sourceLine" id="cb2-19" data-line-number="19">        <span class="cf">for</span> djbr_model <span class="kw">in</span> djbr_models:</div>
+<div class="sourceLine" id="cb2-20" data-line-number="20">            <span class="cf">if</span> djbr_model[<span class="dv">0</span>] <span class="op">==</span> options[<span class="st">'model'</span>]:</div>
+<div class="sourceLine" id="cb2-21" data-line-number="21">                to_seed <span class="op">=</span> djbr_model[<span class="dv">1</span>]</div>
+<div class="sourceLine" id="cb2-22" data-line-number="22">                <span class="cf">break</span></div>
+<div class="sourceLine" id="cb2-23" data-line-number="23">        <span class="cf">if</span> <span class="kw">not</span> to_seed:</div>
+<div class="sourceLine" id="cb2-24" data-line-number="24">            <span class="cf">return</span></div>
+<div class="sourceLine" id="cb2-25" data-line-number="25">        <span class="cf">with</span> <span class="bu">open</span>(options[<span class="st">'seed_file'</span>]) <span class="im">as</span> seed_file:</div>
+<div class="sourceLine" id="cb2-26" data-line-number="26">            seed_reader <span class="op">=</span> csv.reader(seed_file, skipinitialspace<span class="op">=</span><span class="va">True</span>)</div>
+<div class="sourceLine" id="cb2-27" data-line-number="27">            headers <span class="op">=</span> <span class="bu">next</span>(seed_reader)</div>
+<div class="sourceLine" id="cb2-28" data-line-number="28">            <span class="cf">for</span> row <span class="kw">in</span> seed_reader:</div>
+<div class="sourceLine" id="cb2-29" data-line-number="29">                obj <span class="op">=</span> to_seed()</div>
+<div class="sourceLine" id="cb2-30" data-line-number="30">                <span class="cf">for</span> attr, value <span class="kw">in</span> <span class="bu">zip</span>(headers, row):</div>
+<div class="sourceLine" id="cb2-31" data-line-number="31">                    <span class="bu">setattr</span>(obj, attr, value)</div>
+<div class="sourceLine" id="cb2-32" data-line-number="32">                <span class="bu">print</span>(<span class="st">'saving'</span>, obj)</div>
+<div class="sourceLine" id="cb2-33" data-line-number="33">                obj.save()</div></code></pre></li>
+</ul>
+<h2 id="χρήση-seed_db.py">Χρήση <code>seed_db.py</code></h2>
+<ul>
+<li><p>Από εδώ και στο εξής, μπορούμε να δώσουμε εντολές του τύπου:</p>
+<pre class="sourceCode bash" id="cb3"><code class="sourceCode bash"><div class="sourceLine" id="cb3-1" data-line-number="1"><span class="ex">python</span> manage.py seed_db Book seed_books.csv</div></code></pre>
+<p>Βεβαίως αντί για <code>Book</code> μπορούμε να έχουμε μια άλλη κλάση.</p></li>
+<li><p>Το αρχείο <code>seed_books.csv</code> περιέχει ένα βιβλίο ανά γραμμή:</p>
+<pre><code>title, pub_year
+'Infinite Jest', 1996
+'Oblivion', 2004
+'Conversations with Friends', 2017
+'The Crying of Lot 49', 1966
+'City on Fire', 2015 
+'The Narrow Road to the Deep North', 2013
+'The Dispossessed', 1974
+'The Left Hand of Darkness', 1969
+'A Death in the Family: My Struggle Book 1', 2013
+'A Man in Love: My Struggle Book 2', 2013</code></pre></li>
+</ul>
+<h1 id="διαμοιρασμός-αρμοδιοτήτων">Διαμοιρασμός αρμοδιοτήτων</h1>
+<h2 id="django-και-angular">Django και Angular</h2>
+<ul>
+<li><p>Η εφαρμογή μας θα είναι μια Django εφαρμογή, με τη διαφορά ότι το Django δεν θα είναι αρμόδιο για την εμφάνιση.</p></li>
+<li><p>Το Django θα δέχεται HTTP αιτήσεις και θα δίνει απαντήσεις, όπου τα δεδομένα θα δίνονται σε μορφή JSON.</p></li>
+<li><p>Το Angular θα στέλνει τις αιτήσεις, θα λαμβάνει τις απαντήσεις, και θα τις εμφανίζει κατάλληλα στην οθόνη.</p></li>
+</ul>
+<h2 id="rest-api">REST API</h2>
+<ul>
+<li><p>Η επικοινωνία μεταξύ του Angular και του Django θα γίνεται με βάση το πρότυπο REST.</p>
+<ul>
+<li>Για να δημιουργούνται νέα αντικείμενα, θα χρησιμοποιείται η μέθοδος <code>HTTP POST</code>.</li>
+<li>Για να βλέπουμε υπάρχοντα αντικείμενα, θα χρησιμοποιείται η μέθοδος <code>HTTP GET</code>.</li>
+<li>Για να αλλάξουμε ένα υπάρχον αντικείμενο, θα χρησιμοποιείται η μέθοδος <code>HTTP PUT</code>.</li>
+<li>Για να διαγράψουμε ένα αντικείμενο, θα χρησιμοποιείται η μέθοδος <code>HTTP DELETE</code>.</li>
+</ul></li>
+</ul>
+<h2 id="django-rest-framework">Django REST Framework</h2>
+<ul>
+<li><p>Την επικοινωνία μέσω το προτύπου REST και το χειρισμό των δεδομένων JSON θα την αναλάβει το <a href="http://www.django-rest-framework.org/">Django REST Framework</a>.</p></li>
+<li><p>Για να το εγκαταστήσουμε δίνουμε:</p>
+<pre class="sourceCode bash" id="cb5"><code class="sourceCode bash"><div class="sourceLine" id="cb5-1" data-line-number="1"><span class="ex">pip</span> install djangorestframework</div></code></pre></li>
+</ul>
+<h2 id="ρυθμίσεις-djbrsettings.py-1">Ρυθμίσεις <code>djbr/settings.py</code> (1)</h2>
+<ul>
+<li><p>Στο αρχείο <code>project_site/settings.py</code> προσθέτουμε στο <code>INSTALLED_APPS</code> το παρακάτω:</p>
+<pre class="sourceCode python" id="cb6"><code class="sourceCode python"><div class="sourceLine" id="cb6-1" data-line-number="1">INSTALLED_APPS <span class="op">=</span> [</div>
+<div class="sourceLine" id="cb6-2" data-line-number="2">  <span class="co"># ...</span></div>
+<div class="sourceLine" id="cb6-3" data-line-number="3"> <span class="st">'rest_framework'</span>,</div>
+<div class="sourceLine" id="cb6-4" data-line-number="4"> <span class="co"># ...</span></div>
+<div class="sourceLine" id="cb6-5" data-line-number="5">]</div></code></pre></li>
+</ul>
+<h2 id="serializers">Serializers</h2>
+<ul>
+<li><p>Εκτός από τα μοντέλα μας, θα χρειαστούμε και έναν τρόπο με τον οποίο τα αντικείμενα της Python μετατρέπονται σε JSON και το τούμπαλιν.</p></li>
+<li><p>Αυτό το κάνουν οι serializers.</p></li>
+</ul>
+<h2 id="δημιουργία-serializer">Δημιουργία serializer</h2>
+<ul>
+<li><p>Για τα βιβλία θα γράψουμε τον <code>BookSerializer</code> στο αρχείο <code>djbr/serializers.py</code>:</p>
+<pre class="sourceCode python" id="cb7"><code class="sourceCode python"><div class="sourceLine" id="cb7-1" data-line-number="1"><span class="im">from</span> rest_framework <span class="im">import</span> serializers</div>
+<div class="sourceLine" id="cb7-2" data-line-number="2"><span class="im">from</span> .models <span class="im">import</span> Book</div>
+<div class="sourceLine" id="cb7-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw">class</span> BookSerializer(serializers.ModelSerializer):</div>
+<div class="sourceLine" id="cb7-5" data-line-number="5">    <span class="kw">class</span> Meta:</div>
+<div class="sourceLine" id="cb7-6" data-line-number="6">        model <span class="op">=</span> Book</div>
+<div class="sourceLine" id="cb7-7" data-line-number="7">        fields <span class="op">=</span> (<span class="st">'id'</span>, <span class="st">'title'</span>, <span class="st">'pub_year'</span>)</div></code></pre></li>
+</ul>
+<h2 id="δημιουργία-views">Δημιουργία views</h2>
+<ul>
+<li><p>Τα views για τα βιβλία τα ορίζουμε ως συνήθως στο αρχείο <code>djbr/views.py</code>.</p></li>
+<li><p>Δεδομένου ότι για την εμφάνιση θα είναι αρμόδιο το Angular, <em>σβήνουμε όλα τα υπάρχοντα περιεχόμενα του αρχείου</em>.</p></li>
+<li><p>Προσέξτε ότι θα προσθέσουμε και ένα view <code>index()</code> το οποίο θα επιστρέφει τα αρχεία της εφαρμογής που έχουμε φτιάξει με Angular.</p></li>
+<li><p>Σε μία τελική εγκατάσταση, τα αρχεία αυτά θα τα φιλοξενεί ο HTTP server που θα χρησιμοποιούμε (π.χ. Apache ή nginx), αλλά προς το παρόν για λόγους ευκολίας θα τα φιλοξενεί το Django.</p></li>
+<li><p>Κρατάμε όμως στο μυαλό μας ότι αυτό δεν το κάνουμε ποτέ στην παραγωγή.</p></li>
+</ul>
+<h2 id="views.py"><code>views.py</code></h2>
+<pre class="sourceCode python" id="cb8"><code class="sourceCode python"><div class="sourceLine" id="cb8-1" data-line-number="1"><span class="im">from</span> .models <span class="im">import</span> Book</div>
+<div class="sourceLine" id="cb8-2" data-line-number="2"><span class="im">from</span> .serializers <span class="im">import</span> BookSerializer</div>
+<div class="sourceLine" id="cb8-3" data-line-number="3"><span class="im">from</span> rest_framework <span class="im">import</span> generics</div>
+<div class="sourceLine" id="cb8-4" data-line-number="4"></div>
+<div class="sourceLine" id="cb8-5" data-line-number="5"><span class="im">from</span> django.contrib.staticfiles <span class="im">import</span> views</div>
+<div class="sourceLine" id="cb8-6" data-line-number="6"></div>
+<div class="sourceLine" id="cb8-7" data-line-number="7"><span class="kw">def</span> index(request, path<span class="op">=</span><span class="st">''</span>):</div>
+<div class="sourceLine" id="cb8-8" data-line-number="8">    <span class="cf">if</span> (path.endswith(<span class="st">'.js'</span>)):</div>
+<div class="sourceLine" id="cb8-9" data-line-number="9">        <span class="cf">return</span> views.serve(request, path)</div>
+<div class="sourceLine" id="cb8-10" data-line-number="10">    <span class="cf">else</span>:</div>
+<div class="sourceLine" id="cb8-11" data-line-number="11">        <span class="cf">return</span> views.serve(request, <span class="st">'index.html'</span>)</div>
+<div class="sourceLine" id="cb8-12" data-line-number="12"></div>
+<div class="sourceLine" id="cb8-13" data-line-number="13"><span class="kw">class</span> BookList(generics.ListCreateAPIView):</div>
+<div class="sourceLine" id="cb8-14" data-line-number="14">    serializer_class <span class="op">=</span> BookSerializer</div>
+<div class="sourceLine" id="cb8-15" data-line-number="15"></div>
+<div class="sourceLine" id="cb8-16" data-line-number="16">    <span class="kw">def</span> get_queryset(<span class="va">self</span>):</div>
+<div class="sourceLine" id="cb8-17" data-line-number="17">        queryset <span class="op">=</span> Book.objects.<span class="bu">all</span>()</div>
+<div class="sourceLine" id="cb8-18" data-line-number="18">        title <span class="op">=</span> <span class="va">self</span>.request.query_params.get(<span class="st">'title'</span>, <span class="va">None</span>)</div>
+<div class="sourceLine" id="cb8-19" data-line-number="19">        <span class="cf">if</span> title <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</div>
+<div class="sourceLine" id="cb8-20" data-line-number="20">            queryset <span class="op">=</span> queryset.<span class="bu">filter</span>(title__contains<span class="op">=</span>title)</div>
+<div class="sourceLine" id="cb8-21" data-line-number="21">        <span class="cf">return</span> queryset</div>
+<div class="sourceLine" id="cb8-22" data-line-number="22"></div>
+<div class="sourceLine" id="cb8-23" data-line-number="23"><span class="kw">class</span> BookDetail(generics.RetrieveUpdateDestroyAPIView):</div>
+<div class="sourceLine" id="cb8-24" data-line-number="24">    queryset <span class="op">=</span> Book.objects.<span class="bu">all</span>()</div>
+<div class="sourceLine" id="cb8-25" data-line-number="25">    serializer_class <span class="op">=</span> BookSerializer</div></code></pre>
+<h2 id="δημιουργία-djbrurls.py">Δημιουργία <code>djbr/urls.py</code></h2>
+<ul>
+<li><p>Στη συνέχεια θα πρέπει να ορίσουμε τα αντίστοιχα URLs στο αρχείο <code>djbr/urls.py</code> (και πάλι σβήνουμε τα προηγούμενα περιεχόμενα):</p>
+<pre class="sourceCode python" id="cb9"><code class="sourceCode python"><div class="sourceLine" id="cb9-1" data-line-number="1"><span class="im">from</span> django.conf.urls <span class="im">import</span> url</div>
+<div class="sourceLine" id="cb9-2" data-line-number="2"><span class="im">from</span> . <span class="im">import</span> views</div>
+<div class="sourceLine" id="cb9-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb9-4" data-line-number="4">app_name <span class="op">=</span> <span class="st">'djbr'</span></div>
+<div class="sourceLine" id="cb9-5" data-line-number="5"></div>
+<div class="sourceLine" id="cb9-6" data-line-number="6">urlpatterns <span class="op">=</span> [</div>
+<div class="sourceLine" id="cb9-7" data-line-number="7">    url(<span class="vs">r'^books/?$'</span>, views.BookList.as_view()),</div>
+<div class="sourceLine" id="cb9-8" data-line-number="8">    url(<span class="vs">r'^books/(?P&lt;pk&gt;[0-9]+)/?$'</span>, views.BookDetail.as_view()),</div>
+<div class="sourceLine" id="cb9-9" data-line-number="9">]</div></code></pre></li>
+</ul>
+<h2 id="προσαρμογή-bangular_projecturls.py">Προσαρμογή <code>bangular_project/urls.py</code></h2>
+<ul>
+<li><p>Και κατόπιν θα πρέπει τα URLs να συμπεριληφθούν στο σύνολο των URLs στο αρχείο <code>project_site/urls.py</code>:</p>
+<pre class="sourceCode python" id="cb10"><code class="sourceCode python"><div class="sourceLine" id="cb10-1" data-line-number="1"><span class="im">from</span> django.conf.urls <span class="im">import</span> url, include</div>
+<div class="sourceLine" id="cb10-2" data-line-number="2"><span class="im">from</span> django.contrib <span class="im">import</span> admin</div>
+<div class="sourceLine" id="cb10-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb10-4" data-line-number="4"><span class="im">from</span> djbr <span class="im">import</span> views</div>
+<div class="sourceLine" id="cb10-5" data-line-number="5"></div>
+<div class="sourceLine" id="cb10-6" data-line-number="6">urlpatterns <span class="op">=</span> [</div>
+<div class="sourceLine" id="cb10-7" data-line-number="7">    url(<span class="vs">r'^api/'</span>, include(djbr.urls<span class="st">')),</span></div>
+<div class="sourceLine" id="cb10-8" data-line-number="8"><span class="st">    url(r'</span><span class="op">^</span>admin<span class="op">/</span><span class="st">', admin.site.urls),</span></div>
+<div class="sourceLine" id="cb10-9" data-line-number="9"><span class="st">] </span></div>
+<div class="sourceLine" id="cb10-10" data-line-number="10"></div>
+<div class="sourceLine" id="cb10-11" data-line-number="11"><span class="st">urlpatterns += url(r'</span><span class="op">^</span>(?P<span class="op">&lt;</span>path<span class="op">&gt;</span>.<span class="op">*</span>)$<span class="st">', views.index),</span></div></code></pre></li>
+</ul>
+<h2 id="εκκίνηση-της-εφαρμογής">Εκκίνηση της εφαρμογής</h2>
+<ul>
+<li><p>Η εφαρμογή ξεκινά όπως όλες οι εφαρμογές Django με:</p>
+<pre class="sourceCode bash" id="cb11"><code class="sourceCode bash"><div class="sourceLine" id="cb11-1" data-line-number="1"><span class="ex">python</span> manage.py runserver</div></code></pre></li>
+</ul>
+<h2 id="έλεγχος-της-εφαρμογής">Έλεγχος της εφαρμογής</h2>
+<ul>
+<li><p>Για να ελέγξουμε την εφαρμογή θα πρέπει να μπορούμε να κάνουμε κλήσεις σε αυτήν και να πάρουμε τις απαντήσεις με μορφή JSON.</p></li>
+<li><p>Για να κάνουμε εύκολα κλήσεις οποιουδήποτε τύπου σε μία διαδικτυακή υπηρεσία χρησιμοποιούμε εργαλεία που τρέχουν στη γραμμή εντολών.</p></li>
+<li><p>Το πιο γνωστό σχετικό εργαλείο είναι το <a href="https://curl.haxx.se/">curl</a>.</p></li>
+<li><p>Μιας και εργαζόμαστε σε Python θα χρησιμοποιήσουμε το <a href="https://httpie.org/">HTTPie</a>.</p></li>
+</ul>
+<h2 id="httpie">HTTPie</h2>
+<ul>
+<li><p>Εγκαθιστούμε το HTTPie με:</p>
+<pre class="sourceCode bash" id="cb12"><code class="sourceCode bash"><div class="sourceLine" id="cb12-1" data-line-number="1"><span class="ex">pip</span> install httpie</div></code></pre></li>
+</ul>
+<h2 id="λήψη-των-βιβλίων">Λήψη των βιβλίων</h2>
+<ul>
+<li><p>Ελέγχουμε ότι μπορούμε να πάρουμε όλα τα βιβλία με:</p>
+<pre class="sourceCode bash" id="cb13"><code class="sourceCode bash"><div class="sourceLine" id="cb13-1" data-line-number="1"><span class="ex">http</span> http://127.0.0.1:8000/api/books/</div></code></pre></li>
+<li><p>Για να πάρουμε ένα βιβλίο δίνουμε:</p>
+<pre class="sourceCode bash" id="cb14"><code class="sourceCode bash"><div class="sourceLine" id="cb14-1" data-line-number="1"><span class="ex">http</span> http://127.0.0.1:8000/api/books/1/</div></code></pre></li>
+</ul>
+<h2 id="αποθήκευση-και-ενημέρωση">Αποθήκευση και ενημέρωση</h2>
+<ul>
+<li><p>Για να αποθηκεύσουμε ένα νέο βιβλίο δίνουμε: <code>bash http --json POST http://127.0.0.1:8000/api/books/ title=&quot;Ulyses&quot; pub_year=&quot;1922&quot;</code></p></li>
+<li><p>Για να ενημερώσουμε ένα βιβλίο δίνουμε:</p>
+<pre class="sourceCode bash" id="cb15"><code class="sourceCode bash"><div class="sourceLine" id="cb15-1" data-line-number="1"><span class="ex">http</span> --json PUT http://127.0.0.1:8000/api/books/1 title=<span class="st">&quot;Ulysses&quot;</span></div></code></pre></li>
+</ul>
+<h2 id="αναζήτηση-βιβλίων">Αναζήτηση βιβλίων</h2>
+<ul>
+<li><p>Για να αναζητήσουμε ένα βιβλίο με βάση τον τίτλο του, δίνουμε:</p>
+<pre class="sourceCode bash" id="cb16"><code class="sourceCode bash"><div class="sourceLine" id="cb16-1" data-line-number="1"><span class="ex">http</span> http://127.0.0.1:8000/api/books/?title=City</div></code></pre></li>
+</ul>
+<h2 id="έλεγχος-μέσω-του-browser">Έλεγχος μέσω του browser</h2>
+<ul>
+<li><p>Εκτός από τη γραμμή εντολών, ένας καλός τρόπος να ελέγξουμε το API της εφαρμογής μας είναι μέσω του browser μας.</p></li>
+<li><p>Αυτό τη δυνατότητα, που ονομάζεται browsable API, την προσφέρει το Django REST Framework.</p></li>
+</ul>
+<h2 id="χρήση-του-browsable-api">Χρήση του browsable API</h2>
+<ul>
+<li><p>Για να δούμε τα βιβλία στον browser δίνουμε:</p>
+<pre><code>http://localhost:8000/api/books/</code></pre>
+<p>Επίσης μπορούμε με χρήση της HTTP POST να προσθέσουμε βιβλίο.</p></li>
+<li><p>Για να δούμε τις λεπτομέρειες ενός βιβλίου δίνουμε:</p>
+<pre><code>http://localhost:8000/api/books/1</code></pre>
+<p>Επίσης μπορούμε με χρήση της HTTP PUT να το αλλάξουμε, ή με χρήση της HTTP DELETE να το σβήσουμε.</p></li>
+</ul>
+<h2 id="απενεργοποίηση-του-browsable-api">Απενεργοποίηση του browsable API</h2>
+<ul>
+<li><p>Αν θέλουμε να απενεργοποιήσουμε το browsable API, βάζουμε τα εξής μέσα στο αρχείο <code>settings.py</code>:</p>
+<pre class="sourceCode python" id="cb19"><code class="sourceCode python"><div class="sourceLine" id="cb19-1" data-line-number="1">REST_FRAMEWORK <span class="op">=</span> {</div>
+<div class="sourceLine" id="cb19-2" data-line-number="2">    <span class="st">'DEFAULT_RENDERER_CLASSES'</span>: (</div>
+<div class="sourceLine" id="cb19-3" data-line-number="3">        <span class="st">'rest_framework.renderers.JSONRenderer'</span>,</div>
+<div class="sourceLine" id="cb19-4" data-line-number="4">    )</div>
+<div class="sourceLine" id="cb19-5" data-line-number="5">}</div></code></pre></li>
+<li><p>Αυτό δεν σημαίνει ότι το API δεν είναι πλέον διαθέσιμο: απλώς δεν μπορείτε να το δείτε με αυτόν τον ωραίο τρόπο μέσω του browser.</p></li>
+</ul>
+<h1 id="angular-django-1">Angular &amp; Django</h1>
+<h2 id="ολοκλήρωση">Ολοκλήρωση</h2>
+<ul>
+<li><p>Για να μπορέσουμε να χρησιμοποιήσουμε την εφαρμογή του Angular με το Django, θα πρέπει να κάνουμε κάποιες τροποποιήσεις στις υπηρεσίες, αφού πλέον θα χρησιμοποιεί έναν πραγματικό εξυπηρετητή.</p></li>
+<li><p>Επιπλέον, θα πρέπει να μαζέψουμε το σύνολο των αρχείων της εφαρμογής και να τα αντιγράψουμε στον κατάλληλο κατάλογο του Django.</p></li>
+</ul>
+<h2 id="app.module.ts-1"><code>app.module.ts</code> (1)</h2>
+<ul>
+<li><p>Το <code>app.module.ts</code> πλέον δεν θα χρησιμοποιεί τα <code>InMemoryWebApiModule</code> και <code>InMemoryDataService</code>.</p></li>
+<li><p>Συνεπώς τα αφαιρούμε.</p></li>
+</ul>
+<h2 id="app.module.ts-2"><code>app.module.ts</code> (2)</h2>
+<pre class="sourceCode javascript" id="cb20"><code class="sourceCode javascript"><div class="sourceLine" id="cb20-1" data-line-number="1"><span class="im">import</span> <span class="op">{</span> NgModule <span class="op">}</span> <span class="im">from</span> <span class="st">'@angular/core'</span><span class="op">;</span></div>
+<div class="sourceLine" id="cb20-2" data-line-number="2"><span class="im">import</span> <span class="op">{</span> BrowserModule <span class="op">}</span> <span class="im">from</span> <span class="st">'@angular/platform-browser'</span><span class="op">;</span></div>
+<div class="sourceLine" id="cb20-3" data-line-number="3"><span class="im">import</span> <span class="op">{</span> FormsModule <span class="op">}</span> <span class="im">from</span> <span class="st">'@angular/forms'</span><span class="op">;</span></div>
+<div class="sourceLine" id="cb20-4" data-line-number="4"><span class="im">import</span> <span class="op">{</span> HttpModule <span class="op">}</span> <span class="im">from</span> <span class="st">'@angular/http'</span><span class="op">;</span></div>
+<div class="sourceLine" id="cb20-5" data-line-number="5"></div>
+<div class="sourceLine" id="cb20-6" data-line-number="6"><span class="im">import</span> <span class="op">{</span> AppComponent <span class="op">}</span> <span class="im">from</span> <span class="st">'./app.component'</span><span class="op">;</span></div>
+<div class="sourceLine" id="cb20-7" data-line-number="7"><span class="im">import</span> <span class="op">{</span> DashboardComponent <span class="op">}</span> <span class="im">from</span> <span class="st">'./dashboard.component'</span><span class="op">;</span></div>
+<div class="sourceLine" id="cb20-8" data-line-number="8"><span class="im">import</span> <span class="op">{</span> BookDetailComponent <span class="op">}</span> <span class="im">from</span> <span class="st">'./book-detail.component'</span><span class="op">;</span></div>
+<div class="sourceLine" id="cb20-9" data-line-number="9"><span class="im">import</span> <span class="op">{</span> BooksComponent <span class="op">}</span> <span class="im">from</span> <span class="st">'./books.component'</span><span class="op">;</span></div>
+<div class="sourceLine" id="cb20-10" data-line-number="10"><span class="im">import</span> <span class="op">{</span> BookService <span class="op">}</span> <span class="im">from</span> <span class="st">'./book.service'</span><span class="op">;</span></div>
+<div class="sourceLine" id="cb20-11" data-line-number="11"></div>
+<div class="sourceLine" id="cb20-12" data-line-number="12"><span class="im">import</span> <span class="op">{</span> BookSearchComponent <span class="op">}</span> <span class="im">from</span> <span class="st">'./book-search.component'</span><span class="op">;</span></div>
+<div class="sourceLine" id="cb20-13" data-line-number="13"></div>
+<div class="sourceLine" id="cb20-14" data-line-number="14"><span class="im">import</span>  <span class="op">{</span> AppRoutingModule <span class="op">}</span> <span class="im">from</span> <span class="st">'./app-routing.module'</span><span class="op">;</span></div>
+<div class="sourceLine" id="cb20-15" data-line-number="15"></div>
+<div class="sourceLine" id="cb20-16" data-line-number="16">@<span class="at">NgModule</span>(<span class="op">{</span></div>
+<div class="sourceLine" id="cb20-17" data-line-number="17">  <span class="dt">imports</span><span class="op">:</span> [</div>
+<div class="sourceLine" id="cb20-18" data-line-number="18">    BrowserModule<span class="op">,</span></div>
+<div class="sourceLine" id="cb20-19" data-line-number="19">    FormsModule<span class="op">,</span></div>
+<div class="sourceLine" id="cb20-20" data-line-number="20">    HttpModule<span class="op">,</span></div>
+<div class="sourceLine" id="cb20-21" data-line-number="21">    AppRoutingModule</div>
+<div class="sourceLine" id="cb20-22" data-line-number="22">  ]<span class="op">,</span></div>
+<div class="sourceLine" id="cb20-23" data-line-number="23">  <span class="dt">declarations</span><span class="op">:</span> [</div>
+<div class="sourceLine" id="cb20-24" data-line-number="24">    AppComponent<span class="op">,</span></div>
+<div class="sourceLine" id="cb20-25" data-line-number="25">    DashboardComponent<span class="op">,</span></div>
+<div class="sourceLine" id="cb20-26" data-line-number="26">    BookDetailComponent<span class="op">,</span></div>
+<div class="sourceLine" id="cb20-27" data-line-number="27">    BooksComponent<span class="op">,</span></div>
+<div class="sourceLine" id="cb20-28" data-line-number="28">    BookSearchComponent</div>
+<div class="sourceLine" id="cb20-29" data-line-number="29">  ]<span class="op">,</span></div>
+<div class="sourceLine" id="cb20-30" data-line-number="30">  <span class="dt">providers</span><span class="op">:</span> [ BookService ]<span class="op">,</span></div>
+<div class="sourceLine" id="cb20-31" data-line-number="31">  <span class="dt">bootstrap</span><span class="op">:</span> [ AppComponent ]</div>
+<div class="sourceLine" id="cb20-32" data-line-number="32"><span class="op">}</span>)</div>
+<div class="sourceLine" id="cb20-33" data-line-number="33"><span class="im">export</span> <span class="kw">class</span> AppModule <span class="op">{</span> <span class="op">}</span></div></code></pre>
+<h2 id="συμμάζεμα-αρχείων">Συμμάζεμα αρχείων</h2>
+<ul>
+<li><p>Για να μαζέψουμε όλα τα αρχεία της Angular εφαρμογής, δίνουμε, στον κατάλογο <code>client</code>:</p>
+<pre class="sourceCode bash" id="cb21"><code class="sourceCode bash"><div class="sourceLine" id="cb21-1" data-line-number="1"><span class="ex">ng</span> build</div></code></pre></li>
+<li><p>Τα αρχεία θα συμμαζευτούν και θα αποθηκευτούν στον κατάλογο <code>client/dist</code>.</p></li>
+</ul>
+<h2 id="προσαρμογή-settings.py">Προσαρμογή <code>settings.py</code></h2>
+<ul>
+<li><p>Στο αρχείο <code>settings.py</code> προσθέτουμε κάτω από τη γραμμή:</p>
+<pre class="sourceCode python" id="cb22"><code class="sourceCode python"><div class="sourceLine" id="cb22-1" data-line-number="1">STATIC_URL <span class="op">=</span> <span class="st">'/static/'</span></div></code></pre>
+<p>τις γραμμές:</p>
+<pre class="sourceCode python" id="cb23"><code class="sourceCode python"><div class="sourceLine" id="cb23-1" data-line-number="1">STATIC_URL <span class="op">=</span> <span class="st">'/static/'</span></div>
+<div class="sourceLine" id="cb23-2" data-line-number="2"></div>
+<div class="sourceLine" id="cb23-3" data-line-number="3"><span class="im">from</span> pathlib <span class="im">import</span> Path</div>
+<div class="sourceLine" id="cb23-4" data-line-number="4">STATICFILES_DIRS <span class="op">=</span> (</div>
+<div class="sourceLine" id="cb23-5" data-line-number="5">    os.path.join(Path(BASE_DIR).parents[<span class="dv">0</span>], <span class="st">'client/dist'</span>),</div>
+<div class="sourceLine" id="cb23-6" data-line-number="6">)</div>
+<div class="sourceLine" id="cb23-7" data-line-number="7"></div>
+<div class="sourceLine" id="cb23-8" data-line-number="8">STATIC_ROOT <span class="op">=</span> os.path.join(BASE_DIR, <span class="st">'dist'</span>)</div></code></pre></li>
+</ul>
+<div class="notes">
+<p>Με τις γραμμές:</p>
+<pre class="sourceCode python" id="cb24"><code class="sourceCode python"><div class="sourceLine" id="cb24-1" data-line-number="1"><span class="im">from</span> pathlib <span class="im">import</span> Path</div>
+<div class="sourceLine" id="cb24-2" data-line-number="2">STATICFILES_DIRS <span class="op">=</span> (</div>
+<div class="sourceLine" id="cb24-3" data-line-number="3">    os.path.join(Path(BASE_DIR).parents[<span class="dv">0</span>], os.path.join(<span class="st">'client'</span>, <span class="st">'dist'</span>)),</div>
+<div class="sourceLine" id="cb24-4" data-line-number="4">)</div></code></pre>
+<p>ενημερώνουμε το Django ώστε να αναζητά τα στατικά αρχεία και στον κατάλογο <code>../client/dist</code>, όπου έχουμε συγκεντρώσει την εφαρμογή Angular.</p>
+<p>Η γραμμή:</p>
+<pre class="sourceCode python" id="cb25"><code class="sourceCode python"><div class="sourceLine" id="cb25-1" data-line-number="1">STATIC_ROOT <span class="op">=</span> os.path.join(BASE_DIR, <span class="st">'dist'</span>)</div></code></pre>
+<p>δεν χρειάζεται αυτή τη στιγμή· θα χρησιμεύσει όταν θα μαζέψουμε όλα τα στατικά αρχεία και θα θέλουμε να τα μεταφέρουμε στον εξυπηρετητή μας.</p>
+</div>
+<h2 id="προσαρμογή-project_siteurls.py">Προσαρμογή <code>project_site/urls.py</code></h2>
+<ul>
+<li><p>Στη συνέχεια ορίζουμε στο <code>project_site/urls.py</code> ότι αν δεν δώσει τίποτε ο χρήστης, το Django θα επιστρέψει την κεντρική σελίδα της εφαρμογής:</p>
+<pre class="sourceCode python" id="cb26"><code class="sourceCode python"><div class="sourceLine" id="cb26-1" data-line-number="1"><span class="im">from</span> django.conf.urls <span class="im">import</span> url, include</div>
+<div class="sourceLine" id="cb26-2" data-line-number="2"><span class="im">from</span> django.contrib <span class="im">import</span> admin</div>
+<div class="sourceLine" id="cb26-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb26-4" data-line-number="4"><span class="im">from</span> djbr <span class="im">import</span> views</div>
+<div class="sourceLine" id="cb26-5" data-line-number="5"></div>
+<div class="sourceLine" id="cb26-6" data-line-number="6">urlpatterns <span class="op">=</span> [</div>
+<div class="sourceLine" id="cb26-7" data-line-number="7">    url(<span class="vs">r'^api/'</span>, include(<span class="st">'djbr.urls'</span>)),</div>
+<div class="sourceLine" id="cb26-8" data-line-number="8">    url(<span class="vs">r'^admin/'</span>, admin.site.urls),</div>
+<div class="sourceLine" id="cb26-9" data-line-number="9">] </div>
+<div class="sourceLine" id="cb26-10" data-line-number="10"></div>
+<div class="sourceLine" id="cb26-11" data-line-number="11">urlpatterns <span class="op">+=</span> url(<span class="vs">r'^(?P&lt;path&gt;.*)$'</span>, views.index),</div></code></pre></li>
+</ul>
+<h2 id="έλεγχος-εφαρμογής">Έλεγχος εφαρμογής</h2>
+<ul>
+<li><p>Η εφαρμογή μας είναι προσβάσιμη μέσω του URL: <code>http://127.0.0.1:8000/</code></p></li>
+<li><p>Ταυτόχρονα, το API είναι προσβάσιμο μέσω των URLs που είδαμε προηγουμένως.</p></li>
+</ul>
+<h1 id="εγκατάσταση-σε-nginx">Εγκατάσταση σε nginx</h1>
+<h2 id="εγκατάσταση-παραγωγής">Εγκατάσταση παραγωγής</h2>
+<ul>
+<li><p>Όταν βγει η υπηρεσία μας στην παραγωγή, το Django θα είναι αρμόδιο <em>μόνο</em> για την εξεπεργασία των αιτήσεων του REST API (<code>api/books</code>).</p></li>
+<li><p>Το σύνολο των σελίδων που εμφανίζει το Angular θα δίνονται από τον nginx.</p></li>
+</ul>
+<h2 id="προαπαιτούμενα">Προαπαιτούμενα</h2>
+<ul>
+<li><p>Θα πρέπει να εγκαταστήσουμε το Django REST framework στον εξυπηρετητή που φιλοξενεί τον nginx.</p></li>
+<li><p>Αν θεωρήσουμε ότι η εφαρμογή είναι αποθηκευμένη στον κατάλογο <code>/home/user/project_site</code>, ενεργοποιούμε πρώτα το virtualenv που έχουμε δημιουργήσει:</p>
+<pre><code>source /home/user/project_site/env/bin/activate</code></pre></li>
+<li><p>Στη συνέχεια προχωράμε στην εγκατάσταση:</p>
+<pre><code>pip install djangorestframework</code></pre></li>
+</ul>
+<h2 id="κατάλογος-εφαρμογής">Κατάλογος εφαρμογής</h2>
+<ul>
+<li><p>Θα κατασκευάσουμε έναν κατάλογο στον οποίο θα αποθηκεύσουμε τα στατικά αρχεία τςη εφαρμογής μας.</p></li>
+<li><p>Δίνουμε:</p>
+<pre class="sourceCode bash" id="cb29"><code class="sourceCode bash"><div class="sourceLine" id="cb29-1" data-line-number="1"><span class="fu">sudo</span> mkdir -p /srv/books</div></code></pre></li>
+</ul>
+<h2 id="μεταφορά-των-αρχείων-της-εφαρμογής">Μεταφορά των αρχείων της εφαρμογής</h2>
+<ul>
+<li><p>Για να μεταφέρουμε όλα τα αρχεία που θα χρησιμοποιήσουμε στον εξυπηρετητή, μπορούμε να χρησιμοποιήσουμε την εντολή <code>scp</code>, ή ακόμα καλύτερα την εντολή <code>rsync</code>:</p>
+<pre class="sourceCode bash" id="cb30"><code class="sourceCode bash"><div class="sourceLine" id="cb30-1" data-line-number="1"><span class="fu">rsync</span> -avz server/ icc:project_site/</div></code></pre></li>
+<li><p>Στο παραπάνω υποθέτουμε ότι <code>icc</code> είναι ο εξυπηρετητής μας, και ότι εκεί αποθηκεύουμε τα αρχεία μας κάτω από τον κατάλογο <code>project_site</code> του προσωπικού μας καταλόγου.</p></li>
+</ul>
+<h2 id="αρχεία-καταγραφής-1">Αρχεία καταγραφής (1)</h2>
+<ul>
+<li><p>Στον κατάλογο της εφαρμογής μας δημιουργούμε έναν κατάλογο <code>log</code>:</p>
+<pre><code>mkdir log</code></pre></li>
+<li><p>Αλλάζουμε το αρχείο <code>/etc/systemd/system/gunicorn.service</code> ώστε να γίνει ως εξής:</p>
+<pre><code>[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=user
+Group=www-data
+WorkingDirectory=/home/user/project_site
+ExecStart=/home/user/project_site/env/bin/gunicorn --workers 3 --bind unix:/home/user/project_site/p
+roject_site.sock --log-config /home/user/project_site/logging.conf project_site.wsgi:application
+
+[Install]
+WantedBy=multi-user.target</code></pre></li>
+</ul>
+<h2 id="αρχεία-καταγραφής-2">Αρχεία καταγραφής (2)</h2>
+<ul>
+<li><p>Στον εξυπηρετητή μας, στον κατάλογο <code>project_site</code> δημιουργούμε το ακόλουθο αρχείο <code>logging.conf</code>:</p>
+<pre><code>[loggers]
+keys=root, gunicorn.error, gunicorn.access
+
+[handlers]
+keys=console, error_file, access_file
+
+[formatters]
+keys=generic, access
+
+[logger_root]
+level=INFO
+handlers=console
+
+[logger_gunicorn.error]
+level=INFO
+handlers=error_file
+propagate=1
+qualname=gunicorn.error
+
+[logger_gunicorn.access]
+level=INFO
+handlers=access_file
+propagate=0
+qualname=gunicorn.access
+
+[handler_console]
+class=StreamHandler
+formatter=generic
+args=(sys.stdout, )
+
+[handler_error_file]
+class=logging.FileHandler
+formatter=generic
+args=('/home/user/project_site/log/gunicorn.error.log',)
+
+[handler_access_file]
+class=logging.FileHandler
+formatter=access
+args=('/home/user/project_site/log/gunicorn.access.log',)
+
+[formatter_generic]
+format=%(asctime)s [%(process)d] [%(levelname)s] %(message)s
+datefmt=%Y-%m-%d %H:%M:%S
+class=logging.Formatter
+
+[formatter_access]
+format=%(message)s
+class=logging.Formatter</code></pre></li>
+</ul>
+<div class="notes">
+<p>Προσέξτε ότι στις γραμμές:</p>
+<pre><code>args=('/home/user/project_site/log/gunicorn.error.log',)
+args=('/home/user/project_site/log/gunicorn.access.log',)</code></pre>
+<p>ορίζουμε την τοποθεσία όπου θα αποθηκευτούν τα logs: * το αρχείο λαθών θα είναι το <code>gunicorn.error.log</code> * το αρχείο πρόσβασης θα είναι το <code>gunicorn.access.log</code> Και τα δύο αρχεία θα βρίσκονται στον κατάλογο <code>log</code> που φτιάξαμε προηγουμένως.</p>
+</div>
+<h2 id="ρυθμίσεις-nginx-1">Ρυθμίσεις nginx (1)</h2>
+<ul>
+<li><p>Στο αρχείο ρυθμίσεων του nginx, σβήνουμε ό,τι γραμμές ξεκινούν με <code>location</code> και στη θέση τους γράφουμε:</p>
+<pre><code>location = /favicon.ico { access_log off; log_not_found off; }
+location /static/ {
+        root /srv/books;
+}
+
+location /api/books {
+        include proxy_params;
+        proxy_pass http://unix:/home/user/project_site/project_site.sock;
+}</code></pre></li>
+</ul>
+<h2 id="ρυθμίσεις-nginx-2">Ρυθμίσεις nginx (2)</h2>
+<ul>
+<li><p>Επίσης στο ίδιο αρχείο, σβήνουμε την παρακάτω γραμμή που είχαμε γράψει παλαιότερα:</p>
+<pre><code>rewrite ^/$ /djbr;</code></pre></li>
+<li><p>Προσθέτουμε την παρακάτω γραμμή:</p>
+<pre><code>try_files $uri $uri /index.html;</code></pre></li>
+<li><p>Για να ελέγξουμε ότι οι ρυθμίσεις είναι ΟΚ, δίνουμε:</p>
+<pre class="sourceCode bash" id="cb38"><code class="sourceCode bash"><div class="sourceLine" id="cb38-1" data-line-number="1"><span class="fu">sudo</span> nginx -t</div></code></pre></li>
+</ul>
+<h2 id="αντιγραφή-στατικών-αρχείων.">Αντιγραφή στατικών αρχείων.</h2>
+<ul>
+<li><p>Αντιγράφουμε τα περιεχόμενα του καταλόγου <code>dist</code> στον κατάλογο <code>/srv/books</code>:</p>
+<pre><code>sudo cp -r dist /srv/books</code></pre></li>
+</ul>
+<h2 id="προσαρμογή-ρυθμίσεων-django">Προσαρμογή ρυθμίσεων Django</h2>
+<ul>
+<li><p>Στο αρχείο <code>site-config.py</code>, στο οποίο δίνουμε τις ρυθμίσεις του Django που θέλουμε να είναι μυστικές, προσθέτουμε τη γραμμή:</p>
+<pre class="sourceCode python" id="cb40"><code class="sourceCode python"><div class="sourceLine" id="cb40-1" data-line-number="1">ALLOWED_HOSTS <span class="op">=</span> [<span class="st">'snf-779124.vm.okeanos.grnet.gr'</span>, <span class="st">'localhost'</span>, <span class="st">'127.0.0.1'</span>, <span class="st">'[::1]'</span>]</div></code></pre></li>
+<li><p>Στην παραπάνω γραμμή, στη θέση του <code>snf-779124.vm.okeanos.grnet.gr</code> βάζετε το όνομα του δικού σας εξυπηρετητή.</p></li>
+<li><p>Στο κεντρικό αρχείο ρυθμίσεων του Django αλλάζετε τη γραμμή:</p>
+<pre class="sourceCode python" id="cb41"><code class="sourceCode python"><div class="sourceLine" id="cb41-1" data-line-number="1">STATIC_ROOT <span class="op">=</span> <span class="st">'/static/'</span></div></code></pre>
+<p>σε:</p>
+<pre class="sourceCode python" id="cb42"><code class="sourceCode python"><div class="sourceLine" id="cb42-1" data-line-number="1">STATIC_ROOT <span class="op">=</span> <span class="st">'/'</span></div></code></pre></li>
+</ul>
+<h2 id="εκκίνηση">Εκκίνηση</h2>
+<ul>
+<li><p>Για να ξαναξεκινήσουμε τον nginx δίνουμε:</p>
+<pre class="sourceCode bash" id="cb43"><code class="sourceCode bash"><div class="sourceLine" id="cb43-1" data-line-number="1"><span class="fu">sudo</span> servicectl restart nginx</div></code></pre>
+<p>ή</p>
+<pre class="sourceCode bash" id="cb44"><code class="sourceCode bash"><div class="sourceLine" id="cb44-1" data-line-number="1"><span class="fu">sudo</span> servicectl reload nginx</div></code></pre>
+<p>αν δεν θέλουμε να διακοπούν οι υπάρχουσες συνδέσεις.</p></li>
+<li><p>Για να ξακαξεκινήσουμε τον gunicorn δίνουμε:</p>
+<pre><code>sudo servicectl restart gunicorn</code></pre></li>
+</ul>
+<h2 id="παρακολούθηση-της-εφαρμογής-μας">Παρακολούθηση της εφαρμογής μας</h2>
+<ul>
+<li><p>Αν όλα έχουν πάει καλά, η εφαρμογή μας τώρα είναι διαθέσιμη στο διαδίκτυο.</p></li>
+<li>Αν θέλουμε να παρακολουθήσουμε τη χρήση της, τα αρχεία καταγραφής του nginx βρίσκονται στον κατάλογο <code>/var/log/nginx</code>:
+<ul>
+<li><code>access.log</code>: προσβάσεις</li>
+<li><code>error.log</code>: λάθη</li>
+</ul></li>
+<li><p>Τα αρχεία καταγραφής του gunicorn βρίσκονται στις θέσεις που ορίσαμε παραπάνω.</p></li>
+<li><p>Αν δούμε το αρχείο προσβάσεων του gunicorn (<code>/home/user/project_site/gunicorn.access.log</code>), θα διαπιστώσουμε ότι φτάνουν μόνο αιτήσεις για το API, και τίποτε άλλο, δηλαδή αυτό ακριβώς που θέλαμε.</p></li>
+</ul>
+<h2 id="ενημερώσεις-της-εφαρμογής">Ενημερώσεις της εφαρμογής</h2>
+<ul>
+<li><p>Από εδώ και μετά κάθε φορά που θέλουμε να ενημερώσουμε την εφαρμογή μας, τα πράγματα θα είναι πιο απλά.</p></li>
+<li><p>Αν θέλουμε να ενημερώσουμε μόνο το Angular, αρκεί να αντιγράφουμε τα αρχεία που προκύπτουν από το <code>ng build</code> στον κατάλογο <code>/srv/books</code>.</p></li>
+<li><p>Αν θέλουμε να ενημερώσουμε μόνο το Django, αρκεί να αντιγράψουμε τα περιεχόμενα του <code>server/project_site</code> του υπολογιστή μας στο <code>/home/user/project_site</code> στον εξυπηρετητή.</p></li>
+<li><p>Στην περίπτωση αυτή, θα πρέπει να προσέξουμε στο <code>settings.py</code> να είναι το <code>STATIC_URL = '/'</code>.</p></li>
+</ul>
+</body>
+</html>
