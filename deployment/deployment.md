@@ -73,9 +73,9 @@
 
 * Αν δεν εμφανιστεί τέτοιο μήνυμα, αλλά ένα μήνυμα που μας ενημερώνει
   ότι η διαδικασία καθυστερεί για κάποιο λόγο:
-      * δίνουμε Reload, και περιμένουμε να ολοκληρωθεί η διαδικασία.
-      * όταν ολοκληρωθεί, πατάμε πάνω στο εικονίδιο της μηχανής, όπου
-        θα δούμε πάλι τον κωδικό μας.
+    * δίνουμε Reload, και περιμένουμε να ολοκληρωθεί η διαδικασία.
+    * όταν ολοκληρωθεί, πατάμε πάνω στο εικονίδιο της μηχανής, όπου
+      θα δούμε πάλι τον κωδικό μας.
 
 * Τότε, θα εμφανιστεί μήνυμα με το όνομα χρήστη και τον τρόπο
   σύνδεσης, όπως:
@@ -89,7 +89,9 @@
 * Πρέπει να εγκαταστήσουμε στην ιδεατή μηχανή μας τις νεώτερες
   εκδόσεις των πακέτων του λειτουργικού.
 
-* Μπαίνουμε στη μηχανή μας με (η δική σας μηχανή θα έχει άλλα στοιχεία):
+* Μπαίνουμε στη μηχανή μας με (η δική σας μηχανή θα έχει άλλα
+  στοιχεία):
+  
     ```bash
     ssh user@snf-779124.vm.okeanos.grnet.gr
     ```
@@ -97,6 +99,7 @@
 ## Ενημέρωση ιδεατής μηχανής (2)
 
 * Στη συνέχεια δίνουμε:
+
     ```bash
     sudo apt-get update
     sudo apt-get upgrade
@@ -108,18 +111,19 @@
   σύστημα.
   
 * Αν μπαίνοντας στο σύστημα δούμε μήνυμα:
-    ```
-    *** System restart required ***
-    ```
-    τότε δίνουμε:
-    ```bash
-    sudo reboot now
-    ```
+  ```
+  *** System restart required ***
+  ```
+  τότε δίνουμε:
+  ```bash
+  sudo reboot now
+  ```
     
 ## Ενημέρωση ιδεατής μηχανής (3)
 
 * Αν παίρνουμε πάλι μηνύματα που μας λένε ότι υπάρχουν ενημερώσεις,
   ακόμα και αμέσως μετά τα παραπάνω, τότε δίνουμε:
+  
     ```bash
     sudo apt-get dist-upgrade
     ```
@@ -332,6 +336,7 @@ openssl rsa -text -noout -in ~/.ssh/id_rsa_icc
     
 * Βγαίνουμε από την ιδεατή μηχανή μας και ελέγχουμε ότι μπορούμε να
   συνδεθούμε χωρίς να δώσουμε κωδικό:
+  
     ```bash
     ssh -i /Users/panos/.ssh/id_rsa_icc user@snf-779124.vm.okeanos.grnet.gr
     ```
@@ -368,13 +373,13 @@ openssl rsa -text -noout -in ~/.ssh/id_rsa_icc
     sudo visudo
     ```
 * Στη συνέχεια αλλάζουμε τη γραμμή:
-    ```
-    %sudo   ALL=(ALL:ALL) ALL
-    ```
+  ```
+  %sudo   ALL=(ALL:ALL) ALL
+  ```
   σε
-    ```
-    %sudo   ALL=(ALL:ALL) NOPASSWD:ALL
-    ```
+  ```
+  %sudo   ALL=(ALL:ALL) NOPASSWD:ALL
+  ```
 
 # Ενημέρωση συστήματος
 
@@ -422,6 +427,7 @@ sudo shutdown -r now
 ## Εγκατάσταση πακέτου MySQL
 
 * Για την εγκατάσταση του πακέτου MySQL στο Ubuntu δίνουμε:
+
     ```bash
     sudo apt-get install mysql-server
     ```
@@ -432,6 +438,7 @@ sudo shutdown -r now
   
 * Επίσης θα χρειαστεί να εγκαταστήσουμε το πακέτο
   `libmysqlclient-dev`, οπότε δίνουμε:
+  
     ```bash
     sudo apt-get install libmysqlclient-dev
     ```
@@ -443,6 +450,7 @@ sudo shutdown -r now
   για παραγωγική χρήση.
   
 * Για να τη θωρακίσουμε δίνουμε:
+
     ```bash
     mysql_secure_installation
     ```
@@ -458,85 +466,85 @@ sudo shutdown -r now
 ## Έλεγχος λειτουργίας MySQL
 
 * Για να ελέγξουμε ότι η MySQL λειτουργεί, δίνουμε:
-    ```bash
-    systemctl status mysql.service
-    ```
+  ```bash
+  systemctl status mysql.service
+  ```
 * Θα πρέπει να εμφανιστεί κάτι της μορφής:
-    ```bash
-    ● mysql.service - MySQL Community Server
-       Loaded: loaded (/lib/systemd/system/mysql.service; enabled; vendor preset: enabled)
-       Active: active (running) since Sat 2017-10-21 19:43:45 EEST; 2min 3s ago
-    Main PID: 16514 (mysqld)
-      CGroup: /system.slice/mysql.service
-             └─16514 /usr/sbin/mysqld
+  ```bash
+  ● mysql.service - MySQL Community Server
+     Loaded: loaded (/lib/systemd/system/mysql.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sat 2017-10-21 19:43:45 EEST; 2min 3s ago
+  Main PID: 16514 (mysqld)
+    CGroup: /system.slice/mysql.service
+           └─16514 /usr/sbin/mysqld
 
-    Oct 21 19:43:43 snf-779124 systemd[1]: Starting MySQL Community Server...
-    Oct 21 19:43:45 snf-779124 systemd[1]: Started MySQL Community Server.
-    ```
+  Oct 21 19:43:43 snf-779124 systemd[1]: Starting MySQL Community Server...
+  Oct 21 19:43:45 snf-779124 systemd[1]: Started MySQL Community Server.
+  ```
     
 ## Σύνδεση με τη MySQL
 
 * Για να ελέγξουμε ότι μπορούμε να συνδεθούμε στη MySQL ως
   διαχειριστές, δίνουμε:
-    ```bash
-    mysqladmin -p -u root version
-    ```
+  ```bash
+  mysqladmin -p -u root version
+  ```
 
 * Οπότε θα πρέπει να εμφανιστεί κάτι της μορφής:
-    ```bash
-    mysqladmin  Ver 8.42 Distrib 5.7.19, for Linux on x86_64
-    Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+  ```bash
+  mysqladmin  Ver 8.42 Distrib 5.7.19, for Linux on x86_64
+  Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
 
-    Oracle is a registered trademark of Oracle Corporation and/or its
-    affiliates. Other names may be trademarks of their respective
-    owners.
+  Oracle is a registered trademark of Oracle Corporation and/or its
+  affiliates. Other names may be trademarks of their respective
+  owners.
 
-    Server version		5.7.19-0ubuntu0.16.04.1
-    Protocol version	10
-    Connection		Localhost via UNIX socket
-    UNIX socket		/var/run/mysqld/mysqld.sock
-    Uptime:			2 min 15 sec
+  Server version		5.7.19-0ubuntu0.16.04.1
+  Protocol version	10
+  Connection		Localhost via UNIX socket
+  UNIX socket		/var/run/mysqld/mysqld.sock
+  Uptime:			2 min 15 sec
 
-    Threads: 1  Questions: 13  Slow queries: 0  Opens: 115  Flush tables: 1  Open tables: 34  Queries per second avg: 0
-    .096
-    ```
+  Threads: 1  Questions: 13  Slow queries: 0  Opens: 115  Flush tables: 1  Open tables: 34  Queries per second avg: 0
+  .096
+  ```
 
 ## Παύση, επανεκκίνηση MySQL
 
 * Αν θέλουμε να σταματήσουμε τη MySQL δίνουμε:
-    ```bash
-    sudo systemctl stop mysql
-    ```
+  ```bash
+  sudo systemctl stop mysql
+  ```
 
 * Mπορούμε να επιβεβαιώσουμε ότι σταμάτησε δίνοντας:
-    ```bash
-    sudo systemctl status mysql
-    ```
+  ```bash
+  sudo systemctl status mysql
+  ```
 
 ## Εκκίνηση, επανεκκίνηση MySQL
 
 * Αν θέλουμε να ξεκινήσουμε τη MySQL δίνουμε:
-    ```bash
-    sudo systemctl start mysql
-    ```
-    μπορούμε να επιβεβαιώσουμε ότι ξεκίνησε δίνοντας:
-    ```bash
-    sudo systemctl status mysql
-    ```
+  ```bash
+  sudo systemctl start mysql
+  ```
+  μπορούμε να επιβεβαιώσουμε ότι ξεκίνησε δίνοντας:
+  ```bash
+  sudo systemctl status mysql
+  ```
     
 * Αν θέλουμε να σταματήσουμε και να ξεκινήσουμε τη MySQL δίνουμε:
-    ```bash
-    sudo systemctl restart mysql
-    ```
+  ```bash
+  sudo systemctl restart mysql
+  ```
 
 # Εγκατάσταση nginx
 
 ## Εγκατάσταση nginx
 
 * Για να εγκαταστήσουμε τον nginx δίνουμε:
-    ```bash
-    sudo apt-get install nginx
-    ```
+  ```bash
+  sudo apt-get install nginx
+  ```
 
 * Όταν ολοκληρωθεί η εκτέλεση αυτής της εντολής θα έχει εγκατασταθεί ο
   nginx. Πριν προχωρήσουμε όμως, θα πρέπει να ρυθμίσουμε και να
@@ -558,18 +566,18 @@ sudo shutdown -r now
 ## Ρύθμιση τοίχους προστασίας (1)
 
 * Για να δούμε ποιες εφαρμογές γνωρίζει το `ufw`, δίνουμε:
-    ```bash
-    sudo ufw app list
-    ```
+  ```bash
+  sudo ufw app list
+  ```
     
 * Τότε θα πρέπει να δούμε:
-    ```
-    Available applications:
-    Nginx Full
-    Nginx HTTP
-    Nginx HTTPS
-    OpenSSH
-    ```
+  ```
+  Available applications:
+  Nginx Full
+  Nginx HTTP
+  Nginx HTTPS
+  OpenSSH
+  ```
     
 * Όπως βλέπουμε, υπάρχουν τα εξής προφίλ:
     * Nginx Full: επιτρέπει την πρόσβαση από τη θύρα 80 (μη
@@ -582,103 +590,103 @@ sudo shutdown -r now
 ## Ρύθμιση τοίχους προστασίας (2)
 
 * Για να συνεχίσουμε να έχουμε απομακρυσμένη πρόσβαση, δίνουμε:
-    ```bash
-    sudo ufw allow OpenSSH
-    ```
+  ```bash
+  sudo ufw allow OpenSSH
+  ```
     
 * Στη συνέχεια, για να επιτρέψουμε την πρόσβαση από τη θύρα 80,
   δίνουμε:
-    ```bash
-    sudo ufw allow 'Nginx HTTP'
-    ```
+  ```bash
+  sudo ufw allow 'Nginx HTTP'
+  ```
 
 ## Ενεργοποίηση τοίχους προστασίας
 
 * Για να ενεργοποιήσουμε το τοίχος προστασίας στη διανομή Ubuntu
   δίνουμε:
-    ```bash
-    sudo ufw enable
-    ```
+  ```bash
+  sudo ufw enable
+  ```
 
 * Για να δούμε την κατάσταση του τοίχους προστασίας δίνουμε:
-    ```bash
-    sudo ufw status verbose
-    ```
+  ```bash
+  sudo ufw status verbose
+  ```
 
 ## Έλεγχος τοίχους προστασίας
 
 * Τώρα αν δώσουμε:
-    ```bash
-    sudo ufw status
-    ```
+  ```bash
+  sudo ufw status
+  ```
     
 * Θα δούμε:
-    ```
-    To                         Action      From
-    --                         ------      ----
-    Nginx HTTP                 ALLOW       Anywhere
-    OpenSSH                    ALLOW       Anywhere
-    Nginx HTTP (v6)            ALLOW       Anywhere (v6)
-    OpenSSH (v6)               ALLOW       Anywhere (v6)
-    ```
+  ```
+  To                         Action      From
+  --                         ------      ----
+  Nginx HTTP                 ALLOW       Anywhere
+  OpenSSH                    ALLOW       Anywhere
+  Nginx HTTP (v6)            ALLOW       Anywhere (v6)
+  OpenSSH (v6)               ALLOW       Anywhere (v6)
+  ```
     
 ## Έλεγχος λειτουργίας nginx
 
 * Για να ελέγξουμε ότι ο nginx δουλεύει, δίνουμε:
-    ```bash
-    systemctl status nginx
-    ```
+  ```bash
+  systemctl status nginx
+  ```
     
 * Τότε θα πρέπει να δούμε κάτι όπως το παρακάτω:
-    ```
-    ● nginx.service - A high performance web server and a reverse proxy server
-       Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
-       Active: active (running) since Sat 2017-10-21 21:29:38 EEST; 2min 25s ago
-     Main PID: 2329 (nginx)
-       CGroup: /system.slice/nginx.service
-               ├─2329 nginx: master process /usr/sbin/nginx -g daemon on; master_process on
-               ├─2330 nginx: worker process
-               ├─2331 nginx: worker process
-               ├─2332 nginx: worker process
-               └─2333 nginx: worker process
-    ```
+  ```
+  ● nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sat 2017-10-21 21:29:38 EEST; 2min 25s ago
+   Main PID: 2329 (nginx)
+     CGroup: /system.slice/nginx.service
+             ├─2329 nginx: master process /usr/sbin/nginx -g daemon on; master_process on
+             ├─2330 nginx: worker process
+             ├─2331 nginx: worker process
+             ├─2332 nginx: worker process
+             └─2333 nginx: worker process
+  ```
 
 ## Χειρισμός nginx
 
 * Χειριζόμαστε τον nginx όπως και τη MySQL.
 
 * Για να σταματήσουμε τον nginx δίνουμε:
-    ```bash
-    sudo systemctl stop nginx
+  ```bash
+  sudo systemctl stop nginx
     ```
     
 * Για να ξεκινήσουμε τον nginx δίνουμε:
-    ```bash
-    sudo systemctl start nginx
-    ```
+  ```bash
+  sudo systemctl start nginx
+  ```
     
 * Για να σταματήσουμε και να ξεκινήσουμε τον nginx δίνουμε:
-    ```bash
-    sudo systemctl restart nginx
-    ```
+  ```bash
+  sudo systemctl restart nginx
+  ```
     
 * Αν αλλάξουμε τις ρυθμίσεις του nginx και θέλουμε να τις εφαρμόσουμε
   χωρίς να διακόψουμε τις υπάρχουσες συνδέσεις, δίνουμε:
-    ```bash
-    sudo systemctl reload nginx
-    ```
+  ```bash
+  sudo systemctl reload nginx
+  ```
     
 * Αν θέλουμε να μην ξεκινάει αυτομάτως ο nginx όταν ξεκινάει ο
   υπολογιστής, δίνουμε:
-    ```bash
-    sudo systemctl disable nginx
+  ```bash
+  sudo systemctl disable nginx
     ```
 
 * Αν θέλουμε να ξεκινάει αυτομάτως ο nginx όταν ξεκινάει ο
   υπολογιστής, δίνουμε:
-    ```bash
-    sudo systemctl enable nginx
-    ```
+  ```bash
+  sudo systemctl enable nginx
+  ```
     
 ## Αρχεία και κατάλογοι του nginx
 
@@ -705,13 +713,13 @@ sudo shutdown -r now
 * Ανοίγουμε το αρχείο `/etc/nginx/sites-available/default`
 
 * Αλλάζουμε τη γραμμή:
-    ```
-    server_name _;
-    ```
+  ```
+  server_name _;
+  ```
   σε:
-    ```
-    servername snf-779124.vm.okeanos.grnet.gr;
-    ```
+  ```
+  server_name snf-779124.vm.okeanos.grnet.gr;
+  ```
   (ή όποιο άλλο είναι το όνομα που θα χρησιμοποιήσουμε).
     
 * Σώζουμε το αρχείο. 
@@ -720,14 +728,14 @@ sudo shutdown -r now
 
 * Για να είμαστε σίγουροι ότι δεν έχουμε κάνει
   κάποιο λάθος, δίνουμε:
-    ```bash
-    sudo nginx -t
-    ```
+  ```bash
+  sudo nginx -t
+  ```
   
 * Αν λάβουμε απάντηση ΟΚ, φορτώνουμε τις νέες ρυθμίσεις στον nginx:
-    ```bash
-    sudo systemctl reload nginx
-    ```
+  ```bash
+  sudo systemctl reload nginx
+  ```
 
 
 # Ενεργοποίηση TLS/SSL
@@ -746,120 +754,121 @@ sudo shutdown -r now
 * Το certbot περιέχει αναλυτικές οδηγίες για το τι πρέπει να κάνουμε,
   αλλά θα τις δούμε συνοπτικά και εδώ.
 
+
 ## Ρύθμιση τοίχους προστασίας
 
 * Αυτή τη στιγμή το τοίχος προστασίας δεν επιτρέπει τις συνδέσεις
   TLS/SSL, όπως μπορούμε να διαπιστώσουμε δίνοντας:
-    ```bash
-    sudo ufw status
-    ```
+  ```bash
+  sudo ufw status
+  ```
   (δεν θα δούμε στην έξοδο να μας ενημερώνει ότι επιτρέπονται).
   
 * Για να τις επιτρέψουμε, δίνουμε:
-    ```bash
-    sudo ufw allow 'Nginx Full'
-    ```
+  ```bash
+  sudo ufw allow 'Nginx Full'
+  ```
     
 * Σβήνουμε τον παλιό, πιο περιοριστικό κανόνα, αφού πλέον δεν
   χρειάζεται:
-    ```bash
-    sudo ufw delete allow 'Nginx HTTP'
-    ```
+  ```bash
+  sudo ufw delete allow 'Nginx HTTP'
+  ```
 
 ## Εγκατάσταση πιστοποιητικού (1)
 
 * Ξεκινάμε με μία ενημέρωση του συστήματός μου.
-    ```bash
-    sudo apt-get update
-    ```
+  ```bash
+  sudo apt-get update
+  ```
 
 * Εγκαθιστούμε βοηθητικό λογισμικό για να μπορούμε να ενημερώνουμε
   εύκολα τις πηγές των ενημερώσεών μας και του λογισμικού που θα
   μπορούμε να εγκαθιστούμε:
-    ```bash
-    sudo apt-get install software-properties-common
-    ```
+  ```bash
+  sudo apt-get install software-properties-common
+  ```
     
 ## Εγκατάσταση πιστοποιητικού (2)
 
 * Προσθέτουμε στις πηγές των ενημερώσεών μας το certbot.
-    ```bash
-    sudo add-apt-repository ppa:certbot/certbot
-    ```
-  θα δούμε στην οθόνη κάτι όπως:
-    ```
-     This is the PPA for packages prepared by Debian Let's Encrypt Team and backported for Ubuntu(s).
-     More info: https://launchpad.net/~certbot/+archive/ubuntu/certbot
-    Press [ENTER] to continue or ctrl-c to cancel adding it
+  ```bash
+  sudo add-apt-repository ppa:certbot/certbot
+  ```
+θα δούμε στην οθόνη κάτι όπως:
+  ```
+   This is the PPA for packages prepared by Debian Let's Encrypt Team and backported for Ubuntu(s).
+   More info: https://launchpad.net/~certbot/+archive/ubuntu/certbot
+  Press [ENTER] to continue or ctrl-c to cancel adding it
 
-    gpg: keyring `/tmp/tmp848k7lmy/secring.gpg' created
-    gpg: keyring `/tmp/tmp848k7lmy/pubring.gpg' created
-    gpg: requesting key 75BCA694 from hkp server keyserver.ubuntu.com
-    gpg: /tmp/tmp848k7lmy/trustdb.gpg: trustdb created
-    gpg: key 75BCA694: public key "Launchpad PPA for certbot" imported
-    gpg: Total number processed: 1
-    gpg:               imported: 1  (RSA: 1)
-    OK
-    ```
+  gpg: keyring `/tmp/tmp848k7lmy/secring.gpg' created
+  gpg: keyring `/tmp/tmp848k7lmy/pubring.gpg' created
+  gpg: requesting key 75BCA694 from hkp server keyserver.ubuntu.com
+  gpg: /tmp/tmp848k7lmy/trustdb.gpg: trustdb created
+  gpg: key 75BCA694: public key "Launchpad PPA for certbot" imported
+  gpg: Total number processed: 1
+  gpg:               imported: 1  (RSA: 1)
+  OK
+  ```
     
 ## Εγκατάσταση πιστοποιητικού (3)
 
 * Κάνουμε πάλι τυχόν ενημερώσεις:
-    ```bash
-    sudo apt-get update
-    ```
+  ```bash
+  sudo apt-get update
+  ```
     
 * Εγκαθιστούμε το λογισμικού του certbot:
-    ```bash
-    sudo apt-get install python-certbot-nginx
-    ```
+  ```bash
+  sudo apt-get install python-certbot-nginx
+  ```
     
 ## Εγκατάσταση πιστοποιητικού (4)
 
 * Αιτούμαστε την εγκατάσταση του πιστοποιητικού.
-    ```bash
-    sudo certbot --nginx
-    ```
+  ```bash
+  sudo certbot --nginx
+  ```
 * Θα ρωτηθούμε αν θέλουμε όλη η κυκλοφορία του ιστοτόπου μας να
   ανακατευθύνεται μέσω HTTPS, όπου θα απαντήσουμε θετικά:
-    ```
-    Please choose whether or not to redirect HTTP traffic to HTTPS, removing HTTP access.
-    -------------------------------------------------------------------------------
-    1: No redirect - Make no further changes to the webserver configuration.
-    2: Redirect - Make all requests redirect to secure HTTPS access. Choose this for
-    new sites, or if you're confident your site works on HTTPS. You can undo this
-    change by editing your web server's configuration.
-    -------------------------------------------------------------------------------
-    Select the appropriate number [1-2] then [enter] (press 'c' to cancel): 2
-    Redirecting all traffic on port 80 to ssl in /etc/nginx/sites-enabled/default
-    ```
+  ```
+  Please choose whether or not to redirect HTTP traffic to HTTPS, removing HTTP access.
+  -------------------------------------------------------------------------------
+  1: No redirect - Make no further changes to the webserver configuration.
+  2: Redirect - Make all requests redirect to secure HTTPS access. Choose this for
+  new sites, or if you're confident your site works on HTTPS. You can undo this
+  change by editing your web server's configuration.
+  -------------------------------------------------------------------------------
+  Select the appropriate number [1-2] then [enter] (press 'c' to cancel): 2
+  Redirecting all traffic on port 80 to ssl in /etc/nginx/sites-enabled/default
+  ```
     
 ## Εγκατάσταση πιστοποιητικού (5)
 
 * Επίσης θα ενημερωθούμε για τη θέση όπου αποθηκεύτηκε το
   πιστοποιητικό μας:
-    ```
-    Congratulations! You have successfully enabled
-    https://snf-779124.vm.okeanos.grnet.gr
+  ```
+  Congratulations! You have successfully enabled
+  https://snf-779124.vm.okeanos.grnet.gr
 
-    You should test your configuration at:
-    https://www.ssllabs.com/ssltest/analyze.html?d=snf-779124.vm.okeanos.grnet.gr
-    -------------------------------------------------------------------------------
+  You should test your configuration at:
+  https://www.ssllabs.com/ssltest/analyze.html?d=snf-779124.vm.okeanos.grnet.gr
+  -------------------------------------------------------------------------------
 
-    IMPORTANT NOTES:
-     - Congratulations! Your certificate and chain have been saved at:
-       /etc/letsencrypt/live/snf-779124.vm.okeanos.grnet.gr/fullchain.pem
-       Your key file has been saved at:
-       /etc/letsencrypt/live/snf-779124.vm.okeanos.grnet.gr/privkey.pem
-       Your cert will expire on 2018-01-20. To obtain a new or tweaked
-       version of this certificate in the future, simply run certbot again
-       with the "certonly" option. To non-interactively renew *all* of
-       your certificates, run "certbot renew"
-     - If you like Certbot, please consider supporting our work by:
+  IMPORTANT NOTES:
+   - Congratulations! Your certificate and chain have been saved at:
+     /etc/letsencrypt/live/snf-779124.vm.okeanos.grnet.gr/fullchain.pem
+     Your key file has been saved at:
+     /etc/letsencrypt/live/snf-779124.vm.okeanos.grnet.gr/privkey.pem
+     Your cert will expire on 2018-01-20. To obtain a new or tweaked
+     version of this certificate in the future, simply run certbot again
+     with the "certonly" option. To non-interactively renew *all* of
+     your certificates, run "certbot renew"
+   - If you like Certbot, please consider supporting our work by:
 
-       Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
-       Donating to EFF:                    https://eff.org/donate-le
-    ```
+     Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+     Donating to EFF:                    https://eff.org/donate-le
+  ```
 
 ## Αυτόματη ανανέωση του πιστοποιητικού (1)
 
@@ -874,14 +883,14 @@ sudo shutdown -r now
 ## Αυτόματη ανανέωση του πιστοποιητικού (2)
 
 * Δίνουμε:
-    ```bash
-    sudo crontab -e
-    ```
+  ```bash
+  sudo crontab -e
+  ```
     
 * Στο τέλος του αρχείου (τελευταία γραμμή) γράφουμε:
-    ```
-    15 3 * * * /usr/bin/certbot renew --quiet
-    ```
+  ```
+  15 3 * * * /usr/bin/certbot renew --quiet
+  ```
   αυτό σημαίνει ότι κάθε μέρα στις 3:15 το πρωί θα εκτελείται η εντολή 
   `/usr/bin/certbot renew --quiet`. 
 
@@ -902,8 +911,8 @@ sudo shutdown -r now
 
 * Μπορούμε να ελέγξουμε την ασφάλεια των ρυθμίσεων TLS/SSL
   δίνοντας το εξής URL (προσαρμοσμένο στο σύστημά μας):
-    ```
-    https://www.ssllabs.com/ssltest/analyze.html?d=snf-779124.vm.okeanos.grnet.gr
+  ```
+  https://www.ssllabs.com/ssltest/analyze.html?d=snf-779124.vm.okeanos.grnet.gr
     ```
     
 * Αν το κάνουμε αυτό, θα δούμε ότι ο βαθμός μας είναι Grade B.
@@ -926,17 +935,17 @@ bits· για να πάρουμε Grade A θα πρέπει το κλειδί ν
 ## Αναβάθμιση παραμέτρων Diffie-Hellman (1)
 
 * Δίνουμε:
-    ```bash
-    sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-    ```
+  ```bash
+  sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+  ```
   Προσέξτε ότι αυτό θα χρειαστεί κάποια λεπτά για να εκτελεστεί.
   
 * Στη συνέχεια ανοίγουμε το αρχείο `etc/nginx/sites-available/default`
   και προσθέτουμε όπου θέλουμε μέσα στο τμήμα `server` (π.χ., ακριβώς
   κάτω από τις γραμμές για το SSL certificate) το εξής
-    ```
-    ssl_dhparam /etc/ssl/certs/dhparam.pem;
-    ```
+  ```
+  ssl_dhparam /etc/ssl/certs/dhparam.pem;
+  ```
 
 <div class="notes">
 
@@ -968,74 +977,75 @@ prime)](https://en.wikipedia.org/wiki/Safe_prime).
 ## Αναβάθμιση παραμέτρων Diffie-Hellman (2)
     
 * Ελέγχουμε ότι όλα είναι ΟΚ:
-    ```bash
-    sudo nginx -t
-    ```
+  ```bash
+  sudo nginx -t
+  ```
     
 * Αν ναι, φορτώνουμε τις νέες ρυθμίσεις. 
-     ```bash
-     sudo systemctl reload nginx
-     ```
+   ```bash
+   sudo systemctl reload nginx
+   ```
      
 * Μετά, αν ξανατρέξουμε τους ελέγχους των SSL Labs (με το ίδιο URL), θα
   δούμε ότι θα έχουμε Grade A.
+
 
 # Εγκατάσταση εφαρμογής
 
 ## Εγκατάσταση Python
 
 * Εγκαθιστούμε Python 3:
-    ```bash
-    sudo apt-get install python3
-    ```
+  ```bash
+  sudo apt-get install python3
+  ```
     
-*  Εγκαθιστούμε το [virtualenv](https://virtualenv.pypa.io/en/stable/):
-    ```
-    sudo -H pip3 install virtualenv
-    ```
+* Εγκαθιστούμε το [virtualenv](https://virtualenv.pypa.io/en/stable/):
+  ```
+  sudo -H pip3 install virtualenv
+  ```
     
 * Δημιουργούμε τον κατάλογο της εφαρμογής μας:
-    ```bash
-    mkdir ~/project_site
-    cd ~/project_site
-    ```
+  ```bash
+  mkdir ~/project_site
+  cd ~/project_site
+  ```
     
 ## Δημιουργία ιδεατού περιβάλλοντος
 
 * Δημιουργούμε ένα ιδεατό περιβάλλον (virtual env) με:
-    ```bash 
-    virtualenv env
-    ```
+  ```bash 
+  virtualenv env
+  ```
        
-*  Τότε θα δούμε:
-    ```bash
-    Using base prefix '/usr'
-    New python executable in /home/user/project_site/env/bin/python3
-    Also creating executable in /home/user/project_site/env/bin/python
-    Installing setuptools, pip, wheel...done.
-    ```
+* Τότε θα δούμε:
+  ```bash
+  Using base prefix '/usr'
+  New python executable in /home/user/project_site/env/bin/python3
+  Also creating executable in /home/user/project_site/env/bin/python
+  Installing setuptools, pip, wheel...done.
+  ```
     
 ## Ενεργοποίηση ιδεατού περιβάλλοντος
 
 * Ενεργοποιούμε το περιβάλλον:
-    ```bash
-    source env/bin/activate
-    ```
+  ```bash
+  source env/bin/activate
+  ```
   θα δούμε τότε ότι η προτροπή συστήματος θα αλλάξει και θα έχει
     μπροστά το `(env)`.
     
 * Εγκαθιστούμε τα πακέτα που χρειαζόμαστε:
-    ```bash
-    pip install django gunicorn pymysql
-    ```
+  ```bash
+  pip install django gunicorn pymysql
+  ```
     
 ## Αντιγραφή των αρχείων της εφαρμογής μας
 
 * Για να αντιγράψουμε τα αρχεία της εφαρμογής μας από τον υπολογιστή
   της ανάπτυξης στον υπολογιστή της παραγωγής δίνουμε:
-    ```bash
-    scp -r project_site/* snf-726601.vm.okeanos.grnet.gr:project_site
-    ```
+  ```bash
+  scp -r project_site/* snf-726601.vm.okeanos.grnet.gr:project_site
+  ```
 
 ## Προσαρμογή `settings.py`
 
@@ -1050,13 +1060,13 @@ prime)](https://en.wikipedia.org/wiki/Safe_prime).
 
 * Για να το κάνουμε αυτό, στο αρχείο `project_site/settings.py`
   προσθέτουμε, κάτω από τη γραμμή:
-    ```python
-    STATIC_URL = '/static/'
-    ```
+  ```python
+  STATIC_URL = '/static/'
+  ```
   τη γραμμή:
-    ```python
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-    ```
+  ```python
+  STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+  ```
 
 ## Προσαρμογή `site_config.py`
 
@@ -1065,18 +1075,18 @@ prime)](https://en.wikipedia.org/wiki/Safe_prime).
   εφαρμογής μας.
   
 * Σε αυτό το αρχείο, προσθέτουμε τη γραμμή (προσαρμοσμένη στο σύστημά μας):
-    ```python
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', 'snf-779124.vm.okeanos.grnet.gr']
-    ```
+  ```python
+  ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', 'snf-779124.vm.okeanos.grnet.gr']
+  ```
 
 * Αυτό θα επιτρέψει στο Django να δεχτεί την επικοινωνία από τον nginx.
   
 ## Δημιουργία βάσης
 
 * Για να συνδεθούμε με την MySQL δίνουμε:
-    ```bash
-    mysql -u root -p
-    ```
+  ```bash
+  mysql -u root -p
+  ```
 
 * Για να δημιουργήσουμε τη βάση πρέπει να δώσουμε τα παρακάτω στη
   MySQL:
@@ -1092,31 +1102,31 @@ prime)](https://en.wikipedia.org/wiki/Safe_prime).
     ```
 
 * Για να μπορούμε να συνδεθούμε με τη MySQL μέσω Python δίνουμε:
-    ```bash
-    pip install mysqlclient
-    ```
+  ```bash
+  pip install mysqlclient
+  ```
     
 ## Εφαρμογή μεταγωγών και δημιουργία διαχειριστή
 
 * Για να δημιουργηθούν οι απαραίτητοι πίνακες στη βάση μας θα πρέπει
   να εφαρμόσουμε τις υπάρχουσες μεταγωγές με:
-    ```bash
-    python manage.py migrate
-    ```
+  ```bash
+  python manage.py migrate
+  ```
     
 * Επίσης αυτή τη στιγμή η βάση μας είναι άδεια, άρα δεν υπάρχει καν ο
   διαχειριστής του Django. Συνεπώς δίνουμε:
-    ```bash
-    python manage.py createsuperuser
-    ```
+  ```bash
+  python manage.py createsuperuser
+  ```
 
 ## Συγκέντρωση στατικών αρχείων
 
 * Για να συγκεντρωθούν όλα τα στατικά αρχεία της εφαρμογής μας στον
   κατάλογο `project_site/static` δίνουμε:
-    ```bash
-    python manage.py collectstatic
-    ```
+  ```bash
+  python manage.py collectstatic
+  ```
     
 * Αυτό θα το κάνουμε κάθε φορά που αλλάζουμε ή προσθέτουμε κάτι στα
   στατικά αρχεία της εφαρμογής μας.
@@ -1126,69 +1136,75 @@ prime)](https://en.wikipedia.org/wiki/Safe_prime).
 
 * Θα δημιουργήσουμε το αρχείο `/etc/systemd/system/gunicorn.service`
   με τα εξής περιεχόμενα, προσαρμοσμένα στο σύστημά σας:
-    ```
-    [Unit]
-    Description=gunicorn daemon
-    After=network.target
+  ```
+  [Unit]
+  Description=gunicorn daemon
+  After=network.target
 
-    [Service]
-    User=user
-    Group=www-data
-    WorkingDirectory=/home/user/project_site
-    ExecStart=/home/user/project_site/env/bin/gunicorn --workers 3 --bind unix:/home/user/project_site/project_site.soc
-    k project_site.wsgi:application
+  [Service]
+  User=user
+  Group=www-data
+  WorkingDirectory=/home/user/project_site
+  ExecStart=/home/user/project_site/env/bin/gunicorn --workers 3 --bind unix:/home/user/project_site/project_site.sock project_site.wsgi:application
 
-    [Install]
-    WantedBy=multi-user.target
-    ```
+  [Install]
+  WantedBy=multi-user.target
+  ```
     
-* Όταν λέμε "προσαρμοσμένα στο σύστημά μας" εννοούμε ότι στο παραπάνω
+* Όταν λέμε «προσαρμοσμένα στο σύστημά μας» εννοούμε ότι στο παραπάνω
   αρχείο θα βάλετε τα στοιχεία των δικών σας καταλόγων.
-  
+
+<div class="notes">
+
+Ό,τι ακολουθεί τo `ExecStart` είναι μία γραμμή (ασχέτως αν στην οθόνη
+μπορεί να εμφανίζεται κομμένη).
+
+</div>
+
 ## Ενεργοποίηση Gunicorn (1)
 
 * Για να ενεργοποιήσουμε τον Gunicorn δίνουμε:
-    ```bash
-    sudo systemctl start gunicorn
-    sudo systemctl enable gunicorn
-    ```
+  ```bash
+  sudo systemctl start gunicorn
+  sudo systemctl enable gunicorn
+  ```
     
 * θα πρέπει να δούμε ένα μήνυμα της μορφής:
-    ```bash
-    Created symlink from /etc/systemd/system/multi-user.target.wants/gunicorn.service to /etc/systemd/system/gunicorn.service.
-    ```
+  ```bash
+  Created symlink from /etc/systemd/system/multi-user.target.wants/gunicorn.service to /etc/systemd/system/gunicorn.service.
+  ```
     
 ## Ενεργοποίηση Gunicorn (2)
 
 * Για να ελέγξουμε ότι όλα πάνε καλά, μπορούμε να δώσουμε:
-    ```bash
-    sudo systemctl status gunicorn
-    ```
+  ```bash
+  sudo systemctl status gunicorn
+  ```
     
 * Θα πρέπει να δούμε κάτι της μορφής:
-    ```bash
-    ● gunicorn.service - gunicorn daemon
-       Loaded: loaded (/etc/systemd/system/gunicorn.service; enabled; vendor preset: enabled)
-       Active: active (running) since Sun 2017-10-22 19:32:35 EEST; 9s ago
-     Main PID: 10794 (gunicorn)
-        Tasks: 4
-       Memory: 69.9M
-          CPU: 2.259s
-       CGroup: /system.slice/gunicorn.service
-               ├─10794 /home/user/project_site/env/bin/python3 /home/user/project_site/env/bin/gunicorn --workers 3 --b
-               ├─10799 /home/user/project_site/env/bin/python3 /home/user/project_site/env/bin/gunicorn --workers 3 --b
-               ├─10800 /home/user/project_site/env/bin/python3 /home/user/project_site/env/bin/gunicorn --workers 3 --b
-               └─10801 /home/user/project_site/env/bin/python3 /home/user/project_site/env/bin/gunicorn --workers 3 --b
+  ```bash
+  ● gunicorn.service - gunicorn daemon
+     Loaded: loaded (/etc/systemd/system/gunicorn.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sun 2017-10-22 19:32:35 EEST; 9s ago
+   Main PID: 10794 (gunicorn)
+      Tasks: 4
+     Memory: 69.9M
+        CPU: 2.259s
+     CGroup: /system.slice/gunicorn.service
+             ├─10794 /home/user/project_site/env/bin/python3 /home/user/project_site/env/bin/gunicorn --workers 3 --b
+             ├─10799 /home/user/project_site/env/bin/python3 /home/user/project_site/env/bin/gunicorn --workers 3 --b
+             ├─10800 /home/user/project_site/env/bin/python3 /home/user/project_site/env/bin/gunicorn --workers 3 --b
+             └─10801 /home/user/project_site/env/bin/python3 /home/user/project_site/env/bin/gunicorn --workers 3 --b
 
-    Oct 22 19:32:35 snf-779124 systemd[1]: Started gunicorn daemon.
-    Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10794] [INFO] Starting gunicorn 19.7.1
-    Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10794] [INFO] Listening at: unix:/home/use
-    Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10794] [INFO] Using worker: sync
-    Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10799] [INFO] Booting worker with pid: 107
-    Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10800] [INFO] Booting worker with pid: 108
-    Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10801] [INFO] Booting worker with pid: 108
-    Oct 22 19:32:39 snf-779124 systemd[1]: Started gunicorn daemon.
-    ```
+  Oct 22 19:32:35 snf-779124 systemd[1]: Started gunicorn daemon.
+  Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10794] [INFO] Starting gunicorn 19.7.1
+  Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10794] [INFO] Listening at: unix:/home/use
+  Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10794] [INFO] Using worker: sync
+  Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10799] [INFO] Booting worker with pid: 107
+  Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10800] [INFO] Booting worker with pid: 108
+  Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10801] [INFO] Booting worker with pid: 108
+  Oct 22 19:32:39 snf-779124 systemd[1]: Started gunicorn daemon.
+  ```
 
 ## Προσαρμογή `/etc/nginx/sites-available/default` (1)
 
@@ -1198,47 +1214,47 @@ prime)](https://en.wikipedia.org/wiki/Safe_prime).
 * Αυτό το κάνουμε ως εξής. Ανοίγουμε το αρχείο
   `/etc/nginx/sites-available/default` και αλλάζουμε τη γραμμή
   `location` στις γραμμές:
-    ```
-    location = /favicon.ico { access_log off; log_not_found off; }
-    location /static/ {
-            root /home/user/project_site;
-    }
+  ```
+  location = /favicon.ico { access_log off; log_not_found off; }
+  location /static/ {
+          root /home/user/project_site;
+  }
 
-    location / {
-            include proxy_params;
-            proxy_pass http://unix:/home/user/project_site/project_site.sock;
-    }
-    ```
+  location / {
+          include proxy_params;
+          proxy_pass http://unix:/home/user/project_site/project_site.sock;
+  }
+  ```
 
 ## Προσαρμογή `/etc/nginx/sites-available/default` (2)
 
 * Ελέγχουμε αν το αρχείο είναι ΟΚ:
-    ```bash
-    sudo nginx -t
-    ```
+  ```bash
+  sudo nginx -t
+  ```
     
 * Αν ναι, δίνουμε:
-    ```bash
-    sudo systemctl restart nginx
-    ```
+  ```bash
+  sudo systemctl restart nginx
+  ```
 
 ## Έλεγχος της εφαρμογής μας
 
 * Τώρα, αν τα έχουμε κάνει όλα σωστά, θα μπορούμε να δούμε την
   εφαρμογή μας δίνουμε στον browser τη διεύθυνση:
-    ```
-    https://snf-779124.vm.okeanos.grnet.gr/djbr/
-    ```
+  ```
+  https://snf-779124.vm.okeanos.grnet.gr/djbr/
+  ```
   (φυσικά θα βάλετε τη διεύθυνση του δικού σας μηχανήματος).
   
 * Αν θέλουμε να μη χρειάζεται να βάζουμε το `/djbr` στο τέλος του URL,
   μπορούμε να προσθέσουμε μέσα στο τμήμα `server` του
   `/etc/nginx/sites-available/default` τη γραμμή:
-    ```
-    rewrite ^/$ /djbr;
-    ```
+  ```
+  rewrite ^/$ /djbr;
+  ```
     
 * Μετά δίνουμε:
-    ```bash
-    sudo systemctl reload nginx
-    ```
+  ```bash
+  sudo systemctl reload nginx
+  ```
