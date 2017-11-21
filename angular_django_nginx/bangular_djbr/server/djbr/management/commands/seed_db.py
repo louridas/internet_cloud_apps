@@ -28,6 +28,7 @@ class Command(BaseCommand):
             for row in seed_reader:
                 obj = to_seed()
                 for attr, value in zip(headers, row):
+                    print(attr, value)
                     setattr(obj, attr, value)
                 print('saving', obj)
                 obj.save()
