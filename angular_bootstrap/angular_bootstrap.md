@@ -2,7 +2,7 @@
 % Αν. Καθηγητής Π. Λουρίδας
 % Οικονομικό Πανεπιστήμιο Αθηνών
 
-# Angular Boostrap
+# Angular Bootstrap
 
 ## Γενικά
 
@@ -28,7 +28,7 @@
   στυλ και την JavaScript που προσφέρει.
 
 * Είναι όμως απλούστερο να χρησιμοποιήσουμε μια βιβλιοθήκη η οποία μας
-  δίνει πρόσβαση στο Boostrap μέσω των κατάλληλων εξαρτημάτων.
+  δίνει πρόσβαση στο Bootstrap μέσω των κατάλληλων εξαρτημάτων.
 
 * Θα χρησιμοποιήσουμε τη βιβλιοθήκη
   [ng-bootstrap](https://ng-bootstrap.github.io/#/home). 
@@ -82,7 +82,7 @@
 * Η εφαρμογή μας χρησιμοποιεί για πλοήγηση συνδέσμους στο πάνω μέρος
   της.
 
-* Θα ενσωματώσουμε τη λογική των συνδέσμων στο Boostrap
+* Θα ενσωματώσουμε τη λογική των συνδέσμων στο Bootstrap
   χρησιμοποιώντας μια μπάρα πλοήγησης.
 
 
@@ -155,7 +155,7 @@
 <div class="container">
   <div class="row">
     <a *ngFor="let book of books" class="col-sm"
-       routerLink="/book/{{book.id}}">
+       routerLink="/books/{{book.id}}">
       <div class="dashboard-item">
         <h5>{{book.title}}</h5>
       </div>
@@ -505,8 +505,15 @@ class BookDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BookSerializer
 
 class ReviewList(generics.ListCreateAPIView):
-    queryset = Review.objects.all().order_by('-review_date')
     serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        queryset = Review.objects.all()
+        print(self.kwargs)
+        book_id = self.kwargs.get('book_id', None)
+        if book_id is not None:
+            queryset = queryset.filter(book=book_id)
+        return queryset
 
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()

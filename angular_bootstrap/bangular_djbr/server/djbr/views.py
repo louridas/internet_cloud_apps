@@ -25,8 +25,14 @@ class BookDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BookSerializer
 
 class ReviewList(generics.ListCreateAPIView):
-    queryset = Review.objects.all().order_by('-review_date')
     serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        queryset = Review.objects.all()
+        book_id = self.kwargs.get('book_id', None)
+        if book_id is not None:
+            queryset = queryset.filter(book=book_id)
+        return queryset
 
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
