@@ -117,6 +117,7 @@
               for row in seed_reader:
                   obj = to_seed()
                   for attr, value in zip(headers, row):
+                      print(attr, value)
                       setattr(obj, attr, value)
                   print('saving', obj)
                   obj.save()
@@ -627,11 +628,19 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'dist')
   ρυθμίσεις για το Django από ό,τι στον υπολογιστή ανάπτυξης.
 
 * Για το σκοπό αυτό δημιουργούμε ένα αρχείο `production_settings.py`,
-  στον ίδιο κατάλογο με το `project_settings.py`.
+  στον ίδιο κατάλογο με το `settings.py`, με τα περιεχόμενα (αρχικά)
+  του `settings.py`.
   
 * Στη συνέχεια αλλαγές που αφορούν τον εξυπηρετητή παραγωγής θα τις
   κάνουμε στο `production_settings.py`.
 
+<div class="notes">
+
+Άρα μπορούμε απλώς να αντιγράψουμε το `settings.py` στο
+`production_settings.py` και μετά να κάνουμε ό,τι αλλαγές θέλουμε στο
+δεύτερο.
+
+</div>
 
 ## Προσαρμογή `production_settings.py`
 
@@ -651,6 +660,47 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'dist')
 
 Φυσικά μπορούμε να κάνουμε και ό,τι άλλες αλλαγές χρειάζεται για να
 λειτουργήσει η εφαρμογή μας στην παραγωγή.
+
+</div>
+
+
+## Πόσα αρχεία ρυθμίσεων Django;
+
+* Έχουμε φτιάξει τρία αρχεία ρυθμίσεων Django.
+
+* Το αρχείο `settings.py` είναι αυτό με το οποίο ξεκινήσαμε,
+  και περιέχει τις ρυθμίσεις ανάπτυξης *χωρίς ευαίσθητα δεδομένα*. Το
+  περιλαμβάνουμε στο αποθετήριό μας.
+  
+* Το αρχείο `production_settings.py` περιέχει τις ρυθμίσεις
+  παραγωγής *χωρίς ευαίσθητα δεδομένα*. Το περιλαμβάνουμε στο
+  αποθετήριό μας.
+  
+* Το αρχείο `site_config.py` περιέχει τις ρυθμίσεις που περιέχουν
+  ευαίσθητα δεδομένα. *Δεν το περιλαμβάνουμε στο αποθετήριό μας*.
+
+
+<div class="notes">
+
+Βεβαίως μπορούμε να έχουμε ξεχωριστά αρχεία με ευαίσθητες πληροφορίες
+για την ανάπτυξη και την παραγωγή, π.χ. `site_config.py` και
+`production_site_config.py`. Τότε, στο `settings.py` θα έχουμε στο
+τέλος (όπως τώρα):
+```python
+try:
+    from .site_config import *
+except ImportError as ex:
+    print(ex)
+    pass
+```
+ενώ στο `production_settings.py` θα έχουμε:
+```python
+try:
+    from .production_site_config import *
+except ImportError as ex:
+    print(ex)
+    pass
+```
 
 </div>
 
@@ -732,7 +782,7 @@ Environment=DJANGO_SETTINGS_MODULE=project_site.production_settings
 ## Συγκέντρωση στατικών αρχείων εφαρμογής
 
 * Για να συγκεντρώσουμε τα στατικά αρχεία, θα χρησιμοποιήσουμε το
-  Django, δίνοντας:
+  Django, στον υπολογιστή ανάπτυξης, δίνοντας:
   ```bash
   python manage.py collectstatic
   ```
@@ -781,6 +831,11 @@ Environment=DJANGO_SETTINGS_MODULE=project_site.production_settings
 αρχεία της εφαρμογής Django *και μόνο αυτά* στον εξυπηρετητή
 εφαρμογής, στο σημείο όπου έχουμε στήσει το Django.
 
+Αν θέλουμε στον εξυπηρετητή παραγωγής να τρέξουμε την εφαρμογή μας
+χωρίς τον HTTP server (δηλαδή, μόνο με το Django, χωρίς το nginx στην
+περίπτωσή μας), τότε μπορούμε απλώς να παραλείψουμε την παράμετρο
+`--exclude 'dist'`.
+
 Η παράμετρος `-avz` σημαίνει τα εξής:
 
   * Το `-a` (`--archive`) ζητά να ληφθούν υπόψη όλα τα αρχεία
@@ -794,7 +849,9 @@ Environment=DJANGO_SETTINGS_MODULE=project_site.production_settings
 </div>
 
 
-## Καταγραφή λειτουργίας
+# Καταγραφή λειτουργίας
+
+## Η ανάγκη
 
 * Από τη στιγμή που η εφαρμογή μας τρέχει σε έναν εξυπηρετητή, και όχι
   στον τοπικό μας υπολογιστή, πρέπει να έχουμε έναν τρόπο να
@@ -824,6 +881,160 @@ Environment=DJANGO_SETTINGS_MODULE=project_site.production_settings
 
 </div>
 
+
+## Καταγραφή λειτουργίας σε Python
+
+* Η καταγραφή λειτουργίας σε Python, όπως και σε άλλες γλώσσες,
+  βασίζεται στην κλήση μεθόδων στις οποίες δίνουμε *μηνύματα* και
+  *σοβαρότητα* (severity).
+  
+* Υπάρχουν τα ακόλουθα επίπεδα σοβαρότητας:
+  * `CRITICAL`
+  * `ERROR`
+  * `WARNING`
+  * `INFO`
+  * `DEBUG`
+
+* Όταν είναι ενεργοποιημένο ένα επίπεδο σοβαρότητας, βλέπουμε όλα τα
+  μηνύματα από αυτό το επίπεδο και πάνω.
+
+<div class="notes">
+
+Τα επίπεδα σοβαρότητας έχουν τις εξής σημασίες:
+
+* `DEBUG`: το μήνυμα περιέχει πολύ λεπτομερείς πληροφορίες που είναι
+  χρήσιμες στη διαδικασία εκσφαλμάτωσης.
+* `INFO`: το μήνυμα επιβεβαιώνει ότι λειτουργούμε κανονικά.
+* `WARNING`: το μήνυμα επισημαίνει ότι κάτι απρόσμενο συνέβη, ή ότι
+  μπορεί να εμφανιστεί κάποιο πρόβλημα στο μέλλον (π.χ., έχουμε θέμα
+  μνήμης). Το λογισμικό όμως εξακολουθεί να λειτουργεί κανονικά.
+* `ERROR`: λόγω κάποιου σοβαρού προβλήματος το λογισμικό δεν μπόρεσε
+  να εκτελέσει μια λειτουργία.
+* `CRITICAL`: Εμφανίστηκε σοβαρό λάθος· το ίδιο το πρόγραμμα μπορεί
+  να μην είναι σε θέση να συνεχίσει να λειτουργεί.
+
+</div>
+  
+
+## Χειριστές
+
+* Υπεύθυνοι για την αποστολή των μηνυμάτων καταγραφής στον προορισμό
+  τους είναι οι [χειριστές
+  (handlers)](https://docs.python.org/3/library/logging.handlers.html).
+  
+* Η εφαρμογή μας ορίζει τους χειριστές που θα παραλαμβάνουν τα
+  μηνύματα της καταγραφής, και αυτοί είναι αρμόδιοι για τα περαιτέρω.
+  
+* Για παράδειγμα, μια εφαρμογή μπορεί να:
+  * αποθηκεύει όλα τα μηνύματα καταγραφής σε ένα αρχείο (`FileHandler`)
+  * εμφανίζει όλα τα μηνύματα επιπέδου `ERROR` και πάνω στο
+    τερματικό (`StreamHandler`)
+  * στέλνει μήνυμα ηλεκτρονικού ταχυδρομείου για όλα τα μηνύματα
+    επιπέδου `CRITICAL` (`SMTPHandler`)
+
+
+## Μορφοποιητές
+
+* Υπεύθυνοι για τη μορφοποίηση των μηνυμάτων καταγραφής είναι οι
+  [μορφοποιητές
+  (formatters)](https://docs.python.org/3/howto/logging.html#formatters). 
+  
+* Οι μορφοποιητές ορίζουν τι ακριβώς θα εμφανίζεται σε κάθε μήνυμα,
+  χρησιμοποιώντας μια μικρό-γλώσσα.
+  
+* Παράδειγμα:
+  ```
+  %(asctime)s [%(process)d] [%(levelname)s] %(message)s
+  ```
+  
+<div class="notes">
+
+Τα πεδία που εμφανίζονται στο παραπάνω παράδειγμα σημαίνουν τα εξής:
+  * `asctime`: η χρονική στιγμή της δημιουργίας της εγγραφής
+  * `process`: ο αριθμός της διεργασίας του λειτουργικού συστήματος
+    (process ID), αν υπάρχει
+  * `levelname`: το επίπεδο σοβαρότητας
+  * `message`: το μήνυμα καταγραφής.
+
+Μπορούμε να ορίσουμε εμείς τον τρόπο με τον οποίο θα αποτυπώνεται η
+χρονική στιγμή. Για παράδειγμα:
+```
+%Y-%m-%d %H:%M:%S
+```
+σημαίνει χρόνος, μήνας, ημέρα, ώρα, λεπτά, δευτερόλεπτα.
+
+</div>
+  
+
+## Παράδειγμα καταγραφής σε Python
+
+* Ένα σύντομο παράδειγμα καταγραφής σε Python είναι [το
+  εξής](https://docs.python.org/3/howto/logging.html#configuring-logging):
+  ```python
+  import logging
+  import logging.config
+
+  logging.config.fileConfig('logging.conf')
+
+  # create logger
+  logger = logging.getLogger('simpleExample')
+
+  # 'application' code
+  logger.debug('debug message')
+  logger.info('info message')
+  logger.warn('warn message')
+  logger.error('error message')
+  logger.critical('critical message')
+  ```
+
+## Σύντομο παράδειγμα ρυθμίσεων
+
+* Το παραπάνω παράδειγμα δουλεύει με το ακόλουθο αρχείο ρυθμίσεων
+  `logging.conf`:
+  ```
+  [loggers]
+  keys=root,simpleExample
+
+  [handlers]
+  keys=consoleHandler
+
+  [formatters]
+  keys=simpleFormatter
+
+  [logger_root]
+  level=DEBUG
+  handlers=consoleHandler
+
+  [logger_simpleExample]
+  level=DEBUG
+  handlers=consoleHandler
+  qualname=simpleExample
+  propagate=0
+
+  [handler_consoleHandler]
+  class=StreamHandler
+  level=DEBUG
+  formatter=simpleFormatter
+  args=(sys.stdout,)
+
+  [formatter_simpleFormatter]
+  format=%(asctime)s - %(name)s - %(levelname)s - %(message)s
+  datefmt=
+  ```
+
+## Αποτέλεσμα ρυθμίσεων
+
+* Τρέχοντας το πρόγραμμα θα πάρουμε στην οθόνη μας κάτι όπως:
+  ```
+  python simple_logging_config.py
+  2005-03-19 15:38:55,977 - simpleExample - DEBUG - debug message
+  2005-03-19 15:38:55,979 - simpleExample - INFO - info message
+  2005-03-19 15:38:56,054 - simpleExample - WARNING - warn message
+  2005-03-19 15:38:56,055 - simpleExample - ERROR - error message
+  2005-03-19 15:38:56,130 - simpleExample - CRITICAL - critical message
+  ```
+  
+## Ρυθμίσεις καταγραφής
 
 ## Αρχεία καταγραφής Django / gunicorn (1)
 
@@ -939,6 +1150,8 @@ args=('/home/user/project_site/log/gunicorn.access.log',)
 
 </div>
 
+
+# Μεταφορά σε nginx
 
 ## Ρυθμίσεις nginx (1)
 
@@ -1160,3 +1373,19 @@ sudo mkdir -p /srv/books
   * απαλοιφή νεκρού κώδικα
 
 </div>
+
+
+## Συνέχιση ανάπτυξης
+
+* Βεβαίως θα συνεχίσουμε να αναπτύσσουμε την εφαρμογή μας και αφού την
+  έχουμε ανεβάσει στον εξυπηρετητή παραγωγής.
+  
+* Μπορούμε λοιπόν να συνεχίσουμε να τρέχουμε την εφαρμογή μας και
+  τοπικά, ξεκινώντας το Django στον υπολογιστή ανάπτυξης.
+  
+* Στην περίπτωση αυτή, αν θέλουμε να κάνουμε αλλαγές στο front-end και
+  να τις εφαρμόζουμε αμέσως στον υπολογιστή ανάπτυξη, μπορούμε να
+  κάνουμε το παρακάτω από τον κατάλογο `client`:
+  ```bash
+  ng build && cp dist/* ../server/dist
+  ```
