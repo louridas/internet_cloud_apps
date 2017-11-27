@@ -11,4 +11,5 @@ __pycache__/
 .static_storage/
 .media/
 static/
+dist/
 site_config.py

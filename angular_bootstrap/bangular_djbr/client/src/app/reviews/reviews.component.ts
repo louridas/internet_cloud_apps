@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
 
@@ -23,33 +21,31 @@ export class ReviewsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private reviewService: ReviewService
-  ) {
-    this.review = this.newReview();
-  }
+  ) { }
 
   ngOnInit() {
     this.route.paramMap
       .switchMap((params: ParamMap) => {
         let bookId = +params.get('id');
-        this.review = this.newReview();
-        this.review.book = bookId;
+        this.review = this.newReview(bookId);
         return this.reviewService.getReviews(+params.get('id'))
       }).subscribe(reviews => this.reviews = reviews);
   }
 
-  get diagnostic() { return JSON.stringify(this.review); }
-
-  newReview() : Review {
+  newReview(bookId: number) : Review {
     var review = new Review();
+    review.book = bookId;
     review.title = '';
     review.text = '';
     return review;
   }
 
   onSubmit() : void {
-    console.log(this.review);
     this.reviewService.addReview(this.review)
-      .subscribe(review => this.reviews.unshift(review));
+      .subscribe(review => {
+        this.reviews.unshift(review);
+        this.review = this.newReview(review.book);
+      });
   }
 
 }

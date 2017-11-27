@@ -312,6 +312,7 @@ h4 {
   }
   ```
 
+
 ## `book-search.component.css`
 
 * Τέλος, δεν χρειαζόμαστε κανένα από τα στυλ που είχαμε ορίσει για το
@@ -629,8 +630,6 @@ export class AppRoutingModule { }
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
 
@@ -679,7 +678,18 @@ export class ReviewsComponent implements OnInit {
   }
 
 }
+
 ```
+
+## Χρήση του `switchMap`
+
+* Ενδέχεται ο χρήστης να πλοηγηθεί στη σελίδα με τις κριτικές ενός
+  συγκεκριμένου βιβλίου (με συγκεκριμένο `id`) ενώ ήδη αναζητούμε τις
+  κριτικές ενός προηγούμενου βιβλίου (με άλλο `id`).
+  
+* Ο τελεστής `switchMap` εξασφαλίζει ότι δεν θα ληφθούν υπόψη τα αποτελέσματα
+  της προηγούμενης αίτησης `getReviews()`, αλλά μόνο της τρέχουσας.
+  
 
 ## `review.service.ts`
 
