@@ -54,7 +54,7 @@ export class BookSearchComponent {
 
   selectedItem(item) {
     var book = item.item;
-    this.router.navigate([`/book/${book.id}`]);
+    this.router.navigate([`/books/${book.id}`]);
   }
 
 }
