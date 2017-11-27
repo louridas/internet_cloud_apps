@@ -217,6 +217,47 @@ h4 {
   συγκεκριμένα το widget typeahead.
 
 
+## `flatMap` και `switchMap`
+
+* Πριν δούμε πώς ακριβώς θα προχωρήσουμε, ας δούμε δύο σημεία
+  ασύγχρονου προγραμμισμού.
+  
+* Συγκεκριμένα, θα δούμε τους τελεστές `flatMap` και `switchMap`.
+
+
+## Ο τελεστής `flatMap`
+
+<img src="flatmap.png" alt="flatMap" style="width: 800px;"/>
+
+<div class="notes">
+
+Ο τελεστής `flatMap` μετασχηματίζει ένα `Observable` εφαρμόζοντας μια
+συνάρτηση σε αυτό. Η συνάρτηση παίρνει με τη σειρά κάθε αντικείμενο
+που εκπέμπει το `Observable` και επιστρέφει ένα νέο `Observable`. Στη
+συνέχεια, το `flatMap` συγχωνεύει τις εκπομπές αυτών των `Observable`
+(του αρχικού και αυτών που επιστρέφει η συνάρτηση) και τις εκπέμπει σε
+μία ενιαία σειρά.
+
+</div>
+
+## Ο τελεστής `switchMap`
+
+<img src="switchmap.png" alt="switchMap" style="width: 800px;"/>
+
+<div class="notes">
+
+Ο τελεστής `switchMap` επίσης μετασχηματίζει ένα `Observable`
+εφαρμόζοντας μια συνάρτηση σε αυτό. Όπως και πριν, η συνάρτηση παίρνει
+με τη σειρά κάθε αντικείμενο που εκπέμπει το `Observable` και
+επιστρέφει ένα νέο `Observable`. Στη συνέχεια όμως το `switchMap`,
+όταν συγχωνεύει τις εκπομπές των `Observable` (του αρχικού και αυτών
+που επιστρέφει η συνάρτηση) λαμβάνει υπόψη τις εκπομπές του αρχικού
+`Observable` και του πιο πρόσφατου μόνο `Observable` από αυτά που
+επιστρέφει η συνάρτηση.
+
+</div>
+
+
 ## `book-search.component.html` (1)
 
 * To `book-search.component.html` θα πρέπει να τροποποιηθεί όπως παρακάτω:
@@ -244,6 +285,39 @@ h4 {
     </div>
   </div> 
   ```
+
+<div class="notes">
+
+* Το:
+  ```javascript
+  [ngbTypeahead]="search"
+  ```
+  ορίζει τη συνάρτηση που θα καλείται για να εκτελεί τις αναζητήσεις
+  καθώς ο χρήστης γράφει στο πεδίο αναζήτησης.
+
+* Το:
+  ```javascript
+  [resultTemplate]="rt"
+  ```
+  ορίζει πώς θα εμφανίζονται τα αντικείμενα που ταιριάζουν με τον όρο
+  αναζήτησης που εισάγει ο χρήστης. Τα αντικείμενα αυτά εμφανίζονται
+  δυναμικά σε μία λίστα που πέφτει κάτω από το πεδίο αναζήτησης.
+  
+* Το:
+  ```javascript
+  [inputFormatter]="formatter"/>
+  ```
+  ορίζει πώς θα εμφανιστεί το αντικείμενο που επέλεξε τελικά ο χρήστης
+  στο πεδίο αναζήτησης.
+  
+* Το:
+  ```javascript
+  (selectItem)="selectedItem($event)"
+  ```
+  ορίζει τι θα γίνει όταν ο χρήστης τελικά επιλέξει ένα αντικείμενο.
+
+
+</div>
 
 ## `book-search.component.ts` (1)
 
@@ -423,7 +497,7 @@ class BookList(generics.ListCreateAPIView):
         queryset = Book.objects.all()
         title = self.request.query_params.get('title', None)
         if title is not None:
-            queryset = queryset.filter(title__contains=title)
+            queryset = queryset.filter(title__icontains=title)
         return queryset
 
 class BookDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -561,6 +635,9 @@ urlpatterns = [
 
 ## Ενημέρωση διαδρομών
 
+* Για να μπορέσουμε να πλοηγηθούμε στις κριτικές, θα πρέπει να τις
+  δηλώσουμε στο αρχείο `app-routing.module.ts`:
+
 ```javascript
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -585,101 +662,117 @@ const routes: Routes = [
 export class AppRoutingModule { }
 ```
 
+
 ## `reviews.component.html`
 
-```html
-<div class="container">
-  <h3>Reviews</h3>
+* Τώρα μπορούμε να προχωρήσουμε στη δημιουργία του εξαρτήματος για την
+  εμφάνιση των κριτικών και τη δημιουργία νέας:
 
-  <form (ngSubmit)="onSubmit()" #reviewForm="ngForm">
-    <div class="form-group">
-      <label for="title">Title</label>
-      <input type="text"
-             class="form-control"
-             id="title"
-             [(ngModel)]="review.title"
-             name="title"
-             required>
+  ```html
+  <div class="container">
+    <h3>Reviews</h3>
+
+    <div class="row justify-content-start">
+      <div class="col-4">
+        <form (ngSubmit)="onSubmit()" #reviewForm="ngForm">
+
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text"
+                   class="form-control"
+                   id="title"
+                   [(ngModel)]="review.title"
+                   name="title"
+                   required>
+          </div>
+
+          <div class="form-group">
+            <label for="text">Content</label>
+            <textarea class="form-control"
+                      rows="5"
+                      id="text"
+                      [(ngModel)]="review.text"
+                      name="text">
+              </textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label for="text">Content</label>
-      <input type="text"
-             class="form-control"
-             id="text"
-             [(ngModel)]="review.text"
-             name="text">
+    <div class="row justify-content-start">
+      <div class="col-4">
+        <ul>
+          <li *ngFor="let review of reviews">
+            {{ review.title }}
+            {{ review.text }}
+          </li>
+        </ul>
+      </div>
     </div>
-
-    <button type="submit" class="btn btn-success">Submit</button>
-
-  </form>
-
-  <ul>
-    <li *ngFor="let review of reviews">
-      {{ review.title }}
-      {{ review.text }}
-    </li>
-  </ul>
-</div>
-```
+  </div>
+  ```
 
 ## `reviews.component.ts`
 
-```javascript
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+* Ο κώδικας του `ReviewsComponent` θα χειρίζεται τόσο την εμφάνιση των
+  υπάρχοντων κριτικών, όσο και τη δημιουργία νέας:
+  ```javascript
+  import { Component, OnInit } from '@angular/core';
+  import { ActivatedRoute, ParamMap } from '@angular/router';
 
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/do';
+  import 'rxjs/add/operator/switchMap';
+  import 'rxjs/add/operator/do';
 
-import { Review } from '../review';
-import { ReviewService } from '../review.service';
+  import { Review } from '../review';
+  import { ReviewService } from '../review.service';
 
-@Component({
-  selector: 'app-reviews',
-  templateUrl: './reviews.component.html',
-  styleUrls: ['./reviews.component.css'],
-})
-export class ReviewsComponent implements OnInit {
+  @Component({
+    selector: 'app-reviews',
+    templateUrl: './reviews.component.html',
+    styleUrls: ['./reviews.component.css'],
+  })
+  export class ReviewsComponent implements OnInit {
 
-  reviews: Review[];
+    reviews: Review[];
 
-  review: Review;
+    review: Review;
 
-  constructor(
-    private route: ActivatedRoute,
-    private reviewService: ReviewService
-  ) {
-    this.review = this.newReview();
+    constructor(
+      private route: ActivatedRoute,
+      private reviewService: ReviewService
+    ) { }
+
+    ngOnInit() {
+      this.route.paramMap
+        .switchMap((params: ParamMap) => {
+          let bookId = +params.get('id');
+          this.review = this.newReview(bookId);
+          return this.reviewService.getReviews(+params.get('id'))
+        }).subscribe(reviews => this.reviews = reviews);
+    }
+
+    newReview(bookId: number) : Review {
+      var review = new Review();
+      review.book = bookId;
+      review.title = '';
+      review.text = '';
+      return review;
+    }
+
+    onSubmit() : void {
+      this.reviewService.addReview(this.review)
+        .subscribe(review => {
+          this.reviews.unshift(review);
+          this.review = this.newReview(review.book);
+        });
+    }
+
   }
+  ```
 
-  ngOnInit() {
-    this.route.paramMap
-      .switchMap((params: ParamMap) => {
-        let bookId = +params.get('id');
-        this.review = this.newReview();
-        this.review.book = bookId;
-        return this.reviewService.getReviews(+params.get('id'))
-      }).subscribe(reviews => this.reviews = reviews);
-  }
-
-  newReview() : Review {
-    var review = new Review();
-    review.title = '';
-    review.text = '';
-    return review;
-  }
-
-  onSubmit() : void {
-    console.log(this.review);
-    this.reviewService.addReview(this.review)
-      .subscribe(review => this.reviews.unshift(review));
-  }
-
-}
-
-```
 
 ## Χρήση του `switchMap`
 
@@ -693,79 +786,83 @@ export class ReviewsComponent implements OnInit {
 
 ## `review.service.ts`
 
-```javascript
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+* Το `ReviewService` είναι εντελώς αντίστοιχο με το `BookService` που
+  έχουμε γράψει παλαιότερα.
 
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { catchError, map, tap } from 'rxjs/operators';
+  ```javascript
+  import { Injectable } from '@angular/core';
+  import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { MessageService } from './message.service';
+  import { Observable } from 'rxjs/Observable';
+  import { of } from 'rxjs/observable/of';
+  import { catchError, map, tap } from 'rxjs/operators';
 
-import { Review } from './review';
+  import { MessageService } from './message.service';
 
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+  import { Review } from './review';
 
-@Injectable()
-export class ReviewService {
+  const httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 
-  constructor(
-    private http: HttpClient,
-    private messageService: MessageService
-  ) { }
+  @Injectable()
+  export class ReviewService {
 
-  /** GET reviews from the server */
-  getReviews(bookId: number): Observable<Review[]> {
-    let url = `api/books/${bookId}/reviews`;
-    return this.http.get<Review[]>(url)
-      .pipe(
-        tap(reviews => this.log(`fetched reviews`)),
-        catchError(this.handleError('getReviews', []))
+    constructor(
+      private http: HttpClient,
+      private messageService: MessageService
+    ) { }
+
+    /** GET reviews from the server */
+    getReviews(bookId: number): Observable<Review[]> {
+      let url = `api/books/${bookId}/reviews`;
+      return this.http.get<Review[]>(url)
+        .pipe(
+          tap(reviews => this.log(`fetched reviews`)),
+          catchError(this.handleError('getReviews', []))
+        );
+    }
+
+    /** POST: add a new review to the server */
+    addReview(review: Review): Observable<Review> {
+      let url = `api/books/${review.book}/reviews`;
+      return this.http.post<Review>(url, review, httpOptions).pipe(
+        tap((review: Review) => this.log(`added review w/ id=${review.id}`)),
+        catchError(this.handleError<Review>('addReview'))
       );
+    }
+
+    /**
+     * Handle Http operation that failed.
+     * Let the app continue.
+     * @param operation - name of the operation that failed
+     * @param result - optional value to return as the observable result
+     */
+    private handleError<T> (operation = 'operation', result?: T) {
+      return (error: any): Observable<T> => {
+
+        console.error(error); // log to console instead
+
+        this.log(`${operation} failed: ${error.message}`);
+
+        // Let the app keep running by returning an empty result.
+        return of(result as T);
+      };
+    }
+
+    private log(message: string): void {
+      this.messageService.add('ReviewService: ' + message);
+    }
+
   }
-
-  /** POST: add a new review to the server */
-  addReview(review: Review): Observable<Review> {
-    let url = `api/books/${review.book}/reviews`;
-    return this.http.post<Review>(url, review, httpOptions).pipe(
-      tap((review: Review) => this.log(`added review w/ id=${review.id}`)),
-      catchError(this.handleError<Review>('addReview'))
-    );
-  }
-
-  /**
-   * Handle Http operation that failed.
-   * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
-  private handleError<T> (operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      console.error(error); // log to console instead
-
-      this.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
-
-  private log(message: string): void {
-    this.messageService.add('ReviewService: ' + message);
-  }
-
-}
-```
+  ```
 
 
 ## `books.component.html`
 
 * Τέλος, θέλουμε το εξάρτημα των κριτικών να εμφανίζεται στη σελίδα με
   τις λεπτομέρειες ενός βιβλίου:
+  
   ```html
   <div *ngIf="book">
     <h2><span appItalics> {{ book.title }}</span> details:</h2>

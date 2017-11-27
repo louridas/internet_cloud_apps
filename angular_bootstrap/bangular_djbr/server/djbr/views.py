@@ -17,7 +17,7 @@ class BookList(generics.ListCreateAPIView):
         queryset = Book.objects.all()
         title = self.request.query_params.get('title', None)
         if title is not None:
-            queryset = queryset.filter(title__contains=title)
+            queryset = queryset.filter(title__icontains=title)
         return queryset
 
 class BookDetail(generics.RetrieveUpdateDestroyAPIView):
