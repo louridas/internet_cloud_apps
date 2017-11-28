@@ -8,14 +8,14 @@
 
 * Είναι επίπονο να πετύχουμε ένα καλό αισθητικό αποτέλεσμα γράφοντας
   αρχεία CSS με το χέρι από το μηδέν.
-  
+
 * Η κατάσταση περιπλέκεται όταν πρέπει να λάβουμε υπόψη μας ότι η
   εφαρμογή μας θα πρέπει να εμφανίζεται σωστά σε διάφορες αναλύσεις
   και σε διαφορετικές συσκευές.
-  
+
 * Για το λόγο αυτό καλό είναι να χρησιμοποιούμε μια ώριμη βιβλιοθήκη
   στυλ.
-  
+
 * Μια τέτοια είναι το [Bootstrap](https://getbootstrap.com/).
 
 
@@ -31,7 +31,7 @@
   δίνει πρόσβαση στο Bootstrap μέσω των κατάλληλων εξαρτημάτων.
 
 * Θα χρησιμοποιήσουμε τη βιβλιοθήκη
-  [ng-bootstrap](https://ng-bootstrap.github.io/#/home). 
+  [ng-bootstrap](https://ng-bootstrap.github.io/#/home).
 
 ## Εγκατάσταση `ng-bootstrap`
 
@@ -42,24 +42,24 @@
     ```
 
 * Στη συνέχεια θα πρέπει να ενημερώσουμε την εφαρμογή μας να
-  χρησιμοποιεί τα στυλ του Bootstrap. 
-  
+  χρησιμοποιεί τα στυλ του Bootstrap.
+
 * Στο αρχείο `index.html` προσθέτουμε στο στοιχείο `<head>` τη γραμμή:
   ```html
     <link rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-        integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
-        crossorigin="anonymous">
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+          crossorigin="anonymous">
   ```
 
 * Μετά χρειάζεται απλώς να εισάγουμε το ng-bootstrap στο
   `AppModule`.
-  
+
 * Προσθέτουμε κοντά στην αρχή του `app.module.ts`:
   ```javascript
   import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
   ```
-  
+
 * Επίσης προσθέτουμε στον πίνακα `imports` τη γραμμή:
   ```javascript
   NgbModule.forRoot(),
@@ -69,7 +69,7 @@
 
 * Θα σταματήσουμε να χρησιμοποιούμε τα στυλ που είχαμε ορίσει μέχρι
   τώρα.
-  
+
 * Ξεκινάμε καθαρίζοντας το αρχείο `src/styles.css`
 
 * Το ανοίγουμε και σβήνουμε όλα τα περιεχόμενά του, αφήνοντάς το κενό.
@@ -206,7 +206,7 @@ h4 {
 }
 ```
 
-# Βελτίωση αναζήτησης βιβλίων 
+# Βελτίωση αναζήτησης βιβλίων
 
 ## Αναζήτηση μέσω typeahead
 
@@ -221,7 +221,7 @@ h4 {
 
 * Πριν δούμε πώς ακριβώς θα προχωρήσουμε, ας δούμε δύο σημεία
   ασύγχρονου προγραμμισμού.
-  
+
 * Συγκεκριμένα, θα δούμε τους τελεστές `flatMap` και `switchMap`.
 
 
@@ -283,7 +283,7 @@ h4 {
     <div class="invalid-feedback" *ngIf="searchFailed">
       Sorry, suggestions could not be loaded.
     </div>
-  </div> 
+  </div>
   ```
 
 <div class="notes">
@@ -302,14 +302,14 @@ h4 {
   ορίζει πώς θα εμφανίζονται τα αντικείμενα που ταιριάζουν με τον όρο
   αναζήτησης που εισάγει ο χρήστης. Τα αντικείμενα αυτά εμφανίζονται
   δυναμικά σε μία λίστα που πέφτει κάτω από το πεδίο αναζήτησης.
-  
+
 * Το:
   ```javascript
   [inputFormatter]="formatter"/>
   ```
   ορίζει πώς θα εμφανιστεί το αντικείμενο που επέλεξε τελικά ο χρήστης
   στο πεδίο αναζήτησης.
-  
+
 * Το:
   ```javascript
   (selectItem)="selectedItem($event)"
@@ -409,11 +409,11 @@ h4 {
 
 * Θέλουμε να προσθέσουμε τη δυνατότητα να βλέπουμε και να προσθέσουμε
   κριτικές στην εφαρμογή μας.
-  
+
 * Για να το κάνουμε αυτό, πρέπει να ξεκινήσουμε από τη back-end
   εφαρμογή που έχουμε γράψει στο Django.
-  
-  
+
+
 ## `models.py`
 
 * Ας θυμηθούμε το αρχείο `models.py` το οποίο περιέχει τα μοντέλα μας:
@@ -428,10 +428,10 @@ class Book(models.Model):
 
     def was_published_recently(self):
         return (self.pub_year >= timezone.now().year - 1)
-    
+
     def __str__(self):
         return "%s %s" % (self.title, self.pub_year)
-    
+
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
@@ -471,61 +471,11 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'text', 'review_date', 'book')
 ```
 
-
-## `views.py`
-
-* Αντίστοιχα, θα προσθέσουμε δύο νέα views, μία για να παίρνουμε όλες
-  τις κριτικές, και μία για να μπορούμε να χειριστούμε μία.
-
-```python
-from .models import Book, Review
-from .serializers import BookSerializer, ReviewSerializer
-from rest_framework import generics
-
-from django.contrib.staticfiles import views
-
-def index(request, path=''):
-    if (path.endswith('.js')):
-        return views.serve(request, path)
-    else:
-        return views.serve(request, 'index.html')
-
-class BookList(generics.ListCreateAPIView):
-    serializer_class = BookSerializer
-
-    def get_queryset(self):
-        queryset = Book.objects.all()
-        title = self.request.query_params.get('title', None)
-        if title is not None:
-            queryset = queryset.filter(title__icontains=title)
-        return queryset
-
-class BookDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-class ReviewList(generics.ListCreateAPIView):
-    serializer_class = ReviewSerializer
-
-    def get_queryset(self):
-        queryset = Review.objects.all()
-        print(self.kwargs)
-        book_id = self.kwargs.get('book_id', None)
-        if book_id is not None:
-            queryset = queryset.filter(book=book_id)
-        return queryset
-
-class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
-```
-
-
 ## Επέκταση του API
 
 * Οι κριτικές, μιας και αναφέρονται πάντοτε σε ένα βιβλίο, θα είναι
   προσπελάσιμες μέσω αυτού.
-  
+
 * Έτσι, για να δούμε τις κριτικές ενός βιβλίο, θα δίνουμε:
   ```
   GET /api/books/book_id/reviews
@@ -533,7 +483,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
 * Για να δημιουργήσουμε μια κριτική, θα δίνουμε:
   ```
-  PUT /api/books/book_id/reviews/
+  POST /api/books/book_id/reviews/
   ```
 
 * Ενώ για να αλλάξουμε μια κριτική, θα δίνουμε:
@@ -545,25 +495,85 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
 * Για να επιτύχουμε τα παραπάνω, αλλάζουμε το αρχείο `djbr/urls.py`
   ώστε να είναι:
+  ```python
+  from django.conf.urls import url
+  from . import views
 
-```python
-from django.conf.urls import url
-from . import views
+  app_name = 'djbr'
 
-app_name = 'djbr'
+  urlpatterns = [
+      url(r'^books/?$', views.BookList.as_view()),
+      url(r'^books/(?P<pk>[0-9]+)/?$', views.BookDetail.as_view()),
+      url(r'^books/(?P<book_id>[0-9]+)/reviews/?$', views.ReviewList.as_view()),
+  ]
+  ```
 
-urlpatterns = [
-    url(r'^books/?$', views.BookList.as_view()),
-    url(r'^books/(?P<pk>[0-9]+)/?$', views.BookDetail.as_view()),
-    url(r'^books/(?P<pk>[0-9]+)/reviews/?$', views.ReviewList.as_view()),
-]
+## `views.py`
+
+* Αντίστοιχα, θα προσθέσουμε δύο νέα views, μία για να παίρνουμε όλες
+  τις κριτικές, και μία για να μπορούμε να χειριστούμε μία.
+  ```python
+  from .models import Book, Review
+  from .serializers import BookSerializer, ReviewSerializer
+  from rest_framework import generics
+
+  from django.contrib.staticfiles import views
+
+  def index(request, path=''):
+      if (path.endswith('.js')):
+          return views.serve(request, path)
+      else:
+          return views.serve(request, 'index.html')
+
+  class BookList(generics.ListCreateAPIView):
+      serializer_class = BookSerializer
+
+      def get_queryset(self):
+          queryset = Book.objects.all()
+          title = self.request.query_params.get('title', None)
+          if title is not None:
+              queryset = queryset.filter(title__icontains=title)
+          return queryset
+
+  class BookDetail(generics.RetrieveUpdateDestroyAPIView):
+      queryset = Book.objects.all()
+      serializer_class = BookSerializer
+
+  class ReviewList(generics.ListCreateAPIView):
+      serializer_class = ReviewSerializer
+
+      def get_queryset(self):
+          queryset = Review.objects.all()
+          print(self.kwargs)
+          book_id = self.kwargs.get('book_id', None)
+          if book_id is not None:
+              queryset = queryset.filter(book=book_id)
+          return queryset
+
+  class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
+      queryset = Review.objects.all()
+      serializer_class = ReviewSerializer
+  ```
+
+<div class="notes">
+
+Η κλάση `ReviewDetail()` δεν έχει καμμία ιδιαιτερότητα. Χειρίζεται μια συγκεκριμένη κριτική. Το φίλτρο για την εύρεση της κριτικής εφαρμόζεται αυτομάτως από το Django Rest framework, όπως
+ακριβώς γίνεται και τη μέθοδο `BookDetail()`.
+
+Η μέθοδος `ReviewList()` έχει μεγαλύτερο ενδιαφέρον. Οι κριτικές μας αφορούν πάντοτε συγκεκριμένο βιβλίο. Οι κριτικές αυτές είναι προσβάσιμες μέσω URL του τύπου:
 ```
+url(r'^books/(?P<book_id>[0-9]+)/reviews/?$', views.ReviewList.as_view()),
+```
+Όταν η αίτηση φτάνει σε αντικείμενο του τύπου`ReviewList`, η παράμετρος (όπως και όλες οι τυχόν παράμετροι του URL) είναι διαθέσιμες μέσω ενός λεξικού `self.kwargs`. Συνεπώς αναζητούμε στο  `self.kwargs` την παράμετρο `book_id` και εφαρμόζουμε το κατάλληλο φίλτρο με βάση το `book_id` που βρήκαμε.
+
+</div>
+
 
 ## Επιστροφή στο front-end
 
 * Στο front-end τώρα, θα πρέπει να επεκτείνουμε την εφαρμογή του
   Angular ώστε να μπορεί να εμφανίσει και να χειριστεί κριτικές.
-  
+
 * Θα λειτουργήσουμε περίπου όπως και στα βιβλία.
 
 
@@ -596,18 +606,18 @@ urlpatterns = [
 
 * Για την εμφάνιση και το χειρισμό των κριτικών θα δημιουργήσουμε ένα
   εξάρτημα `ReviewsComponent`.
-  
+
 * Δίνουμε:
   ```bash
   ng generate component reviews
   ```
-  
+
 * Θα δημιουργηθούν τα αρχεία:
   * `reviews.component.css`
   * `reviews.component.html`
   * `reviews.component.spec.ts`
   * `reviews.component.ts`
-  
+
 * Επίσης, θα ενημερωθεί κατάλληλα το αρχείο `app.module.ts`.
 
 
@@ -620,7 +630,7 @@ urlpatterns = [
   ```bash
   ng generate service review
   ```
-  
+
 * Θα δημιουργηθούν τα αρχεία:
   * `review.service.spec.ts`
   *  `review.service.ts`
@@ -629,12 +639,12 @@ urlpatterns = [
 
 * Θα πρέπει να ενημερώσουμε το αρχείο `app.module.ts` για την υπηρεσία
   που φτιάξαμε.
-  
+
 * Θα πρέπει να την εισάγουμε:
   ```javascript
   import { ReviewService } from './review.service';
   ```
-  
+
 * Θα πρέπει να την προσθέσουμε στους `providers`:
   ```javascript
   providers: [ BookService, MessageService, ReviewService ],
@@ -786,10 +796,10 @@ export class AppRoutingModule { }
 * Ενδέχεται ο χρήστης να πλοηγηθεί στη σελίδα με τις κριτικές ενός
   συγκεκριμένου βιβλίου (με συγκεκριμένο `id`) ενώ ήδη αναζητούμε τις
   κριτικές ενός προηγούμενου βιβλίου (με άλλο `id`).
-  
+
 * Ο τελεστής `switchMap` εξασφαλίζει ότι δεν θα ληφθούν υπόψη τα αποτελέσματα
   της προηγούμενης αίτησης `getReviews()`, αλλά μόνο της τρέχουσας.
-  
+
 
 ## `review.service.ts`
 
@@ -869,7 +879,7 @@ export class AppRoutingModule { }
 
 * Τέλος, θέλουμε το εξάρτημα των κριτικών να εμφανίζεται στη σελίδα με
   τις λεπτομέρειες ενός βιβλίου:
-  
+
   ```html
   <div *ngIf="book">
     <h2><span appItalics> {{ book.title }}</span> details:</h2>
