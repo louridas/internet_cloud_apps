@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+import bcrypt
+
 class Book(models.Model):
     title = models.CharField(max_length=200)
     pub_year = models.IntegerField('date published', default=2000)

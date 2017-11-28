@@ -1,0 +1,29 @@
+<div class="container">
+
+  <span [ngSwitch]="auth.isLoggedIn">
+    <span *ngSwitchCase="false">
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="username" class="sr-only">Email address</label>
+        <input #username
+               type="text" id="username" class="form-control"
+               placeholder="username" required="" autofocus="">
+        <label for="password" class="sr-only">Password</label>
+        <input #password
+               type="password" id="password" class="form-control"
+               placeholder="Password" required="">
+
+        <button (click)="login(username.value, password.value)"
+                class="btn btn-lg btn-primary btn-block"
+                type="submit">Sign in</button>
+      </form>
+    </span>
+    <span *ngSwitchCase="true">
+      <form class="form-signin">
+        <button (click)="logout()"
+                class="btn btn-lg btn-primary btn-block">Logout</button>
+      </form>
+    </span>
+  </span>
+
+</div>

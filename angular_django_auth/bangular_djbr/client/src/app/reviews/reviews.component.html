@@ -1,7 +1,7 @@
 <div class="container">
   <h3>Reviews</h3>
 
-  <div class="row justify-content-start">
+  <div class="row justify-content-start" *ngIf="auth.isLoggedIn">
     <div class="col-4">
       <form (ngSubmit)="onSubmit()" #reviewForm="ngForm">
 

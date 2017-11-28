@@ -4,6 +4,8 @@ from rest_framework import generics
 
 from django.contrib.staticfiles import views
 
+from rest_framework import permissions
+
 def index(request, path=''):
     if (path.endswith('.js')):
         return views.serve(request, path)
@@ -26,6 +28,7 @@ class BookDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class ReviewList(generics.ListCreateAPIView):
     serializer_class = ReviewSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
         queryset = Review.objects.all()
@@ -37,4 +40,5 @@ class ReviewList(generics.ListCreateAPIView):
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     

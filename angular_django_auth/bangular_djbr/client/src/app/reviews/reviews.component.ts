@@ -7,6 +7,8 @@ import 'rxjs/add/operator/do';
 import { Review } from '../review';
 import { ReviewService } from '../review.service';
 
+import { AuthService } from '../auth.service';
+
 @Component({
   selector: 'app-reviews',
   templateUrl: './reviews.component.html',
@@ -20,7 +22,8 @@ export class ReviewsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private reviewService: ReviewService
+    private reviewService: ReviewService,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
