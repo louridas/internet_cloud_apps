@@ -140,11 +140,11 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
   }
   ```
 
-# Προετοιμασία front-end
+# Προετοιμασία front end
 
 ## Γιατί;
 
-* Τώρα θα πρέπει να προσθέσουμε στο front-end τη δυνατότητα να βλέπουμε
+* Τώρα θα πρέπει να προσθέσουμε στο front end τη δυνατότητα να βλέπουμε
   κριτικές βιβλίων.
 
 * Όπως είπαμε, θέλουμε οι χρήστες που έχουν περάσει τη διαδικασία εισόδου,
@@ -153,7 +153,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 * Βεβαίως, η πρόσβαση στην εφαρμογή ελέγχεται ούτως ή άλλως από το
   Django και το Django Rest framework.
   
-* Η προσαρμογή του fropnt end γίνεται γιατί απλώς δεν θέλουμε να
+* Η προσαρμογή του front end γίνεται γιατί απλώς δεν θέλουμε να
   εμφανίζονται στον χρήστη πράγματα τα οποία δεν μπορεί να κάνει.
 
 
@@ -178,23 +178,23 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
   [Django Rest framework JWT Auth](http://getblimp.github.io/django-rest-framework-jwt/).
 
 * H εγκατάσταση γίνεται με:
-    ```bash
-    pip install djangorestframework-jwt
-    ```
+  ```bash
+  pip install djangorestframework-jwt
+  ```
 
 ## Ρυθμίσεις `settings.py`
 
 * Για να ενεργοποιηθεί το JWT στο Django θα προσθέσουμε τα παρακάτω
   στο αρχείο `settings.py`:
-    ```python
-    REST_FRAMEWORK = {
-        'DEFAULT_AUTHENTICATION_CLASSES': (
-            'rest_framework.authentication.SessionAuthentication',
-            'rest_framework.authentication.BasicAuthentication',
-            'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        ),
-    }
-    ```
+  ```python
+  REST_FRAMEWORK = {
+      'DEFAULT_AUTHENTICATION_CLASSES': (
+          'rest_framework.authentication.SessionAuthentication',
+          'rest_framework.authentication.BasicAuthentication',
+          'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+      ),
+  }
+  ```
 
 ## Διαδρομή απόκτησης token 
 
@@ -243,14 +243,14 @@ urlpatterns += url(r'^(?P<path>.*)$', views.index),
 *  Στον κεντρικό κατάλογο της εφαρμογής μας (στην περίπτωσή μας,
   `client`) φτιάχνουμε το αρχείο `proxy.conf.json` με τα εξής
   περιεχόμενα:
-    ```javascript
-    {
-      "/api": {
-        "target": "http://localhost:8000",
-        "secure": false
-      }
+  ```javascript
+  {
+    "/api": {
+      "target": "http://localhost:8000",
+      "secure": false
     }
-    ```
+  }
+  ```
 
 ## Προσαρμογή `package.json`
 
@@ -269,23 +269,23 @@ urlpatterns += url(r'^(?P<path>.*)$', views.index),
   npm start
   ```
 
-# Αυθεντικοποίηση στο front-end
+# Αυθεντικοποίηση στο front end
 
 ## Υπηρεσία αυθεντικοποίησης
 
-* Για την αυθεντικοποίηση στο front-end θα δημιουργήσουμε μια υπηρεσία
-  `AuthService'.
+* Για την αυθεντικοποίηση στο front end θα δημιουργήσουμε μια υπηρεσία
+  `AuthService`.
 
 * Συνεπώς δίνουμε:
-    ```bash
-    ng g service auth
-    ```
+  ```bash
+  ng g service auth
+  ```
 
 * Στη συνέχεια θα πρέπει να εισάγουμε στον σκελετό του αρχείου τη
   λογική της υπηρεσίας.
 
 * Η υπηρεσία θα:
-    * Επικοινωνεί με το back-end, στέλνοντας το username και το
+    * Επικοινωνεί με το back end, στέλνοντας το username και το
       password του χρήστη, προκειμένου να αποκτήσει ένα token.
     * Αποθηκεύει το token μέχρι να κάνει ο χρήστης logout.
     * Μπορεί να επιβεβαιώνει ότι ένας χρήστης έχει πραγματικά περάσει
@@ -351,7 +351,7 @@ export class AuthService {
 }
 ```
 
-# Είσοδος μέσω του front-end
+# Είσοδος μέσω του front end
 
 ## Εξάρτημα εισόδου
 
@@ -367,7 +367,7 @@ export class AuthService {
 
 ## `login.component.ts`
 
-```
+```javascript
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -483,12 +483,12 @@ export class LoginComponent {
 }
 ```
 
-## Ενημέρωση διαδρομών front-end
+## Ενημέρωση διαδρομών front end
 
 * Βεβαίως για να μπορεί να περάσει τη διαδικασία εισόδου ο χρήστης, θα
   πρέπει αυτή να είναι προσβάσιμη.
 
-* Θα ενημερώσουμε λοιπόν τις διαδρομές του front-end.
+* Θα ενημερώσουμε λοιπόν τις διαδρομές του front end.
 
 
 ## `app-routing.module.ts`
@@ -575,7 +575,7 @@ export class AppRoutingModule { }
 
 ## `app.component.ts` (1)
 
-* Αφού στο `app.componen.html` χρησιμοποιούμε το `AuthService`, θα
+* Αφού στο `app.component.html` χρησιμοποιούμε το `AuthService`, θα
   πρέπει να δημιουργήσουμε το αντίστοιχο πεδίο στο `app.component.ts`.
 
 * Αυτό γίνεται μέσω του κατάλληλου `import` και της προσαρμογής του
@@ -726,12 +726,12 @@ export class ReviewsComponent implements OnInit {
 }
 ```
 
-# Αλληλεπίδραση με το back-end
+# Αλληλεπίδραση με το back end
 
 ## Εισαγωγή του token 
 
 * Από τη στιγμή που ο χρήστης έχει λάβει ένα token, θέλουμε αυτό να
-  περιλαμβάνεται σε κάθε αίτηση που στέλνει το front-end στο back-end.
+  περιλαμβάνεται σε κάθε αίτηση που στέλνει το front end στο back end.
   
 * Αν η συγκεκριμένη αίτηση δεν απαιτεί αυθεντικοποίηση, δεν πειράζει.
 
