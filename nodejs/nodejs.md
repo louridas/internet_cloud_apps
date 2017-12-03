@@ -79,7 +79,7 @@
 εξυπηρετητή (`hostname`), συν μια συνάρτηση η οποία θα εκτελεστεί
 μόλις ο server ξεκινήσει. Η τελευταία συνάρτηση που περνάμε στην
 `server.listen()` είναι επίσης μια συνάρτηση callback, η οποία θα
-εκτελεστεί μόλις δημιουργθεί ο `server`. </div>
+εκτελεστεί μόλις δημιουργθεί ο `server`. 
 
 Για να ξεκινήσουμε τον εξυπηρετητή μας, δίνουμε:
 ```bash
@@ -87,6 +87,7 @@ node helloworldserver.js
 ```
 Ο εξυπηρετητής μας τρέχει στη διεύθυνση http://localhost:3000.
 
+</div>
 
 ## Ανατομία του server
 
@@ -99,6 +100,8 @@ node helloworldserver.js
   οποία χειρίζονται συγκεκριμένες συναρτήσεις, οι οποίες ονομάζονται
   *χειριστές γεγονότων* (request handlers) ή ακουστές (listeners).
 
+
+# Γεγονότα
 
 ## `EventEmitter`
 
@@ -168,6 +171,7 @@ node helloworldserver.js
 * Πρέπει να προσέξουμε ότι η λέξη `this` θα αναφέρεται *πάντα* στο
   αντικείμενο `EventEmitter`, και όχι σε κάποιο άλλο αντικείμενο που
   μπορεί ίσως να περιμέναμε.
+
 
 ## Παράμετροι στους χειριστές (4)
 
@@ -347,6 +351,8 @@ node helloworldserver.js
   });
   ```
 
+# Χειρισμός αιτήσεων και απαντήσεων
+
 ## Αιτήσεις και απαντήσεις
 
 * Το αντικείμενο `response` είναι τύπου `ServerResponse`, ενώ το
@@ -363,16 +369,16 @@ node helloworldserver.js
 * Αν θέλουμε να βρούμε τη μέθοδο με την οποία έγινε μια αίτηση (π.χ.
   GET, PUSH), την αναζητούμε στην ιδιότητα `method` του αντικειμένου
   της αίτησης:
-    ```javascript
-    const method = request.method;
-    ```
+  ```javascript
+  const method = request.method;
+  ```
 
 * Αν θέλουμε να βρούμε το URL στο οποίο έγινε η αίτηση (δηλαδή ό,τι
   υπάρχει μετά το `http://` ή `https://`, την αναζητούμε στην ιδιότητα
   `url` του αντικειμένου της αίτησης:
-    ```javascript
-    const ulr = request.url;
-    ```
+  ```javascript
+  const ulr = request.url;
+  ```
 
 * Μπορούμε να πάρουμε και τα δύο μαζί:
   ```javascript
@@ -383,10 +389,10 @@ node helloworldserver.js
 
 * Αν θέλουμε να πάρουμε τις επικεφαλλίδες μιας αίτησης, μπορούμε να
   τις βρούμε στην ιδιότητα `headers` του αντικειμένου της αίτησης:
-    ```javascript
-    const headers = request.headers;
-    const userAgent = headers['user-agent'];
-    ```
+  ```javascript
+  const headers = request.headers;
+  const userAgent = headers['user-agent'];
+  ```
 * Για ευκολία, τα ονόματα των επικεφαλλίδων είναι πάντοτε με πεζά
   γράμματα.
 
@@ -406,6 +412,7 @@ node helloworldserver.js
 
 * Οι χειριστές ακούν στα γεγονότα `data` και `end`.
 
+
 ## Χειρισμός δεδομένων (1)
 
 * Τα δεδομένα που έρχονται μέσα από το αντικείμενο εκπέμπονται μέσω
@@ -414,6 +421,7 @@ node helloworldserver.js
 * Τυπικά, απλώς τα προσθέτουμε σε έναν πίνακα (array), μέχρι να
   τελειώσουν (όπως σηματοδοτεί το γεγονός `end`, οπότε μπορούμε να τα
   ενώσουμε και να πάρουμε το σύνολό τους.
+
 
 ## Χειρισμός δεδομένων (2)
 
@@ -491,9 +499,9 @@ request.on('data', (chunk) => {
 
 * Μπορούμε να δοκιμάσουμε τη λειτουργία του JSON echo server δίνοντας
   απλώς:
-    ```bash
-    http PUT http://localhost:8080 message='Hello, World'
-    ```
+  ```bash
+  http PUT http://localhost:8080 message='Hello, World'
+  ```
 
 * Οπότε στο τερματικό μας θα δούμε τι ακριβώς μας επιστρέφει (ό,τι του
   στείλαμε). 
@@ -628,7 +636,7 @@ request.on('data', (chunk) => {
 
 # Blocking, Non-Blocking
 
-## Γενικά
+## Η διαφορά
 
 * Είναι πολύ σημαντικό να καταλάβουμε τη διαφορά μεταξύ των blocking
   και non-blocking συναρτήσεων στο Node.
@@ -653,7 +661,7 @@ fs.readFile('/file.md', (err, data) => {
 });
 ```
 
-## Διαφορές (1)
+## Τι θα συμβεί στη σύγχρονη περίπτωση
 
 * Στη σύγχρονη ανάγνωση του αρχείου, το πρόγραμμα θα περιμένει μέχρι
   να ολοκληρωθεί η ανάγνωση, και μετά θα εκτελεστεί η εντολή που
@@ -680,7 +688,7 @@ fs.readFile('/file.md', (err, data) => {
 
 </div>
 
-## Διαφορές (2)
+## Τι θα συμβεί στην ασύγχρονη περίπτωση
 
 * Στην ασύγχρονη ανάγνωση του αρχείου, το πρόγραμμα επιστρέφει αμέσως
   από την κλήση της συνάρτησης `readFile()`. Η εντολή που ακολουθεί θα
@@ -716,43 +724,37 @@ node file_read_async.js | more
 </div>
 
 
-## Παγίδες (1)
+## Προσοχή!
 
 * Τυχόν παρεξηγήσεις στη λειτουργία των ασύγχρονων κλήσεων μπορούν να
-  οδηγήσουν σε ύπουλα λάθη, με μη ντετερμινιστική συμπεριφορά.
+  οδηγήσουν σε ύπουλα λάθη, ή μη ντετερμινιστική συμπεριφορά.
 
 * Για παράδειγμα, στον κώδικα που ακολουθεί, το αρχείο `/file.md` θα
   σβηστεί πριν διαβαστεί!
+  ```javascript
+  const fs = require('fs');
+  fs.readFile('/file.md', (err, data) => {
+    if (err) throw err;
+    console.log(data);
+  });
+  fs.unlinkSync('/file.md');
+  ```
 
-## Παγίδες (2)
-
-```javascript
-const fs = require('fs');
-fs.readFile('/file.md', (err, data) => {
-  if (err) throw err;
-  console.log(data);
-});
-fs.unlinkSync('/file.md');
-```
-
-## Αποφυγή Παγίδων (1)
+## Αποφυγή Παγίδων
 
 * Ένας τρόπος να αποφεύγουμε τις παγίδες είναι να χρησιμοποιούμε παντού
   non-blocking συναρτήσεις.
 
 * Έτσι, θα αντικαταστήσουμε το `fs.unlinkSync()` με το `fs.unlink()`,
   το οποίο θα καλούμε στο callback του `fs.readFile()`.
-
-## Αποφυγή Παγίδων (2)
-
-```javascript
-const fs = require('fs');
-fs.readFile('/file.md', (err, data) => {
-  if (err) throw err;
-  console.log(data);
-  fs.unlink('/file.md', (err) => {
+  ```javascript
+  const fs = require('fs');
+  fs.readFile('/file.md', (err, data) => {
     if (err) throw err;
+    console.log(data);
+    fs.unlink('/file.md', (err) => {
+      if (err) throw err;
+    });
   });
-});
-```
+  ```
 
