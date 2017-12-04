@@ -79,7 +79,7 @@
 εξυπηρετητή (`hostname`), συν μια συνάρτηση η οποία θα εκτελεστεί
 μόλις ο server ξεκινήσει. Η τελευταία συνάρτηση που περνάμε στην
 `server.listen()` είναι επίσης μια συνάρτηση callback, η οποία θα
-εκτελεστεί μόλις δημιουργθεί ο `server`. 
+εκτελεστεί μόλις δημιουργηθεί ο `server`. 
 
 Για να ξεκινήσουμε τον εξυπηρετητή μας, δίνουμε:
 ```bash
@@ -195,6 +195,10 @@ node helloworldserver.js
       this.myEmitter.emit('event', 'one', 'two');
     }
   }
+
+  var myEmitterUser = new MyEmitterUser();
+
+  myEmitterUser.fire();
   ```
 
 ## Παράμετροι στους χειριστές (5)
@@ -349,6 +353,10 @@ node helloworldserver.js
     response.setHeader('Content-Type', 'text/plain');
     response.end('Hello World\n');
   });
+
+  server.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
+  });
   ```
 
 # Χειρισμός αιτήσεων και απαντήσεων
@@ -419,7 +427,7 @@ node helloworldserver.js
   ενός αντικειμένου τύπου `Buffer`.
 
 * Τυπικά, απλώς τα προσθέτουμε σε έναν πίνακα (array), μέχρι να
-  τελειώσουν (όπως σηματοδοτεί το γεγονός `end`, οπότε μπορούμε να τα
+  τελειώσουν (όπως σηματοδοτεί το γεγονός `end`), οπότε μπορούμε να τα
   ενώσουμε και να πάρουμε το σύνολό τους.
 
 
