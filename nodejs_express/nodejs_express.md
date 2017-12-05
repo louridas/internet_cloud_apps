@@ -16,379 +16,648 @@
   υλοποιηθούν άλλες βιβλιοθήκες που προσδίδουν επιπλέον δυνατότητες
   (όπως έλεγχος πρόσβασης).
 
+
+## Δημιουργία νέας εφαρμογής
+
+* Αν θέλουμε να ξεκινήσουμε μια νέα εφαρμογή με το Express από το
+  μηδέν, δίνουμε:
+  ```bash
+  mkdir myapp
+  cd myapp
+  ```
+  
+* Στη συνέχεια αρχικοποιούμε την εφαρμογή δίνοντας:
+  ```bash
+  npm init
+  ```
+  Αυτή τη στιγμή μπορούμε απλώς να δεχτούμε τις προτεινόμενες τιμές
+  των παραμέτρων που μας εμφανίζονται.
+  
+* Κατόπιν πρέπει να εγκαταστήσουμε το Express στον κατάλογο `myapp`
+  και να το προσθέσουμε στις εξαρτήσεις της εφαρμογής:
+  ```bash
+  npm install express --save
+  ```
+
+
+## Hello World
+
+* Το διάσημο Hello, World σε Express μπορούμε να το υλοποιήσουμε
+  φτιάχνοντας ένα αρχείο `app.js` με τα εξής περιεχόμενα:
+  ```javascript
+  const express = require('express');
+  const app = express();
+
+  app.get('/', (req, res) => res.send('Hello World!'));
+
+  app.listen(3000, () => console.log('Example app listening on port 3000!'));
+  ```
+  
+* Για να τρέξουμε τον εξυπηρετητή που υλοποιεί το πρόγραμμα αυτό
+  δίνουμε:
+  ```bash
+  node app.js
+  ```
+
+# Δρομολόγηση
+
+## Βασικές αρχές
+
+* Η δρομολόγηση στο Express λειτουργεί με βάση ορισμούς διαδρομών.
+
+* Οι ορισμοί αυτοί έχουν τη μορφή:
+  ```javascript
+  app.METHOD(PATH, HANDLER)
+  ```
+  
+<div class="notes">
+
+* `app` είναι ένα αντικείμενο τύπου `express`
+
+* `METHOD` είναι μια μέθοδος του πρωτοκόλλου HTTP, γραμμένο σε πεζά
+  γράμματα. 
+  
+* `PATH` είναι το μονοπάτι στο URL.
+
+* `HANDLER` είναι η συνάρτηση που θα εκτελεστεί όταν ενεργοποιηθεί η
+  διαδρομή.
+  
+
+</div>
+
+
+## Παραδείγματα διαδρομών (1)
+
+* Εμφάνιση `Hello, World!` στην κεντρική σελίδα:
+  ```javascript
+  app.get('/', function (req, res) {
+    res.send('Hello World!')
+  })
+  ```
+  
+* Απόκριση σε POST στην κεντρική σελίδα:
+  ```javascript
+  app.post('/', function (req, res) {
+    res.send('Got a POST request')
+  })
+  ```
+  
+## Παραδείγματα διαδρομών (2)
+
+* Απόκριση σε POST στη διαδρομή `/user`:
+  ```javascript
+  app.put('/user', function (req, res) {
+    res.send('Got a PUT request at /user')
+  })
+  ```
+  
+* Απόκριση σε DELETE στη διαδρομή `/user`:
+  ```javascript
+  app.delete('/user', function (req, res) {
+    res.send('Got a DELETE request at /user')
+  })
+  ```
+
+## Σύνταξη διαδρομών
+
+* Οι διαδρομές μπορεί να είναι συμβολοσειρές, ή μοτίβα, ή κανονικές
+  εκφράσεις.
+  
+* Το Express χρησιμοποιεί τη βιβλιοθήκη
+  [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) για
+  την ερμηνεία των διαδρομών.
+
+
+## Παραδείγματα σύνταξης (1)
+
+* Περιγράφει τη διαδρομή `/random.txt`:
+  ```javascript
+  app.get('/random.text', function (req, res) {
+    res.send('random.text')
+  })
+  ```
+
+* Περιγράφει τις διαδρομές `acd`, `abcd`, `abbbcd`, κ.λπ.:
+  ```javascript
+  app.get('/ab?cd', function (req, res) {
+    res.send('ab+cd')
+  })
+  ```
+
+* Περιγράφει τις διαδρομές `abcd`, `abbcd`, `abbbcd`, κ.λπ.:
+  ```javascript
+  app.get('/ab+cd', function (req, res) {
+    res.send('ab+cd')
+  })
+  ```
+
+
+## Παραδείγματα σύνταξης (2)
+
+
+* Περιγράφει τις διαδρομές `abcd`, `abxcd`, `abRANDOMcd`, κ.λπ.:
+  ```javascript
+  app.get('/ab*cd', function (req, res) {
+    res.send('ab*cd')
+  })
+  ```
+
+* Περιγράφει τις διαδρομές `abe` και `abcde`:
+  ```javascript
+  app.get('/ab(cd)?e', function (req, res) {
+    res.send('ab(cd)?e')
+  })
+  ```
+
+## Παραδείγματα σύνταξης με κανονικές εκφράσεις
+
+
+* Περιγράφει τις διαδρομές που περιέχουν `a`:
+  ```javascript
+  app.get('/a/, function (req, res) {
+    res.send('/a/')
+  })
+  ```
+
+* Περιγράφει τις διαδρομές `butterfly` και `dragonfly`, αλλά όχι
+  `butterflyman`,  `dragonflyman`, κ.λπ.:
+  ```javascript
+  app.get(/.*fly$/, function (req, res) {
+    res.send('/.*fly$/')
+  })
+  ```
+  
+## Παράμετροι διαδρομών
+
+* Οι διαδρομές που ορίζουμε μπορεί να είναι παραμετροποιημένες:
+  ```javascript
+  app.get('/users/:userId/books/:bookId', function (req, res) {
+    res.send(req.params)
+  })
+  ```
+
+* Στο παράδειγμα αυτό, το αντικείμενο `req.params` περιέχει τις τιμές
+  των παραμέτρων. Π.χ. αν το URL είναι:
+  ```
+  http://localhost:3000/users/34/books/8989
+  ```
+  το `req.params` θα είναι:
+  ```
+  { "userId": "34", "bookId": "8989" }
+  ```
+
+## Χειρισμός σώματος αίτησης
+
+* Το σώμα της αίτησης βρίσκεται στο αντικείμενο `req.body`.
+
+* Όταν έρχεται μια αίτηση, το Express θα πρέπει να την ερμηνεύσει πριν
+  την περάσει στον χειριστή της διαδρομής μας.
+  
+* Ο χειρισμός μιας αίτησης γίνεται μέσω βιβλιοθηκών.
+
+* Για τον χειρισμό του σώματος των αιτήσεων χρησιμοποιούμε τη
+  βιβλιοθήκη [body-parser](https://github.com/expressjs/body-parser).
+  
+* Για να χειριστούμε αιτήσεις JSON γράφουμε στην εφαρμογή μας:
+  ```javascript
+  app.use(bodyParser.json());
+  ```
+  
+* Για να χειριστούμε την υποβολή παραδοσιακής φόρμας γράφουμε στην
+  εφαρμογή μας:
+  ```javascript
+  app.use(bodyParser.urlencoded({ extended: false }));
+  ```
+
+## express.Router
+
+* Μπορούμε να χρησιμοποιήσουμε το `express.Router` για να φτιάξουμε
+  ξεχωριστούς χειριστές διαδρομών που στη συνέχεια τους συνδέσουμε
+  στην εφαρμογή μας.
+  
+* Η ιδέα είναι ότι έχουμε διαφορετικά αρχεία στα οποία χειριζόμαστε
+  διαφορετικά υποσύνολα των διαδρομών.
+  
+* Επειδή ο χειρισμός των διαδρομών είναι στην ουσία η λογική της
+  εφαρμογής, αυτό σημαίνει ότι φτιάχνουμε διαφορετικούς routers, με
+  την ίδια λογική που στο Django φτιάχνουμε διαφορετικά models και
+  views.
+  
+
+## Παράδειγμα express.Router (1)
+
+* Έστω ότι φτιάχνουμε ένα αρχείο `birds.js` στον κατάλογο της
+  εφαρμογής μας:
+  ```javascript
+  var express = require('express');
+  var router = express.Router();
+
+  // middleware that is specific to this router
+  router.use(function timeLog (req, res, next) {
+    console.log('Time: ', Date.now());
+    next();
+  });
+  
+  // define the home page route
+  router.get('/', function (req, res) {
+    res.send('Birds home page');
+  });
+  
+  // define the about route
+  router.get('/about', function (req, res) {
+    res.send('About birds');
+  });
+
+  module.exports = router
+  ```
+
+## Παράδειγμα express.Router (2)
+
+* Τότε, για να το χρησιμοποιήσουμε, αρκεί να συμπεριλάβουμε τα
+  παρακάτω στο `app.js`:
+  ```javascript
+  var birds = require('./birds')
+
+  // ...
+
+  app.use('/birds', birds)
+  ```
+  
+* Με αυτό, η εφαρμογή θα μπορεί να χειριστεί αιτήσεις στο `/birds` και
+  στο `/birds/about`, ενώ σε κάθε μία τέτοια αίτηση θα καλείται και η
+  συνάρτηση `timeLog()`.
+
+
+# Middleware
+
+## Έννοια middleware
+
+* Το middleware είναι μια βασική αρχιτεκτονική επιλογή του Express.
+
+* Middleware ονομάζεται μια συνάρτηση η οποία έχει πρόσβαση στο
+  αντικείμενο της αίτησης (`req`), στο αντικείμενο της απάντησης
+  (`res`), και στο επόμενο middleware στη σειρά.
+  
+* Έτσι λοιπόν, μπορεί στο χειρισμό μιας αίτησης ή μιας απάντησης να
+  έχουμε μια αλυσίδα middleware.
+
+* Αν το middleware δεν είναι το τελευταίο στην αλυσίδα, θα πρέπει να
+  καλεί την επόμενη συνάρτηση μέσω κλήσης `next()`.
+ 
+* Οι χειριστές διαδρομών που έχουμε δει δεν είναι παρά middleware·
+  δεν έχουμε δει κλήση `next()` γιατί ο χειρισμός της αίτησης
+  τερμάτιζε εκεί.
+
+
+## Παράδειγμα middleware (1)
+
+* Η παρακάτω συνάρτηση εκτελείται κάθε φορά που λαμβάνεται μια αίτηση:
+  ```javascript
+  var app = express()
+
+  app.use(function (req, res, next) {
+    console.log('Time:', Date.now());
+    next();
+  })
+  ```
+
+## Παράδειγμα middleware (2)
+
+* Η παρακάτω συνάρτηση αναρτάται στη διαδρομή `/user/:id`. Θα
+  εκτελεστεί για κάθε αίτηση σε αυτή τη διαδρομή:
+  ```javascript
+  app.use('/user/:id', function (req, res, next) {
+    console.log('Request Type:', req.method);
+    next();
+  })
+  ```
+  
+## Middleware και χειρισμός λαθών
+
+* Αν η συνάρτησή μας παίρνει τέσσερες παραμέτρους, η πρώτη αντιστοιχεί
+  σε κάποιο λάθος που έχει εμφανιστεί:
+  ```javascript
+  app.use(function (err, req, res, next) {
+    console.error(err.stack)
+    res.status(500).send('Something broke!')
+  })
+  ```
+  
+# Γεννήτρια εφαρμογών
+  
+## Express generator
+
+* Συνήθως δεν ξεκινάμε τη δημιουργία μιας νέας εφαρμογής από το μηδέν,
+  όπως κάναμε παραπάνω.
+  
+* Αντί γι' αυτό, χρησιμοποιούμε τον Express generator.
+
+  
 ## Δημιουργία εφαρμογής
 
-* Ξεκινάμε εγκαθιστώντας τον express generator:
-    ```bash
-    npm install express-generator -g
-    ```
+* Ξεκινάμε εγκαθιστώντας τον Express generator:
+  ```bash
+  npm install express-generator -g
+  ```
 
 * Στη συνέχεια δημιουργούμε τον σκελετό της εφαρμογής με:
-    ```bash
-    express bangular_node
-    ```
+  ```bash
+  express --git --view=pug server
+  ```
+
+<div class="notes">
+
+* Η παράμετρος `--git` δημιουργεί και ένα αρχείο `.gitignore` στον κατάλογο
+  `bangular_node`, ώστε να μην ανέβουν στο αποθετήριο αρχεία που δεν
+  χρειάζονται. 
+
+* Η παράμετρος `view=pug` ορίζει ότι τα views της εφαρμογής, αν τα
+  δημιουργούσαμε στο node, θα τα χειριζόταν το
+  [Pug](https://pugjs.org/). Εμάς δεν μας αφορά αυτό, γιατί όλη η
+  διεπαφή με τον χρήστη θα γίνεται μέσω Angular.
+
+</div>
+ 
+ 
+## Εγκατάσταση και εκκίνηση 
+
 * Μετακινούμαστε στον κατάλογο `bangular_node` που δημιουργήθηκε, και
   εγκαθιστούμε όλα τα απαραίτητα πακέτα:
-    ```bash
-    npm install
-    ```
+  ```bash
+  cd bangular_node
+  npm install
+  ```
 
-## Δομή εφαρμογής
-
-```
-bangular_node
-bangular_node/package.json
-bangular_node/app.js
-bangular_node/public
-bangular_node/public/javascripts
-bangular_node/public/images
-bangular_node/public/stylesheets
-bangular_node/public/stylesheets/style.css
-bangular_node/routes
-bangular_node/routes/index.js
-bangular_node/routes/users.js
-bangular_node/views
-bangular_node/views/index.jade
-bangular_node/views/layout.jade
-bangular_node/views/error.jade
-bangular_node/bin
-bangular_node/bin/www
-```
+* Για να τρέξουμε την εφαρμογή σε MacOS ή Linux, δίνουμε:
+  ```bash
+  DEBUG=bangular_node:* npm start
+  ```
+  
+* Για να τρέξουμε την εφαρμογή σε MS-Windows, δίνουμε:
+  ```bash
+  set DEBUG=bangular_node:* & npm start
+  ```
+  
+* Η εφαρμογή μας θα τρέχει στη διεύθυνση `http://localhost:3000`.
 
 ## Αυτόματη επανεκκίνηση σε αλλαγές
 
 * Κατά την ανάπτυξη της εφαρμογής, είναι πρακτικό να φορτώνεται
   αυτόματα κάθε φορά που κάνουμε κάποιες αλλαγές στον κώδικά της
-  (automatic reload)
+  (automatic reload).
 
 * Αυτό μπορούμε να το κάνουμε με το πακέτο [nodemon](https://nodemon.io/).
 
 * Δίνουμε:
-    ```bash
-    npm install --save-dev nodemon
-    ```
+  ```bash
+  npm install --save-dev nodemon
+  ```
     
 * Προσθέτουμε στο `package.json` τα παρακάτω, στην ιδιότητα `scripts`:
-    ```javascript
-    "start-watch": "nodemon ./bin/www"
-    ```
+  ```javascript
+  "start-watch": "nodemon ./bin/www"
+  ```
+
+* Για να λειτουργεί η αυτόματη επαναφόρτωση, θα δίνουμε:
+  ```bash
+  npm start-watch
+  ```
+
+## Δομή εφαρμογής
+
+```
+server
+├── app.js
+├── bin
+│   └── www
+├── node_modules [256 entries exceeds filelimit, not opening dir]
+├── package-lock.json
+├── package.json
+├── public
+│   ├── images
+│   ├── javascripts
+│   └── stylesheets
+│       └── style.css
+├── routes
+│   ├── index.js
+│   └── users.js
+└── views
+    ├── error.pug
+    ├── index.pug
+    └── layout.pug
+```
+
+## Καθάρισμα των αρχείων
+
+* To αρχείο `routes/users.js` είναι ένα υπόδειγμα, δεν θα μας
+  χρειαστεί, οπότε μπορούμε να το σβήσουμε.
+  
+* Ομοίως σβήνουμε το αρχείο `routes/index.js` και το αρχείο
+  `views/index.pug`. 
+  
+* Αντίστοιχα, στο αρχείο `app.js` σβήνουμε τις δύο γραμμές:
+  ```javascript
+  var index = require('./routes/index');
+  var users = require('./routes/users');
+  ```
+   και τις δύο γραμμές:
+  ```javascript
+  app.use('/', index);
+  app.use('/users', users);
+  ```
+
+# Υλοποίηση bangular_node
 
 ## Προσθήκη router
 
-* Στο αρχείο `app.js` προσθέτουμε κάπου στην αρχή:
-    ```javascript
-    var router = require('./routes/router');
-    ```
+* Στο αρχείο `app.js` προσθέτουμε κάπου στην αρχή τη γραμμή:
+  ```javascript
+  var router = require('./routes/router');
+  ```
 
-* Και στη συνέχεια, προσθέτουμε μετά από τη γραμμή:
-    ```javascript
-    var app = express();
-    ```
-    τη γραμμή:
-    ```javascript
-    app.use('/api', router);
-    ```
+* Στη συνέχεια, προσθέτουμε μετά από τη γραμμή:
+  ```javascript
+  app.use(bodyParser.json());
+  ```
+  τη γραμμή:
+  ```javascript
+  app.use('/api', router);
+  ```
+
+## `app.js`
+
+* Μετά τις παραπάνω αλλαγές, το κεντρικό τμήμα της εφαρμογής μας,
+  `app.js`, θα είναι ως εξής:
+  ```javascript
+  var express = require('express');
+  var path = require('path');
+  var favicon = require('serve-favicon');
+  var logger = require('morgan');
+  var cookieParser = require('cookie-parser');
+  var bodyParser = require('body-parser');
+
+  var router = require('./routes/router');
+
+  var app = express();
+
+  // view engine setup
+  app.set('views', path.join(__dirname, 'views'));
+  app.set('view engine', 'pug');
+
+  // uncomment after placing your favicon in /public
+  //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+  app.use(logger('dev'));
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(cookieParser());
+  app.use(express.static(path.join(__dirname, 'public')));
+
+  app.use('/api', router);
+
+  // catch 404 and forward to error handler
+  app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+  });
+
+  // error handler
+  app.use(function(err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
+  });
+
+  module.exports = app;
+  ```
 
 ## `routes/router.js`
 
-```javascript
-const express = require('express');
-const router = express.Router();
+* Στο αρχείο `routes/router.js` θα βάλουμε προς το παρόν απλώς λίγο
+  κώδικα για να μας επιστρέφει κάποια βιβλία:
+  ```javascript
+  const express = require('express');
+  const router = express.Router();
 
-const books = [
-  { id: 11, title: 'Infinite Jest', pub_year: 1996},
-  { id: 12, title: 'Oblivion', pub_year: 2004 },
-  { id: 13, title: 'Ulysses', pub_year: 1922 },
-  { id: 14, title: 'The Crying of Lot 49', pub_year: 1966 },
-  { id: 15, title: 'City on Fire', pub_year: 2015 },
-  { id: 16, title: 'The Narrow Road to the Deep North', pub_year: 2013 },
-  { id: 17, title: 'The Dispossessed', pub_year: 1974 },
-  { id: 18, title: 'The Left Hand of Darkness', pub_year: 1969 },
-  { id: 19, title: 'A Death in the Family: My Struggle Book 1',
-    pub_year: 2013 },
-  { id: 20, title: 'A Man in Love: My Struggle Book 2', pub_year: 2013 }
-];
+  const books = [
+    { id: 11, title: 'Infinite Jest', pub_year: 1996},
+    { id: 12, title: 'Oblivion', pub_year: 2004 },
+    { id: 13, title: 'Ulysses', pub_year: 1922 },
+    { id: 14, title: 'The Crying of Lot 49', pub_year: 1966 },
+    { id: 15, title: 'City on Fire', pub_year: 2015 },
+    { id: 16, title: 'The Narrow Road to the Deep North', pub_year: 2013 },
+    { id: 17, title: 'The Dispossessed', pub_year: 1974 },
+    { id: 18, title: 'The Left Hand of Darkness', pub_year: 1969 },
+    { id: 19, title: 'A Death in the Family: My Struggle Book 1',
+      pub_year: 2013 },
+    { id: 20, title: 'A Man in Love: My Struggle Book 2', pub_year: 2013 }
+  ];
 
-router.get('/books', function(req, res) {
-  res.json(books);
-});
+  router.get('/books', function(req, res) {
+    res.json(books);
+  });
 
-module.exports = router;
-```
+  module.exports = router;
+  ```
 
 ## Εκκίνηση της εφαρμογής
 
 * Για να ξεκινήσουμε την εφαρμογή δίνουμε:
-    ```bash
-    DEBUG=bangular_node:* npm start
-    ```
+  ```bash
+  DEBUG=bangular_node:* npm start
+  ```
 
 * Για να ξεκινήσουμε την εφαρμογή μας με αυτόματη επαναφόρτωση
   δίνουμε:
-    ```bash
-    DEBUG=bangular_node:* npm run start-watch
-    ```
+  ```bash
+  DEBUG=bangular_node:* npm run start-watch
+  ```
     
 * Η εφαρμογή μας ξεκινάει στη θύρα 3000 (δηλαδή,
   [http://localhost:3000](http://localhost:3000)).
 
 ## Έλεγχος της εφαρμογής
 
-* Εγκαθιστούμε στον Chrome το [Postman](https://www.getpostman.com/).
+* Για να δούμε ότι η εφαρμογή μας λειτουργεί σωστά, δίνουμε:
+  ```bash
+  http http://localhost:3000/api/books
+  ```
+  οπότε θα πρέπει να δούμε στην οθόνη μας τα βιβλία που έχουμε ορίσει.
 
-* Δίνουμε ένα GET request:
-  [http://localhost:3000/api/books](http://localhost:3000/api/books).
+* Εναλλακτικά, μπορούμε να εγκαταστήσουμε την εφαρμογή
+  [Postman](https://www.getpostman.com/) για να ελέγχουμε το API μας. 
 
-* Θα πρέπει να δούμε τα βιβλία μας στην οθόνη του Postman. Αυτό
-  σημαίνει ότι η συγκεκριμένη κλήση του API δουλεύει σωστά.
 
-## Αποθήκευση δεδομένων
+# Αποθήκευση δεδομένων
+
+## Εγκατάσταση οδηγού MySQL
 
 * Για την αποθήκευση των δεδομένων μας μπορούμε να χρησιμοποιήσουμε
   ό,τι θέλουμε.
 
-* Παρ' όλα αυτά, το Node συνεργάζεται πολύ καλά με τη
-  [MongoDB](https://www.mongodb.com/), η οποία αποτελεί συνήθως την
-  πρώτη επιλογή στις σχετικές εφαρμογές.
+* Εμείς θα χρησιμοποιήσουμε τη βάση MySQL που ήδη έχουμε από την
+  εφαρμογή που έχουμε αναπτύξει με το Django. 
 
-## Εγκατάσταση σε Ubuntu (1)
+* Για να εγκατασταθεί ο οδηγός της MySQL για το Node.js, δίνουμε:
+  ```
+  npm install mysql
+  ```
 
-* Για να εγκαταστήσουμε τη MongoDB σε Ubuntu, ακολουθούμε τις
-  [online οδηγίες](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
+## Σύνδεση με τη βάση
 
-* Ξεκινάμε εισάγοντας το δημόσιου κλειδί του πακέτου:
-    ```bash
-    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
-    ```
+* Για να συνδεθούμε με τη βάση φτιάχνουμε το αρχείο `db.js`:
+  ```javascript
+  const mysql = require('mysql');
+  const fs = require('fs');
 
-## Εγκατάσταση σε Ubuntu (2)
+  const configPath = './db_config.json';
+  const dbConfig = JSON.parse(fs.readFileSync(configPath, 'UTF-8'));
 
-* Προσαρμόζουμε τα apt sources ως εξής:
-    ```bash
-    echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
-    ```
+  const pool  = mysql.createPool({
+    connectionLimit : 10,
+    host            : dbConfig.host,
+    user            : dbConfig.user,
+    password        : dbConfig.password,
+    database        : dbConfig.database
+  });
 
-* Ενημερώνουμε τη βάση των πακέτων:
-    ```bash
-    sudo apt-get update
-    ```
+  module.exports = pool;
+  ```
+  
+## Ευαίσθητα δεδομένα
 
-## Εγκατάσταση σε Ubuntu (3)
-
-* Εγκαθιστούμε τα πακέτα της MongoDB:
-    ```bash
-    sudo apt-get install -y mongodb-org
-    ```
-
-* Εκκίνηση της βάσης:
-    ```bash
-    sudo service mongod start
-    ```
-    Αν όλα έχουν γίνει σωστά, μπορούμε να επιβεβαιώσουμε ότι η Mongo
-    τρέχει βλέποντας τις εγγραφές στο αρχείο
-    `/var/log/mongodb/mongod.log`. Συγκεκριμένα, θα πρέπει να υπάρχει
-    μια γραμμή η οποία θα γράφει:
-    ```
-    /var/log/mongodb/mongod.log
-    ```
-
-## Έλεγχος πρόσβασης
-
-* Στο αρχείο `/etc/mongod.conf` γράφουμε:
-    ```
-    security:
-      authorization: enabled
-    ```
-
-## Χειρισμός της βάσης
-
-* Για να ξεκινήσουμε τη βάση, δίνουμε:
-    ```bash
-    service mongod start
-    ```
-
-* Για να σταματήσουμε τη βάση, δίνουμε:
-    ```bash
-    service mongod stop
-    ```
-* Για να ξαναξεκινήσουμε τη βάση, δίνουμε:
-    ```bash
-    service mongod start
-    ```
-
-## Δημιουργία διαχειριστή
-
-* Συνδεόμαστε με το κέλυφος της Mongo δίνοντας:
-    ```bash
-    mongo
-    ```
-
-* Δημιουργούμε έναν διαχειριστή ως εξής:
-    ```javascript
-    use admin
-
-    db.createUser(
-      {
-        user: "admin",
-        pwd: "12345",
-        roles: [
-          { role: "userAdminAnyDatabase", db: "admin" }
-         ]
-      }
-    )
-    ```
-
-## Δημιουργία χρήστη βάσης εφαρμογής
-
-```javascript
-use bangular
-
-
-db.createUser(
+* Τα ευαίσθητα δεδομένα της σύνδεσης, τα αποθηκεύουμε σε ένα άλλο
+  αρχείο, `db_config.json`, το οποίο *δεν* συμπεριλαμβάνουμε στο
+  αποθετήριο:
+  ```javascript
   {
-    user: "bangular",
-    pwd: "12345",
-    roles: [
-      { role: "readWrite", db: "bangular" }
-    ]
+    "host" : "127.0.0.1",
+    "user" : "djbr_user",
+    "password" : "whateverthisis",
+    "database" : "djbr"
   }
-)
-```
+  ```
 
-## Είσοδος στη βάση
-
-* Τώρα για να μπούμε στη βάση θα πρέπει να δώσουμε όνομα χρήστη και
-  κωδικό:
-    ```bash
-    mongo bangular -u bangular -p
-    ```
-
-* Στην προτροπή που θα εμφανιστεί, δίνουμε τον κωδικό του χρήστη που
-  δημιουργήσαμε.
-
-
-## Εισαγωγή βιβλίου
-
-* Για να εισάγουμε ένα βιβλίο, δίνουμε:
-
-    ```javascript
-    db.books.insert({ title: "Infinite Jest", pub_year: 1996 });
-    ```
-* Οπότε ως απάντηση θα λάβουμε:
-    ```
-    WriteResult({ "nInserted" : 1 })
-    ```
-
-## Εισαγωγή βιβλίων
-
-```javascript
-db.books.insert({ title: "Oblivion", pub_year: 2004 });
-db.books.insert({ title: "Ulysses", pub_year: 1922 });
-db.books.insert({ title: "The Crying of Lot 49", pub_year: 1966 });
-db.books.insert({ title: "City on Fire", pub_year: 2015 });
-db.books.insert({ title: "The Narrow Road to the Deep North", pub_year: 2013 });
-db.books.insert({ title: "The Dispossessed", pub_year: 1974 });
-db.books.insert({ title: "The Left Hand of Darkness", pub_year: 1969 });
-db.books.insert({ title: "A Death in the Family: My Struggle Book 1", pub_year: 2013 });
-db.books.insert({ title: "A Man in Love: My Struggle Book 2", pub_year: 2013 });
-```
-
-## Μαζική εισαγωγή
-
-* Εναλλακτικά, θα μπορούσαμε να χρησιμοποιήσουμε τη μέθοδο
-  `insertMany()`:
-
-    ```javascript
-
-    db.books.remove({});
-
-    db.books.insertMany([
-      { title: "Oblivion", pub_year: 2004 },
-      { title: "Ulysses", pub_year: 1922 },
-      { title: "The Crying of Lot 49", pub_year: 1966 },
-      { title: "City on Fire", pub_year: 2015 },
-      { title: "The Narrow Road to the Deep North", pub_year: 2013 },
-      { title: "The Dispossessed", pub_year: 1974 },
-      { title: "The Left Hand of Darkness", pub_year: 1969 },
-      { title: "A Death in the Family: My Struggle Book 1", pub_year: 2013 },
-      { title: "A Man in Love: My Struggle Book 2", pub_year: 2013 }
-    ]);
-    ```
-
-## Αναζήτηση βιβλίων
-
-* Η αναζήτηση βιβλίων γίνεται μέσω κλήσεων, στις οποίες περνάμε τις
-  παραμέτρους της αναζήτησης με μορφή JavaScript.
-
-* Για παράδειγμα, εύρεση βιβλίου που να περιέχει κείμενο στον τίτλο:
-    ```javascript
-    db.books.find({ title: "Oblivion"})
-    ```
-* Ή, εύρεση βιβλίου με κριτήριο στο έτος έκδοσης:
-    ```javascript
-    db.books.find({ pub_year: { $lt: 2005 }})
-    ```
-
-## Mongoose
-
-* Για να εγκαταστήσουμε το mongoose δίνουμε:
-    ```bash
-    npm install --save mongoose
-    ```
-    
-* Στη συνέχεια, για να το χρησιμοποιήσουμε στην εφαρμογή μας, γράφουμε
-  στην αρχή του `app.js`:
-    ```javascript
-    const mongoose = require('mongoose');
-    ```
-* Και τέλος, πριν το τέλος του αρχείου:
-    ```javascript
-    mongoose.connect('mongodb://bangular:12345@127.0.0.1/bangular');
-    ```
-
-## Μοντέλα αντικειμένων
-
-* Για κάθε αντικείμενο που θα αποθηκεύσουμε στη Mongo θα
-  δημιουργήσουμε ένα μοντέλο.
-
-* Για να τα έχουμε όλα μαζεμένα σε ένα σημείο, θα δημιουργήσουμε έναν
-  κατάλογο `models`.
-
-## Μοντέλο βιβλίων
-
-* Δημιουργούμε το αρχείο `models/book.js` με περιεχόμενα:
-    ```javascript
-    const mongoose = require('mongoose');
-    const Schema = mongoose.Schema;
-
-    var bookSchema = new Schema({
-      title: String,
-      pub_year: Number
-    }, { toJSON: { virtuals: true } });
-
-    module.exports = mongoose.model('Book', bookSchema);
-    ```
-* Η παράμετρος `toJson: { virtuals: true }` σημαίνει ότι σε κάθε
-    βιβλίο, όταν μετατρέπεται σε JSON, θα προστίθεται ένα πεδίο `id`
-    ίδιο με το `_id` της Mongo. 
+# Υλοποίηση διασυνδεμένης εφαρμογής
 
 ## Διαδρομή βιβλίων
 
-* Δημιουργούμε το αρχείο `routes/book-routes.js` στο οποίο θα χειριστούμε
-  τις διαδρομές που αφορούν τον χειρισμό βιβλίων.
-
 * Για να ενταχθούν οι διαδρομές των βιβλίων στην εφαρμογή μας,
   αλλάζουμε το αρχείο `routes/router.js` ως εξής:
-    ```javascript
-    const express = require('express');
-    const router = express.Router();
+  ```javascript
+  const express = require('express');
+  const router = express.Router();
 
-    const books_router = require('./books-router');
+  const books_router = require('./books-router');
 
-    router.use(books_router);
+  router.use(books_router);
 
-    module.exports = router;
-    ```
+  module.exports = router;
+  ```
 
 ## Ανάκτηση όλων των βιβλίων
 
@@ -404,13 +673,25 @@ db.books.insert({ title: "A Man in Love: My Struggle Book 2", pub_year: 2013 });
 ## `routes/books-router.js`
 
 ```javascript
+const express = require('express');
+const router = express.Router();
+const pool = require('../db');
+
 router.get('/books', function(req, res) {
-  Book.find({}, function(err, books) {
+  pool.getConnection(function(err, connection) {
     if (err) {
       res.send(err);
-    } else {
-      res.json(books);
+      return;
     }
+    connection.query('SELECT * FROM djbr_book',
+      function(err, results, fields) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send(results);
+        }
+        connection.release();
+    });
   });
 });
 
@@ -423,22 +704,32 @@ module.exports = router;
   μεθόδου POST.
 
 * Για να το κάνουμε αυτό, θα προσθέσουμε στο αρχείο
-  `routes/books-router.js` τα ακόλουθα, πριν από το `module.exports =
-  router;`.
+  `routes/books-router.js` τα ακόλουθα, πριν από το:
+  ```javascript
+  module.exports =  router;
+  ```
 
 ## `routes/books-router.js`
 
 ```javascript
 router.post('/books', function(req, res) {
-  var book = new Book();
-  book.title = req.body.title;
-  book.pub_year = req.body.pub_year;
-  book.save(function(err) {
+  pool.getConnection(function(err, connection) {
     if (err) {
       res.send(err);
-    } else {
-      res.json(book);
+      return;
     }
+    connection.query('INSERT INTO djbr_book SET ' +
+      'title = ?, ' +
+      'pub_year = ?',
+      [ req.body.title, req.body.pub_year ],
+      function(err, results, fields) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send(results);
+        }
+        connection.release();
+    });
   });
 });
 ```
@@ -459,35 +750,52 @@ router.post('/books', function(req, res) {
 
 * Από κάτω εισάγουμε σε JSON το σώμα της αίτησης.
 
+
 ## Εύρεση συγκεκριμένου βιβλίου
 
 * Η εύρεση συγκεκριμένου βιβλίου, με βάση τον κωδικό του, κατά το
-  πρότυπο REST θα είναι μέσω αίτησης GET σε URLs της μορφής
-  `api/book/:book_id`, όπου το `:book_id` αντιστοιχεί στον κωδικό του
-  βιβλίου.
+  πρότυπο REST θα είναι μέσω αίτησης GET σε URLs της μορφής:
+  ```
+  api/book/:book_id
+  ```
+  όπου το `:book_id` αντιστοιχεί στον κωδικό του βιβλίου.
 
 * Αυτό το χειριζόμαστε προσθέτοντας τον αντίστοιχο χειριστή στο
   `books-router.js`.
+
 
 ## `routes/books-router.js`
 
 ```javascript
 router.get('/books/:book_id', function(req, res) {
-  Book.findById(req.params.book_id, function(err, book) {
+  pool.getConnection(function(err, connection) {
     if (err) {
       res.send(err);
-    } else {
-      res.json(book);
+      return;
     }
+    connection.query('SELECT * FROM djbr_book ' +
+      'WHERE id = ?',
+      [req.params.book_id],
+      function(err, results, fields) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send(results);
+        }
+        connection.release();
+    });
   });
 });
 ```
+
 ## Διαγραφή βιβλίου
 
 * Η διαγραφή συγκεκριμένου βιβλίου, με βάση τον κωδικό του, κατά το
   πρότυπο REST θα είναι μέσω αίτησης DELETE σε URLs της μορφής
-  `api/book/:book_id`, όπου το `:book_id` αντιστοιχεί στον κωδικό του
-  βιβλίου.
+  ```
+  api/book/:book_id
+  ```
+  όπου το `:book_id` αντιστοιχεί στον κωδικό του βιβλίου.
 
 * Αυτό το χειριζόμαστε προσθέτοντας τον αντίστοιχο χειριστή στο
   `books-router.js`.
@@ -496,14 +804,22 @@ router.get('/books/:book_id', function(req, res) {
 
 ```javascript
 router.delete('/books/:book_id', function(req, res) {
-  Book.remove({
-    _id: req.params.book_id
-  }, function(err, result) {
+  pool.getConnection(function(err, connection) {
     if (err) {
       res.send(err);
-    } else {
-      res.json(result);
+      return;
     }
+    connection.query('DELETE FROM djbr_book ' +
+      'WHERE id = ?',
+      [req.params.book_id],
+      function(err, results, fields) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send(results);
+        }
+        connection.release();
+    });
   });
 });
 ```
@@ -511,9 +827,11 @@ router.delete('/books/:book_id', function(req, res) {
 ## Αναζήτηση βιβλίου με βάση τίτλο
 
 * Η αναζήτηση βιβλίου με βάση συγκεκριμένο τίτλο θα γίνει, κατά το
-  πρότυπο REST, μέσω αίτησης GET της μορφής
-  `api/book?title=:book_title` όπου ο τίτλος αντιστοιχεί στον όρο
-  αναζήτησης του τίτλου.
+  πρότυπο REST, μέσω αίτησης GET της μορφής:
+  ```javascript
+  api/book?title=:book_title
+  ```
+  όπου ο τίτλος αντιστοιχεί στον όρο αναζήτησης του τίτλου.
 
 * Αυτό το χειριζόμαστε αλλάζοντας κατάλληλα τον χειριστή της αίτησης
   GET `/books`.
@@ -522,49 +840,38 @@ router.delete('/books/:book_id', function(req, res) {
 
 ```javascript
 router.get('/books', function(req, res) {
-  var query = Book.find({});
-  if (req.query.title) {
-    query.where('title').equals(new RegExp(req.query['title']));
-  }
-  query.exec(function(err, books) {
+  pool.getConnection(function(err, connection) {
+    var sql;
     if (err) {
       res.send(err);
-    } else {
-      res.json(books);
+      return;
     }
+    if (req.query.title) {
+      sql = 'SELECT * FROM djbr_book WHERE title LIKE '
+        + connection.escape('%' + req.query.title + '%');
+    } else {
+      sql = 'SELECT * FROM djbr_book';
+    }
+    connection.query(sql,
+      function(err, results, fields) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send(results);
+        }
+        connection.release();
+    });
   });
 });
 ```
 
-## Προσαρμογή Angular front-end (1)
+## Προσαρμογή Angular front-end
 
 * Για να χρησιμοποιήσουμε την εφαρμογή μας από το Angular front-end
   δεν χρειάζεται σχεδόν καμμία αλλαγή.
 
 * Αν χρησιμοποιούμε proxy, απλώς πρέπει να αλλάξουμε την πόρτα στην
   οποία θα προωθεί τις αιτήσεις (στο αρχείο `proxy.conf.json`):
-    ```javascript
-    "target": "http://localhost:3000"
-    ```
-
-## Προσαρμογή Angular front-end (2)
-
-* Δεδομένου ότι τα `id` των βιβλίων είναι αριθμοί στο δεκαεξαδικό,
-  πρέπει στο `book-details.component.ts` να αλλάξουμε τη γραμμή:
-    ```javascript
-    let id = +params['id'];
-    ```
-  σε:
-    ```javascript
-    let id = params['id'];
-    ```
-* Επίσης, μάλλον είναι καλό να μην τα εμφανίζουμε πλέον στον χρήστη,
-  αφού δεν έχουν κάποια άμεση σημασία (και είναι μακρινάρια).
-
-## Ξεκαθάρισμα της εφαρμογής
-
-* Προσέξτε ότι ο σκελετός της εφαρμογής δημιούργησε αρχεία τα οποία
-  δεν χρησιμοποιούμε (π.χ. `users.js`).
-
-* Αυτά μπορούμε να τα σβήσουμε, σβήνοντας αντίστοιχα και τις αναφορές
-  τους στο `app.js`.
+  ```javascript
+  "target": "http://localhost:3000"
+  ```
