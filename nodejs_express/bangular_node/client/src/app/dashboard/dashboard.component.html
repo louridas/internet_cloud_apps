@@ -1,0 +1,13 @@
+<h3>Top Books</h3>
+<div class="container">
+  <div class="row">
+    <a *ngFor="let book of books" class="col-sm"
+       routerLink="/books/{{book.id}}">
+      <div class="dashboard-item">
+        <h5>{{book.title}}</h5>
+      </div>
+    </a>
+  </div>
+</div>
+
+<app-book-search></app-book-search>

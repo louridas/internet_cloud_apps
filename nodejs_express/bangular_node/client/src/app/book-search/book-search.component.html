@@ -1,0 +1,22 @@
+<div id="search-component">
+
+  <ng-template #rt let-r="result">
+    {{r.title}}
+  </ng-template>
+
+  <label for="search-box">Book search:</label>
+  <input id="search-box"
+         type="text"
+         class="form-control"
+         [class.is-invalid]="searchFailed"
+         (selectItem)="selectedItem($event)"
+         [(ngModel)]="model"
+         [ngbTypeahead]="search"
+         [resultTemplate]="rt"
+         [inputFormatter]="formatter"/>
+
+  <span *ngIf="searching">searching...</span>
+  <div class="invalid-feedback" *ngIf="searchFailed">
+    Sorry, suggestions could not be loaded.
+  </div>
+</div>
