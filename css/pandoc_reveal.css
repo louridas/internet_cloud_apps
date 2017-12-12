@@ -19,3 +19,5 @@ table td {
   border-left: 1px solid #ddd;
   vertical-align: top;
 }
+
+.reveal section img { background:none; border:none; box-shadow:none; }

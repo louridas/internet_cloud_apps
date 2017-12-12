@@ -1,0 +1,57 @@
+\documentclass[convert={outext=.png}]{standalone}
+
+\input{../figure_setup}
+
+\begin{document}
+
+\begin{tikzpicture}[
+  entity/.style={draw, 
+    rectangle, 
+    align=center, 
+    inner sep=1em,
+    minimum width=10em}
+]
+
+\node[entity] (user) 
+{{\color{teal}USER}\\
+Name\\
+Email Address
+};
+
+\node[entity, color=white, above right=of user] (article) 
+{{\color{teal}ARTICLE}\\
+Name\\
+Slug\\
+Publish Date\\
+Text\\
+Author
+};
+
+\node[entity, below=of article] (comment) 
+{{\color{teal}COMMENT[ ]}\\
+Comments\\
+Date\\
+Author
+};
+
+\node[entity, below=of comment] (tag) 
+{{\color{teal}TAG[ ]} \\
+Name \\
+URL};
+
+\node[entity, below=of tag] (category) 
+{{\color{teal}CATEGORY[ ]} \\
+Name\\
+URL
+};
+
+\draw [draw] ($(article.north west) +(-1em, 0.5em)$) 
+rectangle ($(category.south east) + (1em, -0.5em)$);
+
+
+\draw (user) |- ($(article.west) + (-1em, 0em)$);
+\draw (user.south) -- ++(0, -2em) -| (comment.south);
+
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,53 @@
+\documentclass[convert={outext=.png}]{standalone}
+
+\input{../figure_setup}
+
+\begin{document}
+
+\begin{tikzpicture}[
+  entity/.style={draw, 
+    rectangle, 
+    align=center, 
+    inner sep=1em,
+    minimum width=10em}
+]
+
+\node[entity] (article) 
+{{\color{teal}ARTICLE}\\
+Name\\
+Slug\\
+Publish Date\\
+Text
+};
+
+\node[entity, above left=of article] (category) 
+{{\color{teal}CATEGORY} \\
+Name\\
+URL
+};
+
+\node[entity, above right=of article] (tag) 
+{{\color{teal}TAG} \\
+Name \\
+URL}
+;
+
+\node[entity, below left=of article] (comment) 
+{{\color{teal}COMMENT}\\
+Comments\\
+Date
+};
+
+\node[entity, below right=of article] (user) 
+{{\color{teal}USER}\\
+Name\\
+Email Address};
+
+\draw (article) -- (category);
+\draw (article) -- (tag);
+\draw (article) -- (comment);
+\draw (article) -- (user);
+
+\end{tikzpicture}
+
+\end{document}
