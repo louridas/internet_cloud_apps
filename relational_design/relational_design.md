@@ -46,7 +46,6 @@
   
 * Αυτό γράφεται ως:
   $$A_1, A_2, \ldots, A_n \rightarrow B$$
-  και ονομάζουμε τη συνθήκη αυτή συναρτησιακή εξάρτηση.
 
 
 ## Συναρτησιακές εξαρτήσεις (2)
@@ -142,8 +141,8 @@
   (simple). Αν αποτελείται από περισσότερες, ονομάζεται *σύνθετο*
   (composite key).
 
-* Στο παράδειγμά μας, οι ιδιότητες $\{\texttt{title}, \texttt{year},
-  \texttt{starName}\}$ αποτελούν κλειδί της σχέσης $\texttt{Movies}$.
+* Στο παράδειγμά μας, το σύνολο $\{\texttt{title}, \texttt{year},
+  \texttt{starName}\}$ είναι κλειδί της σχέσης $\texttt{Movies}$.
 
 
 ## Υπερκλειδιά
@@ -190,6 +189,11 @@
 * Αυτό σημαίνει ότι σε μία σχέση στην 1η κανονική μορφή, κάθε ιδιότητα
   έχει μία μόνο τιμή.
 
+
+## Παραβίαση 1ης κανονικής μορφής {#first-nf-violation}
+
+* Μία σχέση παραβιάζει την 1ην κανονική μορφή υπάρχει μια ιδιότητά της
+  που το πεδίο τιμών δεν είναι ατομικό.
 
 ## Παράδειγμα παραβίασης 1ης κανονικής μορφής
 
@@ -274,11 +278,14 @@ Customer Telephone Number
 
 * Η 2η κανονική μορφή εφαρμόζεται μόνο όταν έχουμε σύνθετα κλειδιά.
 
-* Παραβιάζεται αν μια ιδιότητα που δεν είναι κλειδί εξαρτάται από
-  υποσύνολο του κλειδιού.
-
 
 ## Παραβίαση 2ης κανονικής μορφής {#second-nf-violation}
+
+* Η 2η κανονική μορφή παραβιάζεται αν μια ιδιότητα που δεν είναι
+  κλειδί εξαρτάται από υποσύνολο του κλειδιού.
+
+
+## Παράδειγμα παραβίασης 2ης κανονικής μορφής {#second-nf-violation-ex}
 
 Electric Toothbrush Models
 
@@ -291,6 +298,21 @@ Electric Toothbrush Models
 | Hoch         | Toothmaster | Hoch Toothmaster     | Germany              |
 | Hoch         | X-Prime     | Hoch X-Prime         | Germany              |
 
+
+<div class="notes">
+
+Γιατί;
+
+* Η σχέση παραβιάζει τη 2η κανονική μορφή διότι η ιδιότητα
+  $\texttt{Manufacturer Country}$ εξαρτάται από την ιδιότητα
+  $\texttt{Manufacturer}$, που είναι μέρος του κλειδιού
+  $\{\texttt{Manufacturer}, \texttt{Model}\}$.
+
+Τι προβλήματα δημιουργεί;
+
+* Η χώρα του κατασκευαστή επαναλαμβάνεται για κάθε κατασκευαστή.
+
+</div>
 
 ## Διόρθωση 2ης κανονικής μορφής {#second-nf-fix}
 
@@ -355,11 +377,39 @@ Tournament Winners
 
 Γιατί παραβιάζεται η 3η κανονική μορφή;
 
-* Η ιδιότητα Winner Date of Birth εξαρτάται από την ιδιότητα Winner. Η
-  ιδιότητα Winner δεν είναι κλειδί ή μέρος κλειδιού. Το κλειδί είναι η
-  πλειάδα (Tournament, Year).
+* Η ιδιότητα $\texttt{Winner Date of Birth}$ εξαρτάται από την
+  ιδιότητα $\texttt{Winner}$. Η ιδιότητα $\texttt{Winner}$ δεν είναι
+  κλειδί ή μέρος κλειδιού. Το κλειδί είναι το $\texttt{\{Tournament,
+  Year}\}$.
+
+Τι προβλήματα δημιουργεί η παραβίασή της;
+
+* Το $\texttt{Winner Date of Birth}$ επαναλαμβάνεται για κάθε
+  $\texttt{Winner}$. 
+
+* Η βάση μπορεί να περιέχει ασυνέπειες.
 
 </div>
+
+
+## Διόρθωση
+
+Tournament Winners
+
+| Tournament           | Year | Winner         |
+|----------------------|------|----------------|
+| Indiana Invitational | 1998 | Al Fredrickson |
+| Cleveland Open       | 1999 | Bob Albertson  |
+| Des Moines Masters   | 1999 | Al Fredrickson |
+| Indiana Invitational | 1999 | Chip Masterson |
+
+Player Birthdays
+
+| Player         | Date of Birth |
+|----------------|----------------------|
+| Al Fredrickson | 21 July 1975         |
+| Bob Albertson  | 28 September 1968    |
+| Chip Masterson | 14 March 1977        |
 
 
 ## Παράδειγμα παραβίασης 3ης κανονικής μορφής (2)
@@ -427,6 +477,16 @@ Department
      τετριμμένη.
   2. Το $Χ$ είναι υπερκλειδί.
 
+## Διαφορά μεταξύ 3NF και BCNF
+
+* Η BCNF απαλείπτει την τρίτη συνθήκη της 3ης κανονικής μορφής.
+
+* Με άλλα λόγια απαλείφει τη δυνατότητα:
+
+  3. Κάθε στοιχείο του $Y - X$ (της διαφοράς των συνόλων $Y$ και $X$)
+     περιέχεται σε ένα κλειδί.
+
+
 ## Παραβίαση BCND (1)
 
 Today's Court Bookings
@@ -458,6 +518,8 @@ Today's Court Bookings
 * Συνεπώς υπάρχει η συναρτησιακή εξάρτηση:
   $$ \texttt{Rate Type} \rightarrow \texttt{Court}$$
   όπου το $\texttt{Rate Type}$ δεν είναι υπερκλειδί.
+
+* Πλην όμως, περιέχεται σε κλειδί (άρα ισχύει η 3η κανονική μορφή).
 
 ## Διόρθωση BCNF
 
@@ -528,14 +590,18 @@ Today's Bookings
 * Έστω επίσης το παρακάτω παράδειγμα:
 
   <table>
+  <thead>
   <tr>
   <th>Employee</th>
   <th>Skill</th>
-  <th>Language<th/>
+  <th>Language</th>
   </tr>
+  </thead>
+  <tbody>
   <tr>
-  <td colspan="3" align="center"> ..... key ..... </td>
+  <td colspan="3" align="center">... key ... </td>
   </tr>
+  </tbody>
   </table>
 
 * Κάθε υπάλληλος έχει ένα συγκεκριμένο σύνολο δεξιοτήτων.
@@ -693,7 +759,7 @@ Employee Skills
 <th>Skill</th>
 </tr>
 <tr>
-<td colspan="2" align="center">... key ... </td>
+<td colspan="2" align="center">... key ...</td>
 </tr>
 </table>
 
@@ -705,6 +771,6 @@ Employee Languages
 <th>Language</th>
 </tr>
 <tr>
-<td colspan="2" align="center">... key ... </td>
+<td colspan="2" align="center">... key ...</td>
 </tr>
 </table>
