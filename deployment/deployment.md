@@ -1138,14 +1138,16 @@ prime)](https://en.wikipedia.org/wiki/Safe_prime).
   με τα εξής περιεχόμενα, προσαρμοσμένα στο σύστημά σας:
   ```
   [Unit]
-  Description=gunicorn daemon
+  Description=gunicorn flaskr daemon
   After=network.target
 
   [Service]
   User=user
   Group=www-data
-  WorkingDirectory=/home/user/project_site
-  ExecStart=/home/user/project_site/env/bin/gunicorn --workers 3 --bind unix:/home/user/project_site/project_site.sock project_site.wsgi:application
+  WorkingDirectory=/home/user/flaskr_project
+  Environment="PATH=/home/user/flaskr_project/venv/bin"
+  ExecStart=/home/user/flaskr_project/venv/bin/gunicorn --workers 3 --bind unix:fl
+  askr.sock flaskr:create_app()
 
   [Install]
   WantedBy=multi-user.target
@@ -1165,13 +1167,7 @@ prime)](https://en.wikipedia.org/wiki/Safe_prime).
 
 * Για να ενεργοποιήσουμε τον Gunicorn δίνουμε:
   ```bash
-  sudo systemctl start gunicorn
-  sudo systemctl enable gunicorn
-  ```
-    
-* θα πρέπει να δούμε ένα μήνυμα της μορφής:
-  ```bash
-  Created symlink from /etc/systemd/system/multi-user.target.wants/gunicorn.service to /etc/systemd/system/gunicorn.service.
+  sudo systemctl start flaskr
   ```
     
 ## Ενεργοποίηση Gunicorn (2)
@@ -1183,28 +1179,34 @@ prime)](https://en.wikipedia.org/wiki/Safe_prime).
     
 * Θα πρέπει να δούμε κάτι της μορφής:
   ```bash
-  ● gunicorn.service - gunicorn daemon
-     Loaded: loaded (/etc/systemd/system/gunicorn.service; enabled; vendor preset: enabled)
-     Active: active (running) since Sun 2017-10-22 19:32:35 EEST; 9s ago
-   Main PID: 10794 (gunicorn)
-      Tasks: 4
-     Memory: 69.9M
-        CPU: 2.259s
-     CGroup: /system.slice/gunicorn.service
-             ├─10794 /home/user/project_site/env/bin/python3 /home/user/project_site/env/bin/gunicorn --workers 3 --b
-             ├─10799 /home/user/project_site/env/bin/python3 /home/user/project_site/env/bin/gunicorn --workers 3 --b
-             ├─10800 /home/user/project_site/env/bin/python3 /home/user/project_site/env/bin/gunicorn --workers 3 --b
-             └─10801 /home/user/project_site/env/bin/python3 /home/user/project_site/env/bin/gunicorn --workers 3 --b
+  ● flaskr.service - gunicorn flaskr daemon
+	 Loaded: loaded (/etc/systemd/system/flaskr.service; disabled; vendor preset:
+	 Active: active (running) since Tue 2018-10-09 17:14:21 EEST; 57s ago
+   Main PID: 1288 (gunicorn)
+	  Tasks: 4 (limit: 4663)
+	 CGroup: /system.slice/flaskr.service
+			 ├─1288 /home/user/flaskr_project/venv/bin/python3 /home/user/flaskr_p
+			 ├─1301 /home/user/flaskr_project/venv/bin/python3 /home/user/flaskr_p
+			 ├─1302 /home/user/flaskr_project/venv/bin/python3 /home/user/flaskr_p
+			 └─1303 /home/user/flaskr_project/venv/bin/python3 /home/user/flaskr_p
 
-  Oct 22 19:32:35 snf-779124 systemd[1]: Started gunicorn daemon.
-  Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10794] [INFO] Starting gunicorn 19.7.1
-  Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10794] [INFO] Listening at: unix:/home/use
-  Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10794] [INFO] Using worker: sync
-  Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10799] [INFO] Booting worker with pid: 107
-  Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10800] [INFO] Booting worker with pid: 108
-  Oct 22 19:32:35 snf-779124 gunicorn[10794]: [2017-10-22 19:32:35 +0300] [10801] [INFO] Booting worker with pid: 108
-  Oct 22 19:32:39 snf-779124 systemd[1]: Started gunicorn daemon.
-  ```
+  Oct 09 17:14:21 snf-842276 systemd[1]: Started gunicorn flaskr daemon.
+  Oct 09 17:14:22 snf-842276 gunicorn[1288]: [2018-10-09 17:14:22 +0300] [1288] [I
+  Oct 09 17:14:22 snf-842276 gunicorn[1288]: [2018-10-09 17:14:22 +0300] [1288] [I
+  Oct 09 17:14:22 snf-842276 gunicorn[1288]: [2018-10-09 17:14:22 +0300] [1288] [I
+  Oct 09 17:14:22 snf-842276 gunicorn[1288]: [2018-10-09 17:14:22 +0300] [1301] [I
+  Oct 09 17:14:22 snf-842276 gunicorn[1288]: [2018-10-09 17:14:22 +0300] [1302] [I
+  Oct 09 17:14:22 snf-842276 gunicorn[1288]: [2018-10-09 17:14:22 +0300] [1303] [I
+```
+
+## Ενεργοποίηση flaskr στην Εκκίνηση
+
+* Για να ξεκινάει αυτομάτως το flaskr με την εκκίνηση του μηχανήματος,
+  δίνουμε:
+  
+   ```bash
+   sudo systemctl enable gunicorn
+   ```
 
 ## Προσαρμογή `/etc/nginx/sites-available/default` (1)
 
