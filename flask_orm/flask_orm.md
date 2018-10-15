@@ -370,12 +370,14 @@ Loading](https://docs.sqlalchemy.org/en/latest/orm/tutorial.html#eager-loading).
 * Ξεκινάμε την Python μέσα στον κατάλογο `flaskr_project`
   πληκτρολογόντας `python`, ή καλύτερα `ipython`.
 
-* Στη συνέχεια γράφουμε στη γραμμή εντολών της Python:
+* Στη συνέχεια γράφουμε στη γραμμή εντολών της Python (θα βάζουμε το
+  πρόθεμα `>>>` για να φαίνεται ότι είναι η γραμμή εντολών της Python
+  και όχι του λειτουργικού):
 
    ```python
-   from flaskr import db, create_app
-   app = create_app()
-   app.app_context().push()
+   >>> from flaskr import db, create_app
+   >>> app = create_app()
+   >>> app.app_context().push()
    ```
 
 ## Διαγραφή και Δημιουργία Βάσης
@@ -384,13 +386,13 @@ Loading](https://docs.sqlalchemy.org/en/latest/orm/tutorial.html#eager-loading).
   Python:
 
    ```python
-   db.create_all()
+   >>> db.create_all()
    ```
 * Αν θέλουμε να διαγράψουμε τους πίνακες μιας βάσης δίνουμε στη γραμμή
   εντολών της Python:
 
     ```python
-    db.drop_all()
+    >>> db.drop_all()
     ```
 
 ## Εισαγωγή δεδομένων
@@ -401,16 +403,16 @@ Loading](https://docs.sqlalchemy.org/en/latest/orm/tutorial.html#eager-loading).
 * Για παράδειγμα, για να εισάγουμε ένα χρήστη και δύο αναρτήσεις, γράφουμε:
 
     ```python
-    from flaskr.models import User, Post
+    >>> from flaskr.models import User, Post
 
-    user_1 = User(username="marydoe", password="askj_63d9k")
-    post_1 = Post(title="First Post", body="This is the first post", author=user_1)
-    post_2 = Post(title="Second Post", body="This is the second post", author=user_1)
+    >>> user_1 = User(username="marydoe", password="askj_63d9k")
+    >>> post_1 = Post(title="First Post", body="This is the first post", author=user_1)
+    >>> post_2 = Post(title="Second Post", body="This is the second post", author=user_1)
 
-    db.session.add(user_1)
-    db.session.add(post_1)
-    db.session.add(post_2)
-    db.session.commit()
+    >>> db.session.add(user_1)
+    >>> db.session.add(post_1)
+    >>> db.session.add(post_2)
+    >>> db.session.commit()
     ```
 
 ## Αναζήτηση δεδομένων
@@ -418,14 +420,14 @@ Loading](https://docs.sqlalchemy.org/en/latest/orm/tutorial.html#eager-loading).
 * Για να κάνουμε μια αναζήτηση στα δεδομένα, γράφουμε:
 
     ```python
-    posts = Post.query.all()
+    >>> posts = Post.query.all()
     ```
 
 * Πράγματι, ενόσω είμαστε στη γραμμή εντολών μπορούμε να
   επιβεβαιώσουμε τις εγγραφές:
 
     ```python
-    posts
+    >>> posts
 
     [<Post 'First Post' 'This is the first post' datetime.datetime(2018, 10, 15, 11, 5, 15) 'marydoe'>,
      <Post 'Second Post' 'This is the second post' datetime.datetime(2018, 10, 15, 11, 5, 25) 'marydoe'>]
@@ -447,19 +449,22 @@ Loading](https://docs.sqlalchemy.org/en/latest/orm/tutorial.html#eager-loading).
 * Για να βρούμε το συγγραφέα μιας ανάρτησης αρκεί απλώς να δώσουμε:
 
    ```python
-   posts[0].author
+   >>> posts[0].author
+   <User 'maryjoe'>
    ```
 
 * Για να βρούμε τον κωδικό του συγγραφέα αρκεί να δώσουμε:
 
    ```python
-   posts[0].author_id
+   >>> posts[0].author_id
+   1
    ```
 
 * Ή φυσικά:
 
    ```python
-   posts[0].author.id
+   >>> posts[0].author.id
+   1
    ```
 
 <div class="notes">
@@ -471,23 +476,13 @@ Loading](https://docs.sqlalchemy.org/en/latest/orm/tutorial.html#eager-loading).
 
 </div>
 
-## Εμφάνιση Εντολών SQL
-
-* Αν θέλουμε να δούμε τις εντολές που δημιουργεί και εκτελεί το
-  SQLAlchemy, προσθέτουμε το παρακάτω στις ρυθμίσεις αρχικοποίησης
-  μέσα στην κλήση `app.config.update()`.
-
-    ```python
-    SQLALCHEMY_ECHO = True
-    ```
-
 ## Διαγραφή Δεδομένων
 
 * Για να σβήσουμε μια συγκεκριμένη εγγραφή, έστω την `post_1`, δίνουμε:
 
    ```python
-   db.session.delete(post_1)
-   db.session.commit()
+   >>> db.session.delete(post_1)
+   >>> db.session.commit()
    ```
 
 * Για να διαγράψουμε όλες τις εγγραφές ενός πίνακα δίνουμε:
@@ -517,7 +512,6 @@ Loading](https://docs.sqlalchemy.org/en/latest/orm/tutorial.html#eager-loading).
 	@bp.route('/')
 	def index():
 		posts = Post.query.order_by(Post.created.desc()).all()
-		print(posts)
 		return render_template('blog/index.html', posts=posts)
     ```
 
@@ -762,7 +756,7 @@ from flaskr.models import User
     <article class="post">
       <header>
         <div>
-          <h1>{{ post['title'] }}</h1>
+          <h1>{{ post.title }}</h1>
           <div class="about">by {{ post.author.username }} on {{ post.created.strftime('%Y-%m-%d') }}</div>
         </div>
         {% if g.user['id'] == post.author_id %}

@@ -12,7 +12,7 @@
     <article class="post">
       <header>
         <div>
-          <h1>{{ post['title'] }}</h1>
+          <h1>{{ post.title }}</h1>
           <div class="about">by {{ post.author.username }} on {{ post.created.strftime('%Y-%m-%d') }}</div>
         </div>
         {% if g.user['id'] == post.author_id %}

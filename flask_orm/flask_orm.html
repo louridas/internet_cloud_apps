@@ -1670,42 +1670,42 @@ vertical-align: top;
 <ul>
 <li><p>Έχοντας γράψει τον παραπάνω κώδικα, μπορούμε να δημιουργήσουμε τη βάση μας κατ’ ευθείαν από μία γραμμή εντολών Python.</p></li>
 <li><p>Ξεκινάμε την Python μέσα στον κατάλογο <code>flaskr_project</code> πληκτρολογόντας <code>python</code>, ή καλύτερα <code>ipython</code>.</p></li>
-<li><p>Στη συνέχεια γράφουμε στη γραμμή εντολών της Python:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="im">from</span> flaskr <span class="im">import</span> db, create_app</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">app <span class="op">=</span> create_app()</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">app.app_context().push()</a></code></pre></div></li>
+<li><p>Στη συνέχεια γράφουμε στη γραμμή εντολών της Python (θα βάζουμε το πρόθεμα <code>&gt;&gt;&gt;</code> για να φαίνεται ότι είναι η γραμμή εντολών της Python και όχι του λειτουργικού):</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> flaskr <span class="im">import</span> db, create_app</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> app <span class="op">=</span> create_app()</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> app.app_context().push()</a></code></pre></div></li>
 </ul>
 </section><section id="διαγραφή-και-δημιουργία-βάσης" class="slide level2">
 <h2>Διαγραφή και Δημιουργία Βάσης</h2>
 <ul>
 <li><p>Για να δημιουργήσουμε τη βάση εισάγουμε στη γραμμή εντολών της Python:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" data-line-number="1">db.create_all()</a></code></pre></div></li>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> db.create_all()</a></code></pre></div></li>
 <li><p>Αν θέλουμε να διαγράψουμε τους πίνακες μιας βάσης δίνουμε στη γραμμή εντολών της Python:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" data-line-number="1">db.drop_all()</a></code></pre></div></li>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> db.drop_all()</a></code></pre></div></li>
 </ul>
 </section><section id="εισαγωγή-δεδομένων" class="slide level2">
 <h2>Εισαγωγή δεδομένων</h2>
 <ul>
 <li><p>Τώρα μπορούμε να χειριστούμε πλήρως τη βάση μας από τη γραμμή εντολών της Python.</p></li>
 <li><p>Για παράδειγμα, για να εισάγουμε ένα χρήστη και δύο αναρτήσεις, γράφουμε:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="im">from</span> flaskr.models <span class="im">import</span> User, Post</a>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> flaskr.models <span class="im">import</span> User, Post</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">user_1 <span class="op">=</span> User(username<span class="op">=</span><span class="st">&quot;marydoe&quot;</span>, password<span class="op">=</span><span class="st">&quot;askj_63d9k&quot;</span>)</a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">post_1 <span class="op">=</span> Post(title<span class="op">=</span><span class="st">&quot;First Post&quot;</span>, body<span class="op">=</span><span class="st">&quot;This is the first post&quot;</span>, author<span class="op">=</span>user_1)</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5">post_2 <span class="op">=</span> Post(title<span class="op">=</span><span class="st">&quot;Second Post&quot;</span>, body<span class="op">=</span><span class="st">&quot;This is the second post&quot;</span>, author<span class="op">=</span>user_1)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> user_1 <span class="op">=</span> User(username<span class="op">=</span><span class="st">&quot;marydoe&quot;</span>, password<span class="op">=</span><span class="st">&quot;askj_63d9k&quot;</span>)</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span> post_1 <span class="op">=</span> Post(title<span class="op">=</span><span class="st">&quot;First Post&quot;</span>, body<span class="op">=</span><span class="st">&quot;This is the first post&quot;</span>, author<span class="op">=</span>user_1)</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="op">&gt;&gt;&gt;</span> post_2 <span class="op">=</span> Post(title<span class="op">=</span><span class="st">&quot;Second Post&quot;</span>, body<span class="op">=</span><span class="st">&quot;This is the second post&quot;</span>, author<span class="op">=</span>user_1)</a>
 <a class="sourceLine" id="cb12-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7">db.session.add(user_1)</a>
-<a class="sourceLine" id="cb12-8" data-line-number="8">db.session.add(post_1)</a>
-<a class="sourceLine" id="cb12-9" data-line-number="9">db.session.add(post_2)</a>
-<a class="sourceLine" id="cb12-10" data-line-number="10">db.session.commit()</a></code></pre></div></li>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="op">&gt;&gt;&gt;</span> db.session.add(user_1)</a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="op">&gt;&gt;&gt;</span> db.session.add(post_1)</a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span> db.session.add(post_2)</a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="op">&gt;&gt;&gt;</span> db.session.commit()</a></code></pre></div></li>
 </ul>
 </section><section id="αναζήτηση-δεδομένων" class="slide level2">
 <h2>Αναζήτηση δεδομένων</h2>
 <ul>
 <li><p>Για να κάνουμε μια αναζήτηση στα δεδομένα, γράφουμε:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" data-line-number="1">posts <span class="op">=</span> Post.query.<span class="bu">all</span>()</a></code></pre></div></li>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> posts <span class="op">=</span> Post.query.<span class="bu">all</span>()</a></code></pre></div></li>
 <li><p>Πράγματι, ενόσω είμαστε στη γραμμή εντολών μπορούμε να επιβεβαιώσουμε τις εγγραφές:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" data-line-number="1">posts</a>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> posts</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb14-3" data-line-number="3">[<span class="op">&lt;</span>Post <span class="st">'First Post'</span> <span class="st">'This is the first post'</span> datetime.datetime(<span class="dv">2018</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">11</span>, <span class="dv">5</span>, <span class="dv">15</span>) <span class="st">'marydoe'</span><span class="op">&gt;</span>,</a>
 <a class="sourceLine" id="cb14-4" data-line-number="4"> <span class="op">&lt;</span>Post <span class="st">'Second Post'</span> <span class="st">'This is the second post'</span> datetime.datetime(<span class="dv">2018</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">11</span>, <span class="dv">5</span>, <span class="dv">25</span>) <span class="st">'marydoe'</span><span class="op">&gt;</span>]</a></code></pre></div></li>
@@ -1717,79 +1717,78 @@ vertical-align: top;
 <h2>Αναζήτηση Συσχετισμένων Δεδομένων</h2>
 <ul>
 <li><p>Για να βρούμε το συγγραφέα μιας ανάρτησης αρκεί απλώς να δώσουμε:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" data-line-number="1">posts[<span class="dv">0</span>].author</a></code></pre></div></li>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> posts[<span class="dv">0</span>].author</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="op">&lt;</span>User <span class="st">'maryjoe'</span><span class="op">&gt;</span></a></code></pre></div></li>
 <li><p>Για να βρούμε τον κωδικό του συγγραφέα αρκεί να δώσουμε:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" data-line-number="1">posts[<span class="dv">0</span>].author_id</a></code></pre></div></li>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> posts[<span class="dv">0</span>].author_id</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="dv">1</span></a></code></pre></div></li>
 <li><p>Ή φυσικά:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" data-line-number="1">posts[<span class="dv">0</span>].author.<span class="bu">id</span></a></code></pre></div></li>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> posts[<span class="dv">0</span>].author.<span class="bu">id</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="dv">1</span></a></code></pre></div></li>
 </ul>
 <aside class="notes">
 <p>Όπως αναφέραμε προηγουμένως, η χρήση του <code>posts[0].author_id</code> δεν θα απαιτήσει αναζήτηση στη βάση, ενώ η χρήση του <code>posts[0].author.id</code> ενδέχεται να απαιτήσει, αναλόγως την τιμή του <code>lazy</code> στον ορισμό της συσχέτισης.</p>
 </aside>
-</section><section id="εμφάνιση-εντολών-sql" class="slide level2">
-<h2>Εμφάνιση Εντολών SQL</h2>
-<ul>
-<li><p>Αν θέλουμε να δούμε τις εντολές που δημιουργεί και εκτελεί το SQLAlchemy, προσθέτουμε το παρακάτω στις ρυθμίσεις αρχικοποίησης μέσα στην κλήση <code>app.config.update()</code>.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" data-line-number="1">SQLALCHEMY_ECHO <span class="op">=</span> <span class="va">True</span></a></code></pre></div></li>
-</ul>
 </section><section id="διαγραφή-δεδομένων" class="slide level2">
 <h2>Διαγραφή Δεδομένων</h2>
 <ul>
 <li><p>Για να σβήσουμε μια συγκεκριμένη εγγραφή, έστω την <code>post_1</code>, δίνουμε:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb19-1" data-line-number="1">db.session.delete(post_1)</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">db.session.commit()</a></code></pre></div></li>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> db.session.delete(post_1)</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> db.session.commit()</a></code></pre></div></li>
 <li><p>Για να διαγράψουμε όλες τις εγγραφές ενός πίνακα δίνουμε:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> Post.query.delete()</a>
-<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="dv">1</span></a>
-<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> db.session.commit()</a></code></pre></div></li>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> Post.query.delete()</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="dv">1</span></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> db.session.commit()</a></code></pre></div></li>
 <li><p>Επιβεβαιώνουμε:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> posts <span class="op">=</span> Post.query.<span class="bu">all</span>()</a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> posts</a>
-<a class="sourceLine" id="cb21-3" data-line-number="3">[]</a></code></pre></div></li>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> posts <span class="op">=</span> Post.query.<span class="bu">all</span>()</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> posts</a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">[]</a></code></pre></div></li>
 </ul>
 </section><section id="εμφάνιση-αναρτήσεων" class="slide level2">
 <h2>Εμφάνιση αναρτήσεων</h2>
 <ul>
 <li><p>Θα συνεχίσουμε με τη συγγραφή των μεθόδων για το χειρισμό των λειτουργιών της υπηρεσίας.</p></li>
 <li><p>Η εμφάνιση των αναρτήσεων, με τη χρήση πλέον Flask-SQLAlchemy, θα γίνει, στο <code>blog.py</code>:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/'</span>)</a>
-<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="kw">def</span> index():</a>
-<a class="sourceLine" id="cb22-3" data-line-number="3">    posts <span class="op">=</span> Post.query.order_by(Post.created.desc()).<span class="bu">all</span>()</a>
-<a class="sourceLine" id="cb22-4" data-line-number="4">    <span class="bu">print</span>(posts)</a>
-<a class="sourceLine" id="cb22-5" data-line-number="5">    <span class="cf">return</span> render_template(<span class="st">'blog/index.html'</span>, posts<span class="op">=</span>posts)</a></code></pre></div></li>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/'</span>)</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">def</span> index():</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">    posts <span class="op">=</span> Post.query.order_by(Post.created.desc()).<span class="bu">all</span>()</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">    <span class="cf">return</span> render_template(<span class="st">'blog/index.html'</span>, posts<span class="op">=</span>posts)</a></code></pre></div></li>
 </ul>
 <aside class="notes">
 <p>Η μέθοδος είναι στην ουσία η ίδια με αυτήν που είχαμε στην προηγούμενη έκδοση της εφαρμογής, αλλά αντί να γράψουμε την εντολή της αναζήτησης σε SQL γράφουμε μόνο τις αντίστοιχες εντολές σε Python.</p>
 <p>Προσέξτε ότι στο προοίμιο του <code>blog.py</code> θα πρέπει να προσθέσουμε:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="im">from</span> flaskr <span class="im">import</span> db</a>
-<a class="sourceLine" id="cb23-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="im">from</span> flaskr.models <span class="im">import</span> Post</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="im">from</span> flaskr <span class="im">import</span> db</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="im">from</span> flaskr.models <span class="im">import</span> Post</a></code></pre></div>
 <p>(Όσον αφορά το <code>from flaskr import db</code>, δεν χρειάζεται σε αυτή τη συνάρτηση, αλλά θα χρειαστεί σε λίγο.)</p>
 </aside>
 </section><section id="προσθήκη-ανάρτησης" class="slide level2">
 <h2>Προσθήκη ανάρτησης</h2>
 <ul>
 <li><p>Αντίστοιχα, η προσθήκη αναρτήσεων στο <code>blog.py</code> γίνεται:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/create'</span>, methods<span class="op">=</span>(<span class="st">'GET'</span>, <span class="st">'POST'</span>))</a>
-<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="at">@login_required</span></a>
-<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="kw">def</span> create():</a>
-<a class="sourceLine" id="cb24-4" data-line-number="4">    <span class="cf">if</span> request.method <span class="op">==</span> <span class="st">'POST'</span>:</a>
-<a class="sourceLine" id="cb24-5" data-line-number="5">        title <span class="op">=</span> request.form[<span class="st">'title'</span>]</a>
-<a class="sourceLine" id="cb24-6" data-line-number="6">        body <span class="op">=</span> request.form[<span class="st">'body'</span>]</a>
-<a class="sourceLine" id="cb24-7" data-line-number="7">        error <span class="op">=</span> <span class="va">None</span></a>
-<a class="sourceLine" id="cb24-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb24-9" data-line-number="9">        <span class="cf">if</span> <span class="kw">not</span> title:</a>
-<a class="sourceLine" id="cb24-10" data-line-number="10">            error <span class="op">=</span> <span class="st">'Title is required.'</span></a>
-<a class="sourceLine" id="cb24-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb24-12" data-line-number="12">        <span class="cf">if</span> error <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
-<a class="sourceLine" id="cb24-13" data-line-number="13">            flash(error)</a>
-<a class="sourceLine" id="cb24-14" data-line-number="14">        <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb24-15" data-line-number="15">            post <span class="op">=</span> Post(title<span class="op">=</span>title, body<span class="op">=</span>body, author_id<span class="op">=</span>g.user.<span class="bu">id</span>)</a>
-<a class="sourceLine" id="cb24-16" data-line-number="16">            db.session.add(post)</a>
-<a class="sourceLine" id="cb24-17" data-line-number="17">            db.session.commit()</a>
-<a class="sourceLine" id="cb24-18" data-line-number="18">            <span class="cf">return</span> redirect(url_for(<span class="st">'blog.index'</span>))</a>
-<a class="sourceLine" id="cb24-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb24-20" data-line-number="20">    <span class="cf">return</span> render_template(<span class="st">'blog/create.html'</span>)</a></code></pre></div></li>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/create'</span>, methods<span class="op">=</span>(<span class="st">'GET'</span>, <span class="st">'POST'</span>))</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="at">@login_required</span></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="kw">def</span> create():</a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">    <span class="cf">if</span> request.method <span class="op">==</span> <span class="st">'POST'</span>:</a>
+<a class="sourceLine" id="cb23-5" data-line-number="5">        title <span class="op">=</span> request.form[<span class="st">'title'</span>]</a>
+<a class="sourceLine" id="cb23-6" data-line-number="6">        body <span class="op">=</span> request.form[<span class="st">'body'</span>]</a>
+<a class="sourceLine" id="cb23-7" data-line-number="7">        error <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb23-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb23-9" data-line-number="9">        <span class="cf">if</span> <span class="kw">not</span> title:</a>
+<a class="sourceLine" id="cb23-10" data-line-number="10">            error <span class="op">=</span> <span class="st">'Title is required.'</span></a>
+<a class="sourceLine" id="cb23-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb23-12" data-line-number="12">        <span class="cf">if</span> error <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb23-13" data-line-number="13">            flash(error)</a>
+<a class="sourceLine" id="cb23-14" data-line-number="14">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb23-15" data-line-number="15">            post <span class="op">=</span> Post(title<span class="op">=</span>title, body<span class="op">=</span>body, author_id<span class="op">=</span>g.user.<span class="bu">id</span>)</a>
+<a class="sourceLine" id="cb23-16" data-line-number="16">            db.session.add(post)</a>
+<a class="sourceLine" id="cb23-17" data-line-number="17">            db.session.commit()</a>
+<a class="sourceLine" id="cb23-18" data-line-number="18">            <span class="cf">return</span> redirect(url_for(<span class="st">'blog.index'</span>))</a>
+<a class="sourceLine" id="cb23-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb23-20" data-line-number="20">    <span class="cf">return</span> render_template(<span class="st">'blog/create.html'</span>)</a></code></pre></div></li>
 </ul>
 <aside class="notes">
 <p>Και πάλι, οι αλλαγές σε σχέση με την προηγούμενη εκδοσή αφορούν στη χρήση Python αντί για τη χρήση SQL. Δημιουργούμε ένα αντικείμενο της κλάσης <code>Post</code> χρησιμοποιώντας τα στοιχεία που έχει συμπληρώσει ο χρήστης στη φόρμα της εφαρμογής, και στη συνέχεια εισάγουμε τη νέα ανάρτηση στη βάση και επικυρώνουμε την εισαγωγή.</p>
@@ -1798,136 +1797,136 @@ vertical-align: top;
 <h2>Εύρεση Ανάρτησης</h2>
 <ul>
 <li><p>Χρειαζόμαστε, όπως και πριν, μια βοηθητική συνάρτηση για την εύρεση συγκεκριμένης ανάρτησης. Αυτή θα γίνει, στο <code>blog.py</code>:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">def</span> get_post(<span class="bu">id</span>, check_author<span class="op">=</span><span class="va">True</span>):</a>
-<a class="sourceLine" id="cb25-2" data-line-number="2">    post <span class="op">=</span> Post.query.filter_by(<span class="bu">id</span><span class="op">=</span><span class="bu">id</span>).first()</a>
-<a class="sourceLine" id="cb25-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb25-4" data-line-number="4">    <span class="cf">if</span> post <span class="kw">is</span> <span class="va">None</span>:</a>
-<a class="sourceLine" id="cb25-5" data-line-number="5">        abort(<span class="dv">404</span>, <span class="st">&quot;Post id </span><span class="sc">{0}</span><span class="st"> doesn't exist.&quot;</span>.<span class="bu">format</span>(<span class="bu">id</span>))</a>
-<a class="sourceLine" id="cb25-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb25-7" data-line-number="7">    <span class="cf">if</span> check_author <span class="kw">and</span> post.author_id <span class="op">!=</span> g.user.<span class="bu">id</span>:</a>
-<a class="sourceLine" id="cb25-8" data-line-number="8">        abort(<span class="dv">403</span>)</a>
-<a class="sourceLine" id="cb25-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb25-10" data-line-number="10">    <span class="cf">return</span> post</a></code></pre></div></li>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">def</span> get_post(<span class="bu">id</span>, check_author<span class="op">=</span><span class="va">True</span>):</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">    post <span class="op">=</span> Post.query.filter_by(<span class="bu">id</span><span class="op">=</span><span class="bu">id</span>).first()</a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb24-4" data-line-number="4">    <span class="cf">if</span> post <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb24-5" data-line-number="5">        abort(<span class="dv">404</span>, <span class="st">&quot;Post id </span><span class="sc">{0}</span><span class="st"> doesn't exist.&quot;</span>.<span class="bu">format</span>(<span class="bu">id</span>))</a>
+<a class="sourceLine" id="cb24-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb24-7" data-line-number="7">    <span class="cf">if</span> check_author <span class="kw">and</span> post.author_id <span class="op">!=</span> g.user.<span class="bu">id</span>:</a>
+<a class="sourceLine" id="cb24-8" data-line-number="8">        abort(<span class="dv">403</span>)</a>
+<a class="sourceLine" id="cb24-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb24-10" data-line-number="10">    <span class="cf">return</span> post</a></code></pre></div></li>
 </ul>
 </section><section id="ενημέρωση-ανάρτησης" class="slide level2">
 <h2>Ενημέρωση Ανάρτησης</h2>
 <ul>
 <li><p>Η ενημέρωση της ανάρτησης θα είναι, στο <code>blog.py</code>:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/&lt;int:id&gt;/update'</span>, methods<span class="op">=</span>(<span class="st">'GET'</span>, <span class="st">'POST'</span>))</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="at">@login_required</span></a>
-<a class="sourceLine" id="cb26-3" data-line-number="3"><span class="kw">def</span> update(<span class="bu">id</span>):</a>
-<a class="sourceLine" id="cb26-4" data-line-number="4">    post <span class="op">=</span> get_post(<span class="bu">id</span>)</a>
-<a class="sourceLine" id="cb26-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb26-6" data-line-number="6">    <span class="cf">if</span> request.method <span class="op">==</span> <span class="st">'POST'</span>:</a>
-<a class="sourceLine" id="cb26-7" data-line-number="7">        title <span class="op">=</span> request.form[<span class="st">'title'</span>]</a>
-<a class="sourceLine" id="cb26-8" data-line-number="8">        body <span class="op">=</span> request.form[<span class="st">'body'</span>]</a>
-<a class="sourceLine" id="cb26-9" data-line-number="9">        error <span class="op">=</span> <span class="va">None</span></a>
-<a class="sourceLine" id="cb26-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb26-11" data-line-number="11">        <span class="cf">if</span> <span class="kw">not</span> title:</a>
-<a class="sourceLine" id="cb26-12" data-line-number="12">            error <span class="op">=</span> <span class="st">'Title is required.'</span></a>
-<a class="sourceLine" id="cb26-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb26-14" data-line-number="14">        <span class="cf">if</span> error <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
-<a class="sourceLine" id="cb26-15" data-line-number="15">            flash(error)</a>
-<a class="sourceLine" id="cb26-16" data-line-number="16">        <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb26-17" data-line-number="17">            post.title <span class="op">=</span> title</a>
-<a class="sourceLine" id="cb26-18" data-line-number="18">            post.body <span class="op">=</span> body</a>
-<a class="sourceLine" id="cb26-19" data-line-number="19">            db.session.add(post)</a>
-<a class="sourceLine" id="cb26-20" data-line-number="20">            db.session.commit()</a>
-<a class="sourceLine" id="cb26-21" data-line-number="21">            <span class="cf">return</span> redirect(url_for(<span class="st">'blog.index'</span>))</a>
-<a class="sourceLine" id="cb26-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb26-23" data-line-number="23">    <span class="cf">return</span> render_template(<span class="st">'blog/update.html'</span>, post<span class="op">=</span>post)</a></code></pre></div></li>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/&lt;int:id&gt;/update'</span>, methods<span class="op">=</span>(<span class="st">'GET'</span>, <span class="st">'POST'</span>))</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="at">@login_required</span></a>
+<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="kw">def</span> update(<span class="bu">id</span>):</a>
+<a class="sourceLine" id="cb25-4" data-line-number="4">    post <span class="op">=</span> get_post(<span class="bu">id</span>)</a>
+<a class="sourceLine" id="cb25-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb25-6" data-line-number="6">    <span class="cf">if</span> request.method <span class="op">==</span> <span class="st">'POST'</span>:</a>
+<a class="sourceLine" id="cb25-7" data-line-number="7">        title <span class="op">=</span> request.form[<span class="st">'title'</span>]</a>
+<a class="sourceLine" id="cb25-8" data-line-number="8">        body <span class="op">=</span> request.form[<span class="st">'body'</span>]</a>
+<a class="sourceLine" id="cb25-9" data-line-number="9">        error <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb25-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb25-11" data-line-number="11">        <span class="cf">if</span> <span class="kw">not</span> title:</a>
+<a class="sourceLine" id="cb25-12" data-line-number="12">            error <span class="op">=</span> <span class="st">'Title is required.'</span></a>
+<a class="sourceLine" id="cb25-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb25-14" data-line-number="14">        <span class="cf">if</span> error <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb25-15" data-line-number="15">            flash(error)</a>
+<a class="sourceLine" id="cb25-16" data-line-number="16">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb25-17" data-line-number="17">            post.title <span class="op">=</span> title</a>
+<a class="sourceLine" id="cb25-18" data-line-number="18">            post.body <span class="op">=</span> body</a>
+<a class="sourceLine" id="cb25-19" data-line-number="19">            db.session.add(post)</a>
+<a class="sourceLine" id="cb25-20" data-line-number="20">            db.session.commit()</a>
+<a class="sourceLine" id="cb25-21" data-line-number="21">            <span class="cf">return</span> redirect(url_for(<span class="st">'blog.index'</span>))</a>
+<a class="sourceLine" id="cb25-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb25-23" data-line-number="23">    <span class="cf">return</span> render_template(<span class="st">'blog/update.html'</span>, post<span class="op">=</span>post)</a></code></pre></div></li>
 </ul>
 </section><section id="διαγραφή-ανάρτησης" class="slide level2">
 <h2>Διαγραφή Ανάρτησης</h2>
 <ul>
 <li><p>Τέλος, η διαγραφή ανάρτησης θα είναι, στο <code>blog.py</code>:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/&lt;int:id&gt;/delete'</span>, methods<span class="op">=</span>(<span class="st">'POST'</span>,))</a>
-<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="at">@login_required</span></a>
-<a class="sourceLine" id="cb27-3" data-line-number="3"><span class="kw">def</span> delete(<span class="bu">id</span>):</a>
-<a class="sourceLine" id="cb27-4" data-line-number="4">    post <span class="op">=</span> get_post(<span class="bu">id</span>)</a>
-<a class="sourceLine" id="cb27-5" data-line-number="5">    db.session.delete(post)</a>
-<a class="sourceLine" id="cb27-6" data-line-number="6">    db.session.commit()</a>
-<a class="sourceLine" id="cb27-7" data-line-number="7">    <span class="cf">return</span> redirect(url_for(<span class="st">'blog.index'</span>))</a></code></pre></div></li>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/&lt;int:id&gt;/delete'</span>, methods<span class="op">=</span>(<span class="st">'POST'</span>,))</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="at">@login_required</span></a>
+<a class="sourceLine" id="cb26-3" data-line-number="3"><span class="kw">def</span> delete(<span class="bu">id</span>):</a>
+<a class="sourceLine" id="cb26-4" data-line-number="4">    post <span class="op">=</span> get_post(<span class="bu">id</span>)</a>
+<a class="sourceLine" id="cb26-5" data-line-number="5">    db.session.delete(post)</a>
+<a class="sourceLine" id="cb26-6" data-line-number="6">    db.session.commit()</a>
+<a class="sourceLine" id="cb26-7" data-line-number="7">    <span class="cf">return</span> redirect(url_for(<span class="st">'blog.index'</span>))</a></code></pre></div></li>
 </ul>
 </section><section id="εγγραφή-χρήστη" class="slide level2">
 <h2>Εγγραφή Χρήστη</h2>
 <ul>
 <li><p>Η εγγραφή χρήστη θα γίνει μέσα αρχείο <code>auth.py</code>:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/register'</span>, methods<span class="op">=</span>(<span class="st">'GET'</span>, <span class="st">'POST'</span>))</a>
-<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="kw">def</span> register():</a>
-<a class="sourceLine" id="cb28-3" data-line-number="3">    <span class="cf">if</span> request.method <span class="op">==</span> <span class="st">'POST'</span>:</a>
-<a class="sourceLine" id="cb28-4" data-line-number="4">        username <span class="op">=</span> request.form[<span class="st">'username'</span>]</a>
-<a class="sourceLine" id="cb28-5" data-line-number="5">        password <span class="op">=</span> request.form[<span class="st">'password'</span>]</a>
-<a class="sourceLine" id="cb28-6" data-line-number="6">        error <span class="op">=</span> <span class="va">None</span></a>
-<a class="sourceLine" id="cb28-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb28-8" data-line-number="8">        <span class="cf">if</span> <span class="kw">not</span> username:</a>
-<a class="sourceLine" id="cb28-9" data-line-number="9">            error <span class="op">=</span> <span class="st">'Username is required.'</span></a>
-<a class="sourceLine" id="cb28-10" data-line-number="10">        <span class="cf">elif</span> <span class="kw">not</span> password:</a>
-<a class="sourceLine" id="cb28-11" data-line-number="11">            error <span class="op">=</span> <span class="st">'Password is required.'</span></a>
-<a class="sourceLine" id="cb28-12" data-line-number="12">        <span class="cf">elif</span> User.query.filter_by(username<span class="op">=</span>username).first() <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
-<a class="sourceLine" id="cb28-13" data-line-number="13">            error <span class="op">=</span> <span class="st">'User </span><span class="sc">{}</span><span class="st"> is already registered.'</span>.<span class="bu">format</span>(username)</a>
-<a class="sourceLine" id="cb28-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb28-15" data-line-number="15">        <span class="cf">if</span> error <span class="kw">is</span> <span class="va">None</span>:</a>
-<a class="sourceLine" id="cb28-16" data-line-number="16">            user <span class="op">=</span> User(username<span class="op">=</span>username,</a>
-<a class="sourceLine" id="cb28-17" data-line-number="17">                        password<span class="op">=</span>generate_password_hash(password))</a>
-<a class="sourceLine" id="cb28-18" data-line-number="18">            db.session.add(user)</a>
-<a class="sourceLine" id="cb28-19" data-line-number="19">            db.session.commit()</a>
-<a class="sourceLine" id="cb28-20" data-line-number="20">            <span class="cf">return</span> redirect(url_for(<span class="st">'auth.login'</span>))</a>
-<a class="sourceLine" id="cb28-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb28-22" data-line-number="22">        flash(error)</a>
-<a class="sourceLine" id="cb28-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb28-24" data-line-number="24">    <span class="cf">return</span> render_template(<span class="st">'auth/register.html'</span>)</a></code></pre></div></li>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/register'</span>, methods<span class="op">=</span>(<span class="st">'GET'</span>, <span class="st">'POST'</span>))</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="kw">def</span> register():</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3">    <span class="cf">if</span> request.method <span class="op">==</span> <span class="st">'POST'</span>:</a>
+<a class="sourceLine" id="cb27-4" data-line-number="4">        username <span class="op">=</span> request.form[<span class="st">'username'</span>]</a>
+<a class="sourceLine" id="cb27-5" data-line-number="5">        password <span class="op">=</span> request.form[<span class="st">'password'</span>]</a>
+<a class="sourceLine" id="cb27-6" data-line-number="6">        error <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb27-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb27-8" data-line-number="8">        <span class="cf">if</span> <span class="kw">not</span> username:</a>
+<a class="sourceLine" id="cb27-9" data-line-number="9">            error <span class="op">=</span> <span class="st">'Username is required.'</span></a>
+<a class="sourceLine" id="cb27-10" data-line-number="10">        <span class="cf">elif</span> <span class="kw">not</span> password:</a>
+<a class="sourceLine" id="cb27-11" data-line-number="11">            error <span class="op">=</span> <span class="st">'Password is required.'</span></a>
+<a class="sourceLine" id="cb27-12" data-line-number="12">        <span class="cf">elif</span> User.query.filter_by(username<span class="op">=</span>username).first() <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb27-13" data-line-number="13">            error <span class="op">=</span> <span class="st">'User </span><span class="sc">{}</span><span class="st"> is already registered.'</span>.<span class="bu">format</span>(username)</a>
+<a class="sourceLine" id="cb27-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb27-15" data-line-number="15">        <span class="cf">if</span> error <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb27-16" data-line-number="16">            user <span class="op">=</span> User(username<span class="op">=</span>username,</a>
+<a class="sourceLine" id="cb27-17" data-line-number="17">                        password<span class="op">=</span>generate_password_hash(password))</a>
+<a class="sourceLine" id="cb27-18" data-line-number="18">            db.session.add(user)</a>
+<a class="sourceLine" id="cb27-19" data-line-number="19">            db.session.commit()</a>
+<a class="sourceLine" id="cb27-20" data-line-number="20">            <span class="cf">return</span> redirect(url_for(<span class="st">'auth.login'</span>))</a>
+<a class="sourceLine" id="cb27-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb27-22" data-line-number="22">        flash(error)</a>
+<a class="sourceLine" id="cb27-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb27-24" data-line-number="24">    <span class="cf">return</span> render_template(<span class="st">'auth/register.html'</span>)</a></code></pre></div></li>
 </ul>
 <aside class="notes">
 <p>Στο προοίμιο του αρχείου θα χρειαστεί να προσθέσουμε:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="im">from</span> flaskr <span class="im">import</span> db</a>
-<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="im">from</span> flaskr.models <span class="im">import</span> User</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="im">from</span> flaskr <span class="im">import</span> db</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="im">from</span> flaskr.models <span class="im">import</span> User</a></code></pre></div>
 </aside>
 </section><section id="είσοδος-χρήστη" class="slide level2">
 <h2>Είσοδος Χρήστη</h2>
 <ul>
 <li><p>Η είσοδος χρήστη θα είναι πάλι μέσα αρχείο <code>auth.py</code>:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/login'</span>, methods<span class="op">=</span>(<span class="st">'GET'</span>, <span class="st">'POST'</span>))</a>
-<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">def</span> login():</a>
-<a class="sourceLine" id="cb30-3" data-line-number="3">    <span class="cf">if</span> request.method <span class="op">==</span> <span class="st">'POST'</span>:</a>
-<a class="sourceLine" id="cb30-4" data-line-number="4">        username <span class="op">=</span> request.form[<span class="st">'username'</span>]</a>
-<a class="sourceLine" id="cb30-5" data-line-number="5">        password <span class="op">=</span> request.form[<span class="st">'password'</span>]</a>
-<a class="sourceLine" id="cb30-6" data-line-number="6">        error <span class="op">=</span> <span class="va">None</span></a>
-<a class="sourceLine" id="cb30-7" data-line-number="7">        user <span class="op">=</span> User.query.filter_by(username<span class="op">=</span>username).first()</a>
-<a class="sourceLine" id="cb30-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb30-9" data-line-number="9">        <span class="cf">if</span> user <span class="kw">is</span> <span class="va">None</span>:</a>
-<a class="sourceLine" id="cb30-10" data-line-number="10">            error <span class="op">=</span> <span class="st">'Incorrect username.'</span></a>
-<a class="sourceLine" id="cb30-11" data-line-number="11">        <span class="cf">elif</span> <span class="kw">not</span> check_password_hash(user.password, password):</a>
-<a class="sourceLine" id="cb30-12" data-line-number="12">            error <span class="op">=</span> <span class="st">'Incorrect password.'</span></a>
-<a class="sourceLine" id="cb30-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb30-14" data-line-number="14">        <span class="cf">if</span> error <span class="kw">is</span> <span class="va">None</span>:</a>
-<a class="sourceLine" id="cb30-15" data-line-number="15">            session.clear()</a>
-<a class="sourceLine" id="cb30-16" data-line-number="16">            session[<span class="st">'user_id'</span>] <span class="op">=</span> user.<span class="bu">id</span></a>
-<a class="sourceLine" id="cb30-17" data-line-number="17">            <span class="cf">return</span> redirect(url_for(<span class="st">'index'</span>))</a>
-<a class="sourceLine" id="cb30-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb30-19" data-line-number="19">        flash(error)</a>
-<a class="sourceLine" id="cb30-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb30-21" data-line-number="21">    <span class="cf">return</span> render_template(<span class="st">'auth/login.html'</span>)</a></code></pre></div></li>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/login'</span>, methods<span class="op">=</span>(<span class="st">'GET'</span>, <span class="st">'POST'</span>))</a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="kw">def</span> login():</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3">    <span class="cf">if</span> request.method <span class="op">==</span> <span class="st">'POST'</span>:</a>
+<a class="sourceLine" id="cb29-4" data-line-number="4">        username <span class="op">=</span> request.form[<span class="st">'username'</span>]</a>
+<a class="sourceLine" id="cb29-5" data-line-number="5">        password <span class="op">=</span> request.form[<span class="st">'password'</span>]</a>
+<a class="sourceLine" id="cb29-6" data-line-number="6">        error <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb29-7" data-line-number="7">        user <span class="op">=</span> User.query.filter_by(username<span class="op">=</span>username).first()</a>
+<a class="sourceLine" id="cb29-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb29-9" data-line-number="9">        <span class="cf">if</span> user <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb29-10" data-line-number="10">            error <span class="op">=</span> <span class="st">'Incorrect username.'</span></a>
+<a class="sourceLine" id="cb29-11" data-line-number="11">        <span class="cf">elif</span> <span class="kw">not</span> check_password_hash(user.password, password):</a>
+<a class="sourceLine" id="cb29-12" data-line-number="12">            error <span class="op">=</span> <span class="st">'Incorrect password.'</span></a>
+<a class="sourceLine" id="cb29-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb29-14" data-line-number="14">        <span class="cf">if</span> error <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb29-15" data-line-number="15">            session.clear()</a>
+<a class="sourceLine" id="cb29-16" data-line-number="16">            session[<span class="st">'user_id'</span>] <span class="op">=</span> user.<span class="bu">id</span></a>
+<a class="sourceLine" id="cb29-17" data-line-number="17">            <span class="cf">return</span> redirect(url_for(<span class="st">'index'</span>))</a>
+<a class="sourceLine" id="cb29-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb29-19" data-line-number="19">        flash(error)</a>
+<a class="sourceLine" id="cb29-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb29-21" data-line-number="21">    <span class="cf">return</span> render_template(<span class="st">'auth/login.html'</span>)</a></code></pre></div></li>
 </ul>
 </section><section id="έλεγχος-χρήστη" class="slide level2">
 <h2>Έλεγχος Χρήστη</h2>
 <ul>
 <li><p>Ο έλεγχος χρήστη στο <code>auth.py</code> χρειάζεται και αυτός μια μικρή προσαρμογή για τη χρήση SQlAlchemy:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="at">@bp.before_app_request</span></a>
-<a class="sourceLine" id="cb31-2" data-line-number="2"><span class="kw">def</span> load_logged_in_user():</a>
-<a class="sourceLine" id="cb31-3" data-line-number="3">    user_id <span class="op">=</span> session.get(<span class="st">'user_id'</span>)</a>
-<a class="sourceLine" id="cb31-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb31-5" data-line-number="5">    <span class="cf">if</span> user_id <span class="kw">is</span> <span class="va">None</span>:</a>
-<a class="sourceLine" id="cb31-6" data-line-number="6">        g.user <span class="op">=</span> <span class="va">None</span></a>
-<a class="sourceLine" id="cb31-7" data-line-number="7">    <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb31-8" data-line-number="8">        g.user <span class="op">=</span> User.query.filter_by(<span class="bu">id</span><span class="op">=</span>user_id).first()</a></code></pre></div></li>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="at">@bp.before_app_request</span></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">def</span> load_logged_in_user():</a>
+<a class="sourceLine" id="cb30-3" data-line-number="3">    user_id <span class="op">=</span> session.get(<span class="st">'user_id'</span>)</a>
+<a class="sourceLine" id="cb30-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb30-5" data-line-number="5">    <span class="cf">if</span> user_id <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb30-6" data-line-number="6">        g.user <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb30-7" data-line-number="7">    <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb30-8" data-line-number="8">        g.user <span class="op">=</span> User.query.filter_by(<span class="bu">id</span><span class="op">=</span>user_id).first()</a></code></pre></div></li>
 </ul>
 </section><section id="εκκίνηση-εφαρμογής" class="slide level2">
 <h2>Εκκίνηση Εφαρμογής</h2>
 <ul>
 <li><p>Για να τρέξετε την εφαρμογή δίνετε ό,τι και στην προηγούμενη έκδοση.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="bu">export</span> <span class="va">FLASK_APP=</span>flaskr</a>
-<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="ex">flask</span> run</a></code></pre></div></li>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="bu">export</span> <span class="va">FLASK_APP=</span>flaskr</a>
+<a class="sourceLine" id="cb31-2" data-line-number="2"><span class="ex">flask</span> run</a></code></pre></div></li>
 </ul>
 </section><section id="αλλαγές-στα-πρότυπα-εμφάνισης" class="slide level2">
 <h2>Αλλαγές στα Πρότυπα Εμφάνισης</h2>
@@ -1941,56 +1940,56 @@ vertical-align: top;
 </ul>
 </section><section id="templatesblogindex.html" class="slide level2">
 <h2><code>templates/blog/index.html</code></h2>
+<div class="sourceCode" id="cb32"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb32-1" data-line-number="1">{% extends 'base.html' %}</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb32-3" data-line-number="3">{% block header %}</a>
+<a class="sourceLine" id="cb32-4" data-line-number="4">  <span class="kw">&lt;h1&gt;</span>{% block title %}Posts{% endblock %}<span class="kw">&lt;/h1&gt;</span></a>
+<a class="sourceLine" id="cb32-5" data-line-number="5">  {% if g.user %}</a>
+<a class="sourceLine" id="cb32-6" data-line-number="6">    <span class="kw">&lt;a</span><span class="ot"> class=</span><span class="st">&quot;action&quot;</span><span class="ot"> href=</span><span class="st">&quot;{{ url_for('blog.create') }}&quot;</span><span class="kw">&gt;</span>New<span class="kw">&lt;/a&gt;</span></a>
+<a class="sourceLine" id="cb32-7" data-line-number="7">  {% endif %}</a>
+<a class="sourceLine" id="cb32-8" data-line-number="8">{% endblock %}</a>
+<a class="sourceLine" id="cb32-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb32-10" data-line-number="10">{% block content %}</a>
+<a class="sourceLine" id="cb32-11" data-line-number="11">  {% for post in posts %}</a>
+<a class="sourceLine" id="cb32-12" data-line-number="12">    <span class="kw">&lt;article</span><span class="ot"> class=</span><span class="st">&quot;post&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb32-13" data-line-number="13">      <span class="kw">&lt;header&gt;</span></a>
+<a class="sourceLine" id="cb32-14" data-line-number="14">        <span class="kw">&lt;div&gt;</span></a>
+<a class="sourceLine" id="cb32-15" data-line-number="15">          <span class="kw">&lt;h1&gt;</span>{{ post['title'] }}<span class="kw">&lt;/h1&gt;</span></a>
+<a class="sourceLine" id="cb32-16" data-line-number="16">          <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;about&quot;</span><span class="kw">&gt;</span>by {{ post.author.username }} on {{ post.created.strftime('%Y-%m-%d') }}<span class="kw">&lt;/div&gt;</span></a>
+<a class="sourceLine" id="cb32-17" data-line-number="17">        <span class="kw">&lt;/div&gt;</span></a>
+<a class="sourceLine" id="cb32-18" data-line-number="18">        {% if g.user['id'] == post.author_id %}</a>
+<a class="sourceLine" id="cb32-19" data-line-number="19">          <span class="kw">&lt;a</span><span class="ot"> class=</span><span class="st">&quot;action&quot;</span><span class="ot"> href=</span><span class="st">&quot;{{ url_for('blog.update', id=post.id) }}&quot;</span><span class="kw">&gt;</span>Edit<span class="kw">&lt;/a&gt;</span></a>
+<a class="sourceLine" id="cb32-20" data-line-number="20">        {% endif %}</a>
+<a class="sourceLine" id="cb32-21" data-line-number="21">      <span class="kw">&lt;/header&gt;</span></a>
+<a class="sourceLine" id="cb32-22" data-line-number="22">      <span class="kw">&lt;p</span><span class="ot"> class=</span><span class="st">&quot;body&quot;</span><span class="kw">&gt;</span>{{ post.body }}<span class="kw">&lt;/p&gt;</span></a>
+<a class="sourceLine" id="cb32-23" data-line-number="23">    <span class="kw">&lt;/article&gt;</span></a>
+<a class="sourceLine" id="cb32-24" data-line-number="24">    {% if not loop.last %}</a>
+<a class="sourceLine" id="cb32-25" data-line-number="25">      <span class="kw">&lt;hr&gt;</span></a>
+<a class="sourceLine" id="cb32-26" data-line-number="26">    {% endif %}</a>
+<a class="sourceLine" id="cb32-27" data-line-number="27">  {% endfor %}</a>
+<a class="sourceLine" id="cb32-28" data-line-number="28">{% endblock %}</a></code></pre></div>
+</section><section id="templatesblogupdate.html" class="slide level2">
+<h2><code>templates/blog/update.html</code></h2>
 <div class="sourceCode" id="cb33"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb33-1" data-line-number="1">{% extends 'base.html' %}</a>
 <a class="sourceLine" id="cb33-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb33-3" data-line-number="3">{% block header %}</a>
-<a class="sourceLine" id="cb33-4" data-line-number="4">  <span class="kw">&lt;h1&gt;</span>{% block title %}Posts{% endblock %}<span class="kw">&lt;/h1&gt;</span></a>
-<a class="sourceLine" id="cb33-5" data-line-number="5">  {% if g.user %}</a>
-<a class="sourceLine" id="cb33-6" data-line-number="6">    <span class="kw">&lt;a</span><span class="ot"> class=</span><span class="st">&quot;action&quot;</span><span class="ot"> href=</span><span class="st">&quot;{{ url_for('blog.create') }}&quot;</span><span class="kw">&gt;</span>New<span class="kw">&lt;/a&gt;</span></a>
-<a class="sourceLine" id="cb33-7" data-line-number="7">  {% endif %}</a>
-<a class="sourceLine" id="cb33-8" data-line-number="8">{% endblock %}</a>
-<a class="sourceLine" id="cb33-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb33-10" data-line-number="10">{% block content %}</a>
-<a class="sourceLine" id="cb33-11" data-line-number="11">  {% for post in posts %}</a>
-<a class="sourceLine" id="cb33-12" data-line-number="12">    <span class="kw">&lt;article</span><span class="ot"> class=</span><span class="st">&quot;post&quot;</span><span class="kw">&gt;</span></a>
-<a class="sourceLine" id="cb33-13" data-line-number="13">      <span class="kw">&lt;header&gt;</span></a>
-<a class="sourceLine" id="cb33-14" data-line-number="14">        <span class="kw">&lt;div&gt;</span></a>
-<a class="sourceLine" id="cb33-15" data-line-number="15">          <span class="kw">&lt;h1&gt;</span>{{ post['title'] }}<span class="kw">&lt;/h1&gt;</span></a>
-<a class="sourceLine" id="cb33-16" data-line-number="16">          <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;about&quot;</span><span class="kw">&gt;</span>by {{ post.author.username }} on {{ post.created.strftime('%Y-%m-%d') }}<span class="kw">&lt;/div&gt;</span></a>
-<a class="sourceLine" id="cb33-17" data-line-number="17">        <span class="kw">&lt;/div&gt;</span></a>
-<a class="sourceLine" id="cb33-18" data-line-number="18">        {% if g.user['id'] == post.author_id %}</a>
-<a class="sourceLine" id="cb33-19" data-line-number="19">          <span class="kw">&lt;a</span><span class="ot"> class=</span><span class="st">&quot;action&quot;</span><span class="ot"> href=</span><span class="st">&quot;{{ url_for('blog.update', id=post.id) }}&quot;</span><span class="kw">&gt;</span>Edit<span class="kw">&lt;/a&gt;</span></a>
-<a class="sourceLine" id="cb33-20" data-line-number="20">        {% endif %}</a>
-<a class="sourceLine" id="cb33-21" data-line-number="21">      <span class="kw">&lt;/header&gt;</span></a>
-<a class="sourceLine" id="cb33-22" data-line-number="22">      <span class="kw">&lt;p</span><span class="ot"> class=</span><span class="st">&quot;body&quot;</span><span class="kw">&gt;</span>{{ post.body }}<span class="kw">&lt;/p&gt;</span></a>
-<a class="sourceLine" id="cb33-23" data-line-number="23">    <span class="kw">&lt;/article&gt;</span></a>
-<a class="sourceLine" id="cb33-24" data-line-number="24">    {% if not loop.last %}</a>
-<a class="sourceLine" id="cb33-25" data-line-number="25">      <span class="kw">&lt;hr&gt;</span></a>
-<a class="sourceLine" id="cb33-26" data-line-number="26">    {% endif %}</a>
-<a class="sourceLine" id="cb33-27" data-line-number="27">  {% endfor %}</a>
-<a class="sourceLine" id="cb33-28" data-line-number="28">{% endblock %}</a></code></pre></div>
-</section><section id="templatesblogupdate.html" class="slide level2">
-<h2><code>templates/blog/update.html</code></h2>
-<div class="sourceCode" id="cb34"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb34-1" data-line-number="1">{% extends 'base.html' %}</a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb34-3" data-line-number="3">{% block header %}</a>
-<a class="sourceLine" id="cb34-4" data-line-number="4">  <span class="kw">&lt;h1&gt;</span>{% block title %}Edit &quot;{{ post.title }}&quot;{% endblock %}<span class="kw">&lt;/h1&gt;</span></a>
-<a class="sourceLine" id="cb34-5" data-line-number="5">{% endblock %}</a>
-<a class="sourceLine" id="cb34-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb34-7" data-line-number="7">{% block content %}</a>
-<a class="sourceLine" id="cb34-8" data-line-number="8">  <span class="kw">&lt;form</span><span class="ot"> method=</span><span class="st">&quot;post&quot;</span><span class="kw">&gt;</span></a>
-<a class="sourceLine" id="cb34-9" data-line-number="9">    <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;title&quot;</span><span class="kw">&gt;</span>Title<span class="kw">&lt;/label&gt;</span></a>
-<a class="sourceLine" id="cb34-10" data-line-number="10">    <span class="kw">&lt;input</span><span class="ot"> name=</span><span class="st">&quot;title&quot;</span><span class="ot"> id=</span><span class="st">&quot;title&quot;</span></a>
-<a class="sourceLine" id="cb34-11" data-line-number="11"><span class="ot">      value=</span><span class="st">&quot;{{ request.form['title'] or post.title }}&quot;</span><span class="ot"> required</span><span class="kw">&gt;</span></a>
-<a class="sourceLine" id="cb34-12" data-line-number="12">    <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;body&quot;</span><span class="kw">&gt;</span>Body<span class="kw">&lt;/label&gt;</span></a>
-<a class="sourceLine" id="cb34-13" data-line-number="13">    <span class="kw">&lt;textarea</span><span class="ot"> name=</span><span class="st">&quot;body&quot;</span><span class="ot"> id=</span><span class="st">&quot;body&quot;</span><span class="kw">&gt;</span>{{ request.form['body'] or post.body }}<span class="kw">&lt;/textarea&gt;</span></a>
-<a class="sourceLine" id="cb34-14" data-line-number="14">    <span class="kw">&lt;input</span><span class="ot"> type=</span><span class="st">&quot;submit&quot;</span><span class="ot"> value=</span><span class="st">&quot;Save&quot;</span><span class="kw">&gt;</span></a>
-<a class="sourceLine" id="cb34-15" data-line-number="15">  <span class="kw">&lt;/form&gt;</span></a>
-<a class="sourceLine" id="cb34-16" data-line-number="16">  <span class="kw">&lt;hr&gt;</span></a>
-<a class="sourceLine" id="cb34-17" data-line-number="17">  <span class="kw">&lt;form</span><span class="ot"> action=</span><span class="st">&quot;{{ url_for('blog.delete', id=post.id) }}&quot;</span><span class="ot"> method=</span><span class="st">&quot;post&quot;</span><span class="kw">&gt;</span></a>
-<a class="sourceLine" id="cb34-18" data-line-number="18">    <span class="kw">&lt;input</span><span class="ot"> class=</span><span class="st">&quot;danger&quot;</span><span class="ot"> type=</span><span class="st">&quot;submit&quot;</span><span class="ot"> value=</span><span class="st">&quot;Delete&quot;</span><span class="ot"> onclick=</span><span class="st">&quot;return confirm('Are you sure?');&quot;</span><span class="kw">&gt;</span></a>
-<a class="sourceLine" id="cb34-19" data-line-number="19">  <span class="kw">&lt;/form&gt;</span></a>
-<a class="sourceLine" id="cb34-20" data-line-number="20">{% endblock %}</a></code></pre></div>
+<a class="sourceLine" id="cb33-4" data-line-number="4">  <span class="kw">&lt;h1&gt;</span>{% block title %}Edit &quot;{{ post.title }}&quot;{% endblock %}<span class="kw">&lt;/h1&gt;</span></a>
+<a class="sourceLine" id="cb33-5" data-line-number="5">{% endblock %}</a>
+<a class="sourceLine" id="cb33-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb33-7" data-line-number="7">{% block content %}</a>
+<a class="sourceLine" id="cb33-8" data-line-number="8">  <span class="kw">&lt;form</span><span class="ot"> method=</span><span class="st">&quot;post&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb33-9" data-line-number="9">    <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;title&quot;</span><span class="kw">&gt;</span>Title<span class="kw">&lt;/label&gt;</span></a>
+<a class="sourceLine" id="cb33-10" data-line-number="10">    <span class="kw">&lt;input</span><span class="ot"> name=</span><span class="st">&quot;title&quot;</span><span class="ot"> id=</span><span class="st">&quot;title&quot;</span></a>
+<a class="sourceLine" id="cb33-11" data-line-number="11"><span class="ot">      value=</span><span class="st">&quot;{{ request.form['title'] or post.title }}&quot;</span><span class="ot"> required</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb33-12" data-line-number="12">    <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;body&quot;</span><span class="kw">&gt;</span>Body<span class="kw">&lt;/label&gt;</span></a>
+<a class="sourceLine" id="cb33-13" data-line-number="13">    <span class="kw">&lt;textarea</span><span class="ot"> name=</span><span class="st">&quot;body&quot;</span><span class="ot"> id=</span><span class="st">&quot;body&quot;</span><span class="kw">&gt;</span>{{ request.form['body'] or post.body }}<span class="kw">&lt;/textarea&gt;</span></a>
+<a class="sourceLine" id="cb33-14" data-line-number="14">    <span class="kw">&lt;input</span><span class="ot"> type=</span><span class="st">&quot;submit&quot;</span><span class="ot"> value=</span><span class="st">&quot;Save&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb33-15" data-line-number="15">  <span class="kw">&lt;/form&gt;</span></a>
+<a class="sourceLine" id="cb33-16" data-line-number="16">  <span class="kw">&lt;hr&gt;</span></a>
+<a class="sourceLine" id="cb33-17" data-line-number="17">  <span class="kw">&lt;form</span><span class="ot"> action=</span><span class="st">&quot;{{ url_for('blog.delete', id=post.id) }}&quot;</span><span class="ot"> method=</span><span class="st">&quot;post&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb33-18" data-line-number="18">    <span class="kw">&lt;input</span><span class="ot"> class=</span><span class="st">&quot;danger&quot;</span><span class="ot"> type=</span><span class="st">&quot;submit&quot;</span><span class="ot"> value=</span><span class="st">&quot;Delete&quot;</span><span class="ot"> onclick=</span><span class="st">&quot;return confirm('Are you sure?');&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb33-19" data-line-number="19">  <span class="kw">&lt;/form&gt;</span></a>
+<a class="sourceLine" id="cb33-20" data-line-number="20">{% endblock %}</a></code></pre></div>
 </section></section>
 <section><section id="mysql" class="title-slide slide level1"><h1>MySQL</h1></section><section id="μεταφορά-σε-mysql" class="slide level2">
 <h2>Μεταφορά σε MySQL</h2>
@@ -2009,7 +2008,7 @@ vertical-align: top;
 <h2>Εγκατάσταση Οδηγού σε Τοπικό Μηχάνημα</h2>
 <ul>
 <li><p>Υπάρχουν διάφοροι οδηγοί για εγκατάσταση. Ίσως το απλούστερο είναι να εγκαταστήσουμε τον <code>mysql-connector-python</code> μέσω pip.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="ex">pip</span> install mysql-connector-python</a></code></pre></div></li>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="ex">pip</span> install mysql-connector-python</a></code></pre></div></li>
 <li><p>Φυσικά, αν έχουμε εγκαταστήσει ένα ιδεατό περιβάλλον Python, τρέχουμε την παραπάνω εντολή στο ενεργοποιημένο περιβάλλον.</p></li>
 </ul>
 <aside class="notes">
@@ -2019,9 +2018,9 @@ vertical-align: top;
 <h2>Εγκατάσταση MySQL στον Εξυπηρετητή</h2>
 <ul>
 <li><p>Στον εξυπηρετητή δίνουμε:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="fu">sudo</span> apt update</a>
-<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="fu">sudo</span> apt install mysql-server</a>
-<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="fu">sudo</span> mysql_secure_installation</a></code></pre></div></li>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="fu">sudo</span> apt update</a>
+<a class="sourceLine" id="cb35-2" data-line-number="2"><span class="fu">sudo</span> apt install mysql-server</a>
+<a class="sourceLine" id="cb35-3" data-line-number="3"><span class="fu">sudo</span> mysql_secure_installation</a></code></pre></div></li>
 </ul>
 <aside class="notes">
 <p>Το <code>mysql_secure_installation</code> θα μας κάνει μια σειρά ερωτημάτων προκεικέμου να θωρακιστεί η βάση δεδομένων μας.</p>
@@ -2037,54 +2036,54 @@ vertical-align: top;
 <h2>Ρύθμιση Προνομίων</h2>
 <ul>
 <li><p>Συνδεόμαστε με τη βάση δίνοντας:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="fu">sudo</span> mysql -u root -p</a></code></pre></div></li>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="fu">sudo</span> mysql -u root -p</a></code></pre></div></li>
 <li><p>Ελέγχουμε τη μέθοδο αυθεντικοποίησης που χρησιμοποιεί η βάση και επιβεβαιώνουμε ότι χρησιμοποιείται το <code>mysql_native_plugin</code>:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">SELECT</span> <span class="fu">user</span>,authentication_string,plugin,host <span class="kw">FROM</span> mysql.user;</a>
-<a class="sourceLine" id="cb38-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb38-3" data-line-number="3">+<span class="co">------------------+-------------------------------------------+-----------------------+-----------+</span></a>
-<a class="sourceLine" id="cb38-4" data-line-number="4">| <span class="fu">user</span>             | authentication_string                     | plugin                | host      |</a>
-<a class="sourceLine" id="cb38-5" data-line-number="5">+<span class="co">------------------+-------------------------------------------+-----------------------+-----------+</span></a>
-<a class="sourceLine" id="cb38-6" data-line-number="6">| root             | *02164506DE054EB94C3380B7A7CFD7464D445D3B | mysql_native_password | localhost |</a>
-<a class="sourceLine" id="cb38-7" data-line-number="7">| mysql.session    | *THISISNOTAVALIDPASSWORDTHATCANBEUSEDHERE | mysql_native_password | localhost |</a>
-<a class="sourceLine" id="cb38-8" data-line-number="8">| mysql.sys        | *THISISNOTAVALIDPASSWORDTHATCANBEUSEDHERE | mysql_native_password | localhost |</a>
-<a class="sourceLine" id="cb38-9" data-line-number="9">| debian-sys-maint | *0D75601793150ABE156A0FD541F7114A1FDACC53 | mysql_native_password | localhost |</a>
-<a class="sourceLine" id="cb38-10" data-line-number="10">+<span class="co">------------------+-------------------------------------------+-----------------------+-----------+</span></a>
-<a class="sourceLine" id="cb38-11" data-line-number="11"><span class="dv">4</span> <span class="kw">rows</span> <span class="kw">in</span> <span class="kw">set</span> (<span class="fl">0.00</span> sec)</a></code></pre></div></li>
+<div class="sourceCode" id="cb37"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">SELECT</span> <span class="fu">user</span>,authentication_string,plugin,host <span class="kw">FROM</span> mysql.user;</a>
+<a class="sourceLine" id="cb37-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb37-3" data-line-number="3">+<span class="co">------------------+-------------------------------------------+-----------------------+-----------+</span></a>
+<a class="sourceLine" id="cb37-4" data-line-number="4">| <span class="fu">user</span>             | authentication_string                     | plugin                | host      |</a>
+<a class="sourceLine" id="cb37-5" data-line-number="5">+<span class="co">------------------+-------------------------------------------+-----------------------+-----------+</span></a>
+<a class="sourceLine" id="cb37-6" data-line-number="6">| root             | *02164506DE054EB94C3380B7A7CFD7464D445D3B | mysql_native_password | localhost |</a>
+<a class="sourceLine" id="cb37-7" data-line-number="7">| mysql.session    | *THISISNOTAVALIDPASSWORDTHATCANBEUSEDHERE | mysql_native_password | localhost |</a>
+<a class="sourceLine" id="cb37-8" data-line-number="8">| mysql.sys        | *THISISNOTAVALIDPASSWORDTHATCANBEUSEDHERE | mysql_native_password | localhost |</a>
+<a class="sourceLine" id="cb37-9" data-line-number="9">| debian-sys-maint | *0D75601793150ABE156A0FD541F7114A1FDACC53 | mysql_native_password | localhost |</a>
+<a class="sourceLine" id="cb37-10" data-line-number="10">+<span class="co">------------------+-------------------------------------------+-----------------------+-----------+</span></a>
+<a class="sourceLine" id="cb37-11" data-line-number="11"><span class="dv">4</span> <span class="kw">rows</span> <span class="kw">in</span> <span class="kw">set</span> (<span class="fl">0.00</span> sec)</a></code></pre></div></li>
 </ul>
 </section><section id="δημιουργία-bάσης-και-χρήστη" class="slide level2">
 <h2>Δημιουργία Bάσης και Χρήστη</h2>
 <ul>
 <li><p>Δημιουργείστε τη βάση <code>flaskr</code> εισάγοντας τις ακόλουθες εντολές SQL:</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">CREATE</span> <span class="kw">DATABASE</span> flaskr <span class="dt">CHARACTER</span> <span class="kw">SET</span> utf8 COLLATE utf8_general_ci;</a>
-<a class="sourceLine" id="cb39-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb39-3" data-line-number="3"><span class="kw">CREATE</span> <span class="fu">USER</span> <span class="st">'flaskr_user'</span>@<span class="st">'localhost'</span> <span class="kw">IDENTIFIED</span> <span class="kw">BY</span> <span class="st">'4aTik$iaGcN'</span>;</a>
-<a class="sourceLine" id="cb39-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb39-5" data-line-number="5"><span class="kw">GRANT</span> <span class="kw">ALL</span> <span class="kw">PRIVILEGES</span> <span class="kw">ON</span> flaskr.* <span class="kw">TO</span> <span class="st">'flaskr_user'</span>@<span class="st">'localhost'</span>;</a></code></pre></div></li>
+<div class="sourceCode" id="cb38"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">CREATE</span> <span class="kw">DATABASE</span> flaskr <span class="dt">CHARACTER</span> <span class="kw">SET</span> utf8 COLLATE utf8_general_ci;</a>
+<a class="sourceLine" id="cb38-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb38-3" data-line-number="3"><span class="kw">CREATE</span> <span class="fu">USER</span> <span class="st">'flaskr_user'</span>@<span class="st">'localhost'</span> <span class="kw">IDENTIFIED</span> <span class="kw">BY</span> <span class="st">'4aTik$iaGcN'</span>;</a>
+<a class="sourceLine" id="cb38-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb38-5" data-line-number="5"><span class="kw">GRANT</span> <span class="kw">ALL</span> <span class="kw">PRIVILEGES</span> <span class="kw">ON</span> flaskr.* <span class="kw">TO</span> <span class="st">'flaskr_user'</span>@<span class="st">'localhost'</span>;</a></code></pre></div></li>
 </ul>
 </section><section id="ρύθμιση-για-χρήση-mysql" class="slide level2">
 <h2>Ρύθμιση για χρήση MySQL</h2>
 <ul>
 <li><p>Εισάγετε στο αρχείο <code>instance/config.py</code> την παρακάτω γραμμή:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb40-1" data-line-number="1">SQLALCHEMY_DATABASE_URI <span class="op">=</span> <span class="st">'mysql+mysqlconnector://flaskr_user:4aTik$iaGcN@localhost/flaskr'</span></a></code></pre></div></li>
+<div class="sourceCode" id="cb39"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb39-1" data-line-number="1">SQLALCHEMY_DATABASE_URI <span class="op">=</span> <span class="st">'mysql+mysqlconnector://flaskr_user:4aTik$iaGcN@localhost/flaskr'</span></a></code></pre></div></li>
 </ul>
 </section><section id="ενημέρωση-setup.py" class="slide level2">
 <h2>Ενημέρωση <code>setup.py</code></h2>
 <ul>
 <li><p>Θα πρέπει να ενημερώσουμε το αρχείο <code>setup.py</code> που χρησιμοποιούμε για την εγκατάσταση της εφαρμογής, ώστε να περιλαμβάνει τις εξαρτήσεις για τη MySQL:</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="im">from</span> setuptools <span class="im">import</span> find_packages, setup</a>
-<a class="sourceLine" id="cb41-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb41-3" data-line-number="3">setup(</a>
-<a class="sourceLine" id="cb41-4" data-line-number="4">    name<span class="op">=</span><span class="st">'flaskr'</span>,</a>
-<a class="sourceLine" id="cb41-5" data-line-number="5">    version<span class="op">=</span><span class="st">'1.1.0'</span>,</a>
-<a class="sourceLine" id="cb41-6" data-line-number="6">    packages<span class="op">=</span>find_packages(),</a>
-<a class="sourceLine" id="cb41-7" data-line-number="7">    include_package_data<span class="op">=</span><span class="va">True</span>,</a>
-<a class="sourceLine" id="cb41-8" data-line-number="8">    zip_safe<span class="op">=</span><span class="va">False</span>,</a>
-<a class="sourceLine" id="cb41-9" data-line-number="9">    install_requires<span class="op">=</span>[</a>
-<a class="sourceLine" id="cb41-10" data-line-number="10">        <span class="st">'flask'</span>,</a>
-<a class="sourceLine" id="cb41-11" data-line-number="11">        <span class="st">'flask_sqlalchemy'</span>,</a>
-<a class="sourceLine" id="cb41-12" data-line-number="12">        <span class="st">'mysql-connector-python'</span></a>
-<a class="sourceLine" id="cb41-13" data-line-number="13">    ],</a>
-<a class="sourceLine" id="cb41-14" data-line-number="14">)</a></code></pre></div></li>
+<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="im">from</span> setuptools <span class="im">import</span> find_packages, setup</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb40-3" data-line-number="3">setup(</a>
+<a class="sourceLine" id="cb40-4" data-line-number="4">    name<span class="op">=</span><span class="st">'flaskr'</span>,</a>
+<a class="sourceLine" id="cb40-5" data-line-number="5">    version<span class="op">=</span><span class="st">'1.1.0'</span>,</a>
+<a class="sourceLine" id="cb40-6" data-line-number="6">    packages<span class="op">=</span>find_packages(),</a>
+<a class="sourceLine" id="cb40-7" data-line-number="7">    include_package_data<span class="op">=</span><span class="va">True</span>,</a>
+<a class="sourceLine" id="cb40-8" data-line-number="8">    zip_safe<span class="op">=</span><span class="va">False</span>,</a>
+<a class="sourceLine" id="cb40-9" data-line-number="9">    install_requires<span class="op">=</span>[</a>
+<a class="sourceLine" id="cb40-10" data-line-number="10">        <span class="st">'flask'</span>,</a>
+<a class="sourceLine" id="cb40-11" data-line-number="11">        <span class="st">'flask_sqlalchemy'</span>,</a>
+<a class="sourceLine" id="cb40-12" data-line-number="12">        <span class="st">'mysql-connector-python'</span></a>
+<a class="sourceLine" id="cb40-13" data-line-number="13">    ],</a>
+<a class="sourceLine" id="cb40-14" data-line-number="14">)</a></code></pre></div></li>
 </ul>
 <aside class="notes">
 <p>Προσθέσαμε στις εξαρτήσεις τα <code>flask_sqlalchemy</code> και <code>mysql-connector-python</code>. Επίσης ενημερώσαμε την έκδοση, σε <code>1.1.0</code>.</p>
@@ -2093,7 +2092,7 @@ vertical-align: top;
 <h2>Συσκευασία Εφαρμογής</h2>
 <ul>
 <li><p>Για να δημιουργήσουμε το πακέτο εγκατάστασης δίνουμε:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="ex">python3</span> setup.py bdist_wheel</a></code></pre></div></li>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="ex">python3</span> setup.py bdist_wheel</a></code></pre></div></li>
 <li><p>Το πακέτο εγκατάστασης θα δημιουργηθεί στο:</p>
 <pre><code>dist/flaskr-1.1.0-py3-none-any.whl</code></pre></li>
 </ul>
@@ -2101,19 +2100,19 @@ vertical-align: top;
 <h2>Εγκατάσταση σε Εξυπηρετητή</h2>
 <ul>
 <li><p>Αντιγράφουμε το αρχείο εγκατάστασης από τον υπολογιστή που χρησιμοποιούμε για την ανάπτυξη στον εξυπηρετητή:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="fu">scp</span> dist/flaskr-1.1.0-py3-none-any.whl user@snf-842276.vm.okeanos.grnet.gr:flaskr_project</a></code></pre></div></li>
+<div class="sourceCode" id="cb43"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="fu">scp</span> dist/flaskr-1.1.0-py3-none-any.whl user@snf-842276.vm.okeanos.grnet.gr:flaskr_project</a></code></pre></div></li>
 <li><p>Στον <em>εξυπηρετητή</em> ενεργοποιούμε το ιδεατό περιβάλλον και εγκαθιστούμε την εφαρμογή σε αυτό:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="bu">cd</span> ~/flaskr_project/</a>
-<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="bu">source</span> venv/bin/activate</a>
-<a class="sourceLine" id="cb45-3" data-line-number="3"><span class="ex">pip</span> install wheel</a>
-<a class="sourceLine" id="cb45-4" data-line-number="4"><span class="ex">pip</span> install flaskr-1.1.0-py3-none-any.whl</a></code></pre></div></li>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="bu">cd</span> ~/flaskr_project/</a>
+<a class="sourceLine" id="cb44-2" data-line-number="2"><span class="bu">source</span> venv/bin/activate</a>
+<a class="sourceLine" id="cb44-3" data-line-number="3"><span class="ex">pip</span> install wheel</a>
+<a class="sourceLine" id="cb44-4" data-line-number="4"><span class="ex">pip</span> install flaskr-1.1.0-py3-none-any.whl</a></code></pre></div></li>
 </ul>
 </section><section id="δημιουργία-πινάκων-στη-mysql" class="slide level2">
 <h2>Δημιουργία Πινάκων στη MySQL</h2>
 <ul>
 <li><p>Για να δημιουργήσουμε τους πίνακες της βάσης μας (<code>posts</code>, <code>users</code>) θα δώσουμε από τη γραμμή εντολών:</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="bu">export</span> <span class="va">FLASK_APP=</span>flaskr</a>
-<a class="sourceLine" id="cb46-2" data-line-number="2"><span class="ex">flask</span> initdb</a></code></pre></div></li>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="bu">export</span> <span class="va">FLASK_APP=</span>flaskr</a>
+<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="ex">flask</span> initdb</a></code></pre></div></li>
 </ul>
 </section><section id="επόμενα-βήματα" class="slide level2">
 <h2>Επόμενα βήματα</h2>
