@@ -485,16 +485,13 @@ vertical-align: top;
 <ul>
 <li><p>Για να βρούμε το συγγραφέα μιας ανάρτησης αρκεί απλώς να δώσουμε:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> posts[<span class="dv">0</span>].author</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="op">&lt;</span>User <span class="st">'maryjoe'</span><span class="op">&gt;</span></a></code></pre></div></li>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="op">&lt;</span>User <span class="st">'maryjoe'</span><span class="op">&gt;</span></a></code></pre></div></li>
 <li><p>Για να βρούμε τον κωδικό του συγγραφέα αρκεί να δώσουμε:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> posts[<span class="dv">0</span>].author_id</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="dv">1</span></a></code></pre></div></li>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="dv">1</span></a></code></pre></div></li>
 <li><p>Ή φυσικά:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> posts[<span class="dv">0</span>].author.<span class="bu">id</span></a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="dv">1</span></a></code></pre></div></li>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="dv">1</span></a></code></pre></div></li>
 </ul>
 <div class="notes">
 <p>Όπως αναφέραμε προηγουμένως, η χρήση του <code>posts[0].author_id</code> δεν θα απαιτήσει αναζήτηση στη βάση, ενώ η χρήση του <code>posts[0].author.id</code> ενδέχεται να απαιτήσει, αναλόγως την τιμή του <code>lazy</code> στον ορισμό της συσχέτισης.</p>
@@ -709,7 +706,7 @@ vertical-align: top;
 <a class="sourceLine" id="cb32-12" data-line-number="12">    <span class="kw">&lt;article</span><span class="ot"> class=</span><span class="st">&quot;post&quot;</span><span class="kw">&gt;</span></a>
 <a class="sourceLine" id="cb32-13" data-line-number="13">      <span class="kw">&lt;header&gt;</span></a>
 <a class="sourceLine" id="cb32-14" data-line-number="14">        <span class="kw">&lt;div&gt;</span></a>
-<a class="sourceLine" id="cb32-15" data-line-number="15">          <span class="kw">&lt;h1&gt;</span>{{ post['title'] }}<span class="kw">&lt;/h1&gt;</span></a>
+<a class="sourceLine" id="cb32-15" data-line-number="15">          <span class="kw">&lt;h1&gt;</span>{{ post.title }}<span class="kw">&lt;/h1&gt;</span></a>
 <a class="sourceLine" id="cb32-16" data-line-number="16">          <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;about&quot;</span><span class="kw">&gt;</span>by {{ post.author.username }} on {{ post.created.strftime('%Y-%m-%d') }}<span class="kw">&lt;/div&gt;</span></a>
 <a class="sourceLine" id="cb32-17" data-line-number="17">        <span class="kw">&lt;/div&gt;</span></a>
 <a class="sourceLine" id="cb32-18" data-line-number="18">        {% if g.user['id'] == post.author_id %}</a>
