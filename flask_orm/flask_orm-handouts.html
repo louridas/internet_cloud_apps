@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Αν. Καθηγητής Π. Λουρίδας" />
+  <title>Διαδικτυακές και Νεφοϋπολογιστικές Εφαρμογές</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">body {
+margin: auto;
+padding-right: 1em;
+padding-left: 1em;
+max-width: 60%; border-left: 1px solid black;
+border-right: 1px solid black;
+color: black;
+font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+font-size: 100%;
+line-height: 140%;
+color: #333; }
+pre {
+border: 1px dotted gray;
+background-color: #ececec;
+color: #1111111;
+padding: 0.5em;
+}
+code {
+font-family: 'Lucida Console', Monaco, monospace;
+font-size: 100%;
+}
+a {
+color: #336666;
+} h1 a, h2 a, h3 a, h4 a, h5 a { text-decoration: none;
+color: #7a5ada; }
+h1, h2, h3, h4, h5 {
+font-family: Roboto;
+font-weight: bold;
+}
+h1 {
+font-size: 130%;
+padding: 0.5em;
+border-bottom: 1px dotted black;
+}
+h2 {
+font-size: 110%;
+}
+h3 {
+font-size: 95%;
+}
+h4 {
+font-size: 90%;
+font-style: italic;
+}
+h5 {
+font-size: 90%;
+font-style: italic;
+}
+h1.title {
+font-size: 200%;
+font-weight: bold;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+text-align: left;
+border: none;
+}
+dt code {
+font-weight: bold;
+}
+dd p {
+margin-top: 0;
+}
+#footer {
+padding-top: 1em;
+font-size: 70%;
+color: gray;
+text-align: center;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Διαδικτυακές και Νεφοϋπολογιστικές Εφαρμογές</h1>
+<p class="author">Αν. Καθηγητής Π. Λουρίδας</p>
+<p class="date">Οικονομικό Πανεπιστήμιο Αθηνών</p>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#object-relational-mapping">Object Relational Mapping</a><ul>
+<li><a href="#γενικά">Γενικά</a></li>
+<li><a href="#επιπλέον-προβλήματα">Επιπλέον προβλήματα</a></li>
+<li><a href="#απεικόνιση-αντικειμένων-οντοτήτων">Απεικόνιση αντικειμένων-οντοτήτων</a></li>
+<li><a href="#sqlalchemy">SQLAlchemy</a></li>
+<li><a href="#εγκατάσταση-ipython">Εγκατάσταση IPython</a></li>
+</ul></li>
+<li><a href="#microblog-με-flask-sqlalchemy">Microblog με Flask-SQLAlchemy</a><ul>
+<li><a href="#από-sql-σε-sqlalchemy">Από SQL σε SQLAlchemy</a></li>
+<li><a href="#μοντέλο-βάσης">Μοντέλο βάσης</a></li>
+<li><a href="#models.py"><code>models.py</code></a></li>
+<li><a href="#δήλωση-συσχέτισης">Δήλωση Συσχέτισης</a></li>
+<li><a href="#αναζήτηση-συσχέτισης">Αναζήτηση Συσχέτισης</a></li>
+<li><a href="#init__.py"><code>__init__.py</code></a></li>
+<li><a href="#εντολή-δημιουργίας-βάσης">Εντολή Δημιουργίας Βάσης</a></li>
+<li><a href="#διαγραφή-schema.sql">Διαγραφή <code>schema.sql</code></a></li>
+<li><a href="#χρήση-βάσης-από-τη-γραμμή-εντολών-python">Χρήση Βάσης από τη Γραμμή Εντολών Python</a></li>
+<li><a href="#διαγραφή-και-δημιουργία-βάσης">Διαγραφή και Δημιουργία Βάσης</a></li>
+<li><a href="#εισαγωγή-δεδομένων">Εισαγωγή δεδομένων</a></li>
+<li><a href="#αναζήτηση-δεδομένων">Αναζήτηση δεδομένων</a></li>
+<li><a href="#αναζήτηση-συσχετισμένων-δεδομένων">Αναζήτηση Συσχετισμένων Δεδομένων</a></li>
+<li><a href="#εμφάνιση-εντολών-sql">Εμφάνιση Εντολών SQL</a></li>
+<li><a href="#διαγραφή-δεδομένων">Διαγραφή Δεδομένων</a></li>
+<li><a href="#εμφάνιση-αναρτήσεων">Εμφάνιση αναρτήσεων</a></li>
+<li><a href="#προσθήκη-ανάρτησης">Προσθήκη ανάρτησης</a></li>
+<li><a href="#εύρεση-ανάρτησης">Εύρεση Ανάρτησης</a></li>
+<li><a href="#ενημέρωση-ανάρτησης">Ενημέρωση Ανάρτησης</a></li>
+<li><a href="#διαγραφή-ανάρτησης">Διαγραφή Ανάρτησης</a></li>
+<li><a href="#εγγραφή-χρήστη">Εγγραφή Χρήστη</a></li>
+<li><a href="#είσοδος-χρήστη">Είσοδος Χρήστη</a></li>
+<li><a href="#έλεγχος-χρήστη">Έλεγχος Χρήστη</a></li>
+<li><a href="#εκκίνηση-εφαρμογής">Εκκίνηση Εφαρμογής</a></li>
+<li><a href="#αλλαγές-στα-πρότυπα-εμφάνισης">Αλλαγές στα Πρότυπα Εμφάνισης</a></li>
+<li><a href="#templatesblogindex.html"><code>templates/blog/index.html</code></a></li>
+<li><a href="#templatesblogupdate.html"><code>templates/blog/update.html</code></a></li>
+</ul></li>
+<li><a href="#mysql">MySQL</a><ul>
+<li><a href="#μεταφορά-σε-mysql">Μεταφορά σε MySQL</a></li>
+<li><a href="#εγκατάσταση-mysql-σε-τοπικό-μηχάνημα">Εγκατάσταση MySQL σε Τοπικό Μηχάνημα</a></li>
+<li><a href="#εγκατάσταση-οδηγού-σε-τοπικό-μηχάνημα">Εγκατάσταση Οδηγού σε Τοπικό Μηχάνημα</a></li>
+<li><a href="#εγκατάσταση-mysql-στον-εξυπηρετητή">Εγκατάσταση MySQL στον Εξυπηρετητή</a></li>
+<li><a href="#ρύθμιση-προνομίων">Ρύθμιση Προνομίων</a></li>
+<li><a href="#δημιουργία-bάσης-και-χρήστη">Δημιουργία Bάσης και Χρήστη</a></li>
+<li><a href="#ρύθμιση-για-χρήση-mysql">Ρύθμιση για χρήση MySQL</a></li>
+<li><a href="#ενημέρωση-setup.py">Ενημέρωση <code>setup.py</code></a></li>
+<li><a href="#συσκευασία-εφαρμογής">Συσκευασία Εφαρμογής</a></li>
+<li><a href="#εγκατάσταση-σε-εξυπηρετητή">Εγκατάσταση σε Εξυπηρετητή</a></li>
+<li><a href="#δημιουργία-πινάκων-στη-mysql">Δημιουργία Πινάκων στη MySQL</a></li>
+<li><a href="#επόμενα-βήματα">Επόμενα βήματα</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="object-relational-mapping">Object Relational Mapping</h1>
+<h2 id="γενικά">Γενικά</h2>
+<ul>
+<li><p>Οι περισσότερες βάσεις δεδομένουν χρησιμοποιούν το <em>σχεσιακό μοντέλο</em> (relational model).</p></li>
+<li><p>Στα προγράμματα που γράφουμε όμως, δεν έχουμε σχέσεις. Έχουμε αντικείμενα και άλλες δομές δεδομένων.</p></li>
+<li><p>Πρέπει λοιπόν να μεταφράζουμε μεταξύ των σχέσεων και των αντικειμένων του προγράμματός μας.</p></li>
+</ul>
+<h2 id="επιπλέον-προβλήματα">Επιπλέον προβλήματα</h2>
+<ul>
+<li><p>Στις σχεσιακές βάσεις δεδομένων χρησιμοποιούμε SQL.</p></li>
+<li><p>Στα προγράμματά μας χρησιμοποιούμε άλλες γλώσσες.</p></li>
+<li><p>Πρέπει λοιπόν ταυτόχρονα να χρησιμοποιούμε SQL συν ό,τι άλλες γλώσσες χρειαζόμαστε.</p></li>
+<li><p>Ο κώδικας SQL ελέγχεται μόνο κατά τη διάρκεια εκτέλεσης του προγράμματος (runtime).</p></li>
+</ul>
+<h2 id="απεικόνιση-αντικειμένων-οντοτήτων">Απεικόνιση αντικειμένων-οντοτήτων</h2>
+<ul>
+<li><p>Η <em>απεικόνιση αντικεμένων-οντοτήτων</em> (Object Relational Mapping, ORM) είναι μια σειρά τεχνολογιών με τις οποίες τα αντικείμενα που χρησιμοποιούμε στην εφαρμογή μας μεταφράζονται αυτομάτως σε σχέσεις.</p></li>
+<li><p>Υπάρχουν πολλές υλοποιήσεις, σε πολλές γλώσσες.</p></li>
+</ul>
+<h2 id="sqlalchemy">SQLAlchemy</h2>
+<ul>
+<li><p>Η πιο δημοφιλής βιβλιοθήκη για ORM στην Python είναι η <a href="http://www.sqlalchemy.org/">SQLAlchemy</a>.</p></li>
+<li><p>Αν θέλουμε να τη χρησιμοποιήσουμε με το Flask, μπορούμε να εγκαταστήσουμε το πακέτο <a href="http://flask-sqlalchemy.pocoo.org/">Flask-SQLAlchemy</a>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ex">pip</span> install flask-sqlalchemy</a></code></pre></div></li>
+</ul>
+<h2 id="εγκατάσταση-ipython">Εγκατάσταση IPython</h2>
+<ul>
+<li><p>Θα χρειαστεί να χρησιμοποιήσουμε αρκετές φορές τη γραμμή εντολών της Python.</p></li>
+<li><p>Επειδή η γραμμή εντολών της Python είναι λίγο δύσχρηστη, στην πράξη χρησιμοποιούμε το εργαλείο <a href="https://ipython.org/">IPython</a>.</p></li>
+<li><p>Αν δεν είναι διαθέσιμο στο σύστημά μας, για να το εγκαταστήσουμε δίνουμε:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ex">pip</span> install ipython</a></code></pre></div></li>
+<li><p>Στο εξής μπορούμε να δίνουμε <code>ipython</code> για να ξεκινάμε μία γραμμή εντολών της Python.</p></li>
+</ul>
+<div class="notes">
+<p>Το IPython έχει πολλές δυνατότητες που κάνουν την αλληλεπίδραση με την Python ευκολότερη. Επιγραμματικά:</p>
+<ul>
+<li><p>Συμπλήρωση εντολών (command line completion). Καθώς πληκτρολογούμε κάτι σε Python, μπορούμε να πατάμε Tab οπότε θα φαίνονται η διαθέσιμες επιλογές για τη συμπλήρωση της εντολής μας.</p></li>
+<li><p>Πλήρες ιστορικό εντολών (command history). Μπορούμε να πλοηγηθούμε στις εντολές που έχουμε δώσει χρησιμοποιώντας τα βελάκια άνω και κάτω.</p></li>
+<li><p>Αντιγραφή και επικόλληση (copy and paste). Μπορούμε να αντιγράφουμε εύκολα κώδικα από και προς το IPython.</p></li>
+</ul>
+<p>Για μία σύντομη εισαγωγή, μπορείτε να δείτε την <a href="http://ipython.readthedocs.io/en/stable/interactive/tutorial.html">online τεκμηρίωση</a>.</p>
+</div>
+<h1 id="microblog-με-flask-sqlalchemy">Microblog με Flask-SQLAlchemy</h1>
+<h2 id="από-sql-σε-sqlalchemy">Από SQL σε SQLAlchemy</h2>
+<ul>
+<li><p>Θα μετατρέψουμε την εφαρμογή που γράψαμε στις προηγούμενες διαλέξεις ώστε να χρησιμοποιεί SQLAlchemy.</p></li>
+<li><p>Θα δούμε ότι με τον τρόπο αυτό δεν θα γράψουμε καθόλου κώδικα SQL.</p></li>
+</ul>
+<h2 id="μοντέλο-βάσης">Μοντέλο βάσης</h2>
+<ul>
+<li><p>Αυτή τη φορά δεν θα χρειαστεί να γράψουμε κώδικα SQL για τον ορισμό των πινάκων της βάσης.</p></li>
+<li><p>Θα τους ορίσουμε μέσω Python, στο αρχείο <code>flaskr/models.py</code>.</p></li>
+</ul>
+<h2 id="models.py"><code>models.py</code></h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="im">from</span> sqlalchemy.sql <span class="im">import</span> func</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="im">from</span> flaskr <span class="im">import</span> db</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw">class</span> User(db.Model):</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">    __tablename__ <span class="op">=</span> <span class="st">'users'</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">    <span class="bu">id</span> <span class="op">=</span> db.Column(db.Integer, primary_key<span class="op">=</span><span class="va">True</span>)</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">    username <span class="op">=</span> db.Column(db.String(<span class="dv">120</span>),</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">                         nullable<span class="op">=</span><span class="va">False</span>,</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">                         unique<span class="op">=</span><span class="va">True</span>,</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">                         index<span class="op">=</span><span class="va">True</span>)</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">    password <span class="op">=</span> db.Column(db.String(<span class="dv">150</span>), nullable<span class="op">=</span><span class="va">False</span>)</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14">    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb3-15" data-line-number="15">        <span class="cf">return</span> <span class="st">'&lt;User </span><span class="sc">%r</span><span class="st">&gt;'</span> <span class="op">%</span> (<span class="va">self</span>.username,)</a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="kw">class</span> Post(db.Model):</a>
+<a class="sourceLine" id="cb3-18" data-line-number="18">    __tablename__ <span class="op">=</span> <span class="st">'posts'</span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19">    <span class="bu">id</span> <span class="op">=</span> db.Column(db.Integer, primary_key<span class="op">=</span><span class="va">True</span>)</a>
+<a class="sourceLine" id="cb3-20" data-line-number="20">    title <span class="op">=</span> db.Column(db.String(<span class="dv">120</span>), nullable<span class="op">=</span><span class="va">False</span>)</a>
+<a class="sourceLine" id="cb3-21" data-line-number="21">    body <span class="op">=</span> db.Column(db.Text(), nullable<span class="op">=</span><span class="va">False</span>)</a>
+<a class="sourceLine" id="cb3-22" data-line-number="22">    created <span class="op">=</span> db.Column(db.DateTime(), nullable<span class="op">=</span><span class="va">False</span>,</a>
+<a class="sourceLine" id="cb3-23" data-line-number="23">                        server_default<span class="op">=</span>func.now())</a>
+<a class="sourceLine" id="cb3-24" data-line-number="24">    author_id <span class="op">=</span> db.Column(db.Integer,</a>
+<a class="sourceLine" id="cb3-25" data-line-number="25">                          db.ForeignKey(<span class="st">'users.id'</span>),</a>
+<a class="sourceLine" id="cb3-26" data-line-number="26">                          nullable<span class="op">=</span><span class="va">False</span>)</a>
+<a class="sourceLine" id="cb3-27" data-line-number="27">    author <span class="op">=</span> db.relationship(<span class="st">'User'</span>, lazy<span class="op">=</span><span class="va">True</span></a>
+<a class="sourceLine" id="cb3-28" data-line-number="28">                             backref<span class="op">=</span>db.backref(<span class="st">'posts'</span>, lazy<span class="op">=</span><span class="va">True</span>))</a>
+<a class="sourceLine" id="cb3-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb3-30" data-line-number="30">    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb3-31" data-line-number="31">        <span class="cf">return</span> <span class="st">'&lt;Post </span><span class="sc">%r</span><span class="st"> </span><span class="sc">%r</span><span class="st"> </span><span class="sc">%r</span><span class="st"> </span><span class="sc">%r</span><span class="st">&gt;'</span> <span class="op">%</span> (<span class="va">self</span>.title, <span class="va">self</span>.body, <span class="va">self</span>.created,</a>
+<a class="sourceLine" id="cb3-32" data-line-number="32">                                       <span class="va">self</span>.author.username)</a></code></pre></div>
+<div class="notes">
+<p>Στο SQLAlchemy θα απεικονίζουμε τους πίνακες της βάσης μέσω κλάσεων στην Python. Οι κλάσεις θα πρέπει να είναι απόγονοι της κλάσης <code>db.Model</code>. Η αντιστοίχηση μεταξύ της κλάσης και του πίνακα στη βάση δεδομένων γίνεται με την ιδιότητα <code>__tablename__</code>. Προσέξτε τη σύμβαση στην ονοματολογία: τα ονόματα των κλάσεων στις γλώσσες προγραμμματισμού είναι στον <em>ενικό</em>. Τα ονόματα των πινάκων είναι συνήθως στον <em>πληθυντικό</em>. Θα δημιουργήσουμε δύο κλάσεις: * <code>User</code> για τους χρήστες * <code>Post</code> για τις αναρτήσεις.</p>
+<p>Ξεκινώντας από την κλάση <code>User</code>, o πίνακας <code>users</code> θέλουμε να έχει ως στήλες έναν κωδικό (<code>id</code>), ένα όνομα χρήστη (<code>username</code>), και ένα κωδικό εισόδου (<code>password</code>). Το κάθε ένα από αυτά ορίζεται μέσω κατάλληλης κλήσης της μεθόδου <code>db.Column()</code>. Η πρώτη παράμετρος της μεθόδου δίνει τον τύπο της στήλης και επιπλέον παράμετροι δίνουν ιδιότητες, όπως αν πρόκειται για κλειδί, αν επιτρέπονται οι τιμές null, κ.λπ. Περισσότερες πληροφορίες μπορείτε να βρείτε στην <a href="http://flask-sqlalchemy.pocoo.org/2.3/models/">τεκμηρίωση του Flask-SQLAlchemy</a>. Αν θέλετε να εμβαθύνετε, δείτε την <a href="http://docs.sqlalchemy.org/en/latest/index.html">τεκμηρίωση του SQLAlchemy</a>.</p>
+<p>Η μέθοδος <code>__repr__()</code> θα μας εκτυπώνει μια αναπάρασταση του κάθε αντικειμένου τύπου <code>Entry</code>. Μοιάζει με τη μέθοδο <code>__str__</code>, αλλά ενώ η μέθοδος <code>__str__</code> δημιουργεί απλώς μια συμβολοσειρά από το αντικείμενό μας, η μέθοδος <code>__repr__</code> δημιουργεί μια συμβολοσειρά η οποία περιέχει όλη την πληροφορία που χρειαζόμαστε για να το κατασκευάσουμε, αν θέλουμε. Αντίστοιχα με το <code>%s</code>, το οποίο όταν εμφανίζεται σε μία συμβολοσειρά θα αντικασταθεί με μία κλήση της <code>__str__</code>, το <code>%r</code> θα αντικατασταθεί με μία κλήση της <code>__repr__</code>.</p>
+<p>Η κλάση <code>Post</code> δηλώνεται και αυτή ως απόγονος της κλάσης <code>db.Model</code> και μας επιτρέπει να δούμε κάποιες επιπλέον δυνατότητες του SQLAlchemy. Το:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1">created <span class="op">=</span> db.Column(db.DateTime(), nullable<span class="op">=</span><span class="va">False</span>,</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">                    server_default<span class="op">=</span>func.now())</a></code></pre></div>
+<p>δηλώνει μια στήλη όπου θα αποθηκεύεται η ημερομηνία και η ώρα της ανάρτησης, και η τιμή της οποίας θα δίνεται από τη βάση, όχι από την εφαρμογή μας.</p>
+</div>
+<h2 id="δήλωση-συσχέτισης">Δήλωση Συσχέτισης</h2>
+<ul>
+<li><p>Τη συσχέτιση μεταξύ των δύο πινάκων <code>users</code> και <code>posts</code> τη δηλώνουμε με τις παρακάτω γραμμές:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" data-line-number="1">author_id <span class="op">=</span> db.Column(db.Integer,</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">                      db.ForeignKey(<span class="st">'users.id'</span>),</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">                      nullable<span class="op">=</span><span class="va">False</span>)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">author <span class="op">=</span> db.relationship(<span class="st">'User'</span>, lazy<span class="op">=</span><span class="va">True</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">                         backref<span class="op">=</span>db.backref(<span class="st">'posts'</span>, lazy<span class="op">=</span><span class="va">True</span>))</a></code></pre></div></li>
+<li>Με τα παραπάνω, μπορούμε:
+<ul>
+<li>από μία ανάρτηση <code>my_post</code> να πηγαίνουμε στον χρήστη που την ανέρτησε, με <code>my_post.user</code>.</li>
+<li>από μία ανάρτηση να βρίσκουμε το <code>id</code> του χρήστη που την ανέρτησε, με <code>my_post.user_id</code> (ή φυσικά με <code>my_post.user.id</code>).</li>
+<li>από έναν χρήστη <code>a_user</code> να βρίσκουμε τις αναρτήσεις του με <code>a_user.posts</code>.</li>
+</ul></li>
+</ul>
+<h2 id="αναζήτηση-συσχέτισης">Αναζήτηση Συσχέτισης</h2>
+<ul>
+<li><p>Η παράμετρος <code>lazy</code> δηλώνει με ποιον τρόπο θα γίνει η αναζήτηση της συσχετιζόμνης οντότητας σε μία συσχέτιση.</p></li>
+<li><p>Μπορεί να πάρει τις εξής τιμές:</p>
+<ul>
+<li><code>select</code> ή <code>True</code>: η αναζήτηση της συσχέτισης θα γίνει όταν χρειαστεί με ένα <code>SELECT</code>.</li>
+<li><code>joined</code> ή <code>False</code>: η αναζήτηση της συσχέτισης θα γίνει τη στιγμή που γίνεται η αναζήτηση της πρώτης οντότητας, χρησιμοποιώντας ένα <code>JOIN</code>.</li>
+<li><code>subquery</code>: όπως και το <code>joined</code>, αλλά θα χρησιμοποιηθεί δευτερεύουσα αναζήτηση (subquery).</li>
+<li><code>dynamic</code>: πιο προχωρημένη δυνατότητα, θα επιστραφεί ένα αντικείμενο τύπου <code>Query</code> στο οποίο θα μπορούμε να εφαρμόσουμε επιπλέον φίλτρα.</li>
+</ul></li>
+</ul>
+<div class="notes">
+<p>Για περισσότερες πληροφορίες, βλ. τη σχετική τεκμηρίωση του <a href="http://flask-sqlalchemy.pocoo.org/2.3/models/#one-to-many-relationships">Flask-SQLAlchemy</a> και του <a href="http://docs.sqlalchemy.org/en/latest/orm/tutorial.html#building-a-relationship">SQLAlchemy</a> και του <a href="https://docs.sqlalchemy.org/en/latest/orm/tutorial.html#eager-loading">Eager Loading</a>.</p>
+</div>
+<h2 id="init__.py"><code>__init__.py</code></h2>
+<ul>
+<li><p>Το αρχείο <code>__init__.py</code> θα προσαρμοστεί ως εξής:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="im">import</span> os</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="im">from</span> flask <span class="im">import</span> Flask</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="im">from</span> flask_sqlalchemy <span class="im">import</span> SQLAlchemy</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">db <span class="op">=</span> SQLAlchemy()</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="kw">def</span> create_app(test_config<span class="op">=</span><span class="va">None</span>):</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">   <span class="co"># create and configure the app</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">   app <span class="op">=</span> Flask(<span class="va">__name__</span>, instance_relative_config<span class="op">=</span><span class="va">True</span>)</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">   app.config.from_mapping(</a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">       SECRET_KEY<span class="op">=</span><span class="st">'dev'</span>,</a>
+<a class="sourceLine" id="cb6-14" data-line-number="14">       <span class="co"># SQLALCHEMY_ECHO = True, uncomment to echo SQL statements</span></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15">       SQLALCHEMY_DATABASE_URI <span class="op">=</span> <span class="st">'sqlite:///flaskr.sqlite'</span>,</a>
+<a class="sourceLine" id="cb6-16" data-line-number="16">       SQLALCHEMY_TRACK_MODIFICATIONS <span class="op">=</span> <span class="va">False</span></a>
+<a class="sourceLine" id="cb6-17" data-line-number="17">   )</a>
+<a class="sourceLine" id="cb6-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb6-19" data-line-number="19">   <span class="cf">if</span> test_config <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb6-20" data-line-number="20">       <span class="co"># load the instance config, if it exists, when not testing</span></a>
+<a class="sourceLine" id="cb6-21" data-line-number="21">       app.config.from_pyfile(<span class="st">'config.py'</span>, silent<span class="op">=</span><span class="va">True</span>)</a>
+<a class="sourceLine" id="cb6-22" data-line-number="22">   <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb6-23" data-line-number="23">       <span class="co"># load the test config if passed in</span></a>
+<a class="sourceLine" id="cb6-24" data-line-number="24">       app.config.from_mapping(test_config)</a>
+<a class="sourceLine" id="cb6-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb6-26" data-line-number="26">   <span class="co"># ensure the instance folder exists</span></a>
+<a class="sourceLine" id="cb6-27" data-line-number="27">   <span class="cf">try</span>:</a>
+<a class="sourceLine" id="cb6-28" data-line-number="28">       os.makedirs(app.instance_path)</a>
+<a class="sourceLine" id="cb6-29" data-line-number="29">   <span class="cf">except</span> <span class="pp">OSError</span>:</a>
+<a class="sourceLine" id="cb6-30" data-line-number="30">       <span class="cf">pass</span></a>
+<a class="sourceLine" id="cb6-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb6-32" data-line-number="32">   db.init_app(app)</a>
+<a class="sourceLine" id="cb6-33" data-line-number="33"></a>
+<a class="sourceLine" id="cb6-34" data-line-number="34">   <span class="im">from</span> . <span class="im">import</span> init_db</a>
+<a class="sourceLine" id="cb6-35" data-line-number="35">   init_db.init_db(app)</a>
+<a class="sourceLine" id="cb6-36" data-line-number="36"></a>
+<a class="sourceLine" id="cb6-37" data-line-number="37">   <span class="im">from</span> . <span class="im">import</span> auth</a>
+<a class="sourceLine" id="cb6-38" data-line-number="38">   app.register_blueprint(auth.bp)</a>
+<a class="sourceLine" id="cb6-39" data-line-number="39"></a>
+<a class="sourceLine" id="cb6-40" data-line-number="40">   <span class="im">from</span> . <span class="im">import</span> blog</a>
+<a class="sourceLine" id="cb6-41" data-line-number="41">   app.register_blueprint(blog.bp)</a>
+<a class="sourceLine" id="cb6-42" data-line-number="42">   app.add_url_rule(<span class="st">'/'</span>, endpoint<span class="op">=</span><span class="st">'index'</span>)</a>
+<a class="sourceLine" id="cb6-43" data-line-number="43"></a>
+<a class="sourceLine" id="cb6-44" data-line-number="44">   <span class="cf">return</span> app</a></code></pre></div></li>
+</ul>
+<div class="notes">
+<p>Οι διαφορές είναι:</p>
+<ul>
+<li><p>Χρησιμοποιούμε και τη βιβλιοθήκη SQLAlchemy, οπότε απαιτείται το κατάλληλο <code>import</code>.</p></li>
+<li><p>Οι ρυθμίσεις για τη βάση αλλάζουν. Το <code>SQLALCHEMY_DATABASE_URI</code> δείχνει την τοποθεσία της βάσης. Στη συγκεκριμένη περίπτωση, θα είναι το αρχείο <code>flaskr.db</code> στον κατάλογο της εφαρμογής μας.</p></li>
+<li><p>Η ρύθμιση <code>SQLALCHEMY_TRACK_MODIFICATIONS = False</code> είναι μια τεχνική λεπτομέρεια και δεν χρειάζεται να μας απασχολήσει τώρα.</p></li>
+<li><p>Η γραμμές <code>db = SQLAlchemy()</code> και <code>db.init_app(app)</code> δημιουργούν και αρχικοποιούν το αντικείμενο <code>db</code> με το οποίο θα αλληλεπιδρούμε με τη βάση δεδομένων μας.</p></li>
+<li><p>Οι γραμμές:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="im">from</span> . <span class="im">import</span> init_db</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">init_db.init_db(app)</a></code></pre></div>
+<p>δημιουργούν την εντολή <code>flask init-db</code> που θα μπορούμε να χρησιμοποιούμε στη γραμμή εντολών.</p></li>
+<li><p>Αν θέλουμε να εμφανίζονται οι εντολές SQL που δημιουργεί το SQLAlchemy, προσθέτουμε στο <code>app.config.from_mapping()</code> την παράμετρο: <code>python  SQLALCHEMY_ECHO = True</code></p></li>
+</ul>
+</div>
+<h2 id="εντολή-δημιουργίας-βάσης">Εντολή Δημιουργίας Βάσης</h2>
+<ul>
+<li><p>Για να μπορούμε να δημιουργούμε προγραμματιστικά τη βάση, μετονομάζουμε το αρχείο <code>db.py</code> που είχαμε φτιάξει σε <code>init_db.py</code>, με τα εξής περιεχόμενα:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="im">import</span> click</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="im">from</span> flask.cli <span class="im">import</span> with_appcontext</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="im">from</span> flaskr <span class="im">import</span> db</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="at">@click.command</span>(<span class="st">'init-db'</span>)</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="at">@with_appcontext</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="kw">def</span> init_db_command():</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">    <span class="co">&quot;&quot;&quot;Clear the existing data and create new tables.&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11">    db.drop_all()</a>
+<a class="sourceLine" id="cb8-12" data-line-number="12">    db.create_all()</a>
+<a class="sourceLine" id="cb8-13" data-line-number="13">    click.echo(<span class="st">'Initialized the database.'</span>)</a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="kw">def</span> init_db(app):</a>
+<a class="sourceLine" id="cb8-16" data-line-number="16">    app.cli.add_command(init_db_command)</a></code></pre></div></li>
+</ul>
+<h2 id="διαγραφή-schema.sql">Διαγραφή <code>schema.sql</code></h2>
+<ul>
+<li><p>Πριν αρχίσουμε να χρησιμοποιούμε το SQLAlchemy είχαμε το σχήμα της βάσης στο αρχείο <code>schema.sql</code>.</p></li>
+<li><p>Αυτό πλέον δεν χρειάζεται, οπότε το διαγράφουμε.</p></li>
+</ul>
+<h2 id="χρήση-βάσης-από-τη-γραμμή-εντολών-python">Χρήση Βάσης από τη Γραμμή Εντολών Python</h2>
+<ul>
+<li><p>Έχοντας γράψει τον παραπάνω κώδικα, μπορούμε να δημιουργήσουμε τη βάση μας κατ’ ευθείαν από μία γραμμή εντολών Python.</p></li>
+<li><p>Ξεκινάμε την Python μέσα στον κατάλογο <code>flaskr_project</code> πληκτρολογόντας <code>python</code>, ή καλύτερα <code>ipython</code>.</p></li>
+<li><p>Στη συνέχεια γράφουμε στη γραμμή εντολών της Python:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="im">from</span> flaskr <span class="im">import</span> db, create_app</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">app <span class="op">=</span> create_app()</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">app.app_context().push()</a></code></pre></div></li>
+</ul>
+<h2 id="διαγραφή-και-δημιουργία-βάσης">Διαγραφή και Δημιουργία Βάσης</h2>
+<ul>
+<li><p>Για να δημιουργήσουμε τη βάση εισάγουμε στη γραμμή εντολών της Python:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" data-line-number="1">db.create_all()</a></code></pre></div></li>
+<li><p>Αν θέλουμε να διαγράψουμε τους πίνακες μιας βάσης δίνουμε στη γραμμή εντολών της Python:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" data-line-number="1">db.drop_all()</a></code></pre></div></li>
+</ul>
+<h2 id="εισαγωγή-δεδομένων">Εισαγωγή δεδομένων</h2>
+<ul>
+<li><p>Τώρα μπορούμε να χειριστούμε πλήρως τη βάση μας από τη γραμμή εντολών της Python.</p></li>
+<li><p>Για παράδειγμα, για να εισάγουμε ένα χρήστη και δύο αναρτήσεις, γράφουμε:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="im">from</span> flaskr.models <span class="im">import</span> User, Post</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">user_1 <span class="op">=</span> User(username<span class="op">=</span><span class="st">&quot;marydoe&quot;</span>, password<span class="op">=</span><span class="st">&quot;askj_63d9k&quot;</span>)</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">post_1 <span class="op">=</span> Post(title<span class="op">=</span><span class="st">&quot;First Post&quot;</span>, body<span class="op">=</span><span class="st">&quot;This is the first post&quot;</span>, author<span class="op">=</span>user_1)</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">post_2 <span class="op">=</span> Post(title<span class="op">=</span><span class="st">&quot;Second Post&quot;</span>, body<span class="op">=</span><span class="st">&quot;This is the second post&quot;</span>, author<span class="op">=</span>user_1)</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">db.session.add(user_1)</a>
+<a class="sourceLine" id="cb12-8" data-line-number="8">db.session.add(post_1)</a>
+<a class="sourceLine" id="cb12-9" data-line-number="9">db.session.add(post_2)</a>
+<a class="sourceLine" id="cb12-10" data-line-number="10">db.session.commit()</a></code></pre></div></li>
+</ul>
+<h2 id="αναζήτηση-δεδομένων">Αναζήτηση δεδομένων</h2>
+<ul>
+<li><p>Για να κάνουμε μια αναζήτηση στα δεδομένα, γράφουμε:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" data-line-number="1">posts <span class="op">=</span> Post.query.<span class="bu">all</span>()</a></code></pre></div></li>
+<li><p>Πράγματι, ενόσω είμαστε στη γραμμή εντολών μπορούμε να επιβεβαιώσουμε τις εγγραφές:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" data-line-number="1">posts</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">[<span class="op">&lt;</span>Post <span class="st">'First Post'</span> <span class="st">'This is the first post'</span> datetime.datetime(<span class="dv">2018</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">11</span>, <span class="dv">5</span>, <span class="dv">15</span>) <span class="st">'marydoe'</span><span class="op">&gt;</span>,</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"> <span class="op">&lt;</span>Post <span class="st">'Second Post'</span> <span class="st">'This is the second post'</span> datetime.datetime(<span class="dv">2018</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">11</span>, <span class="dv">5</span>, <span class="dv">25</span>) <span class="st">'marydoe'</span><span class="op">&gt;</span>]</a></code></pre></div></li>
+</ul>
+<div class="notes">
+<p>Στο συγκεκριμένο παράδειγμα αναζητούμε το σύνολο των δεδομένων. Φυσικά μπορούμε να κάνουμε πιο λεπτομερείς και περίπλοκες αναζητήσεις. Δείτε τη <a href="http://flask-sqlalchemy.pocoo.org/2.3/queries/#querying-records">σχετική τεκμηρίωση του Flask-SQLAlchemy</a> και την <a href="http://docs.sqlalchemy.org/en/latest/orm/tutorial.html#common-filter-operators">πλήρη τεκμηρίωση του SQLAlchemy</a>.</p>
+</div>
+<h2 id="αναζήτηση-συσχετισμένων-δεδομένων">Αναζήτηση Συσχετισμένων Δεδομένων</h2>
+<ul>
+<li><p>Για να βρούμε το συγγραφέα μιας ανάρτησης αρκεί απλώς να δώσουμε:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" data-line-number="1">posts[<span class="dv">0</span>].author</a></code></pre></div></li>
+<li><p>Για να βρούμε τον κωδικό του συγγραφέα αρκεί να δώσουμε:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" data-line-number="1">posts[<span class="dv">0</span>].author_id</a></code></pre></div></li>
+<li><p>Ή φυσικά:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" data-line-number="1">posts[<span class="dv">0</span>].author.<span class="bu">id</span></a></code></pre></div></li>
+</ul>
+<div class="notes">
+<p>Όπως αναφέραμε προηγουμένως, η χρήση του <code>posts[0].author_id</code> δεν θα απαιτήσει αναζήτηση στη βάση, ενώ η χρήση του <code>posts[0].author.id</code> ενδέχεται να απαιτήσει, αναλόγως την τιμή του <code>lazy</code> στον ορισμό της συσχέτισης.</p>
+</div>
+<h2 id="εμφάνιση-εντολών-sql">Εμφάνιση Εντολών SQL</h2>
+<ul>
+<li><p>Αν θέλουμε να δούμε τις εντολές που δημιουργεί και εκτελεί το SQLAlchemy, προσθέτουμε το παρακάτω στις ρυθμίσεις αρχικοποίησης μέσα στην κλήση <code>app.config.update()</code>.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" data-line-number="1">SQLALCHEMY_ECHO <span class="op">=</span> <span class="va">True</span></a></code></pre></div></li>
+</ul>
+<h2 id="διαγραφή-δεδομένων">Διαγραφή Δεδομένων</h2>
+<ul>
+<li><p>Για να σβήσουμε μια συγκεκριμένη εγγραφή, έστω την <code>post_1</code>, δίνουμε:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb19-1" data-line-number="1">db.session.delete(post_1)</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">db.session.commit()</a></code></pre></div></li>
+<li><p>Για να διαγράψουμε όλες τις εγγραφές ενός πίνακα δίνουμε:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> Post.query.delete()</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="dv">1</span></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="op">&gt;&gt;&gt;</span> db.session.commit()</a></code></pre></div></li>
+<li><p>Επιβεβαιώνουμε:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span> posts <span class="op">=</span> Post.query.<span class="bu">all</span>()</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="op">&gt;&gt;&gt;</span> posts</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">[]</a></code></pre></div></li>
+</ul>
+<h2 id="εμφάνιση-αναρτήσεων">Εμφάνιση αναρτήσεων</h2>
+<ul>
+<li><p>Θα συνεχίσουμε με τη συγγραφή των μεθόδων για το χειρισμό των λειτουργιών της υπηρεσίας.</p></li>
+<li><p>Η εμφάνιση των αναρτήσεων, με τη χρήση πλέον Flask-SQLAlchemy, θα γίνει, στο <code>blog.py</code>:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/'</span>)</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="kw">def</span> index():</a>
+<a class="sourceLine" id="cb22-3" data-line-number="3">    posts <span class="op">=</span> Post.query.order_by(Post.created.desc()).<span class="bu">all</span>()</a>
+<a class="sourceLine" id="cb22-4" data-line-number="4">    <span class="bu">print</span>(posts)</a>
+<a class="sourceLine" id="cb22-5" data-line-number="5">    <span class="cf">return</span> render_template(<span class="st">'blog/index.html'</span>, posts<span class="op">=</span>posts)</a></code></pre></div></li>
+</ul>
+<div class="notes">
+<p>Η μέθοδος είναι στην ουσία η ίδια με αυτήν που είχαμε στην προηγούμενη έκδοση της εφαρμογής, αλλά αντί να γράψουμε την εντολή της αναζήτησης σε SQL γράφουμε μόνο τις αντίστοιχες εντολές σε Python.</p>
+<p>Προσέξτε ότι στο προοίμιο του <code>blog.py</code> θα πρέπει να προσθέσουμε:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="im">from</span> flaskr <span class="im">import</span> db</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="im">from</span> flaskr.models <span class="im">import</span> Post</a></code></pre></div>
+<p>(Όσον αφορά το <code>from flaskr import db</code>, δεν χρειάζεται σε αυτή τη συνάρτηση, αλλά θα χρειαστεί σε λίγο.)</p>
+</div>
+<h2 id="προσθήκη-ανάρτησης">Προσθήκη ανάρτησης</h2>
+<ul>
+<li><p>Αντίστοιχα, η προσθήκη αναρτήσεων στο <code>blog.py</code> γίνεται:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/create'</span>, methods<span class="op">=</span>(<span class="st">'GET'</span>, <span class="st">'POST'</span>))</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="at">@login_required</span></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="kw">def</span> create():</a>
+<a class="sourceLine" id="cb24-4" data-line-number="4">    <span class="cf">if</span> request.method <span class="op">==</span> <span class="st">'POST'</span>:</a>
+<a class="sourceLine" id="cb24-5" data-line-number="5">        title <span class="op">=</span> request.form[<span class="st">'title'</span>]</a>
+<a class="sourceLine" id="cb24-6" data-line-number="6">        body <span class="op">=</span> request.form[<span class="st">'body'</span>]</a>
+<a class="sourceLine" id="cb24-7" data-line-number="7">        error <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb24-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb24-9" data-line-number="9">        <span class="cf">if</span> <span class="kw">not</span> title:</a>
+<a class="sourceLine" id="cb24-10" data-line-number="10">            error <span class="op">=</span> <span class="st">'Title is required.'</span></a>
+<a class="sourceLine" id="cb24-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb24-12" data-line-number="12">        <span class="cf">if</span> error <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb24-13" data-line-number="13">            flash(error)</a>
+<a class="sourceLine" id="cb24-14" data-line-number="14">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb24-15" data-line-number="15">            post <span class="op">=</span> Post(title<span class="op">=</span>title, body<span class="op">=</span>body, author_id<span class="op">=</span>g.user.<span class="bu">id</span>)</a>
+<a class="sourceLine" id="cb24-16" data-line-number="16">            db.session.add(post)</a>
+<a class="sourceLine" id="cb24-17" data-line-number="17">            db.session.commit()</a>
+<a class="sourceLine" id="cb24-18" data-line-number="18">            <span class="cf">return</span> redirect(url_for(<span class="st">'blog.index'</span>))</a>
+<a class="sourceLine" id="cb24-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb24-20" data-line-number="20">    <span class="cf">return</span> render_template(<span class="st">'blog/create.html'</span>)</a></code></pre></div></li>
+</ul>
+<div class="notes">
+<p>Και πάλι, οι αλλαγές σε σχέση με την προηγούμενη εκδοσή αφορούν στη χρήση Python αντί για τη χρήση SQL. Δημιουργούμε ένα αντικείμενο της κλάσης <code>Post</code> χρησιμοποιώντας τα στοιχεία που έχει συμπληρώσει ο χρήστης στη φόρμα της εφαρμογής, και στη συνέχεια εισάγουμε τη νέα ανάρτηση στη βάση και επικυρώνουμε την εισαγωγή.</p>
+</div>
+<h2 id="εύρεση-ανάρτησης">Εύρεση Ανάρτησης</h2>
+<ul>
+<li><p>Χρειαζόμαστε, όπως και πριν, μια βοηθητική συνάρτηση για την εύρεση συγκεκριμένης ανάρτησης. Αυτή θα γίνει, στο <code>blog.py</code>:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">def</span> get_post(<span class="bu">id</span>, check_author<span class="op">=</span><span class="va">True</span>):</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">    post <span class="op">=</span> Post.query.filter_by(<span class="bu">id</span><span class="op">=</span><span class="bu">id</span>).first()</a>
+<a class="sourceLine" id="cb25-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb25-4" data-line-number="4">    <span class="cf">if</span> post <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb25-5" data-line-number="5">        abort(<span class="dv">404</span>, <span class="st">&quot;Post id </span><span class="sc">{0}</span><span class="st"> doesn't exist.&quot;</span>.<span class="bu">format</span>(<span class="bu">id</span>))</a>
+<a class="sourceLine" id="cb25-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb25-7" data-line-number="7">    <span class="cf">if</span> check_author <span class="kw">and</span> post.author_id <span class="op">!=</span> g.user.<span class="bu">id</span>:</a>
+<a class="sourceLine" id="cb25-8" data-line-number="8">        abort(<span class="dv">403</span>)</a>
+<a class="sourceLine" id="cb25-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb25-10" data-line-number="10">    <span class="cf">return</span> post</a></code></pre></div></li>
+</ul>
+<h2 id="ενημέρωση-ανάρτησης">Ενημέρωση Ανάρτησης</h2>
+<ul>
+<li><p>Η ενημέρωση της ανάρτησης θα είναι, στο <code>blog.py</code>:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/&lt;int:id&gt;/update'</span>, methods<span class="op">=</span>(<span class="st">'GET'</span>, <span class="st">'POST'</span>))</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="at">@login_required</span></a>
+<a class="sourceLine" id="cb26-3" data-line-number="3"><span class="kw">def</span> update(<span class="bu">id</span>):</a>
+<a class="sourceLine" id="cb26-4" data-line-number="4">    post <span class="op">=</span> get_post(<span class="bu">id</span>)</a>
+<a class="sourceLine" id="cb26-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb26-6" data-line-number="6">    <span class="cf">if</span> request.method <span class="op">==</span> <span class="st">'POST'</span>:</a>
+<a class="sourceLine" id="cb26-7" data-line-number="7">        title <span class="op">=</span> request.form[<span class="st">'title'</span>]</a>
+<a class="sourceLine" id="cb26-8" data-line-number="8">        body <span class="op">=</span> request.form[<span class="st">'body'</span>]</a>
+<a class="sourceLine" id="cb26-9" data-line-number="9">        error <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb26-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb26-11" data-line-number="11">        <span class="cf">if</span> <span class="kw">not</span> title:</a>
+<a class="sourceLine" id="cb26-12" data-line-number="12">            error <span class="op">=</span> <span class="st">'Title is required.'</span></a>
+<a class="sourceLine" id="cb26-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb26-14" data-line-number="14">        <span class="cf">if</span> error <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb26-15" data-line-number="15">            flash(error)</a>
+<a class="sourceLine" id="cb26-16" data-line-number="16">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb26-17" data-line-number="17">            post.title <span class="op">=</span> title</a>
+<a class="sourceLine" id="cb26-18" data-line-number="18">            post.body <span class="op">=</span> body</a>
+<a class="sourceLine" id="cb26-19" data-line-number="19">            db.session.add(post)</a>
+<a class="sourceLine" id="cb26-20" data-line-number="20">            db.session.commit()</a>
+<a class="sourceLine" id="cb26-21" data-line-number="21">            <span class="cf">return</span> redirect(url_for(<span class="st">'blog.index'</span>))</a>
+<a class="sourceLine" id="cb26-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb26-23" data-line-number="23">    <span class="cf">return</span> render_template(<span class="st">'blog/update.html'</span>, post<span class="op">=</span>post)</a></code></pre></div></li>
+</ul>
+<h2 id="διαγραφή-ανάρτησης">Διαγραφή Ανάρτησης</h2>
+<ul>
+<li><p>Τέλος, η διαγραφή ανάρτησης θα είναι, στο <code>blog.py</code>:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/&lt;int:id&gt;/delete'</span>, methods<span class="op">=</span>(<span class="st">'POST'</span>,))</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="at">@login_required</span></a>
+<a class="sourceLine" id="cb27-3" data-line-number="3"><span class="kw">def</span> delete(<span class="bu">id</span>):</a>
+<a class="sourceLine" id="cb27-4" data-line-number="4">    post <span class="op">=</span> get_post(<span class="bu">id</span>)</a>
+<a class="sourceLine" id="cb27-5" data-line-number="5">    db.session.delete(post)</a>
+<a class="sourceLine" id="cb27-6" data-line-number="6">    db.session.commit()</a>
+<a class="sourceLine" id="cb27-7" data-line-number="7">    <span class="cf">return</span> redirect(url_for(<span class="st">'blog.index'</span>))</a></code></pre></div></li>
+</ul>
+<h2 id="εγγραφή-χρήστη">Εγγραφή Χρήστη</h2>
+<ul>
+<li><p>Η εγγραφή χρήστη θα γίνει μέσα αρχείο <code>auth.py</code>:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/register'</span>, methods<span class="op">=</span>(<span class="st">'GET'</span>, <span class="st">'POST'</span>))</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="kw">def</span> register():</a>
+<a class="sourceLine" id="cb28-3" data-line-number="3">    <span class="cf">if</span> request.method <span class="op">==</span> <span class="st">'POST'</span>:</a>
+<a class="sourceLine" id="cb28-4" data-line-number="4">        username <span class="op">=</span> request.form[<span class="st">'username'</span>]</a>
+<a class="sourceLine" id="cb28-5" data-line-number="5">        password <span class="op">=</span> request.form[<span class="st">'password'</span>]</a>
+<a class="sourceLine" id="cb28-6" data-line-number="6">        error <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb28-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb28-8" data-line-number="8">        <span class="cf">if</span> <span class="kw">not</span> username:</a>
+<a class="sourceLine" id="cb28-9" data-line-number="9">            error <span class="op">=</span> <span class="st">'Username is required.'</span></a>
+<a class="sourceLine" id="cb28-10" data-line-number="10">        <span class="cf">elif</span> <span class="kw">not</span> password:</a>
+<a class="sourceLine" id="cb28-11" data-line-number="11">            error <span class="op">=</span> <span class="st">'Password is required.'</span></a>
+<a class="sourceLine" id="cb28-12" data-line-number="12">        <span class="cf">elif</span> User.query.filter_by(username<span class="op">=</span>username).first() <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb28-13" data-line-number="13">            error <span class="op">=</span> <span class="st">'User </span><span class="sc">{}</span><span class="st"> is already registered.'</span>.<span class="bu">format</span>(username)</a>
+<a class="sourceLine" id="cb28-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb28-15" data-line-number="15">        <span class="cf">if</span> error <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb28-16" data-line-number="16">            user <span class="op">=</span> User(username<span class="op">=</span>username,</a>
+<a class="sourceLine" id="cb28-17" data-line-number="17">                        password<span class="op">=</span>generate_password_hash(password))</a>
+<a class="sourceLine" id="cb28-18" data-line-number="18">            db.session.add(user)</a>
+<a class="sourceLine" id="cb28-19" data-line-number="19">            db.session.commit()</a>
+<a class="sourceLine" id="cb28-20" data-line-number="20">            <span class="cf">return</span> redirect(url_for(<span class="st">'auth.login'</span>))</a>
+<a class="sourceLine" id="cb28-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb28-22" data-line-number="22">        flash(error)</a>
+<a class="sourceLine" id="cb28-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb28-24" data-line-number="24">    <span class="cf">return</span> render_template(<span class="st">'auth/register.html'</span>)</a></code></pre></div></li>
+</ul>
+<div class="notes">
+<p>Στο προοίμιο του αρχείου θα χρειαστεί να προσθέσουμε:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="im">from</span> flaskr <span class="im">import</span> db</a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="im">from</span> flaskr.models <span class="im">import</span> User</a></code></pre></div>
+</div>
+<h2 id="είσοδος-χρήστη">Είσοδος Χρήστη</h2>
+<ul>
+<li><p>Η είσοδος χρήστη θα είναι πάλι μέσα αρχείο <code>auth.py</code>:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="at">@bp.route</span>(<span class="st">'/login'</span>, methods<span class="op">=</span>(<span class="st">'GET'</span>, <span class="st">'POST'</span>))</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">def</span> login():</a>
+<a class="sourceLine" id="cb30-3" data-line-number="3">    <span class="cf">if</span> request.method <span class="op">==</span> <span class="st">'POST'</span>:</a>
+<a class="sourceLine" id="cb30-4" data-line-number="4">        username <span class="op">=</span> request.form[<span class="st">'username'</span>]</a>
+<a class="sourceLine" id="cb30-5" data-line-number="5">        password <span class="op">=</span> request.form[<span class="st">'password'</span>]</a>
+<a class="sourceLine" id="cb30-6" data-line-number="6">        error <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb30-7" data-line-number="7">        user <span class="op">=</span> User.query.filter_by(username<span class="op">=</span>username).first()</a>
+<a class="sourceLine" id="cb30-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb30-9" data-line-number="9">        <span class="cf">if</span> user <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb30-10" data-line-number="10">            error <span class="op">=</span> <span class="st">'Incorrect username.'</span></a>
+<a class="sourceLine" id="cb30-11" data-line-number="11">        <span class="cf">elif</span> <span class="kw">not</span> check_password_hash(user.password, password):</a>
+<a class="sourceLine" id="cb30-12" data-line-number="12">            error <span class="op">=</span> <span class="st">'Incorrect password.'</span></a>
+<a class="sourceLine" id="cb30-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb30-14" data-line-number="14">        <span class="cf">if</span> error <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb30-15" data-line-number="15">            session.clear()</a>
+<a class="sourceLine" id="cb30-16" data-line-number="16">            session[<span class="st">'user_id'</span>] <span class="op">=</span> user.<span class="bu">id</span></a>
+<a class="sourceLine" id="cb30-17" data-line-number="17">            <span class="cf">return</span> redirect(url_for(<span class="st">'index'</span>))</a>
+<a class="sourceLine" id="cb30-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb30-19" data-line-number="19">        flash(error)</a>
+<a class="sourceLine" id="cb30-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb30-21" data-line-number="21">    <span class="cf">return</span> render_template(<span class="st">'auth/login.html'</span>)</a></code></pre></div></li>
+</ul>
+<h2 id="έλεγχος-χρήστη">Έλεγχος Χρήστη</h2>
+<ul>
+<li><p>Ο έλεγχος χρήστη στο <code>auth.py</code> χρειάζεται και αυτός μια μικρή προσαρμογή για τη χρήση SQlAlchemy:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="at">@bp.before_app_request</span></a>
+<a class="sourceLine" id="cb31-2" data-line-number="2"><span class="kw">def</span> load_logged_in_user():</a>
+<a class="sourceLine" id="cb31-3" data-line-number="3">    user_id <span class="op">=</span> session.get(<span class="st">'user_id'</span>)</a>
+<a class="sourceLine" id="cb31-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb31-5" data-line-number="5">    <span class="cf">if</span> user_id <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb31-6" data-line-number="6">        g.user <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb31-7" data-line-number="7">    <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb31-8" data-line-number="8">        g.user <span class="op">=</span> User.query.filter_by(<span class="bu">id</span><span class="op">=</span>user_id).first()</a></code></pre></div></li>
+</ul>
+<h2 id="εκκίνηση-εφαρμογής">Εκκίνηση Εφαρμογής</h2>
+<ul>
+<li><p>Για να τρέξετε την εφαρμογή δίνετε ό,τι και στην προηγούμενη έκδοση.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="bu">export</span> <span class="va">FLASK_APP=</span>flaskr</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="ex">flask</span> run</a></code></pre></div></li>
+</ul>
+<h2 id="αλλαγές-στα-πρότυπα-εμφάνισης">Αλλαγές στα Πρότυπα Εμφάνισης</h2>
+<ul>
+<li><p>Αν και τα πρότυπα εμφάνισης δουλεύουν και ως έχει, μπορούμε να τα προσαρμόσουμε ώστε να είναι πιο σαφές ότι δουλεύουμε με αντικείμενα.</p></li>
+<li><p>Οι αλλαγές θα γίνουν στα:</p>
+<ul>
+<li><code>index.html</code></li>
+<li><code>update.html</code></li>
+</ul></li>
+</ul>
+<h2 id="templatesblogindex.html"><code>templates/blog/index.html</code></h2>
+<div class="sourceCode" id="cb33"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb33-1" data-line-number="1">{% extends 'base.html' %}</a>
+<a class="sourceLine" id="cb33-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb33-3" data-line-number="3">{% block header %}</a>
+<a class="sourceLine" id="cb33-4" data-line-number="4">  <span class="kw">&lt;h1&gt;</span>{% block title %}Posts{% endblock %}<span class="kw">&lt;/h1&gt;</span></a>
+<a class="sourceLine" id="cb33-5" data-line-number="5">  {% if g.user %}</a>
+<a class="sourceLine" id="cb33-6" data-line-number="6">    <span class="kw">&lt;a</span><span class="ot"> class=</span><span class="st">&quot;action&quot;</span><span class="ot"> href=</span><span class="st">&quot;{{ url_for('blog.create') }}&quot;</span><span class="kw">&gt;</span>New<span class="kw">&lt;/a&gt;</span></a>
+<a class="sourceLine" id="cb33-7" data-line-number="7">  {% endif %}</a>
+<a class="sourceLine" id="cb33-8" data-line-number="8">{% endblock %}</a>
+<a class="sourceLine" id="cb33-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb33-10" data-line-number="10">{% block content %}</a>
+<a class="sourceLine" id="cb33-11" data-line-number="11">  {% for post in posts %}</a>
+<a class="sourceLine" id="cb33-12" data-line-number="12">    <span class="kw">&lt;article</span><span class="ot"> class=</span><span class="st">&quot;post&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb33-13" data-line-number="13">      <span class="kw">&lt;header&gt;</span></a>
+<a class="sourceLine" id="cb33-14" data-line-number="14">        <span class="kw">&lt;div&gt;</span></a>
+<a class="sourceLine" id="cb33-15" data-line-number="15">          <span class="kw">&lt;h1&gt;</span>{{ post['title'] }}<span class="kw">&lt;/h1&gt;</span></a>
+<a class="sourceLine" id="cb33-16" data-line-number="16">          <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;about&quot;</span><span class="kw">&gt;</span>by {{ post.author.username }} on {{ post.created.strftime('%Y-%m-%d') }}<span class="kw">&lt;/div&gt;</span></a>
+<a class="sourceLine" id="cb33-17" data-line-number="17">        <span class="kw">&lt;/div&gt;</span></a>
+<a class="sourceLine" id="cb33-18" data-line-number="18">        {% if g.user['id'] == post.author_id %}</a>
+<a class="sourceLine" id="cb33-19" data-line-number="19">          <span class="kw">&lt;a</span><span class="ot"> class=</span><span class="st">&quot;action&quot;</span><span class="ot"> href=</span><span class="st">&quot;{{ url_for('blog.update', id=post.id) }}&quot;</span><span class="kw">&gt;</span>Edit<span class="kw">&lt;/a&gt;</span></a>
+<a class="sourceLine" id="cb33-20" data-line-number="20">        {% endif %}</a>
+<a class="sourceLine" id="cb33-21" data-line-number="21">      <span class="kw">&lt;/header&gt;</span></a>
+<a class="sourceLine" id="cb33-22" data-line-number="22">      <span class="kw">&lt;p</span><span class="ot"> class=</span><span class="st">&quot;body&quot;</span><span class="kw">&gt;</span>{{ post.body }}<span class="kw">&lt;/p&gt;</span></a>
+<a class="sourceLine" id="cb33-23" data-line-number="23">    <span class="kw">&lt;/article&gt;</span></a>
+<a class="sourceLine" id="cb33-24" data-line-number="24">    {% if not loop.last %}</a>
+<a class="sourceLine" id="cb33-25" data-line-number="25">      <span class="kw">&lt;hr&gt;</span></a>
+<a class="sourceLine" id="cb33-26" data-line-number="26">    {% endif %}</a>
+<a class="sourceLine" id="cb33-27" data-line-number="27">  {% endfor %}</a>
+<a class="sourceLine" id="cb33-28" data-line-number="28">{% endblock %}</a></code></pre></div>
+<h2 id="templatesblogupdate.html"><code>templates/blog/update.html</code></h2>
+<div class="sourceCode" id="cb34"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb34-1" data-line-number="1">{% extends 'base.html' %}</a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb34-3" data-line-number="3">{% block header %}</a>
+<a class="sourceLine" id="cb34-4" data-line-number="4">  <span class="kw">&lt;h1&gt;</span>{% block title %}Edit &quot;{{ post.title }}&quot;{% endblock %}<span class="kw">&lt;/h1&gt;</span></a>
+<a class="sourceLine" id="cb34-5" data-line-number="5">{% endblock %}</a>
+<a class="sourceLine" id="cb34-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb34-7" data-line-number="7">{% block content %}</a>
+<a class="sourceLine" id="cb34-8" data-line-number="8">  <span class="kw">&lt;form</span><span class="ot"> method=</span><span class="st">&quot;post&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb34-9" data-line-number="9">    <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;title&quot;</span><span class="kw">&gt;</span>Title<span class="kw">&lt;/label&gt;</span></a>
+<a class="sourceLine" id="cb34-10" data-line-number="10">    <span class="kw">&lt;input</span><span class="ot"> name=</span><span class="st">&quot;title&quot;</span><span class="ot"> id=</span><span class="st">&quot;title&quot;</span></a>
+<a class="sourceLine" id="cb34-11" data-line-number="11"><span class="ot">      value=</span><span class="st">&quot;{{ request.form['title'] or post.title }}&quot;</span><span class="ot"> required</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb34-12" data-line-number="12">    <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;body&quot;</span><span class="kw">&gt;</span>Body<span class="kw">&lt;/label&gt;</span></a>
+<a class="sourceLine" id="cb34-13" data-line-number="13">    <span class="kw">&lt;textarea</span><span class="ot"> name=</span><span class="st">&quot;body&quot;</span><span class="ot"> id=</span><span class="st">&quot;body&quot;</span><span class="kw">&gt;</span>{{ request.form['body'] or post.body }}<span class="kw">&lt;/textarea&gt;</span></a>
+<a class="sourceLine" id="cb34-14" data-line-number="14">    <span class="kw">&lt;input</span><span class="ot"> type=</span><span class="st">&quot;submit&quot;</span><span class="ot"> value=</span><span class="st">&quot;Save&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb34-15" data-line-number="15">  <span class="kw">&lt;/form&gt;</span></a>
+<a class="sourceLine" id="cb34-16" data-line-number="16">  <span class="kw">&lt;hr&gt;</span></a>
+<a class="sourceLine" id="cb34-17" data-line-number="17">  <span class="kw">&lt;form</span><span class="ot"> action=</span><span class="st">&quot;{{ url_for('blog.delete', id=post.id) }}&quot;</span><span class="ot"> method=</span><span class="st">&quot;post&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb34-18" data-line-number="18">    <span class="kw">&lt;input</span><span class="ot"> class=</span><span class="st">&quot;danger&quot;</span><span class="ot"> type=</span><span class="st">&quot;submit&quot;</span><span class="ot"> value=</span><span class="st">&quot;Delete&quot;</span><span class="ot"> onclick=</span><span class="st">&quot;return confirm('Are you sure?');&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb34-19" data-line-number="19">  <span class="kw">&lt;/form&gt;</span></a>
+<a class="sourceLine" id="cb34-20" data-line-number="20">{% endblock %}</a></code></pre></div>
+<h1 id="mysql">MySQL</h1>
+<h2 id="μεταφορά-σε-mysql">Μεταφορά σε MySQL</h2>
+<ul>
+<li><p>Η SQLite είναι μια πολύ βολική λύση, αλλά το πιθανότερο είναι ότι θα θέλουμε να χρησιμοποιήσουμε μια άλλη βάση δεδομένων στην παραγωγή.</p></li>
+<li><p>Για το σκοπό αυτό, θα κάνουμε τις απαραίτητες αλλαγές στην εφαρμογή μας ώστε να χρησιμοποιήσει τη βάση δεδομένων MySQL.</p></li>
+<li><p>Χάρη στο ORM θα διαπιστώσετε ότι οι αλλαγές είναι ελάχιστες.</p></li>
+</ul>
+<h2 id="εγκατάσταση-mysql-σε-τοπικό-μηχάνημα">Εγκατάσταση MySQL σε Τοπικό Μηχάνημα</h2>
+<ul>
+<li><p>Πηγαίνετε στο <a href="http://dev.mysql.com/downloads/" class="uri">http://dev.mysql.com/downloads/</a> και κατεβάστε την τελευταία έκδοση του MySQL Community Server.</p></li>
+<li><p>Επίσης, πηγαίνετε στο <a href="http://dev.mysql.com/downloads/" class="uri">http://dev.mysql.com/downloads/</a> και κατεβάστε την τελευταία έκδοση του MySQL Workbench.</p></li>
+</ul>
+<h2 id="εγκατάσταση-οδηγού-σε-τοπικό-μηχάνημα">Εγκατάσταση Οδηγού σε Τοπικό Μηχάνημα</h2>
+<ul>
+<li><p>Υπάρχουν διάφοροι οδηγοί για εγκατάσταση. Ίσως το απλούστερο είναι να εγκαταστήσουμε τον <code>mysql-connector-python</code> μέσω pip.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="ex">pip</span> install mysql-connector-python</a></code></pre></div></li>
+<li><p>Φυσικά, αν έχουμε εγκαταστήσει ένα ιδεατό περιβάλλον Python, τρέχουμε την παραπάνω εντολή στο ενεργοποιημένο περιβάλλον.</p></li>
+</ul>
+<div class="notes">
+<p>Για λόγους απόδοσης μπορεί να είναι καλύτερο να εγκαταστήσουμε τον οδηγό που δίνεται από την ίδια τη MySQL στο <a href="https://dev.mysql.com/downloads/connector/python/" class="uri">https://dev.mysql.com/downloads/connector/python/</a>.</p>
+</div>
+<h2 id="εγκατάσταση-mysql-στον-εξυπηρετητή">Εγκατάσταση MySQL στον Εξυπηρετητή</h2>
+<ul>
+<li><p>Στον εξυπηρετητή δίνουμε:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="fu">sudo</span> apt update</a>
+<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="fu">sudo</span> apt install mysql-server</a>
+<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="fu">sudo</span> mysql_secure_installation</a></code></pre></div></li>
+</ul>
+<div class="notes">
+<p>Το <code>mysql_secure_installation</code> θα μας κάνει μια σειρά ερωτημάτων προκεικέμου να θωρακιστεί η βάση δεδομένων μας.</p>
+<ol type="1">
+<li><p>Θα μας ρωτήσει αν θέλουμε να εγκαταστήσουμε το validate password plugin, με το οποίο θα ελέγχουμε αν οι κωδικοί πρόσβασης είναι ανθεκτικοί. Επιλέγουμε ναι και στη συνέχεια δίνουμε το επιθυμητό επίπεδο ασφάλειας (strong).</p></li>
+<li><p>Θα μας ρωτήσει αν θέλουμε να διαγράψουμε τους ανώνυμους χρήστες. Επιλέγουμε ναι.</p></li>
+<li><p>Θα μας ρωτήσει αν θέλουμε ο χρήστης root να μπορεί να μπει στη βάση μόνο από το ίδιο το μηχάνημα, και όχι απομακρυσμένα. Επιλέγουμε ναι.</p></li>
+<li><p>Θα μας ρωτήσει αν θέλουμε να διαγραφεί η test βάση δεδομένων. Επιλέγουμε ναι.</p></li>
+<li><p>Θα μας ρωτήσει αν θέλουμε να ξαναδιαβάσει η βάση τους πίνακες με τα προνόμια των χρηστών. Επιλέγουμε ναι.</p></li>
+</ol>
+</div>
+<h2 id="ρύθμιση-προνομίων">Ρύθμιση Προνομίων</h2>
+<ul>
+<li><p>Συνδεόμαστε με τη βάση δίνοντας:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="fu">sudo</span> mysql -u root -p</a></code></pre></div></li>
+<li><p>Ελέγχουμε τη μέθοδο αυθεντικοποίησης που χρησιμοποιεί η βάση και επιβεβαιώνουμε ότι χρησιμοποιείται το <code>mysql_native_plugin</code>:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">SELECT</span> <span class="fu">user</span>,authentication_string,plugin,host <span class="kw">FROM</span> mysql.user;</a>
+<a class="sourceLine" id="cb38-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb38-3" data-line-number="3">+<span class="co">------------------+-------------------------------------------+-----------------------+-----------+</span></a>
+<a class="sourceLine" id="cb38-4" data-line-number="4">| <span class="fu">user</span>             | authentication_string                     | plugin                | host      |</a>
+<a class="sourceLine" id="cb38-5" data-line-number="5">+<span class="co">------------------+-------------------------------------------+-----------------------+-----------+</span></a>
+<a class="sourceLine" id="cb38-6" data-line-number="6">| root             | *02164506DE054EB94C3380B7A7CFD7464D445D3B | mysql_native_password | localhost |</a>
+<a class="sourceLine" id="cb38-7" data-line-number="7">| mysql.session    | *THISISNOTAVALIDPASSWORDTHATCANBEUSEDHERE | mysql_native_password | localhost |</a>
+<a class="sourceLine" id="cb38-8" data-line-number="8">| mysql.sys        | *THISISNOTAVALIDPASSWORDTHATCANBEUSEDHERE | mysql_native_password | localhost |</a>
+<a class="sourceLine" id="cb38-9" data-line-number="9">| debian-sys-maint | *0D75601793150ABE156A0FD541F7114A1FDACC53 | mysql_native_password | localhost |</a>
+<a class="sourceLine" id="cb38-10" data-line-number="10">+<span class="co">------------------+-------------------------------------------+-----------------------+-----------+</span></a>
+<a class="sourceLine" id="cb38-11" data-line-number="11"><span class="dv">4</span> <span class="kw">rows</span> <span class="kw">in</span> <span class="kw">set</span> (<span class="fl">0.00</span> sec)</a></code></pre></div></li>
+</ul>
+<h2 id="δημιουργία-bάσης-και-χρήστη">Δημιουργία Bάσης και Χρήστη</h2>
+<ul>
+<li><p>Δημιουργείστε τη βάση <code>flaskr</code> εισάγοντας τις ακόλουθες εντολές SQL:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">CREATE</span> <span class="kw">DATABASE</span> flaskr <span class="dt">CHARACTER</span> <span class="kw">SET</span> utf8 COLLATE utf8_general_ci;</a>
+<a class="sourceLine" id="cb39-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb39-3" data-line-number="3"><span class="kw">CREATE</span> <span class="fu">USER</span> <span class="st">'flaskr_user'</span>@<span class="st">'localhost'</span> <span class="kw">IDENTIFIED</span> <span class="kw">BY</span> <span class="st">'4aTik$iaGcN'</span>;</a>
+<a class="sourceLine" id="cb39-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb39-5" data-line-number="5"><span class="kw">GRANT</span> <span class="kw">ALL</span> <span class="kw">PRIVILEGES</span> <span class="kw">ON</span> flaskr.* <span class="kw">TO</span> <span class="st">'flaskr_user'</span>@<span class="st">'localhost'</span>;</a></code></pre></div></li>
+</ul>
+<h2 id="ρύθμιση-για-χρήση-mysql">Ρύθμιση για χρήση MySQL</h2>
+<ul>
+<li><p>Εισάγετε στο αρχείο <code>instance/config.py</code> την παρακάτω γραμμή:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb40-1" data-line-number="1">SQLALCHEMY_DATABASE_URI <span class="op">=</span> <span class="st">'mysql+mysqlconnector://flaskr_user:4aTik$iaGcN@localhost/flaskr'</span></a></code></pre></div></li>
+</ul>
+<h2 id="ενημέρωση-setup.py">Ενημέρωση <code>setup.py</code></h2>
+<ul>
+<li><p>Θα πρέπει να ενημερώσουμε το αρχείο <code>setup.py</code> που χρησιμοποιούμε για την εγκατάσταση της εφαρμογής, ώστε να περιλαμβάνει τις εξαρτήσεις για τη MySQL:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="im">from</span> setuptools <span class="im">import</span> find_packages, setup</a>
+<a class="sourceLine" id="cb41-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb41-3" data-line-number="3">setup(</a>
+<a class="sourceLine" id="cb41-4" data-line-number="4">    name<span class="op">=</span><span class="st">'flaskr'</span>,</a>
+<a class="sourceLine" id="cb41-5" data-line-number="5">    version<span class="op">=</span><span class="st">'1.1.0'</span>,</a>
+<a class="sourceLine" id="cb41-6" data-line-number="6">    packages<span class="op">=</span>find_packages(),</a>
+<a class="sourceLine" id="cb41-7" data-line-number="7">    include_package_data<span class="op">=</span><span class="va">True</span>,</a>
+<a class="sourceLine" id="cb41-8" data-line-number="8">    zip_safe<span class="op">=</span><span class="va">False</span>,</a>
+<a class="sourceLine" id="cb41-9" data-line-number="9">    install_requires<span class="op">=</span>[</a>
+<a class="sourceLine" id="cb41-10" data-line-number="10">        <span class="st">'flask'</span>,</a>
+<a class="sourceLine" id="cb41-11" data-line-number="11">        <span class="st">'flask_sqlalchemy'</span>,</a>
+<a class="sourceLine" id="cb41-12" data-line-number="12">        <span class="st">'mysql-connector-python'</span></a>
+<a class="sourceLine" id="cb41-13" data-line-number="13">    ],</a>
+<a class="sourceLine" id="cb41-14" data-line-number="14">)</a></code></pre></div></li>
+</ul>
+<div class="notes">
+<p>Προσθέσαμε στις εξαρτήσεις τα <code>flask_sqlalchemy</code> και <code>mysql-connector-python</code>. Επίσης ενημερώσαμε την έκδοση, σε <code>1.1.0</code>.</p>
+</div>
+<h2 id="συσκευασία-εφαρμογής">Συσκευασία Εφαρμογής</h2>
+<ul>
+<li><p>Για να δημιουργήσουμε το πακέτο εγκατάστασης δίνουμε:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="ex">python3</span> setup.py bdist_wheel</a></code></pre></div></li>
+<li><p>Το πακέτο εγκατάστασης θα δημιουργηθεί στο:</p>
+<pre><code>dist/flaskr-1.1.0-py3-none-any.whl</code></pre></li>
+</ul>
+<h2 id="εγκατάσταση-σε-εξυπηρετητή">Εγκατάσταση σε Εξυπηρετητή</h2>
+<ul>
+<li><p>Αντιγράφουμε το αρχείο εγκατάστασης από τον υπολογιστή που χρησιμοποιούμε για την ανάπτυξη στον εξυπηρετητή:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="fu">scp</span> dist/flaskr-1.1.0-py3-none-any.whl user@snf-842276.vm.okeanos.grnet.gr:flaskr_project</a></code></pre></div></li>
+<li><p>Στον <em>εξυπηρετητή</em> ενεργοποιούμε το ιδεατό περιβάλλον και εγκαθιστούμε την εφαρμογή σε αυτό:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="bu">cd</span> ~/flaskr_project/</a>
+<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="bu">source</span> venv/bin/activate</a>
+<a class="sourceLine" id="cb45-3" data-line-number="3"><span class="ex">pip</span> install wheel</a>
+<a class="sourceLine" id="cb45-4" data-line-number="4"><span class="ex">pip</span> install flaskr-1.1.0-py3-none-any.whl</a></code></pre></div></li>
+</ul>
+<h2 id="δημιουργία-πινάκων-στη-mysql">Δημιουργία Πινάκων στη MySQL</h2>
+<ul>
+<li><p>Για να δημιουργήσουμε τους πίνακες της βάσης μας (<code>posts</code>, <code>users</code>) θα δώσουμε από τη γραμμή εντολών:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="bu">export</span> <span class="va">FLASK_APP=</span>flaskr</a>
+<a class="sourceLine" id="cb46-2" data-line-number="2"><span class="ex">flask</span> initdb</a></code></pre></div></li>
+</ul>
+<h2 id="επόμενα-βήματα">Επόμενα βήματα</h2>
+<ul>
+<li>Δεν υπάρχουν!</li>
+</ul>
+<div class="notes">
+<p>Όπως είδατε, η μόνη αλλαγή που χρειάστηκε ήταν η δημιουργία ενός αρχείου και μιας μεταβλητής περιβάλλοντος. Δεν άλλαξε τίποτε στην ίδια την εφαρμογή μας.</p>
+<p>Αν στη συνέχεια θέλουμε να χρησιμοποιήσουμε μια άλλη βάση, όπως SQL Server, Oracle, PostreSQL, κ.λπ., αρκεί μόνο να αλλάξουμε τα περιεχόμενα του αρχείου <code>config.py</code> και τίποτε άλλο.</p>
+</div>
+</body>
+</html>
