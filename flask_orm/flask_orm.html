@@ -2035,7 +2035,7 @@ vertical-align: top;
 <li><p>Συνδεόμαστε με τη βάση δίνοντας:</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="fu">sudo</span> mysql -u root -p</a></code></pre></div></li>
 <li><p>Ελέγχουμε τη μέθοδο αυθεντικοποίησης που χρησιμοποιεί η βάση και επιβεβαιώνουμε ότι χρησιμοποιείται το <code>mysql_native_plugin</code>:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">SELECT</span> <span class="fu">user</span>,authentication_string,plugin,host <span class="kw">FROM</span> mysql.user;</a>
+<div class="sourceCode" id="cb37"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb37-1" data-line-number="1">mysql&gt; <span class="kw">SELECT</span> <span class="fu">user</span>,authentication_string,plugin,host <span class="kw">FROM</span> mysql.user;</a>
 <a class="sourceLine" id="cb37-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb37-3" data-line-number="3">+<span class="co">------------------+-------------------------------------------+-----------------------+-----------+</span></a>
 <a class="sourceLine" id="cb37-4" data-line-number="4">| <span class="fu">user</span>             | authentication_string                     | plugin                | host      |</a>
@@ -2051,11 +2051,11 @@ vertical-align: top;
 <h2>Δημιουργία Bάσης και Χρήστη</h2>
 <ul>
 <li><p>Δημιουργείστε τη βάση <code>flaskr</code> εισάγοντας τις ακόλουθες εντολές SQL:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">CREATE</span> <span class="kw">DATABASE</span> flaskr <span class="dt">CHARACTER</span> <span class="kw">SET</span> utf8 COLLATE utf8_general_ci;</a>
+<div class="sourceCode" id="cb38"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb38-1" data-line-number="1">mysql&gt; <span class="kw">CREATE</span> <span class="kw">DATABASE</span> flaskr <span class="dt">CHARACTER</span> <span class="kw">SET</span> utf8 COLLATE utf8_general_ci;</a>
 <a class="sourceLine" id="cb38-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb38-3" data-line-number="3"><span class="kw">CREATE</span> <span class="fu">USER</span> <span class="st">'flaskr_user'</span>@<span class="st">'localhost'</span> <span class="kw">IDENTIFIED</span> <span class="kw">BY</span> <span class="st">'4aTik$iaGcN'</span>;</a>
+<a class="sourceLine" id="cb38-3" data-line-number="3">mysql&gt; <span class="kw">CREATE</span> <span class="fu">USER</span> <span class="st">'flaskr_user'</span>@<span class="st">'localhost'</span> <span class="kw">IDENTIFIED</span> <span class="kw">BY</span> <span class="st">'4aTik$iaGcN'</span>;</a>
 <a class="sourceLine" id="cb38-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb38-5" data-line-number="5"><span class="kw">GRANT</span> <span class="kw">ALL</span> <span class="kw">PRIVILEGES</span> <span class="kw">ON</span> flaskr.* <span class="kw">TO</span> <span class="st">'flaskr_user'</span>@<span class="st">'localhost'</span>;</a></code></pre></div></li>
+<a class="sourceLine" id="cb38-5" data-line-number="5">mysql&gt; <span class="kw">GRANT</span> <span class="kw">ALL</span> <span class="kw">PRIVILEGES</span> <span class="kw">ON</span> flaskr.* <span class="kw">TO</span> <span class="st">'flaskr_user'</span>@<span class="st">'localhost'</span>;</a></code></pre></div></li>
 </ul>
 </section><section id="ρύθμιση-για-χρήση-mysql" class="slide level2">
 <h2>Ρύθμιση για χρήση MySQL</h2>

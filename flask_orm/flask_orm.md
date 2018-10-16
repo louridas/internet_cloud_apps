@@ -886,7 +886,7 @@ from flaskr.models import User
   επιβεβαιώνουμε ότι χρησιμοποιείται το `mysql_native_plugin`:
 
    ```sql
-   SELECT user,authentication_string,plugin,host FROM mysql.user;
+   mysql> SELECT user,authentication_string,plugin,host FROM mysql.user;
 
    +------------------+-------------------------------------------+-----------------------+-----------+
  | user             | authentication_string                     | plugin                | host      |
@@ -904,11 +904,11 @@ from flaskr.models import User
 * Δημιουργείστε τη βάση `flaskr` εισάγοντας τις ακόλουθες εντολές SQL:
 
     ```sql
-    CREATE DATABASE flaskr CHARACTER SET utf8 COLLATE utf8_general_ci;
+    mysql> CREATE DATABASE flaskr CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-    CREATE USER 'flaskr_user'@'localhost' IDENTIFIED BY '4aTik$iaGcN';
+    mysql> CREATE USER 'flaskr_user'@'localhost' IDENTIFIED BY '4aTik$iaGcN';
 
-    GRANT ALL PRIVILEGES ON flaskr.* TO 'flaskr_user'@'localhost';
+    mysql> GRANT ALL PRIVILEGES ON flaskr.* TO 'flaskr_user'@'localhost';
     ```
 
 ## Ρύθμιση για χρήση MySQL
