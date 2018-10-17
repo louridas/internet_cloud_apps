@@ -7,10 +7,10 @@ class Book(models.Model):
 
     def was_published_recently(self):
         return (self.pub_year >= timezone.now().year - 1)
-    
+
     def __str__(self):
         return "%s %s" % (self.title, self.pub_year)
-    
+
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)

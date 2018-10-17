@@ -28,9 +28,9 @@ pip install Django
 
 </div>
 
-# Δημιουργία πρώτης σελίδας
+# Δημιουργία Εφαρμογής
 
-## Δημιουργία καταλόγων έργου
+## Δημιουργία Καταλόγων Έργου
 
 * Για να δημιουργηθεί η βασική δομή καταλόγων του έργου μας, γράφουμε
   τα παρακάτω:
@@ -58,7 +58,7 @@ pip install Django
   σημασία για το Django.
 
 * Το `manage.py` είναι ένα εργαλείο το οποίο μας επιτρέπει να
-  [αλληλεπιδράσουμε και να διαχειριστούμε το Django](https://docs.djangoproject.com/en/1.11/ref/django-admin/).
+  [αλληλεπιδράσουμε και να διαχειριστούμε το Django](https://docs.djangoproject.com/en/2.1/ref/django-admin/).
   Θα δούμε στη συνέχεια πώς χρησιμοποιείται.
 
 * Ο εσωτερικός κατάλογος `project_site` περιέχει το
@@ -74,20 +74,19 @@ pip install Django
 
 * Το αρχείο `project_site/settings.py` περιέχει τις ρυθμίσεις για το
   σύνολο του έργου μας. Οι
-  [ρυθμίσεις](https://docs.djangoproject.com/en/1.11/topics/settings/)
+  [ρυθμίσεις](https://docs.djangoproject.com/en/2.1/topics/settings/)
   αφορούν τις συνδέσεις με τη βάση δεδομένων, τη ζώνη ώρας, κ.ά.
 
 * Το αρχείο `project_site/urls.py` δηλώνει τα
-  [URLs τα οποία θα διαχειρίζεται το έργο μας](https://docs.djangoproject.com/en/1.11/topics/http/urls/).
-  Στην ουσία είναι ένας "πίνακας περιεχόμενων" για το έργο μας.
+  [URLs τα οποία θα διαχειρίζεται το έργο μας](https://docs.djangoproject.com/en/2.1/topics/http/urls/).
+  Στην ουσία είναι ένας «πίνακας περιεχόμενων» για το έργο μας.
 
-* Το αρχείο `project_site/wsgi.py` χρησιμοποιείται για τη μεταφορά του
-  έργου μας σε έναν εξυπηρετητή παραγωγής. θα μιλήσουμε για
-  εξυπηρετητές παραγωγής σε μία μελλοντική διάλεξη.
+* Το αρχείο `project_site/wsgi.py` χρησιμοποιείται για την
+  αλληλεπίδραση του Django με εξυπηρετητές WSGI, όπως ο Gunicorn.
 
 </div>
 
-## Εκκίνηση εξυπηρετητή ανάπτυξης
+## Εκκίνηση Εξυπηρετητή Ανάπτυξης
 
 * Μετακινούμαστε στον κατάλογο `project_site` και γράφουμε:
 
@@ -113,12 +112,29 @@ migrations). Θα δούμε στη συνέχεια τι σημαίνει αυ�
 Όταν θέλουμε να βγάλουμε την υπηρεσία μας στην παραγωγή θα πρέπει να
 χρησιμοποιήσουμε άλλους εξυπηρετητές, και συγκεκριμένα είτε τον
 [Apache](https://httpd.apache.org/) 
-είτε τον [nginx](https://www.nginx.com/resources/wiki/).
+είτε τον [nginx](https://www.nginx.com/).
 
+Αν θέλουμε να ξεκινήσει ο εξυπηρετητής σε άλλη πόρτα, τη δίνουμε ως
+παράμετρο π.χ.:
+
+```bash
+python manage.py runserver 8080
+```
+
+Αν θέλουνε να ακούει ο εξυπηρετητής σε άλλη διεύθυνση, την δίνουμε
+επίσης ως παράμετρο, π.χ.:
+
+```bash
+python manage.py runserver 0:8080
+```
+
+Η διεύθυνση `0` είναι συντομογραφία της `0.0.0.0`, η οποία δηλώνει ότι
+το Django θα ακούει σε όλες τις δημόσιες διευθύνσεις IP του
+μηχανήματός μας.
 
 </div>
 
-## Δημιουργία εφαρμογής
+## Δημιουργία Εφαρμογής
 
 * Κάθε έργο που φτιάχνουμε μπορεί να περιλαμβάνει μία ή περισσότερες
   εφαρμογές (apps).
@@ -130,7 +146,7 @@ migrations). Θα δούμε στη συνέχεια τι σημαίνει αυ�
     python manage.py startapp djbr
     ```
 
-* Το `djbr` σημαίνει "Django Book Reviews".
+* Το `djbr` σημαίνει «Django Book Reviews».
 
 * Θα δημιουργηθεί η ακόλουθη δομή καταλόγων:
 
@@ -157,7 +173,7 @@ migrations). Θα δούμε στη συνέχεια τι σημαίνει αυ�
 
 </div>
 
-## Δημιουργία της πρώτης σελίδας
+## Δημιουργία της Πρώτης Σελίδας
 
 * Ανοίγουμε το αρχείο `djbr/views.py`, το οποίο περιέχει:
 
@@ -230,30 +246,19 @@ migrations). Θα δούμε στη συνέχεια τι σημαίνει αυ�
 * Στο αρχείο `djbr/urls.py` γράφουμε:
 
     ```python
-    from django.conf.urls import url
+    from django.urls import path
 
     from . import views
 
     urlpatterns = [
-        url(r'^$', views.index, name='index'),
+        path('', views.index, name='index'),
     ]
     ```
 
 <div class="notes">
 
-* Η πρώτη παράμετρος της συνάρτησης `url()` είναι μια
-  [κανονική έκφραση (regular expression)](https://en.wikipedia.org/wiki/Regular_expression),
-  η οποία αντιστοιχεί στο μονοπάτι που θέλουμε να αντιστοιχίσουμε στη
-  σελίδα. Αν δεν γνωρίζετε τι είναι μια κανονική έκφραση, θα πρέπει να
-  αφιερώσετε λίγο χρόνο να μάθετε, δεδομένου ότι χρησιμοποιούνται πάρα
-  πολύ στην ανάπτυξη εφαρμογών (διαδικτυακών και μη). Ειδικότερα για
-  τη χρήση κανονικών εκφράσεων σε Python, μπορείτε να δείτε τη
-  [σχετική τεκμηρίωση](https://docs.python.org/3/library/re.html). Η
-  συγκεκριμένη κανονική έκφραση (`^$`) αντιστοιχεί στην κενή
-  συμβολοσειρά. Το πρόθεμα `r` σημαίνει στην Python ότι αυτό που
-  ακολουθεί είναι *ωμή συμβολοσειρά* (raw string), δηλαδή συμβολοσειρά
-  στην οποία αγνοείται η ειδική σημασία που μπορεί να έχουν κάποιοι
-  χαρακτήρες (όπως `\n`).
+* Η πρώτη παράμετρος της συνάρτησης `url()`αντιστοιχεί στο μονοπάτι
+  που θέλουμε να αντιστοιχίσουμε στη σελίδα. 
 
 * Η δεύτερη παράμετρος της συνάρτησης `url()` δίνει τη συνάρτηση μέσα
   στο `views.py` που θα χειριστεί την αίτηση του χρήστη.
@@ -274,25 +279,30 @@ migrations). Θα δούμε στη συνέχεια τι σημαίνει αυ�
 
 * Ανοίγουμε το αρχείο `project_site/urls.py`.
 
-* Εισάγουμε (κάνουμε `import`) το `django.conf.urls.include` και το
-  `django.conf.urls.url`.
+* Εισάγουμε (κάνουμε `import`) το `django.urls.include`.
 
 * Συμπεριλαμβάνουμε το αρχείο `djbr/urls.py` μέσα στο αρχείο
   `project_site/urls.py`. 
 
     ```python
-    from django.conf.urls import url, include
     from django.contrib import admin
+    from django.urls import include, path
 
     urlpatterns = [
-        url(r'^djbr/', include('djbr.urls')),
-        url(r'^admin/', admin.site.urls),
+        path('djbr/', include('djbr.urls')),
+        path('admin/', admin.site.urls),
     ]
     ```
 * Για να δούμε το αποτέλεσμα ξεκινάμε πάλι τον εξυπηρετητή και
   πηγαίνουμε στο `http://127.0.0.1:8000/djbr/`.
 
 <div class="notes">
+
+Η συνάρτηση `include()` κόβει το κομμάτι του URL το οποίο ταιριάζει
+μέχρι εκείνη τη στιγμή και περνάει το υπόλοιπο URL για περαιτέρω
+επεξεργασία στο αρχείο που περνάμε ως παράμετρο. Χρησιμοποιούμε πάντα
+`include` για να συμπεριλάβουμε περιγραφές URLs από άλλα αρχεία. Το
+`admin.site.urls` είναι η μόνη εξαίρεση.
 
 Με τις ρυθμίσεις αυτές, ορίζουμε ότι:
 
@@ -301,10 +311,11 @@ migrations). Θα δούμε στη συνέχεια τι σημαίνει αυ�
   `djbr.urls`.
 
 * Όταν το μονοπάτι που δίνει ο χρήστης ξεκινάει με `admin/`, θα
-  χρησιμοιούνται οι κανόνες που έχουν προδιαγραφεί για την εφαρμογή
-  admin. Την εφαρμογή αυτή θα τη δούμε σε λίγο.
+  χρησιμοποιούνται οι κανόνες που έχουν προδιαγραφεί για την εφαρμογή
+  διαχείρισης (admin). Την εφαρμογή αυτή θα τη δούμε σε λίγο.
 
 </div>
+
 
 # Αλληλεπίδραση με τη βάση
 
@@ -400,16 +411,24 @@ migrations). Θα δούμε στη συνέχεια τι σημαίνει αυ�
 
 * Για να δημιουργηθούν αυτοί οι πίνακες πρέπει να τρέξουμε:
 
-    ```bash
-    python manage.py migrate
-    ```
+   ```bash
+   python manage.py migrate
+   ```
+
+* Αν θέλουμε να δούμε τους πίνακες αυτούς, δίνουμε:
+   
+   ```bash
+   sqlite3 db.sqlite3
+   
+   .schema
+   ```
 
 <div class="notes">
 
 Με την εντολή αυτή θα δημιουργηθούν οι απαραίτητοι πίνακες στη βάση.
 Στην οθόνη του τερματικού μας θα εμφανιστούν κάποια μηνύματα τα οποία
 μας ενημερώνουν για τη σχετική τρόπο μέσω των μεταγωγών που
-εφαρμόζονται. Το τι είναι οι μεταγωγές θα το δούμε σε λίγο.
+εφαρμόζονται. Το τι είναι οι μεταγωγές θα το δούμε σε λίγο. 
 
 </div>
 
@@ -597,6 +616,10 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
 * Δίνουμε `python manage.py migrate` για να εφαρμόσουμε τις μεταγωγές
   στη βάση.
 
+* Το Django καταγράφει ποιες μεταγωγές έχουν εφαρμοστεί σε έναν δικό
+  του πίνακα, τον `django_migrations`, που φτιάχνει και διατηρεί στη
+  βάση. 
+
 <div class="notes">
 
 Αυτός είναι ο βασικός κύκλος με τον οποίο πραγματοποιούμε αλλαγές στη
@@ -624,7 +647,7 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
 
 * Αυτό θα ξεκινήσει μια γραμμή εντολών Python με τις απαραίτητες
   ρυθμίσεις για να έχουμε πρόσβαση στα αντικείμενα του Django και τις
-  εφαρμογής μας. Για το λόγο αυτό θα τη λέμε "γραμμή εντολών Django".
+  εφαρμογής μας. Για το λόγο αυτό θα τη λέμε «γραμμή εντολών Django».
 
 <div class="notes">
 
@@ -654,7 +677,7 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
   αντικειμένων `Book` και στη συνέχεια τη μέθοδο `save()`.
 
     ```pythonconsole[python3]
-    >>> b = Book(title="Conversation with Friends", pub_year=2017)
+    >>> b = Book(title="The Seventh Function of Language", pub_year=2017)
     >>> b.save()
     ```
 
@@ -667,7 +690,7 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
     >>> b.id
     1
     >>> b.title
-    'Conversation with Friends'
+    'The Seventh Function of Language'
     >>> b.pub_year
     2017
     ```
@@ -677,10 +700,10 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
 * Ομοίως μπορούμε να τα αλλάξουμε κατά βούληση.
 
     ```pythonconsole[python3]
-    >>> b.title = "Conversations with Friends"
+    >>> b.title = "The 7th Function of Language"
     >>> b.save()
     >>> Book.objects.all()
-    <QuerySet [<Book: Book object>]>
+    <QuerySet [<Book: Book object (1)>]>
     ```
 
 ## Προσθήκη και άλλων βιβλίων
@@ -689,12 +712,12 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
   δεδομένα στη βάση.
 
     ```pythonconsole[python3]
-    >>> b = Book(title="City on Fire", pub_year=2015)
+    >>> b = Book(title="La Septième Fonction du langage : qui a tué Roland Barthes?", pub_year=2015)
     >>> b.save()
     >>> b = Book(title="La Vérité sur l'affaire Harry Quebert", pub_year=2012)
     >>> b.save()
     >>> Book.objects.all()
-    <QuerySet [<Book: Book object>, <Book: Book object>, <Book: Book object>]>
+    <QuerySet [<Book: Book object (1)>, <Book: Book object (2)>, <Book: Book object (3)>]>
     ```
 
 ## Εμφάνιση αντικειμένων
@@ -739,11 +762,14 @@ class Review(models.Model):
 ## Βελτιωμένη εμφάνιση αντικειμένων
 
 * Τώρα μπορούμε να διαπιστώσουμε ότι τα βιβλία μας εμφανίζονται
-  καλύτερα:
+  καλύτερα.
+  
+* Βγαίνουμε από το shell, ξαναμπαίνουμε, και δίνουμε:
   
 ```pythonconsole[python3]
+>>> from djbr.models import Book
 >>> Book.objects.all()
-<QuerySet [<Book: Conversations with Friends 2017>, <Book: City on Fire 2015>, <Book: La Vérité sur l'affaire Harry Quebert 2012>]>
+ <QuerySet [<Book: The 7th Function of Language 2017>, <Book: La Septième Fonction du langage : qui a tué Roland Barthes? 2015>, <Book: La Vérité sur l'affaire Harry Quebert 2012>]>
 ```
    
 ## Επιπλέον μέθοδοι
@@ -779,35 +805,35 @@ class Review(models.Model):
     >>> from djbr.models import Book, Review
 
     >>> Book.objects.all()
-    <QuerySet [<Book: Conversations with Friends 2017>, <Book: City on Fire 2015>, <Book: La Vérité sur l'affaire Harry Quebert 2012>]>
+    <QuerySet [<Book: The 7th Function of Language 2017>, <Book: La Septième Fonction du langage : qui a tué Roland Barthes? 2015>, <Book: La Vérité sur l'affaire Harry Quebert 2012>]>    
     ```
 
 * Αναζήτηση με βάση συγκεκριμένο πεδίο:
 
     ```pythonconsole[python3]
     >>> Book.objects.filter(id=1)
-    <QuerySet [<Book: Conversations with Friends 2017>]>
+    <QuerySet [<Book: The 7th Function of Language 2017>]>
     ```
 
 ## Αναζήτηση ενός αντικειμένου με άλλα φίλτρα
 
-* Έστω ότι θέλουμε να βρούμε τα βιβλίο που ο τίτλος τους αρχίζει με "City":
+* Έστω ότι θέλουμε να βρούμε τα βιβλίο που ο τίτλος τους αρχίζει με «The»:
 
     ```pythonconsole[python3]
-    >>> Book.objects.filter(title__startswith='City')
-    <QuerySet [<Book: City on Fire 2015>]>
+    >>> Book.objects.filter(title__startswith='The')
+    <QuerySet [<Book: The 7th Function of Language 2017>]>  
     ```
 
 * Ή ότι θέλουμε να βρούμε τα βιβλία τα οποία έχουν εκδοθεί τα τελευταία
-  δύο χρόνια (βρισκόμαστε στο 2017):
+  τρία χρόνια (βρισκόμαστε στο 2018):
 
     ```pythonconsole[python3]
     >>> from django.utils import timezone
 
-    >>> pub_year = timezone.now().year - 2
+    >>> pub_year = timezone.now().year - 3
 
     >>> Book.objects.filter(pub_year__gte=pub_year)
-    <QuerySet [<Book: Conversations with Friends 2017>, <Book: City on Fire 2015>]>
+    <QuerySet [<Book: The 7th Function of Language 2017>, <Book: La Septième Fonction du langage : qui a tué Roland Barthes? 2015>]>    
     ```
 
 <div class="notes">
@@ -817,12 +843,12 @@ class Review(models.Model):
 `QuerySet` το οποίο περιέχει τα αποτελέσματα της αναζήτησης, αν
 υπάρχουν. Αν δεν υπάρχουν το `QuerySet` είναι κενό. 
 
-Η συγκεκριμένη παράμετρος σημαίνει: "βρες τα βιβλία των οποίων το
+Η συγκεκριμένη παράμετρος σημαίνει: «βρες τα βιβλία των οποίων το
 πεδίο `pub_year` είναι μεγαλύτερο ή ίσο (`gte`) από τη μεταβλητή
-`pub_year`". Οι τελεστές της αναζήτησης χωρίζονται από τα πεδία της
+`pub_year`». Οι τελεστές της αναζήτησης χωρίζονται από τα πεδία της
 αναζήτησης με `__`. Υπάρχουν πολλοί τελεστές αναζήτησης, έτσι ώστε να
 μπορούν να καλυφθούν διάφορα σενάρια. Για να τους βρείτε, δείτε την
-[τεκμηρίωση του QuerySet](https://docs.djangoproject.com/en/1.11/ref/models/querysets/).
+[τεκμηρίωση του QuerySet](https://docs.djangoproject.com/en/2.1/ref/models/querysets/).
 
 </div>
 
@@ -857,7 +883,7 @@ class Review(models.Model):
 
     ```pythonconsole[python3]
     >>> Book.objects.get(pk=1)
-    <Book: Conversations with Friends 2017>
+    <Book: The 7th Function of Language 2017>
     ```
 
 * Με την ευκαιρία, μπορούμε να δοκιμάσουμε αν δουλεύει η μέθοδος
@@ -882,19 +908,19 @@ class Review(models.Model):
 * Ας προσθέσουμε λοιπόν τρεις κριτικές:
 
 ```pythonconsole[python3]
->>> b.review_set.create(title="A New Kind of Adultery Novel",
-text='Sally Rooney\'s début, "Conversations with Friends", is a bracing study of ideas. But it\'s even smarter about people. By Alexandra Schwartz in The New Yorker', 
-review_date="2017-07-31 00:00:00-05:00")
-<Review: A New Kind of Adultery Novel Sally Rooney's début, "Conversations with Friends", is a bracing study of ideas. But it's even smarter about people. By Alexandra Schwartz in The New Yorker 2017-07-31 00:00:00-05:00>
+>>> b.review_set.create(title='The 7th Function of Language by Laurent Binet – who killed Roland Barthes? By Lauren Elkin in The Guardian',
+text='With this freewheeling fantasy about the death of the celebrated French critic, Binet delivers a second novel as erudite and engaging as his first', 
+review_date="2017-05-05 06:30:00+01:00")
+<Review: The 7th Function of Language by Laurent Binet – who killed Roland Barthes? By Lauren Elkin in The Guardian With this freewheeling fantasy about the death of the celebrated French critic, Binet delivers a second novel as erudite and engaging as his first 2017-05-05 06:30:00+01:00>
 
->>>b.review_set.create(title="Conversations with Friends by Sally Rooney review - young, gifted and self-destructive",
-text='A menage a quatre in post-crash Dublin tests the bonds between close friends. By Claire Kilroy in The Guardian',
-review_date="2017-06-01 00:00:00+00:00")
-<Review: Conversations with Friends by Sally Rooney review - young, gifted and self-destructive A menage a quatre in post-crash Dublin tests the bonds between close friends. By Claire Kilroy in The Guardian 2017-06-01 00:00:00+00:00>
+>>>b.review_set.create(title='Imagining the Real. By Wyatt Mason in the New York Review of Books',
+text='The idea that certain words in a certain order can alter the balance of political power is central to the French writer Laurent Binet’s most recent novel, The Seventh Function of Language',
+review_date="2018-07-19 00:00:00+00:00")
+<Review: Imagining the Real. By Wyatt Mason in the New York Review of Books The idea that certain words in a certain order can alter the balance of political power is central to the French writer Laurent Binet’s most recent novel, The Seventh Function of Language 2018-07-19 00:00:00+00:00>
 
->>> r = b.review_set.create(title="Tell Me I'm Interesting",
-text='Sally Rooney’s debut novel is a remarkably charming exploration of that very uncharming subject: the human ego. By Katy Waldman in The Slate',
-review_date="2017-08-03 12:28:00-05:00")
+>>> r = b.review_set.create(title="The Seventh Function of Language",
+text='A conspiracy thriller about the death of the French literary theorist, Roland Barthes, that draws on the work of Jacques Derrida and Dan Brown with tongue firmly in cheek—to hilarious effect.',
+review_date="2017-12-09 00:00:00-00:00")
 ```
 
 <div class="notes">
@@ -914,14 +940,14 @@ review_date="2017-08-03 12:28:00-05:00")
 
 ```pythonconsole[python3]
 >>> r.book
-<Book: Conversations with Friends 2017>
+<Book: The 7th Function of Language 2017>
 ```
 
 * Ενώ φυσικά μπορούμε πάντα να πάμε από τη μεριά του ενός στα πολλά:
 
 ```pythonconsole[python3]
 >>> b.review_set.all()
-<QuerySet [<Review: A New Kind of Adultery Novel Sally Rooney's début, "Conversations with Friends", is a bracing study of ideas. But it's even smarter about people. By Alexandra Schwartz in The New Yorker 2017-07-31 05:00:00+00:00>, <Review: Conversations with Friends by Sally Rooney review - young, gifted and self-destructive A menage a quatre in post-crash Dublin tests the bonds between close friends. By Claire Kilroy in The Guardian 2017-06-01 00:00:00+00:00>, <Review: Tell Me I'm Interesting Sally Rooney’s debut novel is a remarkably charming exploration of that very uncharming subject: the human ego. By Katy Waldman in The Slate 2017-08-03 17:28:00+00:00>]>
+<QuerySet [<Review: The 7th Function of Language by Laurent Binet – who killed Roland Barthes? By Lauren Elkin in The Guardian With this freewheeling fantasy about the death of the celebrated French critic, Binet delivers a second novel as erudite and engaging as his first 2017-05-05 05:30:00+00:00>, <Review: Imagining the Real. By Wyatt Mason in the New York Review of Books The idea that certain words in a certain order can alter the balance of political power is central to the French writer Laurent Binet’s most recent novel, The Seventh Function of Language 2018-07-19 00:00:00+00:00>, <Review: The Seventh Function of Language A conspiracy thriller about the death of the French literary theorist, Roland Barthes, that draws on the work of Jacques Derrida and Dan Brown with tongue firmly in
 
 >>> b.review_set.count()
 3
@@ -934,13 +960,13 @@ review_date="2017-08-03 12:28:00-05:00")
 
 ```pythonconsole[python3]
 >>> Review.objects.filter(book__pub_year=2017)
-<QuerySet [<Review: A New Kind of Adultery Novel Sally Rooney's début, "Conversations with Friends", is a bracing study of ideas. But it's even smarter about people. By Alexandra Schwartz in The New Yorker 2017-07-31 05:00:00+00:00>, <Review: Conversations with Friends by Sally Rooney review - young, gifted and self-destructive A menage a quatre in post-crash Dublin tests the bonds between close friends. By Claire Kilroy in The Guardian 2017-06-01 00:00:00+00:00>, <Review: Tell Me I'm Interesting Sally Rooney’s debut novel is a remarkably charming exploration of that very uncharming subject: the human ego. By Katy Waldman in The Slate 2017-08-03 17:28:00+00:00>]>
+<QuerySet [<Review: The 7th Function of Language by Laurent Binet – who killed Roland Barthes? By Lauren Elkin in The Guardian With this freewheeling fantasy about the death of the celebrated French critic, Binet delivers a second novel as erudite and engaging as his first 2017-05-05 05:30:00+00:00>, <Review: Imagining the Real. By Wyatt Mason in the New York Review of Books The idea that certain words in a certain order can alter the balance of political power is central to the French writer Laurent Binet’s most recent novel, The Seventh Function of Language 2018-07-19 00:00:00+00:00>, <Review: The Seventh Function of Language A conspiracy thriller about the death of the French literary theorist, Roland Barthes, that draws on the work of Jacques Derrida and Dan Brown with tongue firmly in cheek—to hilarious effect. 2017-12-09 00:00:00+00:00>]>
 ```
 
 <div class="notes">
 
-Το παραπάνω φίλτρο διαβάζεται ως: "βρες τις κριτικές που αντιστοιχούν
-σε βιβλία των οποίων το πεδίο `pub_year` είναι ίσο με 2017". 
+Το παραπάνω φίλτρο διαβάζεται ως: «βρες τις κριτικές που αντιστοιχούν
+σε βιβλία των οποίων το πεδίο `pub_year` είναι ίσο με 2017». 
 
 </div>
 
@@ -949,11 +975,11 @@ review_date="2017-08-03 12:28:00-05:00")
 * Η διαγραφή αντικειμένων γίνεται με τη μέθοδο `delete()`:
 
     ```pythonconsole[python3]
-    >>> r = b.review_set.filter(text__startswith='Sally')
+    >>>  r = b.review_set.filter(text__startswith='The idea')
     >>> r.delete()
-    (2, {'djbr.Review': 2})
-    
-    >>> r = b.review_set.filter(text__startswith='A menage')
+    (1, {'djbr.Review': 1})
+
+    >>> r = b.review_set.filter(text__startswith='A conspiracy')
     >>> r.delete()
     (1, {'djbr.Review': 1})
     ```
@@ -992,18 +1018,208 @@ review_date="2017-08-03 12:28:00-05:00")
     ```bash
     pip install mysqlclient
     ```
-* Αν στην εγκατάσταση λάβουμε κάποιο μήνυμα λάθους, ίσως φταίει ότι
-  η MySQL δεν είναι στο μονοπάτι του συστήματος.
+* Hic sunt dracones / Here be dragons.
+
+
+<div class="notes">
+
+* Στην περίπτωση του Ubuntu, θα πρέπει πρώτα να εγκαταστήσετε κάποια
+  επιπλέον πακέτα στο μηχάνημά σας:
+  
+   ```bash
+   sudo apt install build-essential
+   sudo apt install libmysqlclient-dev
+   sudo apt install python3-dev
+   ```
+   
+   Αυτά χρειάζονται διότι ο `mysqlclient` είναι γραμμένος σε C, και θα
+   πρέπει να μεταγλωτιστεί. 
+   
+   * Το `build-essential` περιέχει τα βασικά εργαλεία μεταγλώτισης
+     (compiler, make)
+	 
+   * Το `libmysqlclient-dev` περιέχει βιβλιοθήκες πηγαίου κώδικα για
+     τα προγράμματα που χρησιμοποιούν MySQL.
+	 
+   * Το `python3-dev` περιέχει τον πηγαίο κώδικα για την ανάπτυξη του
+     Python 3.
+
+
+* Μπορεί επίσης να χρειάζεται η MySQL να είναι στο μονοπάτι του συστήματος.
 
     * Στην περίπτωση που έχουμε Mac OS ή Linux δίνουμε:
     ```bash
     export PATH=$PATH:/usr/local/mysql/bin
     ```
     (ή όποιο άλλο είναι το μονοπάτι)
-
+	
    * Για να είναι πάντοτε διαθέσιμες οι εντολές της MySQL, μπορούμε να
-   βάλουμε την παραπάνω εντολή στο τέλος του αρχείου `.bash_profile`
+   βάλουμε την παραπάνω εντολή στο τέλος του αρχείου `~/.bash_profile`
    στον βασικό μας κατάλογο στο σύστημά μας.
+
+* Σε Mac OS μπορεί να χρειαστεί να εκτελέσουμε τα παρακάτω
+  προκειμένου να δουλέψει κανονικά ο οδηγός:
+  
+   ```bash
+   export DYLD_FALLBACK_LIBRARY_PATH=/usr/local/opt/openssl/lib:/usr/local/mysql/lib:$DYLD_FALLBACK_LIBRARY_PATH
+   ```
+
+   Αυτά τα εισάγουμε στο τέλος του αρχείου `~/.bash_profile` ώστε να
+   μην χρειάζεται να τα επαναλαμβάνουμε κάθε φορά που αρχίζουμε νέο
+   τερματικό. 
+   
+</div>
+
+
+## Επίπεδα Απομόνωσης Δοσοληψιών
+
+* Στα συστήματα διαχείρισης βάσεων δεδομένων διακρίνουμε τέσσερα
+  [επίπεδα απομόνωσης (isolation
+  levels)](https://en.wikipedia.org/wiki/Isolation_(database_systems)):
+  
+  * Serializable
+  
+  * Repeatable reads
+  
+  * Read committed
+  
+  * Read uncommitted
+
+
+## Read Uncommitted
+
+* Το επίπεδο read uncommitted είναι το χαμηλότερο επίπεδο απομόνωσης. 
+
+* Στο επίπεδο αυτό επιτρέπονται [*βρώμικες αναγνώσεις* (dirty
+  reads)](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Dirty_reads).
+  
+* Με άλλα λόγια, μια δοσοληψία μπορεί να δει αλλαγές που κάνει μια
+  άλλη δοσοληψία, ακόμα και αν αυτές δεν έχουν γίνει commit.
+
+
+## Dirty Reads
+
+* Στο παρακάτω παράδειγμα, έστω ότι αρχικά ο χρήστης με `id=1` έχει
+  καταχωρησμένη ως ηλικία το 20.
+
+  | Δοσοληψία 1 | Δοσοληψία 2 |
+  |-------------|-------------|
+  | `SELECT age from users WHERE id = 1;` | |
+  | | `UPDATE users SET AGE = 21 WHERE id = 1;` |
+  | `SELECT age from users WHERE id = 1;` | |
+  | | `ROLLBACK;` |
+
+<div class="notes">
+
+Το πρόβλημα είναι ότι η 1η δοσοληψία θα διαβάζει τη δεύτερη φορά ότι η
+ηλικία έχει αλλάξει στο 21, παρά το ότι δεν έχει commit η αλλαγή (και
+όπως βλέπουμε μάλιστα, δεν θα γίνει).
+
+Το μόνο πράγμα που μας εγγυάται η βάση στο επίπεδο read uncommitted
+είναι ότι οι ενημερώσεις θα εφαρμόζονται με τη σωστή σειρά.
+
+</div>
+
+
+## Read Committed
+
+* Το επίπεδο read committed είναι το αμέσως αυστηρότερο μετά το read
+  committed. 
+  
+* Στο επίπεδο αυτό, δεν επιτρέπονται βρώμικες αναγνώσεις, αλλά μπορεί
+  να εμφανιστούν προβλήματα σε [μη επαναλαμβόμενες αναγνώσεις (non-repeatable
+  reads)](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Non-repeatable_reads).
+  
+* Με άλλα λόγια, ενώ μια δοσοληψία δεν θα δει ποτέ βρώμικα δεδομένα,
+  μπορεί η ίδια δοσοληψία να διαβάσει διαφορετικά δεδομένα σε
+  επαναλαμβόμενες αναγνώσεις.
+  
+* Non repeatable reads = αν ξανακάνουμε την ίδια αναζήτηση στη βάση,
+  δεν υπάρχει εγγύηση ότι θα πάρουμε τα ίδια αποτελέσματα.
+
+
+## Non-Repeatable Reads
+
+
+  | Δοσοληψία 1 | Δοσοληψία 2 |
+  |-------------|-------------|
+  | `SELECT * from users WHERE id = 1;` | |
+  | | `UPDATE users SET AGE = 21 WHERE id = 1;` <br/>`COMMIT;` |
+  | `SELECT * from users WHERE id = 1;` <br/> `COMMIT` | |
+
+
+<div class="notes">
+
+Τώρα η 1η δοσοληψία διαβάζει μόνο δεδομένα που έχουν γίνει commit.
+Αυτό σημαίνει ότι η δεύτερη αναζήτηση δεν θα δώσει τα ίδια
+αποτελέσματα με την πρώτη.
+
+Υπάρχουν δύο τρόποι να λυθεί το πρόβλημα:
+
+1. Γίνονται τα απαραίτητα κλειδώματα (read locks, write locks), ώστε η
+   εκτέλεση της 2ης δοσοληψίας θα γίνει αφού ολοκληρωθεί (commit) ή
+   εγκαταληφθεί (rollback) η πρώτη.
+   
+2. Χρησιμοποιείται [multiversion concurrency
+   control](https://en.wikipedia.org/wiki/Multiversion_concurrency_control),
+   όπου η 2η δοσοληψία δουλεύει σε στιγμιότυπο της βάσης και όταν
+   γίνεται commit ελέγχεται αν το αποτέλεσμα στο στιγμιότυπο θα είναι
+   το ίδιο με το αποτέλεσμα που θα προέκυπτε αν εκτελούνταν πρώτα η 1η
+   δοσοληψία και μετά η 2η δοσοληψία.
+
+</div>
+
+## Repeatable Reads
+
+* Το επίπεδο αυτό εγγυάται ότι δεν θα εμφανιστεί το πρόβλημα
+  repeatable reads.
+  
+* Μπορεί όμως να εμφανιστεί το πρόβλημα των [αναγνώσεων φαντασμάτων
+  (phantom
+  reads)](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Phantom_reads). 
+
+* Αυτό σημαίνει ότι μια δοσοληψία μπορεί να διαβάσει, όσο εκτελείται,
+  δεδομένα που πρόσθεσε μια άλλη δοσοληψία που εκτελέστηκε στο μεταξύ.
+  
+  
+## Phantom Reads
+
+* Φαντάσματα εμφανίζονται όταν μία δοσοληψία προσθέτει δεδομένα τη
+  στιγμή που τα διαβάζει μια άλλη.
+
+  | Δοσοληψία 1 | Δοσοληψία 2 |
+  |-------------|-------------|
+  | `SELECT * from users`<br/>`WHERE age`<br/>`BETWEEN 10 AND 30;` | |
+  | | `INSERT INTO`<br/>`users(id, name, age)`<br/>` VALUES(3, 'Bob', 27);`<br/>`COMMIT;` |
+  | `SELECT * from users`<br/>`WHERE age`<br/>`BETWEEN 10 AND 30;` <br/> `COMMIT` | |
+
+
+<div class="notes">
+
+Ενώ η 1η δοσοληψία θα διαβάσει στη 2η αναζήτηση τα δεδομένα που βρήκε
+στην 1η, θα διαβάσει *και επιπλέον δεδομένα*.
+
+Phantom reads μπορούν να εμφανιστούν σε αναζητήσεις εύρους τιμών
+(range queries), οπότε για να αποφευχθούν πρέπει η βάση δεδομένων να
+χρησιμοποιήσει range locks (επιπλέον των read και write locks).
+
+</div>
+
+## Serializable
+
+* Το επίπεδο serializable είναι το ανώτερο επίπεδο απομόνωσης.
+
+* Σημαίνει ότι αν εκτελούνται δοσοληψίες ταυτόχρονα, αυτό θα γίνει με
+  τέτοιο τρόπο ώστε το αποτελέσματα να είναι το ίδιο όπως αν αυτές
+  εκτελούνταν σειριακά.
+  
+<div class="notes">
+
+Για να εξασφαλιστεί αυτό το επίπεδο απομόνωσης, πρέπει είτε να
+χρησιμοποιήσουμε διάφορα locks, είτε η βάση να δίνει στιγμιότυπα στις
+δοσοληψίες, τα οποία θα πρέπει να «συμφιλιώνονται» στο τέλος.
+
+</div>
 
 ## Ρυθμίσεις Django
 
@@ -1018,6 +1234,9 @@ review_date="2017-08-03 12:28:00-05:00")
             'USER': 'djbr_user',
             'PASSWORD': 'g8nzmktk6y',
             'HOST': '127.0.0.1',
+            'OPTIONS': {
+                'isolation_level': 'read committed'
+            }
         }
     }
     ```
@@ -1088,14 +1307,14 @@ review_date="2017-08-03 12:28:00-05:00")
   ως εξής:
 
     ```sql
-    USE djbr;
+    mysql> USE djbr;
 
-    SHOW TABLES;
+    mysql> SHOW TABLES;
     ```
 
 # Django admin
 
-## Γενικά
+## Η Διαχειριστική Εφαρμογή
 
 * Για κάθε εφαρμογή που φτιάχνουμε στο Django, το Django αυτόματα
   δημιουργεί μια *εφαρμογή διαχείρισης* (admin app).
@@ -1123,7 +1342,7 @@ Django για την εφαρμογή τους.
 * Θα μας ζητηθεί να δώσουμε το όνομα του χρήστη:
 
     ```
-    Username (leave blank to use 'panos'): admin
+    Username (leave blank to use 'panos'): louridas
     ```
 
 * Και στη συνέχεια τη διεύθυνση ηλεκτρονικού ταχυδρομείου του:
