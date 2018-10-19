@@ -995,7 +995,7 @@ review_date="2017-12-09 00:00:00-00:00")
     ```sql
     CREATE DATABASE djbr CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-    CREATE USER 'djbr_user'@'localhost' IDENTIFIED BY 'g8nzmktk6y';
+    CREATE USER 'djbr_user'@'localhost' IDENTIFIED BY 'g8nzMktk6@y';
 
     GRANT ALL PRIVILEGES ON djbr.* TO 'djbr_user'@'localhost';
     ```
@@ -1220,6 +1220,129 @@ Phantom reads μπορούν να εμφανιστούν σε αναζητήσε
 δοσοληψίες, τα οποία θα πρέπει να «συμφιλιώνονται» στο τέλος.
 
 </div>
+
+## Επίπεδο Απομόνωσης στο Django
+
+* Στο Django χρησιμοποιούμε συνήθως το επίπεδο απομόνωσης read
+  committed.
+  
+* Ο λόγος είναι ότι αν δώσουμε repeatable read ή παραπάνω, η
+  εφαρμογή μας θα αρχίζει να εμφανίζει εξαιρέσεις όταν αποτυγχάνουν οι
+  δοσοληψίες. 
+  
+* Συνήθως θέλουμε να το αποφύγουμε αυτό, οπότε δουλεύουμε με read
+  committed και προσέχουμε να χειριζόμαστε σωστά τις δοσοληψίες, όπως
+  θα δούμε στη συνέχεια.
+
+
+## Δοσοληψίες στο Django
+
+* Είναι σημαντικό να καταλάβουμε πώς ακριβώς χειρίζεται το Django τις
+  δοσοληψίες. 
+  
+* Διαβάστε τη [σχετική
+  τεκμηρίωση](https://docs.djangoproject.com/en/2.1/topics/db/transactions/).
+  
+
+## Αυτόματες Δοσοληψίες
+
+* Εκτός και να δώσουμε διαφορετικές ρυθμίσεις, το Django εκτελεί κάθε
+  εντολή της βάσης και στη συνέχεια κάνει commit.
+  
+* Με άλλα λόγια, λειτουργεί σε καθεστώς autocommit.
+
+* Τι γίνεται όμως αν θέλουμε να εκτελεστεί ένα σύνολο εντολών σε μία
+  δοσοληψία;
+  
+## Δοσοληψίες ανά Αίτηση
+
+* Μια συνηθισμένη περίπτωση είναι να θέλουμε να ξεκινάει μια δοσοληψία
+  με την αρχή της εξυπηρέτησης μιας αίτησης και να τελειώνει όταν
+  ολοκληρωθεί.
+  
+* Για να το κάνουμε αυτό δίνουμε:
+
+   ```python
+   ATOMIC_REQUESTS = True
+   ```
+   
+   στις ρυθμίσεις της βάσης μας στο Django.
+   
+* Για να μην έχουμε προβλήματα, θα πρέπει όλες οι αιτήσεις να
+  εξυπηρετούνται γρήγορα (και βεβαίως να μη χρειάζεται να περιμένουν
+  μια άλλη υπηρεσία).
+
+
+## Πρόληψη Δοσοληψίας
+
+* Αν έχουμε ορίζει ότι θέλουμε δοσοληψίες ανά αίτηση, αλλά θέλουμε να
+  απενεργοποιήσουμε αυτή τη συμπεριφορά για κάποιες αιτήσεις,
+  χρησιμοποιούμε το διακοσμητή `@transaction.non_atomic_requests`.
+  
+* Για παράδειγμα:
+
+    ```python
+	from django.db import transaction
+
+	@transaction.non_atomic_requests
+	def my_view(request):
+		do_stuff()
+
+	@transaction.non_atomic_requests(using='other')
+	def my_other_view(request):
+		do_stuff_on_the_other_database()
+	```
+
+## Έλεγχος Δοσοληψιών (1)
+
+* Αν θέλουμε να ελέγχουμε εμείς οι ίδιες τις δοσοληψίες, μπορούμε να
+  χρησιμοποιούμε τον διακοσμητή `@atomic`:
+  
+   ```python
+   from django.db import transaction
+
+   @transaction.atomic
+   def viewfunc(request):
+	   # This code executes inside a transaction.
+	   do_stuff()
+   ```
+  
+## Έλεγχος Δοσοληψιών (2)
+
+* Εναλλακτικά, μπορούμε να χρησιμοποιήσουμε έναν [διαχειριστή
+  περιβάλλοντος (context
+  manager)](https://docs.python.org/3/glossary.html#term-context-manager):
+  
+   ```python
+   from django.db import transaction
+
+   def viewfunc(request):
+	   # This code executes in autocommit mode (Django's default).
+	   do_stuff()
+
+	   with transaction.atomic():
+		   # This code executes inside a transaction.
+		   do_more_stuff()
+	```
+
+## `select_for_update()`
+
+* Μέσα σε μία δοσοληψία, για να δηλώσουμε ότι τα αποτελέσματα μιας
+  αναζήτησης θα πρέπει να κλειδωθούν μέχρι το τέλος της,
+  χρησιμοποιούμε τη μέθοδο `select_for_update()`:
+  
+   ```python
+   from django.db import transaction
+
+   entries = Entry.objects.select_for_update().filter(author=request.user)
+   with transaction.atomic():
+	   for entry in entries:
+		   ...
+   ```
+   
+* Υπάρχουν διάφορες παράμετροι που ρυθμίζουν τη συμπεριφορά του
+  `select_for_update()`· δείτε τη [σχετική
+  τεκμηρίωση](https://docs.djangoproject.com/en/2.1/ref/models/querysets/#select-for-update).
 
 ## Ρυθμίσεις Django
 
