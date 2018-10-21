@@ -1355,7 +1355,7 @@ Phantom reads μπορούν να εμφανιστούν σε αναζητήσε
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'djbr',
             'USER': 'djbr_user',
-            'PASSWORD': 'g8nzmktk6y',
+            'PASSWORD': 'g8nzMktk6@y,
             'HOST': '127.0.0.1',
             'OPTIONS': {
                 'isolation_level': 'read committed'
