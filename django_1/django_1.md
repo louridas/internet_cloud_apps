@@ -220,7 +220,7 @@ python manage.py runserver 0:8080
 
 </div>
 
-## Αντιστοίχιση σελίδας σε URL
+## Αντιστοίχιση Σελίδας σε URL
 
 * Για να μπορεί ο χρήστης να βλέπει τη σελίδα, θα πρέπει να την
   αντιστοιχίσουμε σε ένα URL.
@@ -275,7 +275,7 @@ python manage.py runserver 0:8080
 
 </div>
 
-## Συμπερίληψη των URL της εφαρμογής
+## Συμπερίληψη των URL της Εφαρμογής
 
 * Ανοίγουμε το αρχείο `project_site/urls.py`.
 
@@ -317,7 +317,7 @@ python manage.py runserver 0:8080
 </div>
 
 
-# Αλληλεπίδραση με τη βάση
+# Αλληλεπίδραση με τη Βάση
 
 
 ## Ρυθμίσεις για SQLite
@@ -347,7 +347,7 @@ python manage.py runserver 0:8080
 
 </div>
 
-## Ρύθμιση ζώνης ώρας
+## Ρύθμιση Ζώνης Ώρας
 
 * Οι τρέχουσες ρυθμίσεις στο αρχείο `project_site/settings.py` ορίζουν
   ως ζώνη ώρας `UTC`:
@@ -362,7 +362,7 @@ python manage.py runserver 0:8080
     TIME_ZONE = 'ΕΕΤ'
     ```
 
-## Συμπεριλαμβανόμενες εφαρμογές
+## Συμπεριλαμβανόμενες Εφαρμογές
 
 * Η ρύθμιση `INSTALLED_APPS` δίνει τις βοηθητικές εφαρμογές που θα
   ενεργοποιηθούν όταν τρέχει το Django.
@@ -404,7 +404,7 @@ python manage.py runserver 0:8080
 <div>
 
 
-## Δημιουργία πινάκων βοηθητικών εφαρμογών
+## Δημιουργία Πινάκων Βοηθητικών Εφαρμογών
 
 * Oι βοηθητικές εφαρμογές χρειάζονται για να λειτουργήσουν κάποιους
   πίνακες στη βάση μας.
@@ -432,9 +432,9 @@ python manage.py runserver 0:8080
 
 </div>
 
-# Δημιουργία μοντέλων
+# Δημιουργία Μοντέλων
 
-## Βασικές οντότητες
+## Βασικές Οντότητες
 
 * Θα ξεκινήσουμε την εφαρμογή μας με δύο οντότητες.
 
@@ -459,7 +459,7 @@ ORM). Οι κλάσεις μας που θα αποθηκευτούν στη β�
 </div>
 
 
-## Κώδικας βασικών οντοτήτων
+## Κώδικας Βασικών Οντοτήτων
 
 ```python
 from django.db import models
@@ -476,7 +476,7 @@ class Review(models.Model):
 ```
 
 
-## Ενεργοποιήση μοντέλων
+## Ενεργοποιήση Μοντέλων
 
 * Το Django μπορεί να δημιουργήσει μόνο του τους πίνακες των μοντέλων
   μας στη βάση.
@@ -514,7 +514,7 @@ class Review(models.Model):
 
 </div>
 
-## Δημιουργία μεταγωγής
+## Δημιουργία Μεταγωγής
 
 * Ένα σύνολο αλλαγών που πρέπει να γίνουν στη βάση δεδομένων
   ονομάζεται *μεταγωγή* (migration).
@@ -588,7 +588,7 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
     COMMIT;
     ```
 
-## Εφαρμογή της μεταγωγής
+## Εφαρμογή της Μεταγωγής
 
 * Για να εφαρμόσουμε τις μεταγωγές που δεν έχουν ακόμα εφαρμοστεί στη
   βάση, δίνουμε:
@@ -606,7 +606,7 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
       Applying djbr.0001_initial... OK
     ```
 
-## Κύκλος μεταγωγών
+## Κύκλος Μεταγωγών
 
 * Κάνουμε τις αλλαγές στα μοντέλα μας (στο `models.py`).
 
@@ -657,7 +657,7 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
 
 </div>
 
-## Αναζήτηση βιβλίων
+## Αναζήτηση Βιβλίων
 
 * Για να αναζητήσουμε όλα τα βιβλία στη βάση χρησιμοποιούμε τη μέθοδο
   `Book.objects.all()`
@@ -665,28 +665,28 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
 * Κατ΄ αρχήν θα πρέπει να εισάγουμε τα αντίστοιχα αντικείμενα στο
   περιβάλλον μας, οπότε ξεκινάμε με τα κατάλληλα imports.
 
-    ```pythonconsole[python3]
+    ```python
     >>> from djbr.models import Book, Review
     >>> Book.objects.all()
     <QuerySet []>
     ```
 
-## Δημιουργία βιβλίου
+## Δημιουργία Βιβλίου
 
 * Για να δημιουργήσουμε βιβλία, απλώς καλούμε τον κατασκευαστή των
   αντικειμένων `Book` και στη συνέχεια τη μέθοδο `save()`.
 
-    ```pythonconsole[python3]
+    ```python
     >>> b = Book(title="The Seventh Function of Language", pub_year=2017)
     >>> b.save()
     ```
 
-## Προσπέλαση πεδίων
+## Προσπέλαση Πεδίων
 
 * Έχουμε πρόσβαση στα πεδία των αντικειμένων ως απλά πεδία στην
   Python. 
 
-    ```pythonconsole[python3]
+    ```python
     >>> b.id
     1
     >>> b.title
@@ -695,23 +695,23 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
     2017
     ```
 
-## Αλλαγές στα πεδία
+## Αλλαγές στα Πεδία
 
 * Ομοίως μπορούμε να τα αλλάξουμε κατά βούληση.
 
-    ```pythonconsole[python3]
+    ```python
     >>> b.title = "The 7th Function of Language"
     >>> b.save()
     >>> Book.objects.all()
     <QuerySet [<Book: Book object (1)>]>
     ```
 
-## Προσθήκη και άλλων βιβλίων
+## Προσθήκη και Άλλων Βιβλίων
 
 * Ας προσθέσουμε δύο ακόμα βιβλία για να έχουμε λίγα περισσότερα
   δεδομένα στη βάση.
 
-    ```pythonconsole[python3]
+    ```python
     >>> b = Book(title="La Septième Fonction du langage : qui a tué Roland Barthes?", pub_year=2015)
     >>> b.save()
     >>> b = Book(title="La Vérité sur l'affaire Harry Quebert", pub_year=2012)
@@ -720,7 +720,7 @@ Django. Καθώς αναπτύσσουμε μια εφαρμογή, είναι 
     <QuerySet [<Book: Book object (1)>, <Book: Book object (2)>, <Book: Book object (3)>]>
     ```
 
-## Εμφάνιση αντικειμένων
+## Εμφάνιση Αντικειμένων
 
 * Το `<Book: Book object>` δεν είναι καθόλου κατατοπιστικό.
 
@@ -759,20 +759,20 @@ class Review(models.Model):
         return "%s %s %s" % (self.title, self.text, self.review_date)
 ```
 
-## Βελτιωμένη εμφάνιση αντικειμένων
+## Βελτιωμένη Εμφάνιση Αντικειμένων
 
 * Τώρα μπορούμε να διαπιστώσουμε ότι τα βιβλία μας εμφανίζονται
   καλύτερα.
   
 * Βγαίνουμε από το shell, ξαναμπαίνουμε, και δίνουμε:
   
-```pythonconsole[python3]
+```python
 >>> from djbr.models import Book
 >>> Book.objects.all()
  <QuerySet [<Book: The 7th Function of Language 2017>, <Book: La Septième Fonction du langage : qui a tué Roland Barthes? 2015>, <Book: La Vérité sur l'affaire Harry Quebert 2012>]>
 ```
    
-## Επιπλέον μέθοδοι
+## Επιπλέον Μέθοδοι
 
 * Φυσικά μπορούμε να εισάγουμε επιπλέον μεθόδους στις κλάσεις μας.
 
@@ -794,14 +794,14 @@ class Review(models.Model):
             return "%s %s" % (self.title, self.pub_year)
     ```
 
-## Αναζητήσεις στη βάση
+## Αναζητήσεις στη Βάση
 
 * Ξαναρχίζουμε μια γραμμή εντολή Django προκειμένου να δοκιμάσουμε τα
   αντικείμενά μας.
   
 * Ας θυμηθούμε την απλή αναζήτηση όλων:
 
-    ```pythonconsole[python3]
+    ```python
     >>> from djbr.models import Book, Review
 
     >>> Book.objects.all()
@@ -810,16 +810,16 @@ class Review(models.Model):
 
 * Αναζήτηση με βάση συγκεκριμένο πεδίο:
 
-    ```pythonconsole[python3]
+    ```python
     >>> Book.objects.filter(id=1)
     <QuerySet [<Book: The 7th Function of Language 2017>]>
     ```
 
-## Αναζήτηση ενός αντικειμένου με άλλα φίλτρα
+## Αναζήτηση ενός Αντικειμένου με άλλα Φίλτρα
 
 * Έστω ότι θέλουμε να βρούμε τα βιβλίο που ο τίτλος τους αρχίζει με «The»:
 
-    ```pythonconsole[python3]
+    ```python
     >>> Book.objects.filter(title__startswith='The')
     <QuerySet [<Book: The 7th Function of Language 2017>]>  
     ```
@@ -827,7 +827,7 @@ class Review(models.Model):
 * Ή ότι θέλουμε να βρούμε τα βιβλία τα οποία έχουν εκδοθεί τα τελευταία
   τρία χρόνια (βρισκόμαστε στο 2018):
 
-    ```pythonconsole[python3]
+    ```python
     >>> from django.utils import timezone
 
     >>> pub_year = timezone.now().year - 3
@@ -852,13 +852,13 @@ class Review(models.Model):
 
 </div>
 
-## Ανεπιτυχείς αναζητήσεις
+## Ανεπιτυχείς Αναζητήσεις
 
 * Αν αναζητούμε μόνο ένα αντικείμενο, μπορούμε να χρησιμοποιήσουμε τη
   μέθοδο `get()`. Αν το αντικείμενο δεν υπάρχει θα πάρουμε μια
   εξαίρεση τύπου `DoesNotExist`:
 
-    ```pythonconsole[python3]
+    ```python
     >>> Book.objects.get(id=10)
     ...
 
@@ -876,12 +876,12 @@ class Review(models.Model):
 
 </div>
 
-## Αναζήτηση με βάση το πρωτεύον κλειδί.
+## Αναζήτηση με Βάση το Πρωτεύον Κλειδί.
 
 * Επειδή η αναζήτηση με το πρωτεύον κλειδί είναι πολύ συνηθισμένη, το
   Django προσφέρει μια συντόμευση γι' αυτήν.
 
-    ```pythonconsole[python3]
+    ```python
     >>> Book.objects.get(pk=1)
     <Book: The 7th Function of Language 2017>
     ```
@@ -889,25 +889,25 @@ class Review(models.Model):
 * Με την ευκαιρία, μπορούμε να δοκιμάσουμε αν δουλεύει η μέθοδος
   `was_published_recently()` που προσθέσαμε:
 
-    ```pythonconsole[python3]
+    ```python
     >>> b = Book.objects.get(pk=1)
     >>> b.was_published_recently()
     True
     ```
 
-## Δημιουργία σχετιζόμενων αντικειμένων
+## Δημιουργία Σχετιζόμενων Αντικειμένων
 
 * Αυτή τη στιγμή το βιβλίο μας δεν έχει καμμία κριτική:
 
 
-    ```pythonconsole[python3]
+    ```python
     >>> b.review_set.all()
     <QuerySet []>
     ```
     
 * Ας προσθέσουμε λοιπόν τρεις κριτικές:
 
-```pythonconsole[python3]
+```python
 >>> b.review_set.create(title='The 7th Function of Language by Laurent Binet – who killed Roland Barthes? By Lauren Elkin in The Guardian',
 text='With this freewheeling fantasy about the death of the celebrated French critic, Binet delivers a second novel as erudite and engaging as his first', 
 review_date="2017-05-05 06:30:00+01:00")
@@ -933,19 +933,19 @@ review_date="2017-12-09 00:00:00-00:00")
 
 </div>
 
-## Πλοήγηση μεταξύ αντικειμένων
+## Πλοήγηση μεταξύ Αντικειμένων
 
 * Σε μία σχέση ένα προς πολλά μπορούμε πάντα να πάμε από τη μεριά των
   πολλών στη μεριά του ενός:
 
-```pythonconsole[python3]
+```python
 >>> r.book
 <Book: The 7th Function of Language 2017>
 ```
 
 * Ενώ φυσικά μπορούμε πάντα να πάμε από τη μεριά του ενός στα πολλά:
 
-```pythonconsole[python3]
+```python
 >>> b.review_set.all()
 <QuerySet [<Review: The 7th Function of Language by Laurent Binet – who killed Roland Barthes? By Lauren Elkin in The Guardian With this freewheeling fantasy about the death of the celebrated French critic, Binet delivers a second novel as erudite and engaging as his first 2017-05-05 05:30:00+00:00>, <Review: Imagining the Real. By Wyatt Mason in the New York Review of Books The idea that certain words in a certain order can alter the balance of political power is central to the French writer Laurent Binet’s most recent novel, The Seventh Function of Language 2018-07-19 00:00:00+00:00>, <Review: The Seventh Function of Language A conspiracy thriller about the death of the French literary theorist, Roland Barthes, that draws on the work of Jacques Derrida and Dan Brown with tongue firmly in
 
@@ -953,12 +953,12 @@ review_date="2017-12-09 00:00:00-00:00")
 3
 ```
 
-## Πλοήγηση και φίλτρα
+## Πλοήγηση και Φίλτρα
 
 * Επίσης, μπορούμε να πλοηγηθούμε μέσω αντικειμένων και στα φίλτρα
   αναζητήσεων:
 
-```pythonconsole[python3]
+```python
 >>> Review.objects.filter(book__pub_year=2017)
 <QuerySet [<Review: The 7th Function of Language by Laurent Binet – who killed Roland Barthes? By Lauren Elkin in The Guardian With this freewheeling fantasy about the death of the celebrated French critic, Binet delivers a second novel as erudite and engaging as his first 2017-05-05 05:30:00+00:00>, <Review: Imagining the Real. By Wyatt Mason in the New York Review of Books The idea that certain words in a certain order can alter the balance of political power is central to the French writer Laurent Binet’s most recent novel, The Seventh Function of Language 2018-07-19 00:00:00+00:00>, <Review: The Seventh Function of Language A conspiracy thriller about the death of the French literary theorist, Roland Barthes, that draws on the work of Jacques Derrida and Dan Brown with tongue firmly in cheek—to hilarious effect. 2017-12-09 00:00:00+00:00>]>
 ```
@@ -970,11 +970,11 @@ review_date="2017-12-09 00:00:00-00:00")
 
 </div>
 
-## Διαγραφή αντικειμένων 
+## Διαγραφή Αντικειμένων 
 
 * Η διαγραφή αντικειμένων γίνεται με τη μέθοδο `delete()`:
 
-    ```pythonconsole[python3]
+    ```python
     >>>  r = b.review_set.filter(text__startswith='The idea')
     >>> r.delete()
     (1, {'djbr.Review': 1})
@@ -988,7 +988,7 @@ review_date="2017-12-09 00:00:00-00:00")
 # Μεταφορά σε MySQL
 
 
-## Δημιουργία βάσης
+## Δημιουργία Βάσης
 
 * Για να δημιουργήσουμε τη βάση πρέπει να δώσουμε τα παρακάτω στη MySQL:
 
@@ -1008,7 +1008,7 @@ review_date="2017-12-09 00:00:00-00:00")
 
 </div>
 
-## Εγκατάσταση οδηγού
+## Εγκατάσταση Οδηγού
 
 * Το Django λειτουργεί πιο εύκολα με τον οδηγό
   [mysqlclient](https://pypi.python.org/pypi/mysqlclient).
@@ -1455,7 +1455,7 @@ Django για την εφαρμογή τους.
 </div>
 
 
-## Δημιουργία διαχειριστή
+## Δημιουργία Διαχειριστή
 
 * Ξεκινάμε δημιουργώντας ένα διαχειριστή της εφαρμογής μας.
 
@@ -1491,7 +1491,7 @@ superuser, ο οποίος έχει πλήρη πρόσβαση σε όλες τ
 
 </div>
 
-## Πρόσβαση στην εφαρμογή διαχείρισης
+## Πρόσβαση στην Εφαρμογή Διαχείρισης
 
 * Η εφαρμογή διαχείρισης είναι ήδη ενεργοποιημένη.
 
@@ -1504,7 +1504,7 @@ superuser, ο οποίος έχει πλήρη πρόσβαση σε όλες τ
 * Στη συνέχεια, πηγαίνουμε στη σελίδα `/admin/`, δηλαδή
   `http://127.0.0.1:8000/admin`.
 
-## Είσοδος στην εφαρμογή διαχείρισης
+## Είσοδος στην Εφαρμογή Διαχείρισης
 
 ![admin login](./django_1/django_admin_1.jpg){ width=50% }
 
@@ -1515,7 +1515,7 @@ superuser, ο οποίος έχει πλήρη πρόσβαση σε όλες τ
 
 </div>
 
-## Κεντρική σελίδα ελέγχου
+## Κεντρική Σελίδα Ελέγχου
 
 ![main page](./django_1/django_admin_2.jpg){ width=70% }
 
@@ -1529,7 +1529,7 @@ superuser, ο οποίος έχει πλήρη πρόσβαση σε όλες τ
 
 </div>
 
-## Εμφάνιση της εφαρμογής μας
+## Εμφάνιση της Εφαρμογής μας
 
 * Για να συμπεριληφθεί η εφαρμογή μας στην εφαρμογή διαχείρισης, θα
   πρέπει να κάνουμε τις απαραίτητες ρυθμίσεις.
@@ -1548,7 +1548,7 @@ superuser, ο οποίος έχει πλήρη πρόσβαση σε όλες τ
 * Τώρα θα δούμε, και θα μπορούμε να χειριστούμε, και τα αντικείμενα
   της εφαρμογής μας.
 
-## Κεντρική σελίδα ελέγχου
+## Κεντρική Σελίδα Ελέγχου
 
 ![main page](./django_1/django_admin_3.jpg){ width=70% }
 
