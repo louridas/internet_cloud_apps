@@ -487,33 +487,34 @@ endblock %}`.
 </div>
 
 
-## Κώδικας Κεντρικής Σελίδας
+## Κώδικας Κεντρικής Σελίδας (1)
 
 * Αλλάζουμε το αρχείο `views.py` ως εξής:
 
-    ```python
-    from django.shortcuts import render
+	```python
+	from django.http import HttpResponse
+    from django.template import loader
 
     from .models import Book
 
-    def index(request):
-        latest_books_published = Book.objects.order_by('-pub_year', 'title')[:10]
-        context = {'latest_books_published': latest_books_published}
-        return render(request, 'djbr/index.html', context)
-    ```
+	def index(request):
+		latest_books_published = Book.objects.order_by('-pub_year', 'title')[:10]
+		template = loader.get_template('djbr/index.html')
+		context = {'latest_books_published': latest_books_published}
+		return HttpResponse(template.render(context, request))
+	```
 
 <div class="notes">
 
-Ξεκινάμε ζητώντας από τη βάση να μας επιστρέψει τα πρώτα δέκα βιβλία
-με φθίνουσα χρονολογία έκδοσης και αύξοντα αλφαβητικά τίτλο. Θέλουμε
-να περάσουμε τα βιβλία αυτά στο πρότυπο της κεντρικής σελίδας που
-έχουμε κατασκευάσει. Ο τρόπος με τον οποίο περνάμε δεδομένα από τον
-κώδικα που γράφουμε στο αρχείο `views.py` στα πρότυπα HTML είναι μέσω
-ενός λεξικού το οποίο ονομάζεται `context`. Έτσι, ζητάμε από το Django
-να αποδώσει (render) το πρότυπο `djbr/index.html` με τα δεδομένα που
-έχουμε αντλήσει από τη βάση περασμένα μέσα σε ένα λεξικό που περιέχει
-ένα κλειδί `latest_books_published`. Η τιμή αυτού του κλειδιού είναι
-ακριβώς τα βιβλία που αντλήσαμε από τη βάση δεδομένων.
+Για να χρησιμοποιήσουμε ένα πρότυπο πρέπει πρώτα να το φορτώσουμε,
+πράγμα που κάνουμε με τη μέθοδο `loader.get_template()` δίνοντας ως
+παράμετρο το `djbr/index.html`. Αφού αναζητήσουμε το περιεχόμενο που
+θα εισάγουμε στο πρότυπο, το αποδίδουμε με τη μέθοδο `render()`, στην
+οποία περνάμε ένα λεξικό με το περιεχόμενο, `context` και την αίτηση
+του χρήστη, `request`. Στο λεξικό `context` δημιουργούμε κλειδιά και
+τιμές που αντιστοιχούν στα δεδομένα μας· εδώ, φτιάχνουμε ένα κλειδί
+`latest_books_published` στο οποίο δίνουμε ως τιμή τη μεταβλητή με το
+ίδιο όνομα, η οποία περιέχει τα αποτελέσματα της αναζήτησης στη βάση.
 
 Η αναζήτηση:
 
@@ -591,6 +592,25 @@ Book.objects.order_by('-pub_year', 'title')
 εκτελέσουμε κάτι αποκλειστικά στη βάση.
 
 </div>
+
+## Κώδικας Κεντρικής Σελίδας (2)
+
+* Επειδή το διάβασμα και η απόδοση ενός προτύπου είναι πολύ
+  συνηθισμένη αλληλουχία, το Django μας δίνει τη συντόμευση `render()`
+  στα `django.shortcuts` που τα κάνει μαζί. 
+  
+* Αλλάζουμε λοιπόν το αρχείο `views.py` ως εξής:
+
+    ```python
+    from django.shortcuts import render
+
+    from .models import Book
+
+    def index(request):
+        latest_books_published = Book.objects.order_by('-pub_year', 'title')[:10]
+        context = {'latest_books_published': latest_books_published}
+        return render(request, 'djbr/index.html', context)
+    ```
 
 ## Σελίδα Βιβλίου
 
