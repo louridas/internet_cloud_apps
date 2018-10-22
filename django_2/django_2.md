@@ -4,7 +4,7 @@
 
 # Django 2
 
-## Συνέχεια της εφαρμογής μας
+## Συνέχεια της Εφαρμογής μας
 
 * Θα εξελίξουμε την εφαρμογή μας υλοποιώντας πραγματικές λειτουργίες.
 
@@ -14,9 +14,9 @@
   κριτικών.
 
 
-# Σχέσεις πολλά προς πολλά
+# Σχέσεις Πολλά προς Πολλά
 
-## Προσθήκη συγγραφέων
+## Προσθήκη Συγγραφέων
 
 * Αυτή τη στιγμή η εφαρμογή μας δεν έχει καθόλου συγγραφείς για τα
   βιβλία.
@@ -50,7 +50,36 @@
 
 </div>
 
-## Δημιουργία μεταγωγής
+## Ενδιάμεσος Πίνακας με Επιπλέον Πεδία
+
+* Αν θέλουμε, μπορούμε να προσθέσουμε ενδιάμεσα πεδία στον ενδιάμεσο
+  πίνακα, αλλά για να το κάνουμε αυτό θα πρέπει να τον ορίσουμε εμείς,
+  π.χ.: 
+  
+   ```python
+   from django.db import models
+
+   class Person(models.Model):
+       name = models.CharField(max_length=128)
+
+       def __str__(self):
+           return self.name
+
+   class Group(models.Model):
+       name = models.CharField(max_length=128)
+       members = models.ManyToManyField(Person, through='Membership')
+
+       def __str__(self):
+           return self.name
+
+   class Membership(models.Model):
+       person = models.ForeignKey(Person, on_delete=models.CASCADE)
+       group = models.ForeignKey(Group, on_delete=models.CASCADE)
+       date_joined = models.DateField()
+       invite_reason = models.CharField(max_length=64)
+   ```
+
+## Δημιουργία Μεταγωγής
 
 * Όπως έχουμε πει, για να δημιουργήσουμε μια μεταγωγή που περιέχει τις
   αλλαγές μας, δίνουμε:
@@ -67,7 +96,7 @@
         - Create model Author
     ```
  
-## Εφαρμογή μεταγωγής
+## Εφαρμογή Μεταγωγής
  
 * Στη συνέχεια για να την εφαρμόσουμε δίνουμε:
 
@@ -78,9 +107,10 @@
 * Στην οθόνη θα πληροφορηθούμε για την εφαρμογή της:
 
     ```
-    Migrations for 'djbr':
-      djbr/migrations/0002_author.py
-        - Create model Author
+    Operations to perform:
+      Apply all migrations: admin, auth, contenttypes, djbr, sessions
+    Running migrations:
+      Applying djbr.0002_author... OK   
     ```
 
 <div class="notes">
@@ -90,12 +120,12 @@
 
 </div>
 
-## Εισαγωγή συγγραφέων
+## Εισαγωγή Συγγραφέων
 
 * Ανοίγουμε μία γραμμή εντολών Django και γράφουμε:
 
-    ```
-    from djbr.models import Author, Book 
+    ```python
+    >>> from djbr.models import Author, Book
 
     >>> a1 = Author(name="David Foster Wallace")
     >>> a1.save()
@@ -105,30 +135,30 @@
     >>> a3.save()
     ```
 
-## Εισαγωγή βιβλίων
+## Εισαγωγή Βιβλίων
 
 * Συνεχίζουμε στη γραμμή εντολών Django:
 
-    ```
-    >>> b1 = Book(title="Infinite Jest", pub_year=1996)
-    >>> b1.save()
-    >>> b2 = Book(title="Oblivion: Stories", pub_year=2004)
-    >>> b2.save()
-    ```
+   ```python
+   >>> b1 = Book(title="Infinite Jest", pub_year=1996)
+   >>> b1.save()
+   >>> b2 = Book(title="Oblivion: Stories", pub_year=2004)
+   >>> b2.save()
+   ```
 
-## Συσχέτιση βιβλίων συγγραφέων
+## Συσχέτιση Βιβλίων Συγγραφέων
 
 
 * Τώρα μπορούμε να ορίσουμε συσχετίσεις μεταξύ βιβλίων και συγγραφέων:
 
-    ```
+    ```python
     >>> a1.books.add(b1)
     >>> a1.books.add(b2)
     >>> a1.books.all()
     <QuerySet [<Book: Infinite Jest 1996>, <Book: Oblivion: Stories 2004>]>
     ```
 
-## Εναλλακτική εισαγωγή δεδομένων με την εφαρμογή διαχείρισης
+## Εναλλακτική Εισαγωγή Δεδομένων με την Εφαρμογή Διαχείρισης
 
 * Όπως είδαμε το Django μας προσφέρει μια εφαρμογή διαχείρισης με την
   οποία μπορούμε να διαχειριστούμε τα δεδομένα της εφαρμογής μας.
@@ -136,7 +166,7 @@
 * Μπορούμε λοιπόν να χρησιμοποιήσουμε την εφαρμογή διαχείρισης για την
   εισαγωγή δεδομένων στην εφαρμογή μας.
   
-## Εισαγωγή συγγραφέων στην εφαρμογή διαχείρισης
+## Εισαγωγή Συγγραφέων στην Εφαρμογή Διαχείρισης
 
 * Για να μπορούμε να χειριστούμε τους συγγραφείς από την εφαρμογή
   διαχείρισης πρέπει να προσαρμόσουμε το αρχείο `djbr/admin.py`.
@@ -144,35 +174,35 @@
 * Συγκεκριμένα θα πρέπει να προσθέσουμε καταγράψουμε την κλάση των
   συγγραφέων· έτσι το αρχείο `djbr/admin.py` θα γίνει:
 
-```python
-from django.contrib import admin
+    ```python
+    from django.contrib import admin
 
-from .models import Book, Review, Author
+    from .models import Book, Review, Author
 
-admin.site.register(Book)
-admin.site.register(Review)
-admin.site.register(Author)
-```
+    admin.site.register(Book)
+    admin.site.register(Review)
+    admin.site.register(Author)
+    ```
 
 * Στη συνέχεια μπορούμε να εισάγουμε συγγραφείς από το γραφικό
   περιβάλλον της εφαρμογής διαχείρισης.
 
-## Πλοήγηση από τα βιβλία στους συγγραφείς
+## Πλοήγηση από τα Βιβλία στους Συγγραφείς
 
 * Δεδομένου ότι η σχέση είναι συμμετρική, μπορούμε πάντα να
   πλοηγηθούμε και από τα βιβλία στους συγγραφείς.
 
-    ```
+    ```python
     >>> b1.author_set.all()
     <QuerySet [<Author: David Foster Wallace>]>
     ```
 
-## Βιβλία με πολλούς συγγραφείς
+## Βιβλία με Πολλούς Συγγραφείς
 
 * Για να δούμε ότι η σχέση πολλά προς πολλά λειτουργεί σωστά, ας
   φτιάξουμε και ένα βιβλίο με πολλούς συγγραφείς.
 
-    ```
+    ```python
     >>> brian = Author(name="Brian Kernighan")
     >>> dennis = Author(name="Dennis Ritchie")
     >>> brian.save()
@@ -184,12 +214,12 @@ admin.site.register(Author)
     <QuerySet [<Author: Brian Kernighan>, <Author: Dennis Ritchie>]>
     ```
 
-## Πλοήγηση μεταξύ συσχετίσεων
+## Πλοήγηση μεταξύ Συσχετίσεων
 
 * Μπορούμε να πλοηγηθούμε μεταξύ των συσχετίσεων πολλά προς πολλά,
   όπως μεταξύ των άλλων συσχετίσεων.
 
-    ```
+    ```python
     >>> Book.objects.filter(author__name__startswith="David")
     <QuerySet [<Book: Infinite Jest 1996>, <Book: Oblivion: Stories 2004>]>
     >>> Author.objects.filter(books__title__startswith="The C")
@@ -200,13 +230,13 @@ admin.site.register(Author)
 
 Γενικώς, μπορείτε να κάνετε ό,τι θέλετε με τις σχέσεις πολλά προς
 πολλά. Για περισσότερες πληροφορίες, δείτε τη
-[σχετική τεκμηρίωση](https://docs.djangoproject.com/en/1.11/topics/db/examples/many_to_many/). 
+[σχετική τεκμηρίωση](https://docs.djangoproject.com/en/2.1/topics/db/examples/many_to_many/). 
 
 </div>
 
-# Δημιουργία επιπλέον σελίδων
+# Δημιουργία Επιπλέον Σελίδων
 
-## Βιβλία, συγγραφείς, κριτικές.
+## Βιβλία, Συγγραφείς, Κριτικές
 
 * Θα ξεκινήσουμε γράφοντας στοιχειώδη κώδικα στο αρχείο
   `djbr/views.py`. Θα προσθέσουμε τον παρακάτω κώδικα:
@@ -227,7 +257,7 @@ admin.site.register(Author)
  <div class="notes">
  
  Με τον κώδικα αυτό κάθε φορά που ο χρήστης θα προσπαθεί να δει ένα
- βιβλίο θα βλέπει ένα μήνυμα "You are looking at book ...". Ομοίως για
+ βιβλίο θα βλέπει ένα μήνυμα «You are looking at book ...». Ομοίως για
  τις κριτικές και τους συγγραφείς. Ο σκοπός μας αυτή τη στιγμή είναι
  να δούμε πώς θα συνδέσουμε τις σελίδεσ των βιβλίων, κριτικών, και
  συγγραφέων, και όχι (ακόμα) να βελτιώσουμε τα περιεχόμενα της κάθε
@@ -242,32 +272,64 @@ admin.site.register(Author)
   τα εξής:
 
     ```python
-    from django.conf.urls import url
+    from django.urls import path
 
     from . import views
 
     app_name = 'djbr'
 
     urlpatterns = [
-        url(r'^$', views.index, name='index'),
-        url(r'^book/(?P<book_id>[0-9]+)/$', views.book, name='book'),
-        url(r'^book/(?P<book_id>[0-9]+)/reviews/$', views.reviews, name='reviews'),
-        url(r'^author/(?P<author_id>[0-9]+)/$', views.author, name='author'),
+        path('', views.index, name='index'),
+        path('books/<int:book_id>/', views.book, name='book'),
+        path('books/<int:book_id>/reviews/', views.reviews, name='reviews'),
+        path('authors/<int:author_id>/', views.author, name='author'),
     ]
     ```
+
+<div class="notes">
+
+Στον κώδικα έχουμε προσθέσει τη γραμμή:
+
+```python
+app_name = 'djbr'
+```
+
+Αυτό γίνεται προκειμένου να δηλώσουμε το *πεδίο ονομάτων* (namespace)
+των URLs. Όταν δίνουμε στη δήλωση ενός URL το πεδίο `name`, όπως π.χ.:
+
+```python
+path('', views.index, name='index'),
+```
+
+το URL μας θα ονομάζεται `index`. Αλλά τι γίνεται αν έχουμε πολλές
+εφαρμογές; Είναι πιθανό να υπάρχει το ίδιο όνομα URL σε άλλη εφαρμογή.
+Με τη μεταβλητή `app_name` ορίζουμε το πεδίο στο οποίο ορίζονται τα
+ονόματα. Έτσι, τα URLs που ορίσαμε έχουν όνομα:
+
+```
+djbr:index
+djbr:book
+djbr:reviews
+djbr:author
+```
+
+και με αυτά τα ονόματα θα μπορούμε να αναφερόμαστε σε αυτά μέσα στα
+πρότυπά μας.
+
+</div>
 
 ## Λειτουργία URLs
 
 * Τα URLs που δηλώσαμε είναι των παρακάτω τύπων:
 
-    * `djbr/book/1/`
-    * `djbr/book/1/reviews/`
-    * `djbr/author/1/`
+    * `djbr/books/1/`
+    * `djbr/books/1/reviews/`
+    * `djbr/authors/1/`
 
 * Το πρόθεμα `djbr` το χειρίζεται το αρχείο `project_site/urls.py` που
   είχαμε δει την προηγούμενη φορά.
 
-## Λογική κατασκευής URLs
+## Λογική Κατασκευής URLs
 
 * Τα URLs που θα χρησιμοποιούμε θα πρέπει να έχουν μια ξεκάθαρη
   λογική.
@@ -283,13 +345,13 @@ admin.site.register(Author)
 Θα δούμε στη συνέχεια των μαθημάτων ότι τέτοιου είδους URLs είναι
 ακριβώς ο ενδεδειγμένος τρόπος να δουλεύουμε με δεδομένα στις
 διαδικτυακές εφαρμογές. Στα URLs αυτά ξεκινάμε με το είδος της
-οντότητας (`book`) και στη συνέχεια βάζουμε το κλειδί της οντότητας.
+οντότητας (`books`) και στη συνέχεια βάζουμε το κλειδί της οντότητας.
 Αν υπάρχουν οντότητες που εξαρτώνται από μια οντότητα, το σχήμα
-συνεχίζεται αναδρομικά (`book/1/reviews`, `book/1/reviews/1`, κ.λπ.). 
+συνεχίζεται αναδρομικά (`books/1/reviews`, `books/1/reviews/1`, κ.λπ.). 
 
 </div>
 
-## Δημιουργία κεντρικής σελίδας
+## Δημιουργία Κεντρικής Σελίδας
 
 * Σαν πρώτο βήμα, θα αλλάξουμε την κεντρική σελίδα της εφαρμογής σε
   κάτι ποιο λειτουργικό.
@@ -297,7 +359,7 @@ admin.site.register(Author)
 * Συγκεκριμένα, θα την κάνουμε να δείχνει μια λίστα με τα υπάρχοντα
   βιβλία.
 
-## Πρότυπα σελίδων 
+## Πρότυπα Σελίδων 
 
 * Οι δυναμικές σελίδες στο Django δημιουργούνται με τα κατάλληλα
   πρότυπα.
@@ -305,29 +367,30 @@ admin.site.register(Author)
 * Τα πρότυπά μας θα τα αποθηκεύσουμε σε έναν κατάλογο
   `djbr/templates/djbr`, τον οποίο θα πρέπει να δημιουργήσετε.
 
-## Βασικό πρότυπο εμφάνισης
 
-* Το βασικό πρότυπο εμφάνισης των σελίδων μας θα δίνεται από το αρχείο
+## Βασικό Πρότυπο Εμφάνισης
+
+* Το βασικό πρότυπο εμφάνισης των σελίδων μας θα δίνεται από το αρχείο<br/>
   `djbr/templates/djbr/base.html`:
 
     ```html
-    <!DOCTYPE html>
+    <!doctype html>
     <html lang="en">
       <head>
 
         <!-- Required meta tags for Bootstrap -->
         <meta charset="utf-8">
         <meta name="viewport"
-              content="width=device-width, initial-scale=1,
-              shrink-to-fit=no">
+          content="width=device-width, initial-scale=1,
+          shrink-to-fit=no">
 
         <!-- Bootstrap CSS -->
 
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet"
-              href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-              integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
-              crossorigin="anonymous"/>
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+          crossorigin="anonymous">
 
         <title>{% block title %}Django Book Reviews{% endblock %}</title>
       </head>
@@ -344,15 +407,9 @@ admin.site.register(Author)
 
         <!-- Optional JavaScript for Bootstrap --> 
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-                crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
-                integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
-                crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
-                integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
-                crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
       </body>
     </html>
     ```
@@ -374,17 +431,17 @@ admin.site.register(Author)
 blocks τα οποία θα μπορούν να αλλαχθούν στις επιμέρους σελίδες που θα
 φτιάξουμε:
 
-* title
+* `title`
 
-* heading
+* `heading`
 
-* content
+* `content`
 
 Θα δούμε αμέσως μετά πώς θα χρησιμοποιήσουμε το content block.
 
 </div>
 
-## Kεντρική σελίδα
+## Kεντρική Σελίδα
 
 * Η κεντρική σελίδα θα εμφανίζει τα 10 βιβλία που έχουν εκδοθεί
   τελευταία (θα δούμε πώς προκύπτουν τα 10). Ο σκελετός της κεντρικής
@@ -416,10 +473,21 @@ blocks τα οποία θα μπορούν να αλλαχθούν στις επ
 contentm block, χρησιμοποιώντας τη γραμμή `{% block content %}...{%
 endblock %}`.
 
+Προσέξτε επίσης πώς κατασκευάζουμε το σύνδεσμο στο URL που αντιστοιχεί
+σε ένα βιβλίο:
+
+```html
+<a href= "{% url 'djbr:book' book.id %}">{{ book.title }}</a>
+```
+
+Το όνομα του URL είναι `djbr:book`, σύμφωνα με το namespace που
+ορίσαμε. Το URL αυτό παίρνει μία παράμετρο, έναν ακέραιο, την οποία
+δίνουμε με το `book.id`.
+
 </div>
 
 
-## Κώδικας κεντρικής σελίδας
+## Κώδικας Κεντρικής Σελίδας
 
 * Αλλάζουμε το αρχείο `views.py` ως εξής:
 
@@ -441,16 +509,90 @@ endblock %}`.
 να περάσουμε τα βιβλία αυτά στο πρότυπο της κεντρικής σελίδας που
 έχουμε κατασκευάσει. Ο τρόπος με τον οποίο περνάμε δεδομένα από τον
 κώδικα που γράφουμε στο αρχείο `views.py` στα πρότυπα HTML είναι μέσω
-ενός λεξικού το οποίο ονομάζεται `context` (περιφραζόμενα). Έτσι,
-ζητάμε από το Django να αποδώσει (render) το πρότυπο
-`djbr/index.html` με τα δεδομένα που έχουμε αντλήσει από τη βάση
-περασμένα μέσα σε ένα λεξικό που περιέχει ένα κλειδί
-`latest_books_published`. Η τιμή αυτού του κλειδιού είναι ακριβώς τα
-βιβλία που αντλήσαμε από τη βάση δεδομένων.
+ενός λεξικού το οποίο ονομάζεται `context`. Έτσι, ζητάμε από το Django
+να αποδώσει (render) το πρότυπο `djbr/index.html` με τα δεδομένα που
+έχουμε αντλήσει από τη βάση περασμένα μέσα σε ένα λεξικό που περιέχει
+ένα κλειδί `latest_books_published`. Η τιμή αυτού του κλειδιού είναι
+ακριβώς τα βιβλία που αντλήσαμε από τη βάση δεδομένων.
+
+Η αναζήτηση:
+
+```python
+Book.objects.order_by('-pub_year', 'title')[:10]
+```
+θα έχει ως αποτέλεσμα να εκτελεστεί η κατάλληλη εντολή SQL με τη χρήση
+`LIMIT`. Αυτό σημαίνει ότι η ίδια η βάση θα μας επιστρέψει μέχρι 10
+βιβλία· δεν είναι κάτι που θα γίνει ως Python slice. Πράγματι, αυτό
+μπορούμε να το επιβεβαιώσουμε ζητώντας από το Django να μας τυπώσει
+τον κώδικα SQL που δημιουργεί:
+
+```python
+>>> print(Book.objects.order_by('-pub_year', 'title')[:10].query)
+```
+
+Θα πάρουμε:
+
+```sql
+SELECT `djbr_book`.`id`, `djbr_book`.`title`, `djbr_book`.`pub_year` 
+FROM `djbr_book` 
+ORDER BY `djbr_book`.`pub_year` DESC, `djbr_book`.`title` ASC
+LIMIT 10
+```
+
+Αντίστοιχα αν γράφαμε:
+
+```python
+Book.objects.order_by('-pub_year', 'title')[5:10]
+```
+
+η βάση θα μας επέστρεφε από το πέμπτο μέχρι το δέκατο βιβλίο (αν
+υπάρχουν) με χρήση `LIMIT` και `OFFSET`. Μπορούμε πάλι να το
+επιβεβαιώσουμε αυτό:
+
+```python
+>>> print(Book.objects.order_by('-pub_year', 'title')[5:10].query)
+```
+
+που θα δώσει:
+
+```sql
+SELECT `djbr_book`.`id`, `djbr_book`.`title`, `djbr_book`.`pub_year` 
+FROM `djbr_book` 
+ORDER BY `djbr_book`.`pub_year` DESC, `djbr_book`.`title` ASC
+LIMIT 5 OFFSET 5
+```
+
+Παρά το ότι λοιπόν αυτό που γράφουμε είναι Python, αφού η αναζήτηση θα
+γίνει μέσω SQL, κάποια πράγματα που θα μπορούσαμε να γράψουμε σε
+Python δεν επιτρέπονται. Έτσι δεν μπορούμε να δώσουμε αρνητικές
+θέσεις:
+
+```python
+Book.objects.order_by('-pub_year', 'title')[5:-1]
+```
+
+Αντίθετα, η χρήση της τρίτης παραμέτρου (βήματος) σε slice
+επιτρέπεται. Αλλά τότε, η αναζήτηση:
+
+```python
+Book.objects.order_by('-pub_year', 'title')[:10:2]
+```
+
+θα εκτελεστεί διαφορετικά από ό,τι πριν. Το Django θα εκτελέσει την
+αναζήτηση:
+
+```python
+Book.objects.order_by('-pub_year', 'title')
+```
+
+οπότε θα επιστραφούν όλες οι σχετικές εγγραφές από τη βάση σε μία
+λίστα. Τότε θα εφαρμοστεί το `[:10:2]` από την Python πάνω στη λίστα.
+Προφανώς, είναι πολύ λιγότερο αποτελεσματικό από το να μπορέσουμε να
+εκτελέσουμε κάτι αποκλειστικά στη βάση.
 
 </div>
 
-## Σελίδα βιβλίου
+## Σελίδα Βιβλίου
 
 * Για τη σελίδα κάθε βιβλίου, θα χρειαστεί να εμπλουτίσουμε την
   αντίστοιχη μέθοδο στο `djbr/views.py` και να γράψουμε το αντίστοιχο
@@ -463,6 +605,7 @@ endblock %}`.
         book = get_object_or_404(Book, pk=book_id)
         return render(request, 'djbr/book.html', {'book': book})
     ```
+
 * Επίσης, στο import θα πρέπει να προσθέσουμε και το
   `get_object_or_404`, δηλαδή θα γίνει:
 
@@ -508,7 +651,7 @@ Django· για παράδειγμα τη διεύθυνση `www.example.com` �
 
 </div>
 
-## Πρότυπο βιβλίου
+## Πρότυπο Βιβλίου
 
 * Δημιουργούμε το αρχείο `djbr/templates/djbr/book.html` με τα
   παρακάτω περιεχόμενα:
@@ -542,7 +685,7 @@ Django· για παράδειγμα τη διεύθυνση `www.example.com` �
     {% endblock %}
     ```
 
-## Σελίδα συγγραφέα
+## Σελίδα Συγγραφέα
 
 * Για τη σελίδα κάθε συγγραφέα, θα χρειαστεί ομοίως εμπλουτίσουμε την
   αντίστοιχη μέθοδο στο `djbr/views.py` και να γράψουμε το αντίστοιχο
@@ -562,7 +705,7 @@ Django· για παράδειγμα τη διεύθυνση `www.example.com` �
     from .models import Book, Author
     ```
 
-## Πρότυπο συγγραφέα
+## Πρότυπο Συγγραφέα
 
 * Δημιουργούμε το αρχείο `djbr/templates/djbr/author.html` με τα
   παρακάτω περιεχόμενα:
@@ -588,7 +731,7 @@ Django· για παράδειγμα τη διεύθυνση `www.example.com` �
     {% endblock %}
     ```
 
-## Σελίδα κριτικών
+## Σελίδα Κριτικών
 
 * Τέλος, για τις κριτικές, θα κάνουμε αντίστοιχες αλλαγές στο
   `djbr/views.py` και θα γράψουμε το αντίστοιχο πρότυπο της σελίδας:
@@ -606,7 +749,7 @@ Django· για παράδειγμα τη διεύθυνση `www.example.com` �
     from .models import Book, Author, Review
     ```
 
-## Πρότυπο κριτικών
+## Πρότυπο Κριτικών
 
 * Δημιουργούμε το αρχείο `djbr/templates/djbr/reviews.html` με τα
   παρακάτω περιεχόμενα:
@@ -635,7 +778,7 @@ Django· για παράδειγμα τη διεύθυνση `www.example.com` �
     {% endblock %}
     ```
     
-## Μια λεπτομέρεια ακόμα
+## Μια Λεπτομέρεια Ακόμα
 
 * Αυτή τη στιγμή η εφαρμογή ακούει στα URL που ξεκινούν από 
   `http://127.0.0.1:8000/djbr`.
@@ -646,7 +789,7 @@ Django· για παράδειγμα τη διεύθυνση `www.example.com` �
 * Αν λοιπόν ο χρήστης δώσει `http://127.0.0.0.1:8000/` θα πάρει λάθος.
 
 * Μπορούμε να το αλλάξουμε αυτό, ώστε αν δώσει
-  `http://127.0.0.0.1:8000/` να ανακατευνθεί στο
+  `http://127.0.0.0.1:8000/` να ανακατευθυνθεί στο
   `http://127.0.0.1:8000/djbr/`.
 
 ## Ανακατεύθυνση στο `djbr/`
@@ -655,14 +798,14 @@ Django· για παράδειγμα τη διεύθυνση `www.example.com` �
   `project_site/urls.py` και το αλλάζουμε ώστε να είναι όπως παρακάτω:
 
     ```python
-    from django.conf.urls import url, include
-    from django.contrib import admin
+	from django.contrib import admin
+	from django.urls import include, path
 
-    from django.http.response import HttpResponseRedirect
+	from django.http.response import HttpResponseRedirect
 
-    urlpatterns = [
-        url(r'^$', lambda r: HttpResponseRedirect('djbr/')),
-        url(r'^djbr/', include('djbr.urls')),
-        url(r'^admin/', admin.site.urls),
-    ]
+	urlpatterns = [
+		path('', lambda r: HttpResponseRedirect('djbr/')),
+		path('djbr/', include('djbr.urls')),
+		path('admin/', admin.site.urls),
+	]
     ```

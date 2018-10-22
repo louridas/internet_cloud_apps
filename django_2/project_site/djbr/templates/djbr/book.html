@@ -9,9 +9,9 @@
     Author:
     <ul>
       {% for author in book.author_set.all %}
-        <li>
-          <a href="{% url 'djbr:author' author.id %}">{{ author.name }}</a>
-        </li>
+	<li>
+	  <a href="{% url 'djbr:author' author.id %}">{{ author.name }}</a>
+	</li>
       {% endfor %}
     </ul>
   <li class="list-group-item">
@@ -19,8 +19,8 @@
   </li>
   <li class="list-group-item"><span>Reviews:
     <a href="{% url 'djbr:reviews' book.id %}">
-      <span class="badge badge-secondary">{{ book.review_set.all.count }}</span>
-    </a></span>
+      <span class="badge badge-secondary">{{ book.review_set.all.count }}
+      </span>
   </li>
 </ul>
 {% endblock %}

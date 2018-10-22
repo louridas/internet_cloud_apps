@@ -9,11 +9,10 @@
     Books:
     <ul>
       {% for book in author.books.all %}
-        <li>
-          <a href="{% url 'djbr:book' book.id %}">{{ book.title }}</a>
-        </li>
+	<li>
+	  <a href="{% url 'djbr:book' book.id %}">{{ book.title }}</a>
+	</li>
       {% endfor %}
     </ul>
 </ul>
 {% endblock %}
-

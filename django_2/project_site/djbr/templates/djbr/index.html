@@ -5,7 +5,7 @@
   <ul class="list-group">
     {% for book in latest_books_published %}
       <li class="list-group-item">
-        <a href= "{% url 'djbr:book' book.id %}">{{ book.title }}</a>
+	<a href= "{% url 'djbr:book' book.id %}">{{ book.title }}</a>
       </li>
     {% endfor %}
   </ul>
@@ -13,4 +13,3 @@
   <p>No books are available.</p>
 {% endif %}
 {% endblock %}
-
