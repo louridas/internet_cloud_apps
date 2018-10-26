@@ -15,27 +15,30 @@ def book(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     return render(request, 'djbr/book.html', {'book': book})
 
-def author(request, author_id):
-    author = get_object_or_404(Author, pk=author_id)
-    return render(request, 'djbr/author.html', {'author': author})
-
 def reviews(request, book_id):
     book_reviews = Review.objects.filter(book_id=book_id)
     return render(request, 'djbr/reviews.html',
                   {'book_reviews': book_reviews })
 
+def author(request, author_id):
+    author = get_object_or_404(Author, pk=author_id)
+    return render(request, 'djbr/author.html', {'author': author})
+
 def review(request, book_id, review_id=None):
+    
     if review_id is not None:
         review = get_object_or_404(Review, pk=review_id)
     else:
         review = Review()
         review.book_id = book_id
+
     if request.method == 'POST':
         review.title = request.POST['title']
         review.text = request.POST['text']
         review.review_date = timezone.now()
         review.save()
-        return HttpResponseRedirect(reverse('djbr:reviews', args=(book_id,)))
+        return HttpResponseRedirect(reverse('djbr:reviews',
+                                            args=(book_id,)))
     else:
         context = {
         'book_id': book_id,
@@ -43,4 +46,5 @@ def review(request, book_id, review_id=None):
         'title': review.title,
         'text': review.text
     }
+    
     return render(request, 'djbr/review.html', context)
