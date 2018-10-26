@@ -160,49 +160,32 @@ Connection: close
 * Αλλάζουμε το αρχείο `djbr/urls.py` ώστε να είναι ως εξής:
 
 ```python
-from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
 app_name = 'djbr'
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-    url(r'^book/(?P<book_id>[0-9]+)/$', views.book, name='book'),
-    url(r'^book/(?P<book_id>[0-9]+)/reviews/$', views.reviews, name='reviews'),
-    url(r'^book/(?P<book_id>[0-9]+)/review/(?P<review_id>[0-9]+)$',
+    path('', views.index, name='index'),
+    path('books/<int:book_id>/', views.book, name='book'),
+    path('books/<int:book_id>/reviews/', views.reviews, name='reviews'),
+    path('book/<int:book_id>/review/<int:review_id>',
         views.review, name='review'),
-    url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review'),
-    url(r'^author/(?P<author_id>[0-9]+)/$', views.author, name='author'),
+    path('book/<int:book_id>/review/', views.review, name='review'),
+    path('authors/<int:author_id>/', views.author, name='author'),
 ]
 ```
 
 <div class="notes">
 
-* Προσοχή στη σειρά των URLs.
+* Προσθέσαμε δύο νέες διαδρομές:
 
-* Τα URLs εφαρμόζονται με τη σειρά, μέχρι να βρεθεί κάποιο που να
-  ταιριάζει.
-
-* Έστω ότι το 4ο και το 5ο URL δεν τελείωναν στον χαρακτήρα `$`. Τότε,
-  τo 5o URL θα ήταν πιο γενικό από το 4o URL. Συνεπώς, αν ήταν σε
-  αντίστροφη σειρά και το:
-  
-    ```
-    ^book/(?P<book_id>[0-9]+)/review/(?P<review_id>[0-9]+)
-    ```
-  ήταν μετά το:
-    ```
-    ^book/(?P<book_id>[0-9]+)/review/
-    ```
-  το
-    ```
-    ^book/(?P<book_id>[0-9]+)/review/(?P<review_id>[0-9]+)
-    ```
-  δεν θα εφαρμοζόταν ποτέ.
-
-* Πράγματι, τα URLs του τύπου `book/1/review` είναι γενικότερα από τα
-  URLs του τύπου `book/1/review/2`.
+```python
+path('book/(<int:book_id>/review/<int:review_id>',
+     views.review, name='review'),
+path('book/(<int:book_id>/review/$', views.review, name='review'),
+```
 
 * To 4o URL παίρνει δύο παραμέτρους, τον κωδικό του βιβλίου και τον
   κωδικό της κριτικής: αφορά τη λειτουργία που θέλουμε να εκτελεστεί
@@ -210,11 +193,29 @@ urlpatterns = [
   παράμετρο, τον κωδικό του βιβλίου: αφορά τη λειτουργία που θέλουμε
   να εκτελεστεί για προσθήκη νέας κριτικής.
 
+* Προσοχή στη σειρά των διαδρομών.
+
+* Οι διαδρομές εφαρμόζονται με τη σειρά, μέχρι να βρεθεί κάποια που να
+  ταιριάζει.
+
+* Έστω ότι η 4η και η 5η διαδρομή ήταν σε αντίστροφη σειρά, δηλαδή
+  είχαμε:
+  
+   ```python
+    path('book/(<int:book_id>/review/$', views.review, name='review'),
+    path('book/(<int:book_id>/review/<int:review_id>',
+         views.review, name='review'),
+    ```
+  
+  Δεδομένου ότι τα URLs του τύπου `book/1/review` είναι γενικότερα από τα
+  URLs του τύπου `book/1/review/2`, θα εφαρμοζόταν μόνο το
+  `book/1/review` και όχι το ``book/1/review/2`.
+  
+* Εν ολίγοις: το Django ψάχνει να βρει την πρώτη διαδρομή που
+  ταιριάζει, όχι την καλύτερη (μεγαλύτερη) διαδρομή που ταιριάζει.
+
 * Για το λόγο αυτό είναι πάντα καλό να βάζουμε τα URLs ώστε τα πιο
-  γενικά να βρίσκονται μετά από τα πιο ειδικά. Στην περίπτωσή μας που
-  τα URLs τελειώνουν σε `$` δεν έχουμε πρόβλημα, αλλά καλό είναι να το
-  βάζουμε πάντα τα ειδικότερα πριν τα γενικότερα για να μην βρεθούμε
-  προ εκπλήξεων.
+  γενικά να βρίσκονται μετά από τα πιο ειδικά. 
 
 </div>
 
@@ -275,7 +276,7 @@ urlpatterns = [
 
 * Ο σύνδεσμος αυτός είναι ένας υπαρκτός σύνδεσμος σε μία υπηρεσία που
   χρησιμοποιεί ο χρήστης, και το αποτέλεσμά του το χρησιμοποιεί προς
-  ώφελός του ο επιτιθέμενος.
+  όφελός του ο επιτιθέμενος.
 
 * Για παράδειγμα, ο σύνδεσμος μπορεί να ζητά τη μεταφορά ποσού, την
   αλλαγή κωδικού, τη διαγραφή στοιχείων, κ.λπ.
@@ -292,16 +293,121 @@ urlpatterns = [
   ταυτοποίηση του χρήστη, αν ο χρήστης έχει κάνει ταυτοποίηση και δεν
   έχει πραγματοποιήσει έξοδο από την υπηρεσία.
 
+## Παράδειγμα CSRF
+
+* Για να το καταλάβουμε καλύτερα, ας δούμε [το ακόλουθο
+  παράδειγμα](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)).
+
+* Έστω ότι η Alice θέλει να μεταφέρει στον Bob €100 χρησιμοποιώντας
+  τις ηλεκτρονικές υπηρεσίες `bank.com`.
+  
+* Ο Mallory θέλει να κοροϊδέψει την Alice ώστε να λάβει αυτός τα χρήματα.
+
+## Παράδειγμα CSRF GET (1)
+
+* Έστω ότι η μεταφορά χρημάτων γίνεται με την παρακάτω αίτηση HTTP
+  GET:
+  
+   ```
+   GET http://bank.com/transfer.do?acct=BOB&amount=100 HTTP/1.1
+   ```
+   
+* Ο Mallory θα δημιουργήσει ένα URL της μορφής:
+
+   ```
+   http://bank.com/transfer.do?acct=MALLORY&amount=100
+   ```
+   
+## Παράδειγμα CSRF GET (2)
+
+* Ο Mallory, μέσω *κοινωνικής μηχανικής* (social engineering), θα
+  εξαπατήσει την Alice να ακολουθήσει το σύνδεσμο.
+  
+* Για παράδειγμα, μπορεί να στείλει ένα e-mail το οποίο να περιέχει το
+  σύνδεσμο:
+  
+   ```html
+   <a href="http://bank.com/transfer.do?acct=MALLORY&amount=100">View my Pictures!</a>
+  ```
+  
+## Παράδειγμα CSRF GET (3)
+
+* Ή να βάλει το σύνδεσμο σε μία εικόνα με μηδενικές διαστάσεις:
+   
+   ```html
+   <img src="http://bank.com/transfer.do?acct=MALLORY&amount=100" width="0" height="0" border="0">
+   ```
+  Η Alice δεν θα δει τίποτε στο e-mail, αλλά θα επισκεφτεί άθελά της
+  το σύνδεσμο!
+
+* Σε κάθε περίπτωση, αν η Alice ακολουθήσει το σύνδεσμο ενόσω έχει
+  μπει στο `bank.com`, θα εκτελεστεί η μεταφορά.
+  
+* Η μέθοδος αυτή είχε χρησιμοποιηθεί το 2008 στο
+  [uTorrent](https://www.utorrent.com/), βλ.
+  [CVE-2008-6586](https://nvd.nist.gov/vuln/detail/CVE-2008-6586).
+
+
+## Παράδειγμα CSRF POST (1)
+
+* Στην περίπτωση που έχουμε HTTP POST, η πληροφορία για την επίθεση
+  δεν εμπεριέχεται μέσα στο URL.
+  
+* Σύμφωνα με τους κανόνες του POST, περιέχεται στο σώμα της αίτησης:
+
+   ```
+   POST http://bank.com/transfer.do HTTP/1.1
+
+   acct=BOB&amount=100
+   ```
+   
+## Παράδειγμα CSRF POST (2)
+
+* Για να το καταφέρει αυτό ο Mallory, θα πρέπει να φτιάξει μία φόρμα,
+  όπως:
+  
+   ```html
+   <form action="http://bank.com/transfer.do" method="POST">
+   <input type="hidden" name="acct" value="MALLORY"/>
+   <input type="hidden" name="amount" value="100"/>
+   <input type="submit" value="View my pictures"/>
+   </form>
+   ```
+
+* Για να μη χρειάζεται να πατήσει η Alice το κουμπί υποβολής της
+  φόρμας, ο Mallory μπορεί να αυτοματοποιήσει την υποβολή με
+  JavaScript:
+  
+   ```javascript
+   <body onload="document.forms[0].submit()">
+   ```
+
+
 ## Django και CSRF
 
 * Βάζουμε το `{% csrf_token %}` σε κάθε φόρμα που φτιάχνουμε.
 
 * Αυτό σημαίνει ότι σε κάθε φόρμα θα εμπεριέχεται ένα τυχαίο token, το
-  οποίο παράγεται δυναμικά όταν ο χρήστης ζητά τη φόρμα.
+  οποίο παράγεται δυναμικά όταν ο χρήστης ζητά τη φόρμα,
+  χρησιμοποιώντας αλάτι και μία μυστική τιμή.
 
-* Όταν ο χρήστης υποβάλλει τη φόρμα, το Django ελέγχει αν υπάρχει
-  token το οποίο έχει δημιουργήσει προηγουμένως. Αν όχι, τότε
-  απορρίπτει την υποβολή.
+* Επίσης στον browser του χρήστη στέλνεται και ένα cookie το οποίο
+  περιέχει πάλι το μυστικό, κρυπτογραφημένο με αλάτι.
+
+* Όταν ο χρήστης υποβάλλει τη φόρμα, υποβάλλεται μαζί το token της
+  φόρμας. Το Django ελέγχει αν το μυστικό του έχει την ίδια τιμή με
+  αυτό του cookie. Αν όχι, τότε απορρίπτει την υποβολή.
+
+
+<div class="notes">
+
+Η τιμή του cookie δεν αλλάζει όσο διαρκεί το session του χρήστη. Η
+τιμή του token στη φόρμα αλλάζει κάθε φορά που εμφανίζεται η φόρμα,
+ώστε να είναι διαφορετικό σε κάθε υποβολή, χρησιμοποιώντας διαφορετικό
+αλάτι. Αλλά το μυστικό που περιέχεται στο token είναι το ίδιο με το
+μυστικό που περιέχεται στο cookie.
+
+</div>
 
 ## Χειρισμός φόρμας
 
@@ -310,24 +416,26 @@ urlpatterns = [
 
 
     ```python
-
     from django.urls import reverse
     from django.utils import timezone
     from django.http.response import HttpResponseRedirect
     
 
     def review(request, book_id, review_id=None):
+	
         if review_id is not None:
             review = get_object_or_404(Review, pk=review_id)
         else:
             review = Review()
             review.book_id = book_id
+    
         if request.method == 'POST':
             review.title = request.POST['title']
             review.text = request.POST['text']
             review.review_date = timezone.now()
             review.save()
-            return HttpResponseRedirect(reverse('djbr:reviews', args=(book_id,)))
+            return HttpResponseRedirect(reverse('djbr:reviews', 
+			                                    args=(book_id,)))
         else:
             context = {
             'book_id': book_id,
@@ -335,6 +443,7 @@ urlpatterns = [
             'title': review.title,
             'text': review.text
         }
+		
         return render(request, 'djbr/review.html', context)
     ```
 
@@ -351,39 +460,41 @@ urlpatterns = [
 
 ## Νέα σελίδα βιβλίου
 
-```html
-{% extends "djbr/base.html" %}
+* To `templates/dbjr/book.html` θα γίνει:
 
-{% block content %}
-<ul class="list-group">
-  <li class="list-group-item">
-    Title: {{ book.title }}
-  </li>
-  <li class="list-group-item">
-    Author:
-    <ul>
-      {% for author in book.author_set.all %}
-        <li>
-          <a href="{% url 'djbr:author' author.id %}">{{ author.name }}</a>
-        </li>
-      {% endfor %}
-    </ul>
-  <li class="list-group-item">
-    Year published: {{ book.pub_year }}
-  </li>
-  <li class="list-group-item">
-    <span>Reviews:
-    <a href="{% url 'djbr:reviews' book.id %}">
-      <span class="badge badge-secondary">{{ book.review_set.all.count }}</span>
-    </a>
-    <a href="{% url 'djbr:review' book.id %}">
-      write review
-    </a>
-    </span>
-  </li>
-</ul>
-{% endblock %}
-```
+	```html
+	{% extends "djbr/base.html" %}
+
+	{% block content %}
+	<ul class="list-group">
+	  <li class="list-group-item">
+		Title: {{ book.title }}
+	  </li>
+	  <li class="list-group-item">
+		Author:
+		<ul>
+		  {% for author in book.author_set.all %}
+			<li>
+			  <a href="{% url 'djbr:author' author.id %}">{{ author.name }}</a>
+			</li>
+		  {% endfor %}
+		</ul>
+	  <li class="list-group-item">
+		Year published: {{ book.pub_year }}
+	  </li>
+	  <li class="list-group-item">
+		<span>Reviews:
+		<a href="{% url 'djbr:reviews' book.id %}">
+		  <span class="badge badge-secondary">{{ book.review_set.all.count }}</span>
+		</a>
+		<a href="{% url 'djbr:review' book.id %}">
+		  write review
+		</a>
+		</span>
+	  </li>
+	</ul>
+	{% endblock %}
+	```
 
 <div class="notes">
 
@@ -400,19 +511,21 @@ urlpatterns = [
 δίνοντάς του το συγκεκριμένο όνομα `review`:
 
 ```python
-url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
+path('book/(<int:book_id>/review/$', views.review, name='review'),
 ```
 
 </div>
 
+# Στοιχειώδεις Αισθητικές Βελτιώσεις
+
 ## Γραφική απεικόνιση του συνδέσμου
 
-* Ο σύνδεσμος που φτιάξαμε έχει το κείμενο "write review".
+* Ο σύνδεσμος που φτιάξαμε έχει το κείμενο «write review».
 
 * Θα ήταν κομψότερο αν αντί γι΄ αυτό είχαμε ένα κατάλληλο εικονίδιο.
 
-* Θα χρησιμοποιήσουμε το εικονίδιο "συν σε κύκλο" (plus-circle) από το
-  σύνολο εικονιδίων [Font Awesome](http://fontawesome.io/icons/).
+* Θα χρησιμοποιήσουμε το εικονίδιο «συν σε κύκλο» (plus-circle) από το
+  σύνολο εικονιδίων [Font Awesome](http://fontawesome.com/icons/).
 
 
 ## Στατικοί πόροι
@@ -434,7 +547,7 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
   πόρους σε έναν υποκατάλογο `static/djbr`.
   
 * Στην περίπτωσή μας λοιπόν θα φτιάξουμε τους καταλόγους
-  `static/djbr/css` και `static/djbr/fonts`, άρα η συνολική δομή θα
+  `static/djbr/css` και `static/djbr/webfonts`, άρα η συνολική δομή θα
   είναι: 
 
     ```
@@ -444,7 +557,7 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
     │   ├── static
     │   │   └── djbr
     │   │       ├── css
-    │   │       └── fonts
+    │   │       └── webfonts
     │   └── templates
     │       └── djbr
     └── project_site
@@ -466,26 +579,28 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
 ## Αντιγραφή των στατικών πόρων
 
 * Κατεβάζουμε τη συλλογή των εικονιδίων [Font
-  Awesome](http://fontawesome.io/get-started/#modal-download).
+  Awesome](http://fontawesome.com/get-started/#modal-download).
   
 * Αφού το αποσυμπιέσουμε, αντιγράφουμε:
-    * το αρχείο `font-awesome.min.css` στον υποκατάλογο
-      `static/djbr/css`
-    * τα αρχεία του υποκαταλόγου `fonts` του Font Awesome στον
-      υποκατάλογο `static/djbr/fonts`
+    * το αρχείο `/css/all.min.css` του Font Awesome στον υποκατάλογο
+      `static/djbr/css` με το όνομα `fontawesome-all.min.css`
+    * τα αρχεία του υποκαταλόγου `/webfonts` του Font Awesome στον
+      υποκατάλογο `static/djbr/webfonts`
     
 ## Προσαρμογή του αρχείου `base.html`
 
 * Στο τμήμα `<head> ... </head>` προσθέτουμε στην αρχή τη γραμμή:
-    ```html
-    {% load static %}
-    ```
+
+   ```html
+   {% load static %}
+   ```
 
 * Στη συνέχεια προσθέτουμε το παρακάτω:
+
     ```html
     <!-- Font Awesome -->
     <link rel="stylesheet"
-          href="{% static "/djbr/css/font-awesome.min.css" %}"/>
+          href="{% static "/djbr/css/fontawesome-all.min.css" %}"/>
     ```
 
 <div class="notes">
@@ -493,9 +608,9 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
 Το `{% load static %}` δίνει τη δυνατότητα στο Django να κατασκευάζει
 σωστά τα URLs τα οποία θα αντιστοιχούν στους στατικούς πόρους. Έτσι,
 στη συνέχεια το 
-`href="{% static "/djbr/css/font-awesome.min.css" %}"` 
+`href="{% static "/djbr/css/fontawesome-all.min.css" %}"` 
 θα κατασκευάσει σωστά το URL που θα αντιστοιχεί στο
-`font-awesome.min.cs`, όπου κι αν βρίσκεται αυτό μέσα στην
+`fontawesome-all.min.css`, όπου κι αν βρίσκεται αυτό μέσα στην
 ιεραρχία των καταλόγων του υπολογιστή.
 
 </div>
@@ -503,30 +618,30 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
 ## Αρχείο `base.html`
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
 
-    {% load static %}
-    
     <!-- Required meta tags for Bootstrap -->
     <meta charset="utf-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1,
           shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
-          crossorigin="anonymous"/>
+    {% load static %}
 
     <!-- Font Awesome -->
     <link rel="stylesheet"
-          href="{% static "/djbr/css/font-awesome.min.css" %}"/>
-      
+          href="{% static "/djbr/css/fontawesome-all.min.css" %}"/>
+	  	  
+    <!-- Bootstrap CSS -->
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+          crossorigin="anonymous">
+
     <title>{% block title %}Django Book Reviews{% endblock %}</title>
   </head>
 
@@ -540,17 +655,11 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
       </div>
     </div>
 
-    <!-- Optional JavaScript for Bootstrap -->
+    <!-- Optional JavaScript for Bootstrap --> 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
-                    integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
-                    crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
-            integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
   </body>
 </html>
 ```
@@ -561,15 +670,18 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
   σύνδεσμο για την εισαγωγή κριτικής ενός βιβλίου.
   
 * Στο αρχείο `book.html` αλλάζουμε το:
+
     ```html
     <a href="{% url 'djbr:review' book.id %}">
       write review
     </a>
     ```
-    σε
+
+	σε
+	
     ```html
     <a href="{% url 'djbr:review' book.id %}">
-      <span class="fa fa-plus-circle" aria-hidden="true"></span>
+      <span class="fas fa-plus-circle" aria-hidden="true"></span>
     </a>
     ```
 
@@ -585,16 +697,19 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
   
 * Ο σύνδεσμός μας αυτή τη φορά θα εμφανίζεται ως ένα λευκό μολυβάκι.
 
+
 ## Δημιουργία συνδέσμου αλλαγής κριτικής
 
 * Για τη δημιουργία συνδέσμου θα προσθέσουμε στον σκελετό
   `djbr/templates/reviews.html` τον παρακάτω κώδικα στο κατάλληλο
   σημείο:
-    ```html
-    <a href="{% url 'djbr:review' review.book.id review.id %}">
-      <span class="fa fa-inverse fa-pencil" aria-hidden="true"></span>
-    </a>
-    ```
+  
+   ```html
+   <a href="{% url 'djbr:review' review.book.id review.id %}">
+     <span class="fa fa-inverse fa-pencil" aria-hidden="true"></span>
+   </a>
+   ```
+   
 * Η πρώτη γραμμή θα δημιουργήσει το σωστό σύνδεσμο της μορφής
   `djbr/book/<book_id>/review/<review_id>`.
   
@@ -620,7 +735,7 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
           <span class="mb=1">Summary: {{ review.title }}</span>
           <span>
             <a href="{% url 'djbr:review' review.book.id review.id %}">
-              <span class="fa fa-inverse fa-pencil" aria-hidden="true"></span>
+              <span class="fas fa-inverse fa-edit" aria-hidden="true"></span>
             </a>
         </span>
         </div>
@@ -638,24 +753,28 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
 {% endblock %}
 ```
 
-## Προσθήκη `djbr.css`
+## Προσθήκη `djbr.css` (1)
 
-* Με την ευκαιρία, θα δημιουργήσουμε το αρχείο `static/djbr/djbr.css`
+* Με την ευκαιρία, θα δημιουργήσουμε το αρχείο `static/djbr/css/djbr.css`
   το οποίο θα χρησιμοποιήσουμε για την προσαρμογή του στυλ της
   εφαρμογής μας.
   
 * Προς το παρόν θα είναι στοιχειώδες:
-    ```css
-    body {
-      padding-top: 40px;
-      padding-bottom: 40px;
-    }
-    ```
+
+   ```css
+   body {
+	 padding-top: 40px;
+	 padding-bottom: 40px;
+   }
+   ```
     
+## Προσθήκη `djbr.css` (2)
+
 * Για να το χρησιμοποιήσουν οι σελίδες της εφαρμογής μας, προσθέτουμε
   το παρακάτω στο τμήμα `<head> ... </head>` του σκελετού `base.html` (για
   παράδειγμα, κάτω ακριβώς από το σημείο που δηλώσαμε το
-  `font-awesome.min.css`):
+  `fontawesome-all.min.css`):
+  
     ```html
     <!-- DJBR -->
     <link rel="stylesheet"
@@ -666,8 +785,9 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
 
 * Προσοχή. Αν δούμε ότι το εικονίδιο δεν εμφανίζεται, ενώ ταυτόχρονα στο
   τερματικό του Django εμφανίζεται ένα μήνυμα όπως:
+  
     ```
-    GET /static/djbr/css/font-awesome.min.css HTTP/1.1" 404 110
+    GET /static/djbr/css/fontawesome-all.min.css HTTP/1.1" 404 110
     ```
   τότε προφανώς κάτι δεν έχει πάει καλά.
   
@@ -693,17 +813,18 @@ url(r'^book/(?P<book_id>[0-9]+)/review/$', views.review, name='review')
   των στατικών πόρων.
   
 * Τους συλλέγουμε από το Django με την εντολή:
-    ```bash
-    python manage.py collectstatic
-    ```
+
+   ```bash
+   python manage.py collectstatic
+   ```
     και στη συνέχεια τους αντιγράφουμε στον κατάλληλο κατάλογο του web
     server που έχουμε επιλέξει.
     
 * Η διαδικασία αυτή μπορεί να αυτοματοποιηθεί. Για περισσότερες
   λεπτομέρειες, βλ.
-  [εδώ](https://docs.djangoproject.com/en/1.11/howto/static-files/)
+  [εδώ](https://docs.djangoproject.com/en/2.1/howto/static-files/)
   και
-  [εδώ](https://docs.djangoproject.com/en/1.11/howto/static-files/deployment/).
+  [εδώ](https://docs.djangoproject.com/en/2.1/howto/static-files/deployment/).
     
 
 
