@@ -1,4 +1,4 @@
-g{% extends "djbr/base.html" %}
+{% extends "djbr/base.html" %}
 
 {% block content %}
 <ul class="list-group">
@@ -22,7 +22,7 @@ g{% extends "djbr/base.html" %}
 	<a href="{% url 'djbr:reviews' book.id %}">
 	  <span class="badge badge-secondary">{{ book.review_set.all.count }}</span>
 	</a>
-	<a href="{% url 'djbr:review' book.id %}">
+	<a href="{% url 'djbr:reviews' book.id %}">
 	  <span class="fas fa-plus-circle" aria-hidden="true"></span>
 	</a>
 	</span>

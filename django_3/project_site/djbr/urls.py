@@ -6,9 +6,10 @@ app_name = 'djbr'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('books/', views.index, name='books'),
     path('books/<int:book_id>/', views.book, name='book'),
     path('books/<int:book_id>/reviews/', views.reviews, name='reviews'),
-    path('books/<int:book_id>/reviews/<int:review_id>',
-        views.review, name='review'),
+    path('books/<int:book_id>/reviews/<int:review_id>/',
+        views.review, name='review'),    
     path('authors/<int:author_id>/', views.author, name='author'),
 ]

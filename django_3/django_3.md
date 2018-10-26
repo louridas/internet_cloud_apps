@@ -181,31 +181,31 @@ urlpatterns = [
 * Τη φόρμα της κριτικής θα την αποθηκεύσουμε στο αρχείο
   `djbr/templates/djbr/review.html`. 
 
-```html
-{% extends "djbr/base.html" %}
+	```html
+	{% extends "djbr/base.html" %}
 
-{% block content %}
-{% if review_id %}
-<form action="{% url 'djbr:review' book_id review_id %}"  method="post">
-{% else %}
-<form action="{% url 'djbr:review' book_id %}"  method="post">
-{% endif %}
-  {% csrf_token %}
-    <div class="form-group">
-    <label for="title">Title</label>
-    <input type="text" id="title" name="title"
-           class="form-control" placeholder="Title" value="{{ title }}"/>
-  </div>
-  <div class="form-group">
-    <label for="text">Content</label>
-    <textarea id="text" name="text"
-              class="form-control" placeholder="content" rows="10">{{ text }}
-    </textarea>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>  
-{% endblock %}
-```
+	{% block content %}
+	{% if review_id %}
+	<form action="{% url 'djbr:review' book_id review_id %}"  method="post">
+	{% else %}
+	<form action="{% url 'djbr:reviews' book_id %}"  method="post">
+	{% endif %}
+	  {% csrf_token %}
+		<div class="form-group">
+		<label for="title">Title</label>
+		<input type="text" id="title" name="title"
+			   class="form-control" placeholder="Title" value="{{ title }}"/>
+	  </div>
+	  <div class="form-group">
+		<label for="text">Content</label>
+		<textarea id="text" name="text"
+				  class="form-control" placeholder="content" rows="10">{{ text }}
+		</textarea>
+	  </div>
+	  <button type="submit" class="btn btn-primary">Submit</button>
+	</form>  
+	{% endblock %}
+	```
 
 <div class="notes">
 
@@ -444,8 +444,8 @@ urlpatterns = [
 		<a href="{% url 'djbr:reviews' book.id %}">
 		  <span class="badge badge-secondary">{{ book.review_set.all.count }}</span>
 		</a>
-		<a href="{% url 'djbr:review' book.id %}">
-		  write review
+		<a href="{% url 'djbr:reviews' book.id %}">
+		  <span class="fas fa-plus-circle" aria-hidden="true"></span>
 		</a>
 		</span>
 	  </li>
@@ -629,7 +629,7 @@ path('book/(<int:book_id>/review/$', views.review, name='review'),
 * Στο αρχείο `book.html` αλλάζουμε το:
 
     ```html
-    <a href="{% url 'djbr:review' book.id %}">
+    <a href="{% url 'djbr:reviews' book.id %}">
       write review
     </a>
     ```
@@ -637,7 +637,7 @@ path('book/(<int:book_id>/review/$', views.review, name='review'),
 	σε
 	
     ```html
-    <a href="{% url 'djbr:review' book.id %}">
+    <a href="{% url 'djbr:reviews' book.id %}">
       <span class="fas fa-plus-circle" aria-hidden="true"></span>
     </a>
     ```

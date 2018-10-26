@@ -4,7 +4,7 @@
 {% if review_id %}
 <form action="{% url 'djbr:review' book_id review_id %}"  method="post">
 {% else %}
-<form action="{% url 'djbr:review' book_id %}"  method="post">
+<form action="{% url 'djbr:reviews' book_id %}"  method="post">
 {% endif %}
   {% csrf_token %}
     <div class="form-group">
