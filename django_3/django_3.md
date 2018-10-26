@@ -170,54 +170,11 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('books/<int:book_id>/', views.book, name='book'),
     path('books/<int:book_id>/reviews/', views.reviews, name='reviews'),
-    path('book/<int:book_id>/review/<int:review_id>',
+    path('books/<int:book_id>/reviews/<int:review_id>',
         views.review, name='review'),
-    path('book/<int:book_id>/review/', views.review, name='review'),
     path('authors/<int:author_id>/', views.author, name='author'),
 ]
 ```
-
-<div class="notes">
-
-* Προσθέσαμε δύο νέες διαδρομές:
-
-```python
-path('book/(<int:book_id>/review/<int:review_id>',
-     views.review, name='review'),
-path('book/(<int:book_id>/review/$', views.review, name='review'),
-```
-
-* To 4o URL παίρνει δύο παραμέτρους, τον κωδικό του βιβλίου και τον
-  κωδικό της κριτικής: αφορά τη λειτουργία που θέλουμε να εκτελεστεί
-  για *αλλαγή* υπάρχουσας κριτικής. To 5o URL παίρνει μόνο μία
-  παράμετρο, τον κωδικό του βιβλίου: αφορά τη λειτουργία που θέλουμε
-  να εκτελεστεί για προσθήκη νέας κριτικής.
-
-* Προσοχή στη σειρά των διαδρομών.
-
-* Οι διαδρομές εφαρμόζονται με τη σειρά, μέχρι να βρεθεί κάποια που να
-  ταιριάζει.
-
-* Έστω ότι η 4η και η 5η διαδρομή ήταν σε αντίστροφη σειρά, δηλαδή
-  είχαμε:
-  
-   ```python
-    path('book/(<int:book_id>/review/$', views.review, name='review'),
-    path('book/(<int:book_id>/review/<int:review_id>',
-         views.review, name='review'),
-    ```
-  
-  Δεδομένου ότι τα URLs του τύπου `book/1/review` είναι γενικότερα από τα
-  URLs του τύπου `book/1/review/2`, θα εφαρμοζόταν μόνο το
-  `book/1/review` και όχι το ``book/1/review/2`.
-  
-* Εν ολίγοις: το Django ψάχνει να βρει την πρώτη διαδρομή που
-  ταιριάζει, όχι την καλύτερη (μεγαλύτερη) διαδρομή που ταιριάζει.
-
-* Για το λόγο αυτό είναι πάντα καλό να βάζουμε τα URLs ώστε τα πιο
-  γενικά να βρίσκονται μετά από τα πιο ειδικά. 
-
-</div>
 
 ## Φόρμα κριτικής
 
