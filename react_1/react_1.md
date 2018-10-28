@@ -106,16 +106,16 @@ nvm which current
 * Και στη συνέχεια:
 
    ```bash
-   npx create-react-app hackernews
-   cd hackernews
+   npx create-react-app rpr
+   cd rpr
    ```
    
 ## Δομή Καταλόγων
 
 ```
-hackernews
+rpr
 ├── README.md
-├── node_modules [999 entries exceeds filelimit, not opening dir]
+├── node_modules 
 ├── package-lock.json
 ├── package.json
 ├── public
@@ -130,7 +130,7 @@ hackernews
     ├── index.js
     ├── logo.svg
     └── serviceWorker.js
-```	
+``` 
 
 ## Έναρξη Εφαρμογής
 
@@ -153,26 +153,26 @@ hackernews
    import './App.css';
 
    class App extends Component {
-	 render() {
-	   return (
-		 <div className="App">
-		   <header className="App-header">
-			 <img src={logo} className="App-logo" alt="logo" />
-			 <p>
-			   Edit <code>src/App.js</code> and save to reload.
-			 </p>
-			 <a
-			   className="App-link"
-			   href="https://reactjs.org"
-			   target="_blank"
-			   rel="noopener noreferrer"
-			 >
-			   Learn React
-			 </a>
-		   </header>
-		 </div>
-	   );
-	 }
+     render() {
+       return (
+         <div className="App">
+           <header className="App-header">
+             <img src={logo} className="App-logo" alt="logo" />
+             <p>
+               Edit <code>src/App.js</code> and save to reload.
+             </p>
+             <a
+               className="App-link"
+               href="https://reactjs.org"
+               target="_blank"
+               rel="noopener noreferrer"
+             >
+               Learn React
+             </a>
+           </header>
+         </div>
+       );
+     }
    }
 
    export default App;
@@ -283,13 +283,13 @@ hackernews
    import './App.css';
 
    class App extends Component {
-	 render() {
-	   return (
-		 <div className="App">
-	       <h2>Hello, World!</h2>
-		 </div>
-	   );
-	 }
+     render() {
+       return (
+         <div className="App">
+           <h2>Hello, World!</h2>
+         </div>
+       );
+     }
    }
 
    export default App;
@@ -304,14 +304,14 @@ hackernews
    import './App.css';
 
    class App extends Component {
-	 render() {
-	   var helloWorld = "Hello, World!";
-	   return (
-		 <div className="App">
-	   <h2>{helloWorld}</h2>
-		 </div>
-	   );
-	 }
+     render() {
+       var helloWorld = "Hello, World!";
+       return (
+         <div className="App">
+           <h2>{helloWorld}</h2>
+         </div>
+       );
+     }
    }
 
    export default App;
@@ -347,11 +347,11 @@ hackernews
    ```javascript
    function varTest() {
      var x = 1;
-	 if (true) {
-	   var x = 2;  // same variable!
-	   console.log(x);  // 2
-	 }
-	 console.log(x);  // 2
+     if (true) {
+       var x = 2;  // same variable!
+       console.log(x);  // 2
+     }
+     console.log(x);  // 2
    }
    ```
 
@@ -401,14 +401,14 @@ hackernews
    import './App.css';
 
    class App extends Component {
-	 render() {
-	   const helloWorld = "Hello, World!";
-	   return (
-		 <div className="App">
-	   <h2>{helloWorld}</h2>
-		 </div>
-	   );
-	 }
+     render() {
+       const helloWorld = "Hello, World!";
+       return (
+         <div className="App">
+       <h2>{helloWorld}</h2>
+         </div>
+       );
+     }
    }
 
    export default App;
@@ -433,11 +433,11 @@ hackernews
    ReactDOM.render(<App />, document.getElementById('root'));
 
    if (module.hot) {
-	 module.hot.accept();
+     module.hot.accept();
    }
    ```
 
-## Εμφάνιση Σειράς Δεδομένων
+## Εμφάνιση Λίστας Δεδομένων
 
 * Έστω τώρα ότι θέλουμε να εμφανίσουμε μία λίστα με δεδομένα στην
   εφαρμογή μας.
@@ -450,37 +450,61 @@ hackernews
    import './App.css';
 
    const list = [
-	 {
-	   title: 'React',
-	   url: 'https://reactjs.org/',
-	   author: 'Jordan Walke',
-	   num_comments: 3,
-	   points: 4,
-	   objectID: 0,
-	 },
-	 {
-	   title: 'Redux',
-	   url: 'https://redux.js.org/',
-	   author: 'Dan Abramov, Andrew Clark',
-	   num_comments: 2,
-	   points: 5,
-	   objectID: 1,
-	 },
+     {
+       title: 'Infinite Jest',
+       author: 'David Foster Wallace',
+       year_published: 1996,
+       id: 0
+     },
+     {
+       title: 'Ulysses',
+       author: 'James Joyce',
+       year_published: 1922,
+       id: 1
+     },
+     {
+       title: 'City on Fire',
+       author: 'Garth Risk Hallbert',
+       year_published: 2015,
+       id: 3
+     },
+     {
+       title: 'The Narrow Way to the Deep North',
+       author: 'Richard Flanagan',
+       year_published: 2013,
+       id: 4
+     },
+     {
+       title: 'The Dispossessed',
+       author: 'Ursula Le Guin',
+       year_published: 1974,
+       id: 5
+     },
+     {
+       title: 'A Death in the Family: My Struggle Book 1',
+       author: 'Karl Ove Knausgård',
+       year_published: 2009,
+       id: 6
+     },
+     {
+       title: 'Conversations with Friends',
+       author: 'Sally Rooney',
+       year_published: 2017,
+       id: 7
+     },
+     {
+       title: 'La Septième Fonction du Langage',
+       author: 'Laurent Binet',
+       year_published: '2015',
+       id: 8,
+     },
+     {
+       title: 'La Vérité sur l\' Affaire Harry Quebert',
+       author: 'Joël Dicker',
+       year_published: 2012,
+       id: 9
+     },
    ];
-
-   class App extends Component {
-	 render() {
-	   return (
-		 <div className="App">
-		   {list.map(function(item) {
-			 return <div>{item.title}</div>;
-		   })}
-		 </div>
-	   );
-	 }
-   }
-
-   export default App;
    ```
    
 ## Εμφάνιση Περισσότερων Δεδομένων
@@ -493,47 +517,28 @@ hackernews
    import React, { Component } from 'react';
    import './App.css';
 
-   const list = [
-	 {
-	   title: 'React',
-	   url: 'https://reactjs.org/',
-	   author: 'Jordan Walke',
-	   num_comments: 3,
-	   points: 4,
-	   objectID: 0,
-	 },
-	 {
-	   title: 'Redux',
-	   url: 'https://redux.js.org/',
-	   author: 'Dan Abramov, Andrew Clark',
-	   num_comments: 2,
-	   points: 5,
-	   objectID: 1,
-	 },
-   ];
-
+   /* ... */
+   
    class App extends Component {
-	 render() {
-	   return (
-		 <div className="App">
-		   {list.map(function(item) {
-			 return(
-			   <div key={item.objectID}>
-				 <span>
-				   <a href={item.rl}>{item.title}</a>:
-				 </span>
-				 &nbsp;
-				 <span>{item.author}</span>
-				 &nbsp;Comments:
-				 <span>{item.num_comments}</span>
-				 &nbsp;Points:
-				 <span>{item.points}</span>
-			   </div>
-			 );
-		   })}
-		 </div>
-	   );
-	 }
+     render() {
+       return (
+         <div className="App">
+           {list.map(function(item) {
+             return(
+               <div key={item.id}>
+                 <span>
+                   <a href={item.url}>{item.title}</a>:
+                 </span>
+                 &nbsp;
+                 <span>{item.author}</span>
+                 &nbsp;Year Published:
+                 <span>{item.year_published}</span>
+               </div>
+             );
+           })}
+         </div>
+       );
+     }
    }
 
    export default App;
@@ -542,7 +547,7 @@ hackernews
 ## Κλειδιά
 
 * Προσέξτε ότι στο `<div>` που περιέχει κάθε στοιχείο προσθέτουμε την
-  ιδιότητα `key={item.objectID}`.
+  ιδιότητα `key={item.id}`.
   
 * Σε κάθε λίστα στοιχείων που κατασκευάζουμε πρέπει να προσθέτουμε μια
   τέτοια ιδιότητα σε κάθε στοιχείο της.
@@ -576,18 +581,18 @@ hackernews
 
    ```javascript
    var elements = [
-	 'Hydrogen',
-	 'Helium',
-	 'Lithium',
-	 'Beryllium'
+     'Hydrogen',
+     'Helium',
+     'Lithium',
+     'Beryllium'
    ];
 
    elements.map(function(element ) { 
-	 return element.length; 
+     return element.length; 
    }); // [8, 6, 7, 9]
 
    elements.map(element => {
-	 return element.length;
+     return element.length;
    }); // [8, 6, 7, 9]
 
    elements.map(element => element.length); // [8, 6, 7, 9]
@@ -649,13 +654,13 @@ hackernews
 
    loop1:
    for (i = 0; i < 3; i++) {      //The first for statement is labeled "loop1"
-	  loop2:
-	  for (j = 0; j < 3; j++) {   //The second for statement is labeled "loop2"
-		 if (i === 1 && j === 1) {
-			continue loop1;
-		 }
-		 console.log('i = ' + i + ', j = ' + j);
-	  }
+      loop2:
+      for (j = 0; j < 3; j++) {   //The second for statement is labeled "loop2"
+         if (i === 1 && j === 1) {
+            continue loop1;
+         }
+         console.log('i = ' + i + ', j = ' + j);
+      }
    }
 
    // Output is:
@@ -678,13 +683,13 @@ hackernews
 
    loop1:
    for (i = 0; i < 3; i++) {      //The first for statement is labeled "loop1"
-	  loop2:
-	  for (j = 0; j < 3; j++) {   //The second for statement is labeled "loop2"
-		 if (i === 1 && j === 1) {
-			break loop1;
-		 }
-		 console.log('i = ' + i + ', j = ' + j);
-	  }
+      loop2:
+      for (j = 0; j < 3; j++) {   //The second for statement is labeled "loop2"
+         if (i === 1 && j === 1) {
+            break loop1;
+         }
+         console.log('i = ' + i + ', j = ' + j);
+      }
    }
 
    // Output is:
@@ -714,11 +719,11 @@ hackernews
 
    ```javascript
    var elements = [
-	 0: 'Hydrogen',
-	 1: 'Helium',
-	 2: 'Lithium',
-	 3: 'Beryllium',
-	 length: 4
+     0: 'Hydrogen',
+     1: 'Helium',
+     2: 'Lithium',
+     3: 'Beryllium',
+     length: 4
    ];
    ```
 
@@ -737,20 +742,20 @@ hackernews
   
    ```javascript
    function Person() {
-	 // The Person() constructor defines `this` as an instance of itself.
-	 this.age = 0;
+     // The Person() constructor defines `this` as an instance of itself.
+     this.age = 0;
 
-	 var growing = setInterval(function growUp() {
-	   // In non-strict mode, the growUp() function defines `this` 
-	   // as the global object (because it's where growUp() is executed.), 
-	   // which is different from the `this`
-	   // defined by the Person() constructor. 
-	   alert(this.age);
-	   this.age++;
-	   if (this.age > 5) {
-		 clearInterval(growing);
-	   }
-	 }, 1000);
+     var growing = setInterval(function growUp() {
+       // In non-strict mode, the growUp() function defines `this` 
+       // as the global object (because it's where growUp() is executed.), 
+       // which is different from the `this`
+       // defined by the Person() constructor. 
+       alert(this.age);
+       this.age++;
+       if (this.age > 5) {
+         clearInterval(growing);
+       }
+     }, 1000);
    }
 
    var p = new Person();
@@ -763,19 +768,19 @@ hackernews
   
    ```javascript
    function Person() {
-	 // The Person() constructor defines `this` as an instance of itself.
-	 var that = this;
-	 that.age = 0;
+     // The Person() constructor defines `this` as an instance of itself.
+     var that = this;
+     that.age = 0;
 
-	 var growing = setInterval(function growUp() {
+     var growing = setInterval(function growUp() {
        // The callback refers to the `that` variable of which
        // the value is the expected object.
-	   alert(that.age);
-	   that.age++;
-	   if (that.age > 5) {
-		 clearInterval(growing);
-	   }
-	 }, 1000);
+       alert(that.age);
+       that.age++;
+       if (that.age > 5) {
+         clearInterval(growing);
+       }
+     }, 1000);
    }
 
    var p = new Person();
@@ -788,19 +793,19 @@ hackernews
   
    ```javascript
    function Person() {
-	 this.age = 0;
+     this.age = 0;
 
-	 this.growUp = function growUp() {
-	   alert(this.age);
-	   this.age++;
-	   if (this.age > 5) {
-		 clearInterval(this.growing);
-	   }
-	 };
+     this.growUp = function growUp() {
+       alert(this.age);
+       this.age++;
+       if (this.age > 5) {
+         clearInterval(this.growing);
+       }
+     };
 
-	 this.growUp = this.growUp.bind(this);
+     this.growUp = this.growUp.bind(this);
 
-	 this.growing = setInterval(this.growUp, 1000);
+     this.growing = setInterval(this.growUp, 1000);
    }
 
    var p = new Person();
@@ -813,15 +818,15 @@ hackernews
   
    ```javascript
    function Person() {
-	 this.age = 0;
+     this.age = 0;
 
-	 this.growing = setInterval(() => {
-	   alert(this.age);
-	   this.age++;
-	   if (this.age > 5) {
-		 clearInterval(this.growing);
-	   }
-	 }, 1000);
+     this.growing = setInterval(() => {
+       alert(this.age);
+       this.age++;
+       if (this.age > 5) {
+         clearInterval(this.growing);
+       }
+     }, 1000);
 
    }
 
@@ -837,47 +842,28 @@ hackernews
    import React, { Component } from 'react';
    import './App.css';
 
-   const list = [
-	 {
-	   title: 'React',
-	   url: 'https://reactjs.org/',
-	   author: 'Jordan Walke',
-	   num_comments: 3,
-	   points: 4,
-	   objectID: 0,
-	 },
-	 {
-	   title: 'Redux',
-	   url: 'https://redux.js.org/',
-	   author: 'Dan Abramov, Andrew Clark',
-	   num_comments: 2,
-	   points: 5,
-	   objectID: 1,
-	 },
-   ];
+   /* ... */
 
    class App extends Component {
-	 render() {
-	   return (
-		 <div className="App">
-		   {list.map(item => {
-			 return(
-			   <div key={item.objectID}>
-				 <span>
-				   <a href={item.rl}>{item.title}</a>:
-				 </span>
-				 &nbsp;
-				 <span>{item.author}</span>
-				 &nbsp;Comments:
-				 <span>{item.num_comments}</span>
-				 &nbsp;Points:
-				 <span>{item.points}</span>
-			   </div>
-			 );
-		   })}
-		 </div>
-	   );
-	 }
+     render() {
+       return (
+         <div className="App">
+       {list.map(item => {
+         return(
+           <div key={item.id}>
+             <span>
+               <a href={item.url}>{item.title}</a>:
+             </span>
+             &nbsp;
+             <span>{item.author}</span>
+             &nbsp;Year Published:
+             <span>{item.year_published}</span>
+           </div>
+         );
+       })}
+         </div>
+       );
+     }
    }
 
    export default App;
@@ -892,47 +878,28 @@ hackernews
    import React, { Component } from 'react';
    import './App.css';
 
-   const list = [
-	 {
-	   title: 'React',
-	   url: 'https://reactjs.org/',
-	   author: 'Jordan Walke',
-	   num_comments: 3,
-	   points: 4,
-	   objectID: 0,
-	 },
-	 {
-	   title: 'Redux',
-	   url: 'https://redux.js.org/',
-	   author: 'Dan Abramov, Andrew Clark',
-	   num_comments: 2,
-	   points: 5,
-	   objectID: 1,
-	 },
-   ];
-
+   /* ... */
+   
    class App extends Component {
-	 render() {
-	   return (
-		 <div className="App">
-		   {list.map(item =>
-			   <div key={item.objectID}>
-				 <span>
-				   <a href={item.rl}>{item.title}</a>:
-				 </span>
-				 &nbsp;
-				 <span>{item.author}</span>
-				 &nbsp;Comments:
-				 <span>{item.num_comments}</span>
-				 &nbsp;Points:
-				 <span>{item.points}</span>
-			   </div>
-		   )}
-		 </div>
-	   );
-	 }
+     render() {
+       return (
+         <div className="App">
+           {list.map(item =>
+             <div key={item.id}>
+               <span>
+                 <a href={item.url}>{item.title}</a>:
+               </span>
+               &nbsp;
+               <span>{item.author}</span>
+               &nbsp;Year Published:
+               <span>{item.year_published}</span>
+             </div>
+           )}
+         </div>
+       );
+     }
    }
-
+   
    export default App;
    
    ```
@@ -947,8 +914,8 @@ hackernews
    ```javascript
    // this is the constructor
    function AA (x) {
-	 this.kk = x;
-	 console.log("constructor called with arg " + x)
+     this.kk = x;
+     console.log("constructor called with arg " + x)
    };
 
    // static method
@@ -956,7 +923,7 @@ hackernews
 
    // this is the prototype
    AA.prototype = {
-	 ff: function (x) {console.log("ff called with arg " + x)},
+     ff: function (x) {console.log("ff called with arg " + x)},
    };
 
    // --------------------------------------------------
@@ -983,14 +950,14 @@ hackernews
    // define a class
    class AA {
 
-	   constructor(x) {
-		   this.kk = x;
-		   console.log("constructor called with arg " + x)
-	   }
+       constructor(x) {
+           this.kk = x;
+           console.log("constructor called with arg " + x)
+       }
 
-	   ff (x) {console.log("ff called with arg " + x)}
+       ff (x) {console.log("ff called with arg " + x)}
 
-	   static sm (x) {console.log("sm called with arg " + x)}
+       static sm (x) {console.log("sm called with arg " + x)}
 
    }
 
@@ -1018,18 +985,18 @@ hackernews
    // example of a class
    class A {
 
-	   constructor(x) {
-		   this.p = x;
-		   console.log("constructor called with arg " + x)
-	   }
+       constructor(x) {
+           this.p = x;
+           console.log("constructor called with arg " + x)
+       }
 
-	ff (x) {console.log("ff called with arg " + x)}
+    ff (x) {console.log("ff called with arg " + x)}
 
-	set p1 (x) {console.log("setter called")}
+    set p1 (x) {console.log("setter called")}
 
-	get p1 () {console.log("getter called")}
+    get p1 () {console.log("getter called")}
 
-	static ss (x) {console.log("ss called with arg " + x)}
+    static ss (x) {console.log("ss called with arg " + x)}
 
    }
 
@@ -1065,17 +1032,17 @@ hackernews
 
    ```javascript
    function Person(first, last, age, gender, interests) {
-	 this.name = {
-	   first,
-	   last
-	 };
-	 this.age = age;
-	 this.gender = gender;
-	 this.interests = interests;
+     this.name = {
+       first,
+       last
+     };
+     this.age = age;
+     this.gender = gender;
+     this.interests = interests;
    };
 
    Person.prototype.greeting = function() {
-	 console.log('Hi! I\'m ' + this.name.first  + '.');
+     console.log('Hi! I\'m ' + this.name.first  + '.');
    }
 
    p = new Person('John', 'Dow', 13, 'male', ['literature', 'music']);
@@ -1088,37 +1055,37 @@ hackernews
 
    ```javascript
    function Teacher(first, last, age, gender, interests, subject) {
-	 Person.call(this, first, last, age, gender, interests);
+     Person.call(this, first, last, age, gender, interests);
 
-	 this.subject = subject;
+     this.subject = subject;
    }
 
    Teacher.prototype = Object.create(Person.prototype);
 
    Object.defineProperty(Teacher.prototype, 'constructor', { 
-	   value: Teacher, 
-	   enumerable: false, // so that it does not appear in 'for in' loop
-	   writable: true });
+       value: Teacher, 
+       enumerable: false, // so that it does not appear in 'for in' loop
+       writable: true });
 
    Teacher.prototype.greeting = function() {
-	 var prefix;
+     var prefix;
 
-	 if (this.gender === 'male' || this.gender === 'Male'
-		 || this.gender === 'm' || this.gender === 'M') {
-	   prefix = 'Mr.';
-	 } else if (this.gender === 'female' || this.gender === 'Female'
-			|| this.gender === 'f' || this.gender === 'F') {
-	   prefix = 'Mrs.';
-	 } else {
-	   prefix = 'Mx.';
-	 }
+     if (this.gender === 'male' || this.gender === 'Male'
+         || this.gender === 'm' || this.gender === 'M') {
+       prefix = 'Mr.';
+     } else if (this.gender === 'female' || this.gender === 'Female'
+            || this.gender === 'f' || this.gender === 'F') {
+       prefix = 'Mrs.';
+     } else {
+       prefix = 'Mx.';
+     }
 
-	 console.log('Hello. My name is ' + prefix + ' '
-			 + this.name.last + ', and I teach ' + this.subject + '.');
+     console.log('Hello. My name is ' + prefix + ' '
+             + this.name.last + ', and I teach ' + this.subject + '.');
    };
 
    let t = new Teacher('Mary', 'Dow', 23, 'female', ['literature', 'music'],
-		               'computer science');
+                       'computer science');
    t.greeting();
    ```
 
@@ -1128,9 +1095,9 @@ hackernews
 
 ```javascript
 Object.defineProperty(Teacher.prototype, 'constructor', { 
-	value: Teacher, 
-	enumerable: false, // so that it does not appear in 'for in' loop
-	writable: true });
+    value: Teacher, 
+    enumerable: false, // so that it does not appear in 'for in' loop
+    writable: true });
 ```
 
 Όταν ορίζουμε το `prototype` για την κλάση `Teacher` με τη γραμμή:
@@ -1177,32 +1144,32 @@ Teacher { greeting: [Function] }
 
    ```javascript
    class Person {
-	 constructor(first, last, age, gender, interests) {
-	   this.name = {
-		 first,
-		 last
-	   };
-	   this.age = age;
-	   this.gender = gender;
-	   this.interests = interests;
-	 }
+     constructor(first, last, age, gender, interests) {
+       this.name = {
+         first,
+         last
+       };
+       this.age = age;
+       this.gender = gender;
+       this.interests = interests;
+     }
 
-	 greeting() {
-	   console.log(`Hi! I'm ${this.name.first}`);
-	 };
+     greeting() {
+       console.log(`Hi! I'm ${this.name.first}`);
+     };
    }
 
    class Teacher extends Person {
-	 constructor(first, last, age, gender, interests, subject) {
-	   super(first, last, age, gender, interests);
+     constructor(first, last, age, gender, interests, subject) {
+       super(first, last, age, gender, interests);
 
-	 // subject is specific to Teacher
-	 this.subject = subject;
-	 }
+     // subject is specific to Teacher
+     this.subject = subject;
+     }
    }
 
    let snape = new Teacher('Severus', 'Snape', 58, 'male', ['Potions'],
-			               'Dark arts');
+                           'Dark arts');
 
    snape.greeting();
    ```
@@ -1217,11 +1184,11 @@ Teacher { greeting: [Function] }
 
    ```javascript
    var obj = {
-	 log: ['example','test'],
-	 get latest() {
-	   if (this.log.length == 0) return undefined;
-	   return this.log[this.log.length - 1];
-	 }
+     log: ['example','test'],
+     get latest() {
+       if (this.log.length == 0) return undefined;
+       return this.log[this.log.length - 1];
+     }
    }
    console.log(obj.latest); // "test".
    ```
@@ -1236,10 +1203,10 @@ Teacher { greeting: [Function] }
   
    ```javascript
    var language = {
-	 set current(name) {
-	   this.log.push(name);
-	 },
-	 log: []
+     set current(name) {
+       this.log.push(name);
+     },
+     log: []
    }
 
    language.current = 'EN';
@@ -1259,25 +1226,25 @@ Teacher { greeting: [Function] }
   
    ```javascript
    class Person {
-	 constructor(first, last, age, gender, interests) {
-	   this.name = {
-		 first,
-		 last
-	   };
-	   this.age = age; // calls setter; there is no this.age, only this._age
-	   this.gender = gender;
-	   this.interests = interests;
-	 }
+     constructor(first, last, age, gender, interests) {
+       this.name = {
+         first,
+         last
+       };
+       this.age = age; // calls setter; there is no this.age, only this._age
+       this.gender = gender;
+       this.interests = interests;
+     }
 
-	 set age(newAge) {
-	   if (newAge > 0) {
-		 this._age = newAge;
-	   }
-	 }
+     set age(newAge) {
+       if (newAge > 0) {
+         this._age = newAge;
+       }
+     }
 
-	 greeting() {
-	   console.log(`Hi! I'm ${this.name.first}`);
-	 };
+     greeting() {
+       console.log(`Hi! I'm ${this.name.first}`);
+     };
    }
    ```
 
@@ -1293,7 +1260,7 @@ Teacher { greeting: [Function] }
 
 
    function catName(name) {
-	 console.log("My cat's name is " + name);
+     console.log("My cat's name is " + name);
    }
 
    /*
