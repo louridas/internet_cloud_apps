@@ -555,7 +555,8 @@ rpr
 * Αυτό είνα απαραίτητο προκειμένου το React να μπορεί να εντοπίζει
   δυναμικές προσθήκες και διαγραφές στοιχείων.
 
-## Arrow Functions
+
+## Συντομευμένες Συναρτήσεις (1)
 
 * Στην JavaScript μπορούμε να ορίζουμε συναρτήσεις χρησιμοποιώντας μια
   εναλλακτική σύνταξη, οπότε ονομάζονται [arrow
@@ -574,7 +575,7 @@ rpr
    () => { statements }
    ```
    
-## Συντομευμένες Συναρτήσεις
+## Συντομευμένες Συναρτήσεις (2)
 
 * Με τον τρόπο αυτό μπορούμε να [συντομεύουμε τον κώδικα που
   γράφουμε](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#Shorter_functions):
@@ -727,15 +728,101 @@ rpr
    ];
    ```
 
-## Άνευ This (1)
+## `this` στην JavaScript
 
-* Οι συναρτήσεις που ορίζονται με βελάκι δεν έχουν δική τους ιδιότητα
-  `this`. 
+* Το `this` στην JavaScript συμπεριφέρεται διαφορετικά από ό,τι σε
+  άλλες γλώσσες.
   
+* Η συμπεριφορά του εξαρτάται από το αν χρησιμοποιείται:
+  
+  * εκτός συναρτήσεων 
+  
+  * εντός συναρτήσεων
+  
+  * εντός μεθόδων
+  
+  * σε συντομευμένες συναρτήσεις.
+  
+
+## `this` εκτός Συναρτήσεων
+
+* To `this` εκτός συνάρτησης αναφέρεται στο global object.
+
+* Για
+  [παράδειγμα](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this#Global_Context):
+  
+   ```javascript
+   // In web browsers, the window object is also the global object:
+   console.log(this === window); // true
+
+   a = 37;
+   console.log(window.a); // 37
+
+   this.b = "MDN";
+   console.log(window.b)  // "MDN"
+   console.log(b)         // "MDN"
+   ```
+
+## `this` σε Συνάρτηση (όχι `strict` mode)
+
+* Αν το `this` χρησιμοποιείται σε συνάρτηση, και δεν βρισκόμαστε σε
+  strict mode, τότε το `this` αναφέρεται στο global object, που στην
+  περίπτωση του browser είναι το `window`.
+  
+* Για [παράδειγμα](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this#Simple_call):
+
+   ```javascript
+   function f1() {
+     return this;
+   }
+
+   // In a browser:
+   f1() === window; // true 
+
+   // In Node:
+   f1() === global; // true
+   ```
+   
+## `this` σε Συνάρτηση (`strict` mode)
+   
+* Αν βρισκόμαστε σε strict mode, το `this` αναφέρεται στην τιμή που
+  είχε πριν την κλήση της συνάρτησης.
+  
+* Για [παράδειγμα](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this#Simple_call):
+
+   ```javascript
+   function f2() {
+     'use strict'; // see strict mode
+     return this; 
+   }
+
+   f2() === undefined; // true, because this was not defined before
+                      // the call
+   ```
+
+## `this` σε Μεθόδους
+
+* Αν καλέσουμε τη συνάρτηση ως μέθοδο, τότε το `this` αναφέρεται στο
+  αντικείμενο πάνω στο οποίο καλείται η μέθοδος.
+  
+* Για
+  [παράδειγμα](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this#As_an_object_method):
+  
+   ```javascript
+   var o = {
+     prop: 37,
+     f: function() {
+       return this.prop;
+     }
+   };
+
+   console.log(o.f()); // 37
+   ```
+
+## Προβλήματα με το `this`
+
 * Οι συνήθεις συναρτήσεις έχουν μια ιδιότητα `this`, ανάλογα με τον
   τρόπο με τον οποίο καλούνται. 
-  
-## Άνευ This (2)
   
 * Αυτό μπορεί να δημιουργήσει
   [προβλήματα](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#No_separate_this):
@@ -811,10 +898,10 @@ rpr
    var p = new Person();
    ```
 
-## Χρήση `this` σε Συναρτήσεις με Βελάκια
+## Χρήση `this` σε Συντομευμένες Συναρτήσεις
 
-* Στις συναρτήσεις με βελάκια, εφ' όσον δεν έχουν `this`, η κατάσταση
-  απλοποιείται πολύ:
+* Στις συντομευμένες συναρτήσεις, εφ' όσον δεν έχουν `this`, η
+  κατάσταση απλοποιείται πολύ:
   
    ```javascript
    function Person() {
