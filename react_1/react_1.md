@@ -45,7 +45,7 @@
   υποστήριξη (long term support, LTS):
 
    ```bash
-   nvm install node --lts
+   nvm install --lts node
    ```
    
 ## Εγκατάσταση React
@@ -106,14 +106,14 @@ nvm which current
 * Και στη συνέχεια:
 
    ```bash
-   npx create-react-app rpr
-   cd rpr
+   npx create-react-app rbr
+   cd rbr
    ```
    
 ## Δομή Καταλόγων
 
 ```
-rpr
+rbr
 ├── README.md
 ├── node_modules 
 ├── package-lock.json
@@ -405,7 +405,7 @@ rpr
        const helloWorld = "Hello, World!";
        return (
          <div className="App">
-       <h2>{helloWorld}</h2>
+           <h2>{helloWorld}</h2>
          </div>
        );
      }
@@ -452,54 +452,63 @@ rpr
    const list = [
      {
        title: 'Infinite Jest',
+       url: 'https://en.wikipedia.org/wiki/Infinite_Jest',
        author: 'David Foster Wallace',
        year_published: 1996,
        id: 0
      },
      {
        title: 'Ulysses',
+       url: 'https://en.wikipedia.org/wiki/Ulysses_(novel)',
        author: 'James Joyce',
        year_published: 1922,
        id: 1
      },
      {
        title: 'City on Fire',
+       url: 'https://en.wikipedia.org/wiki/City_on_Fire_(Hallberg_novel)',
        author: 'Garth Risk Hallbert',
        year_published: 2015,
        id: 3
      },
      {
        title: 'The Narrow Way to the Deep North',
+       url: 'https://en.wikipedia.org/wiki/The_Narrow_Road_to_the_Deep_North_(novel)',
        author: 'Richard Flanagan',
        year_published: 2013,
        id: 4
      },
      {
        title: 'The Dispossessed',
+       url: 'https://en.wikipedia.org/wiki/The_Dispossessed',
        author: 'Ursula Le Guin',
        year_published: 1974,
        id: 5
      },
      {
        title: 'A Death in the Family: My Struggle Book 1',
+       url: 'https://en.wikipedia.org/wiki/My_Struggle_(Knausg%C3%A5rd_novels)',
        author: 'Karl Ove Knausgård',
        year_published: 2009,
        id: 6
      },
      {
        title: 'Conversations with Friends',
+       url: 'https://en.wikipedia.org/wiki/Conversations_with_Friends',
        author: 'Sally Rooney',
        year_published: 2017,
        id: 7
-     },
+     },      
      {
        title: 'La Septième Fonction du Langage',
+       url: 'https://fr.wikipedia.org/wiki/La_Septi%C3%A8me_Fonction_du_langage',
        author: 'Laurent Binet',
        year_published: '2015',
        id: 8,
      },
      {
        title: 'La Vérité sur l\' Affaire Harry Quebert',
+       url: 'https://fr.wikipedia.org/wiki/La_V%C3%A9rit%C3%A9_sur_l%27affaire_Harry_Quebert',
        author: 'Joël Dicker',
        year_published: 2012,
        id: 9
@@ -603,16 +612,16 @@ rpr
 
 ## Σώμα Συντομευμένων Συναρτήσεων
 
-* Μπορούμε να
+* Όπως βλέπουμε, μπορούμε να
   [συντομεύσουμε](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#Function_body)
   το σώμα μιας συντομευμένης συνάρτησης:
 
    ```javascript
-   var func = x => x * x;
-   // concise body syntax, implied "return"
-
    var func = (x, y) => { return x + y; }; 
    // with block body, explicit "return" needed
+   
+   var func = x => x * x;
+   // concise body syntax, implied "return"
    ```
    
 ## Επιστροφή Αντικειμένων (1)
@@ -701,31 +710,137 @@ rpr
    // Notice the difference with the previous continue example
    ```
 
-## Παρένθεση: Πίνακες στην JavaScript
+## Αποδόμηση (Destructuring)
 
-* Το τελευταίο παράδειγμα ίσως φαίνεται περίεργο:
+* Το παρακάτω (που είδαμε προηγουμένως) ίσως φαίνεται περίεργο:
 
    ```javascript
    elements.map(({ length }) => length); // [8, 6, 7, 9]
    ```
-   
-* Στην πραγματικότητα, οι πίνακες στην JavaScript είναι αντικείμενα,
-  και τα αντικείμενα στην JavaScript είναι στην ουσία πίνακες
-  κατακερματισμού. 
 
-* Το αντικείμενο που αντιστοιχεί σε έναν πίνακα έχει μία επιπλέον
-  ιδιότητα, την `length`.
+* Η `elements.map()` παίρνει κάθε στοιχείο του `elements` με τη σειρά.
 
-* Έτσι, ο πίνακας `elements` είναι το αντικείμενο:
+* Κάθε στοιχείο του `elements` είναι ένα αντικείμενο τύπου string.
+
+* Κάθε αντικείμενο τύπου string έχει ένα πεδίο `length`.
+
+* Με το `{length}` [αποδομούμε (destructuring
+  assignment)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+  το αντικείμενο και παίρνουμε το πεδίο `length`.
+  
+* Για [παράδειγμα](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Basic_assignment):
 
    ```javascript
-   var elements = [
-     0: 'Hydrogen',
-     1: 'Helium',
-     2: 'Lithium',
-     3: 'Beryllium',
-     length: 4
-   ];
+   var o = {p: 42, q: true};
+   var {p, q} = o;
+
+   console.log(p); // 42
+   console.log(q); // true
+   ```
+
+## Αποδόμηση σε Πίνακες και σε Αντικείμενα
+
+* Η αποδόμηση λειτουργεί και σε πίνακες και σε αντικείμενα:
+
+   ```javascript
+   var a, b, rest;
+   [a, b] = [10, 20];
+   console.log(a); // 10
+   console.log(b); // 20
+
+   [a, b, ...rest] = [10, 20, 30, 40, 50];
+   console.log(a); // 10
+   console.log(b); // 20
+   console.log(rest); // [30, 40, 50]
+
+   ({ a, b } = { a: 10, b: 20 });
+   console.log(a); // 10
+   console.log(b); // 20
+   ```
+
+## Αποδόμηση και Αλλαγή Τιμών
+
+* Με την αποδόμηση μπορούμε να ανταλλάξουμε τις τιμές δύο μεταβλητών
+  χωρίς ενδιάμεση μεταβλητή:
+  
+   ```javascript
+   var a = 1;
+   var b = 3;
+
+   [a, b] = [b, a];
+   console.log(a); // 3
+   console.log(b); // 1
+   ```
+   
+## Συντόμευση `src/App.js` (1)
+
+* Σύμφωνα με τα παραπάνω, μπορούμε να συντομεύσουμε το `src/App/js` ως
+  εξής:
+  
+   ```javascript
+   import React, { Component } from 'react';
+   import './App.css';
+
+   /* ... */
+
+   class App extends Component {
+     render() {
+       return (
+         <div className="App">
+       {list.map(item => {
+         return(
+           <div key={item.id}>
+             <span>
+               <a href={item.url}>{item.title}</a>:
+             </span>
+             &nbsp;
+             <span>{item.author}</span>
+             &nbsp;Year Published:
+             <span>{item.year_published}</span>
+           </div>
+         );
+       })}
+         </div>
+       );
+     }
+   }
+
+   export default App;
+   ```
+
+## Συντόμευση `src/App.js` (2)
+
+* Ή ακόμα περισσότερο, αφού μπορεί να παραληφθεί το `return` μετά το
+  βελάκι:
+  
+   ```javascript
+   import React, { Component } from 'react';
+   import './App.css';
+
+   /* ... */
+   
+   class App extends Component {
+     render() {
+       return (
+         <div className="App">
+           {list.map(item =>
+             <div key={item.id}>
+               <span>
+                 <a href={item.url}>{item.title}</a>:
+               </span>
+               &nbsp;
+               <span>{item.author}</span>
+               &nbsp;Year Published:
+               <span>{item.year_published}</span>
+             </div>
+           )}
+         </div>
+       );
+     }
+   }
+   
+   export default App;
+   
    ```
 
 ## `this` στην JavaScript
@@ -741,7 +856,7 @@ rpr
   
   * εντός μεθόδων
   
-  * σε συντομευμένες συναρτήσεις.
+  * σε συντομευμένες συναρτήσεις
   
 
 ## `this` εκτός Συναρτήσεων
@@ -819,178 +934,6 @@ rpr
    console.log(o.f()); // 37
    ```
 
-## Προβλήματα με το `this`
-
-* Οι συνήθεις συναρτήσεις έχουν μια ιδιότητα `this`, ανάλογα με τον
-  τρόπο με τον οποίο καλούνται. 
-  
-* Αυτό μπορεί να δημιουργήσει
-  [προβλήματα](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#No_separate_this):
-  
-   ```javascript
-   function Person() {
-     // The Person() constructor defines `this` as an instance of itself.
-     this.age = 0;
-
-     var growing = setInterval(function growUp() {
-       // In non-strict mode, the growUp() function defines `this` 
-       // as the global object (because it's where growUp() is executed.), 
-       // which is different from the `this`
-       // defined by the Person() constructor. 
-       alert(this.age);
-       this.age++;
-       if (this.age > 5) {
-         clearInterval(growing);
-       }
-     }, 1000);
-   }
-
-   var p = new Person();
-   ```
-
-## Διόρθωση `this` σε ECMAScript3/5
-
-* Στην ECMAScript 3/5 το πρόβλημα διορθωνόταν αποθηκεύοντας την τιμή
-  του `this` σε μία μεταβλητή:
-  
-   ```javascript
-   function Person() {
-     // The Person() constructor defines `this` as an instance of itself.
-     var that = this;
-     that.age = 0;
-
-     var growing = setInterval(function growUp() {
-       // The callback refers to the `that` variable of which
-       // the value is the expected object.
-       alert(that.age);
-       that.age++;
-       if (that.age > 5) {
-         clearInterval(growing);
-       }
-     }, 1000);
-   }
-
-   var p = new Person();
-   ```
-
-## Δέσμευση `this`
-
-* Εναλλακτικά, μπορούμε να δεσμεύσουμε το `this` στην τιμή που θέλουμε
-  με χρήση του `bind()`:
-  
-   ```javascript
-   function Person() {
-     this.age = 0;
-
-     this.growUp = function growUp() {
-       alert(this.age);
-       this.age++;
-       if (this.age > 5) {
-         clearInterval(this.growing);
-       }
-     };
-
-     this.growUp = this.growUp.bind(this);
-
-     this.growing = setInterval(this.growUp, 1000);
-   }
-
-   var p = new Person();
-   ```
-
-## Χρήση `this` σε Συντομευμένες Συναρτήσεις
-
-* Στις συντομευμένες συναρτήσεις, εφ' όσον δεν έχουν `this`, η
-  κατάσταση απλοποιείται πολύ:
-  
-   ```javascript
-   function Person() {
-     this.age = 0;
-
-     this.growing = setInterval(() => {
-       alert(this.age);
-       this.age++;
-       if (this.age > 5) {
-         clearInterval(this.growing);
-       }
-     }, 1000);
-
-   }
-
-   var p = new Person();
-   ```
-
-## Συντόμευση `src/App.js` (1)
-
-* Σύμφωνα με τα παραπάνω, μπορούμε να συντομεύσουμε το `src/App/js` ως
-  εξής:
-  
-   ```javascript
-   import React, { Component } from 'react';
-   import './App.css';
-
-   /* ... */
-
-   class App extends Component {
-     render() {
-       return (
-         <div className="App">
-       {list.map(item => {
-         return(
-           <div key={item.id}>
-             <span>
-               <a href={item.url}>{item.title}</a>:
-             </span>
-             &nbsp;
-             <span>{item.author}</span>
-             &nbsp;Year Published:
-             <span>{item.year_published}</span>
-           </div>
-         );
-       })}
-         </div>
-       );
-     }
-   }
-
-   export default App;
-   ```
-
-## Συντόμευση `src/App.js` (2)
-
-* Ή ακόμα περισσότερο, αφού μπορεί να παραληφθεί το `return` μετά το
-  βελάκι:
-  
-   ```javascript
-   import React, { Component } from 'react';
-   import './App.css';
-
-   /* ... */
-   
-   class App extends Component {
-     render() {
-       return (
-         <div className="App">
-           {list.map(item =>
-             <div key={item.id}>
-               <span>
-                 <a href={item.url}>{item.title}</a>:
-               </span>
-               &nbsp;
-               <span>{item.author}</span>
-               &nbsp;Year Published:
-               <span>{item.year_published}</span>
-             </div>
-           )}
-         </div>
-       );
-     }
-   }
-   
-   export default App;
-   
-   ```
-
 ## Κλάσεις στην JavaScript (1)
 
 * Στην JavaScript στην πραγματικότητα οι κλάσεις είναι συναρτήσεις
@@ -1026,7 +969,7 @@ rpr
    AA.sm(3); // prints: sm called with arg 3
    ```
 
-## Συναρτήσεις στην JavaScript (2)
+## Κλάσεις στην JavaScript (2)
 
 * Στην ES6 μπορούμε να δηλώσουμε κλάσεις με έναν τρόπο που είναι πιο
   κοντά σε γλώσσες όπως Java.
@@ -1223,7 +1166,7 @@ Teacher { greeting: [Function] }
 
 </div>
 
-## Κλάσεις στην JavaScript (3)
+## Κληρονομικότητα στην JavaScript (3)
 
 * Στην ES6 τα πράγματα έχουν απλοποιηθεί σημαντικά.
 
@@ -1365,4 +1308,105 @@ Teacher { greeting: [Function] }
    const p = new Rectangle(); // ReferenceError
 
    class Rectangle {}
+   ```
+
+## Προβλήματα με το `this`
+
+* Οι συνήθεις συναρτήσεις έχουν μια ιδιότητα `this`, ανάλογα με τον
+  τρόπο με τον οποίο καλούνται. 
+  
+* Αυτό μπορεί να δημιουργήσει
+  [προβλήματα](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#No_separate_this):
+  
+   ```javascript
+   function Person() {
+     // The Person() constructor defines `this` as an instance of itself.
+     this.age = 0;
+
+     var growing = setInterval(function growUp() {
+       // In non-strict mode, the growUp() function defines `this` 
+       // as the global object (because it's where growUp() is executed.), 
+       // which is different from the `this`
+       // defined by the Person() constructor. 
+       alert(this.age);
+       this.age++;
+       if (this.age > 5) {
+         clearInterval(growing);
+       }
+     }, 1000);
+   }
+
+   var p = new Person();
+   ```
+
+## Διόρθωση `this` σε ECMAScript3/5
+
+* Στην ECMAScript 3/5 το πρόβλημα διορθωνόταν αποθηκεύοντας την τιμή
+  του `this` σε μία μεταβλητή:
+  
+   ```javascript
+   function Person() {
+     // The Person() constructor defines `this` as an instance of itself.
+     var that = this;
+     that.age = 0;
+
+     var growing = setInterval(function growUp() {
+       // The callback refers to the `that` variable of which
+       // the value is the expected object.
+       alert(that.age);
+       that.age++;
+       if (that.age > 5) {
+         clearInterval(growing);
+       }
+     }, 1000);
+   }
+
+   var p = new Person();
+   ```
+
+## Δέσμευση `this`
+
+* Εναλλακτικά, μπορούμε να δεσμεύσουμε το `this` στην τιμή που θέλουμε
+  με χρήση του `bind()`:
+  
+   ```javascript
+   function Person() {
+     this.age = 0;
+
+     this.growUp = function growUp() {
+       alert(this.age);
+       this.age++;
+       if (this.age > 5) {
+         clearInterval(this.growing);
+       }
+     };
+
+     this.growUp = this.growUp.bind(this);
+
+     this.growing = setInterval(this.growUp, 1000);
+   }
+
+   var p = new Person();
+   ```
+
+## Χρήση `this` σε Συντομευμένες Συναρτήσεις
+
+* Στις συντομευμένες συναρτήσεις, εφ' όσον δεν έχουν `this`, η
+  κατάσταση απλοποιείται πολύ:
+  
+   ```javascript
+   function Person() {
+     this.age = 0;
+
+     this.growing = setInterval(() => {
+       alert(this.age);
+       this.age++;
+       if (this.age > 5) {
+         clearInterval(this.growing);
+       }
+     }, 1000);
+
+   }
+
+   var p = new Person();
    ```
