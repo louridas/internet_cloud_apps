@@ -934,6 +934,70 @@ rbr
    console.log(o.f()); // 37
    ```
 
+## `this` σε Συντομευμένες Συναρτήσεις (1)
+
+* Μια συντομευμένη συνάρτηση δεν έχει δικό της `this`.
+
+* Η τιμή του `this` είναι [αυτή του μπλοκ που την
+  περικλείει](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#No_separate_this).
+
+* Έτσι, στο παρακάτω παράδειγμα, το `this` της συντομευμένης
+  συνάρτησης αναφέρεται στο αντικείμενο που την περικλύει.
+  
+   ```javascript
+   function Person(){
+     this.age = 0;
+
+     setInterval(() => {
+       this.age++; // |this| properly refers to the Person object
+     }, 1000);
+   }
+
+   var p = new Person();
+   ```
+
+## `this` σε Συντομευμένες Συναρτήσεις (2)
+
+* Αυτό μας δίνει μια λύση σε ένα πρόβλημα που εμφανίζεται με ανώνυμες
+  συναρτήσεις που ορίζουμε ως callbacks. 
+  
+* Για παράδειγμα, το παρακάτω δεν δουλεύει σωστά:
+
+   ```javascript
+   function Person() {
+     // The Person() constructor defines `this` as an instance of itself.
+     this.age = 0;
+
+     setInterval(function growUp() {
+       // In non-strict mode, the growUp() function defines `this` 
+       // as the global object (because it's where growUp() is executed.), 
+       // which is different from the `this`
+       // defined by the Person() constructor. 
+       this.age++;
+     }, 1000);
+   }
+
+   var p = new Person();
+   ```
+
+## `this` σε Συντομευμένες Συναρτήσεις (3)
+
+* Η παραδοσιακή λύση, άνευ συντομευμένων συναρτήσεων (σε ES3/5) ήταν
+  να ορίσουμε μια άλλη μεταβλητή:
+  
+   ```javascript
+   function Person() {
+     var that = this;
+     that.age = 0;
+
+     setInterval(function growUp() {
+       // The callback refers to the `that` variable of which
+       // the value is the expected object.
+       that.age++;
+     }, 1000);
+   }
+   ```
+
 ## Κλάσεις στην JavaScript (1)
 
 * Στην JavaScript στην πραγματικότητα οι κλάσεις είναι συναρτήσεις
@@ -1310,103 +1374,3 @@ Teacher { greeting: [Function] }
    class Rectangle {}
    ```
 
-## Προβλήματα με το `this`
-
-* Οι συνήθεις συναρτήσεις έχουν μια ιδιότητα `this`, ανάλογα με τον
-  τρόπο με τον οποίο καλούνται. 
-  
-* Αυτό μπορεί να δημιουργήσει
-  [προβλήματα](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#No_separate_this):
-  
-   ```javascript
-   function Person() {
-     // The Person() constructor defines `this` as an instance of itself.
-     this.age = 0;
-
-     var growing = setInterval(function growUp() {
-       // In non-strict mode, the growUp() function defines `this` 
-       // as the global object (because it's where growUp() is executed.), 
-       // which is different from the `this`
-       // defined by the Person() constructor. 
-       alert(this.age);
-       this.age++;
-       if (this.age > 5) {
-         clearInterval(growing);
-       }
-     }, 1000);
-   }
-
-   var p = new Person();
-   ```
-
-## Διόρθωση `this` σε ECMAScript3/5
-
-* Στην ECMAScript 3/5 το πρόβλημα διορθωνόταν αποθηκεύοντας την τιμή
-  του `this` σε μία μεταβλητή:
-  
-   ```javascript
-   function Person() {
-     // The Person() constructor defines `this` as an instance of itself.
-     var that = this;
-     that.age = 0;
-
-     var growing = setInterval(function growUp() {
-       // The callback refers to the `that` variable of which
-       // the value is the expected object.
-       alert(that.age);
-       that.age++;
-       if (that.age > 5) {
-         clearInterval(growing);
-       }
-     }, 1000);
-   }
-
-   var p = new Person();
-   ```
-
-## Δέσμευση `this`
-
-* Εναλλακτικά, μπορούμε να δεσμεύσουμε το `this` στην τιμή που θέλουμε
-  με χρήση του `bind()`:
-  
-   ```javascript
-   function Person() {
-     this.age = 0;
-
-     this.growUp = function growUp() {
-       alert(this.age);
-       this.age++;
-       if (this.age > 5) {
-         clearInterval(this.growing);
-       }
-     };
-
-     this.growUp = this.growUp.bind(this);
-
-     this.growing = setInterval(this.growUp, 1000);
-   }
-
-   var p = new Person();
-   ```
-
-## Χρήση `this` σε Συντομευμένες Συναρτήσεις
-
-* Στις συντομευμένες συναρτήσεις, εφ' όσον δεν έχουν `this`, η
-  κατάσταση απλοποιείται πολύ:
-  
-   ```javascript
-   function Person() {
-     this.age = 0;
-
-     this.growing = setInterval(() => {
-       alert(this.age);
-       this.age++;
-       if (this.age > 5) {
-         clearInterval(this.growing);
-       }
-     }, 1000);
-
-   }
-
-   var p = new Person();
-   ```
