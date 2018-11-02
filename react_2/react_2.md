@@ -45,7 +45,7 @@
        {this.state.list.map(item =>
            <div key={item.id}>
              <span>
-           <a href={item.url}>{item.title}</a>:
+               <a href={item.url}>{item.title}</a>:
              </span>
              &nbsp;
              <span>{item.author}</span>
@@ -250,14 +250,35 @@
      return (
        <div className="App">
          <form>
-           <input type="text" onChange={this.onSearchChange}/>
+           <input 
+             type="text" 
+             value={this.state.searchTerm}
+             onChange={this.onSearchChange}
+           />
          </form>
          ...
        </div>
      );
    }
+   ```
+
+## Ελεγχόμενα Στοιχεία
+
+* Στην HTML, στοιχεία όπως `<input>`, `<textarea>`, και `<select>`,
+  χειρίζονται τα ίδια την κατάστασή τους (δηλαδή την είσοδο του
+  χρήστη).
+  
+* Εμείς όμως θέλουμε η κατάστασή τους να ελέγχεται από το React.
+
+* Αυτό το κάνουμε θέτοντας 
 
    ```
+   value={this.state.searchTerm}
+   ```
+
+* Τα στοιχεία των οποίων η κατάσταση ελέγχεται πλήρως από το React
+  ονομάζονται *ελεγχόμενα στοιχεία* (controlled elements).
+
 
 ## Χειριστής Αναζήτησης (1)
 
@@ -335,7 +356,10 @@
      return (
        <div className="App">
          <form>
-           <input type="text" onChange={this.onSearchChange}/>
+           <input 
+             type="text" 
+             value={this.state.searchTerm}
+             onChange={this.onSearchChange}/>
          </form>
          {
            this.state.list.filter(item => this.searchItem(item)).map(
@@ -360,3 +384,551 @@
      );
    }v
    ```
+
+## Εξαρτήματα και Ιδιότητες (1)
+
+* Στον ορισμό του εξαρτήματος `App` μπορούμε να προσέξουμε ότι ο
+  κατασκευαστής παίρνει μια παράμετρο `props`:
+  
+   ```javascript
+   constructor(props) {
+     super(props);
+
+     this.state = {
+       list: list,
+       searchTerm: '',
+     };
+
+     this.onSearchChange = this.onSearchChange.bind(this);
+   }
+   ```
+
+* Η παράμετρος αυτή περιέχει τις *ιδιότητες* (properties) που μπορούμε
+  να προσδώσουμε σε ένα εξάρτημα.
+  
+## Εξαρτήματα και Ιδιότητες (2)
+  
+* Προσοχή: *δεν πρέπει ποτέ να αλλάξουμε μέσα σε ένα εξάρτημα τις
+  ιδιότητές του!*
+  
+* Αν θέλουμε να αλλάζουμε τα δεδομένα, χρησιμοποιούμε την κατάσταση
+  (state) του εξαρτήματος.
+
+
+## Παράδειγμα Ιδιοτήτων Εξαρτήματος (1)
+
+* Το παρακάτω
+  [παράδειγμα](https://reactjs.org/docs/components-and-props.html#rendering-a-component)
+  εμφανίζει το μήνυμα «Hello, Sara»:
+
+   ```javascript
+   function Welcome(props) {
+     return <h1>Hello, {props.name}</h1>;
+   }
+
+   const element = <Welcome name="Sara" />;
+   ReactDOM.render(
+     element,
+     document.getElementById('root')
+   );
+   ```
+
+## Παράδειγμα Ιδιοτήτων Εξαρτήματος (2)
+
+* Το προηγούμενο εξάρτημα το ορίσαμε μέσω μιας συνάρτησης, γι' αυτό
+  και ονομάζεται «συναρτησιακό εξάρτημα» (function component).
+  
+* Μπορούμε να το ορίσουμε εναλλακτικά ως κλάση:
+
+   ```javascript
+   class Welcome extends React.Component {
+
+     render() {
+        return <h1>Hello, {this.props.name}</h1>;
+     }
+
+   }
+
+   const element = <Welcome name="Sara" />;
+   ReactDOM.render(element, document.getElementById('root'));
+   ```
+
+## Σύνθεση Εξαρτημάτων
+
+* Μπορούμε να φτιάξουμε εξαρτήματα που χρησιμοποιούν εξαρτήματα.
+
+* Στη δομή αυτή, μπορούμε να χρησιμοποιήσουμε ιδιότητες για να δώσει
+  ένα εξάρτημα δεδομένα σε ένα άλλο.
+  
+   ```javascript
+   const names = [
+     "Alice",
+     "Bob",
+     "Carol",
+     "Dave",
+   ]
+
+   function Welcome(props) {
+     return <h1>Hello, {props.name}</h1>;
+   }
+
+   function App() {
+     return (
+       <div>
+       {names.map(name => 
+         <Welcome name={name}/>
+       )}
+       </div>
+     );
+   }
+
+   ReactDOM.render(<App />, document.getElementById('root'));
+   ```
+
+## Διάσπαση Εξαρτημάτων
+
+* Αφού λοιπόν μπορούμε να συνθέσουμε εξαρτήματα, μπορούμε να
+  διασπάσουμε ένα εξάρτημα σε μικρότερα.
+  
+* Έτσι, μπορούμε αντί για ένα εξάρτημα όπως τώρα να φτιάξουμε τρία:
+
+  1. Ένα «κεντρικό» εξάρτημα (`App`).
+  
+  2. Ένα εξάρτημα για την αναζήτηση (`Search`).
+  
+  3. Ένα εξάρτημα για την εμφάνιση της λίστας των βιβλίων
+     (`ItemList`).
+
+
+## Παρένθεση: Διαχωρισμός των Δεδομένων (1)
+
+* Έχουμε συμπεριλάβει τα δεδομένα μας μέσα στο αρχείο `App.js`.
+
+* Αυτό, έστω και προσωρινά, δεν είναι καλή λύση, γιατί θα θέλαμε το
+  `App.js` να έχει μόνο κώδικα.
+  
+* Για το λόγο αυτό, φτιάχνουμε ένα αρχείο `src/Books.js` με
+  περιεχόμενα:
+  
+   ```javascript
+   const list = [
+     {
+       title: 'Infinite Jest',
+       url: 'https://en.wikipedia.org/wiki/Infinite_Jest',
+       author: 'David Foster Wallace',
+       year_published: 1996,
+       id: 0
+     },
+     {
+       title: 'Ulysses',
+       url: 'https://en.wikipedia.org/wiki/Ulysses_(novel)',
+       author: 'James Joyce',
+       year_published: 1922,
+       id: 1
+     },
+     {
+       title: 'Gravity\'s Rainbow',
+       url: 'https://en.wikipedia.org/wiki/Gravity%27s_Rainbow',
+       author: 'Thomas Pynchon',
+       year_published: 1973,
+       id: 2
+     },
+     {
+       title: 'City on Fire',
+       url: 'https://en.wikipedia.org/wiki/City_on_Fire_(Hallberg_novel)',
+       author: 'Garth Risk Hallbert',
+       year_published: 2015,
+       id: 3
+     },
+     {
+       title: 'The Narrow Way to the Deep North',
+       url: 'https://en.wikipedia.org/wiki/The_Narrow_Road_to_the_Deep_North_(novel)',
+       author: 'Richard Flanagan',
+       year_published: 2013,
+       id: 4
+     },
+     {
+       title: 'The Dispossessed',
+       url: 'https://en.wikipedia.org/wiki/The_Dispossessed',
+       author: 'Ursula Le Guin',
+       year_published: 1974,
+       id: 5
+     },
+     {
+       title: 'A Death in the Family: My Struggle Book 1',
+       url: 'https://en.wikipedia.org/wiki/My_Struggle_(Knausg%C3%A5rd_novels)',
+       author: 'Karl Ove Knausgård',
+       year_published: 2009,
+       id: 6
+     },
+     {
+       title: 'Conversations with Friends',
+       url: 'https://en.wikipedia.org/wiki/Conversations_with_Friends',
+       author: 'Sally Rooney',
+       year_published: 2017,
+       id: 7
+     },      
+     {
+       title: 'La Septième Fonction du Langage',
+       url: 'https://fr.wikipedia.org/wiki/La_Septi%C3%A8me_Fonction_du_langage',
+       author: 'Laurent Binet',
+       year_published: '2015',
+       id: 8,
+     },
+     {
+       title: 'La Vérité sur l\' Affaire Harry Quebert',
+       url: 'https://fr.wikipedia.org/wiki/La_V%C3%A9rit%C3%A9_sur_l%27affaire_Harry_Quebert',
+       author: 'Joël Dicker',
+       year_published: 2012,
+       id: 9
+     },
+   ];
+
+   export default list;
+
+   ```
+   
+## Παρένθεση: Διαχωρισμός των Δεδομένων (2)
+
+* Για να χρησιμοποιήσουμε τα δεδομένα μας στο `src/App.js` αρκεί απλώς
+  να βάλουμε στην αρχή:
+  
+   ```javascript
+   import list from './Books.js';
+   ```
+   
+* Για περισσότερες πληροφορίες δείτε πώς δουλεύει το [import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import). 
+
+## Εξάρτημα Αναζήτησης
+
+* Το εξάρτημα αναζήτησης θα έχει δύο ιδιότητες, το κείμενο που εισάγει
+  ο χρήστης και τον χειριστή.
+  
+* Προσέξτε ότι δεν διατηρεί δεδομένα: τα δεδομένα θα παραμένουν στην
+  κατάσταση του `App.js`.
+  
+* To εξάρτημα αναζήτησης θα υλοποιηθεί από την κλάση `Search` στο
+  αρχείο `src/App.js`:
+
+   ```javascript
+   class Search extends Component {
+
+     render() {
+       const { searchTerm, onSearchChange } = this.props;
+       return (
+         <div className="Search">
+           <form>
+             <input
+               type="text"
+               value={searchTerm}
+               onChange={onSearchChange}
+             />
+           </form>
+         </div>
+       );
+     }
+   }
+   ```
+
+## Εξάρτημα Λίστας
+
+* Το εξάρτημα της λίστας θα υλοποιηθεί και αυτό στη δική του κλάση
+  `ItelList` στο αρχείο `src/App.js`. 
+
+* Η κλάση αυτή θα παίρνει ως ιδιότητες τον όρο αναζήτησης, τη λίστα
+  των βιβλίων, και τη μέθοδο `onDismiss()`.
+
+   ```javascript
+   class ItemList extends Component {
+
+     searchItem(item) {
+       return item.title.toLowerCase()
+         .includes(this.props.searchTerm.toLowerCase());
+     }
+
+     render() {
+       return (
+         <div className="books">
+         <ul>
+         {this.props.list.filter(item => this.searchItem(item)).map(
+           item =>
+           <li key={item.id}>
+             <span className="badge">{item.id}</span>
+             <span className="title">
+               <a href={item.url}>{item.title}</a>
+             </span>
+             <button
+               className="delete"
+               onClick={() => this.props.onDismiss(item.id)}>
+                 x
+               </button>
+           </li>
+         )}
+         </ul>
+         </div>
+       );
+     }
+   }
+   ```
+
+## Σύνθεση Εξαρτημάτων
+
+* Μετά τα παραπάνω είμαστε σε θέση να συνθέσουμε τα εξαρτήματα,
+  απλοποιώντας σημαντικά τη δομή της εφαρμογής.
+  
+* Η κλάση `App` θα γίνει:
+
+   ```javascript
+   class App extends Component {
+
+     constructor(props) {
+       super(props);
+
+       this.state = {
+         list: list,
+         searchTerm: '',
+       };
+
+       this.onSearchChange = this.onSearchChange.bind(this);
+       this.onDismiss = this.onDismiss.bind(this);
+     }
+
+     onDismiss(id) {
+       const updatedList = this.state.list.filter(item => item.id !== id);
+       this.setState({ list: updatedList });
+     }
+
+     onSearchChange(event) {
+       // shallow merge, so list is preserved
+       this.setState({ searchTerm: event.target.value });
+     }
+
+     render() {
+       return (
+         <div className="App">
+           <Search
+             value={this.searchTerm}
+             onSearchChange={this.onSearchChange}
+           />
+           <ItemList
+             list={this.state.list}
+             searchTerm={this.state.searchTerm}
+             onDismiss={this.onDismiss}
+           />
+         </div>
+       );
+     }
+
+   }
+   ```
+
+## Βελτίωση Εμφάνισης
+
+* Για να βελτιώσουμε την εμφάνιση της εφαρμογής θα χρησιμοποιήσουμε
+  CSS.
+  
+* Στο αρχείο `index.css` βάζουμε στυλ που αφορούν το σύνολο της
+  εφαρμογής.
+  
+* Στο αρχείο `App.css` βάζουμε στυλ που αφορούν μόνο τα εξαρτήματα που
+  υλοποιούμε στο αρχείο `App.js` και στη συνέχεια τα εισάγουμε στο
+  `App.js`:
+  
+   ```javacript
+   import './App.css';
+   ```
+  
+* Όταν κτίζεται (build) η εφαρμογή, το webpack θα αναλάβει να
+  τροποποιήσει τα περιεχόμενα του `App.css` ώστε οι δηλώσεις κλάσεων
+  να είναι μοναδικές, και θα τα εισάγει στο αρχείο `App.js` ως inline
+  `<style>`.
+  
+## `index.css`
+
+```css
+/* Master Styles */
+h1 {
+  color: #369;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 250%;
+}
+
+h2, h3 {
+  color: #444;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: lighter;
+}
+
+body {
+  width: 50%;
+  margin: 2em;
+}
+
+body, input[text], button {
+  color: #888;
+  font-family: Cambria, Georgia;
+}
+
+a {
+  cursor: pointer;
+  cursor: hand;
+}
+
+button {
+  font-family: Arial;
+  background-color: #eee;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  cursor: hand;
+}
+
+button:hover {
+  background-color: #cfd8dc;
+}
+
+button:disabled {
+  background-color: #eee;
+  color: #aaa;
+  cursor: auto;
+}
+
+
+/* Navigation link styles */
+nav a {
+  padding: 5px 10px;
+  text-decoration: none;
+  margin-right: 10px;
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #eee;
+  border-radius: 4px;
+}
+
+nav a:visited, a:link {
+  color: #607D8B;
+}
+
+nav a:hover {
+  color: #039be5;
+  background-color: #CFD8DC;
+}
+
+nav a.active {
+  color: #039be5;
+}
+
+/* everywhere else */
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/*
+Copyright 2017 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/
+```
+
+## `App.css`
+
+```css
+.books {
+  margin: 0 0 2em 0;
+  padding: 0;
+  width: 25em;
+}
+
+.books ul {
+  list-style-type: none;
+}
+
+.books li {
+  width: 22em;
+  position: relative;
+  cursor: pointer;
+  background-color: #EEE;
+  margin-left: .5em;
+  margin-top: .5em;
+  margin-botton: 0.5em;
+  padding-left: 0.25em;
+  padding-top: 0.45em;
+  padding-bottom: 0em;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.books .title {
+  width: 17em;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+    
+}
+
+.books li:hover {
+  color: #607D8B;
+  background-color: #DDD;
+  left: .1em;
+}
+
+.books a {
+  color: #888;
+  text-decoration: none;
+  position: relative;
+}
+
+.books a:hover {
+  color:#607D8B;
+}
+
+.books .badge {
+  display: inline-block;
+  font-size: small;
+  color: white;
+  padding: 0.8em 0.7em 0 0.7em;
+  background-color: #607D8B;
+  line-height: 1em;
+  position: relative;
+  left: -1px;
+  top: -4px;
+  height: 1.8em;
+  min-width: 16px;
+  text-align: right;
+  margin-right: .8em;
+  border-radius: 4px 0 0 4px;
+}
+
+.button {
+  background-color: #eee;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  cursor: hand;
+  font-family: Arial;
+}
+
+button:hover {
+  background-color: #cfd8dc;
+}
+
+button.delete {
+  float: right;
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+  background-color: gray !important;
+  color: white;
+}
+
+/*
+Derived by the stylesheet for the Angular tutorial (2017).
+
+See that for any copyright that might apply (have no idea,
+taking into account the changes).
+For the license, check http://angular.io/license
+*/
+```
+

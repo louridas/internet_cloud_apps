@@ -1,32 +1,96 @@
-.App {
-  text-align: center;
+.books {
+  margin: 0 0 2em 0;
+  padding: 0;
+  width: 25em;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+.books ul {
+  list-style-type: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.books li {
+  width: 22em;
+  position: relative;
+  cursor: pointer;
+  background-color: #EEE;
+  margin-left: .5em;
+  margin-top: .5em;
+  margin-botton: 0.5em;
+  padding-left: 0.25em;
+  padding-top: 0.45em;
+  padding-bottom: 0em;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.books .title {
+  width: 17em;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+    
+}
+
+.books li:hover {
+  color: #607D8B;
+  background-color: #DDD;
+  left: .1em;
+}
+
+.books a {
+  color: #888;
+  text-decoration: none;
+  position: relative;
+}
+
+.books a:hover {
+  color:#607D8B;
+}
+
+.books .badge {
+  display: inline-block;
+  font-size: small;
+  color: white;
+  padding: 0.8em 0.7em 0 0.7em;
+  background-color: #607D8B;
+  line-height: 1em;
+  position: relative;
+  left: -1px;
+  top: -4px;
+  height: 1.8em;
+  min-width: 16px;
+  text-align: right;
+  margin-right: .8em;
+  border-radius: 4px 0 0 4px;
+}
+
+.button {
+  background-color: #eee;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  cursor: hand;
+  font-family: Arial;
+}
+
+button:hover {
+  background-color: #cfd8dc;
+}
+
+button.delete {
+  float: right;
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+  background-color: gray !important;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
+/*
+Derived by the stylesheet for the Angular tutorial (2017).
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+See that for any copyright that might apply (have no idea,
+taking into account the changes).
+For the license, check http://angular.io/license
+*/
+
