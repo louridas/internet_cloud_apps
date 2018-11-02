@@ -1330,6 +1330,10 @@ Teacher { greeting: [Function] }
        this.interests = interests;
      }
 
+     get age() {
+       return this._age;
+     }
+     
      set age(newAge) {
        if (newAge > 0) {
          this._age = newAge;
