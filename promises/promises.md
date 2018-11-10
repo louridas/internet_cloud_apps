@@ -75,7 +75,7 @@
   εκτέλεση του κώδικα αφού έχει ολοκληρωθεί κάποια *ασύγχρονη*
   λειτουργία.
   
-## Ασύγχρονο Callback
+## Ασύγχρονο Callback `Geolocation.getCurrentPosition()` (1)
 
 * Η μέθοδος `Geolocation.getCurrentPosition()` μπορεί να μας δώσει τη
   θέση της συσκευής μας και παίρνει τρεις παραμέτρους:
@@ -83,11 +83,18 @@
    ```javascript
    navigator.geolocation.getCurrentPosition(success[, error[, [options]])
    ```
-  
+
+* Η πρώτη παράμετρος είναι συνάρτηση που θα κληθεί αν η
+  `Geolocation.getCurrentPosition()` καταφέρει να πάρει τα στοιχεία
+  της τοποθεσίας μας, η δεύτερη η συνάρτηση που θα κληθεί αν όχι, και
+  η τρίτη είναι επιλογές.
+
+
+## Ασύγχρονο Callback `Geolocation.getCurrentPosition()` (2)
+
 * Μπορούμε να δούμε πώς λειτουργεί
   [παρακάτω](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition):
   
-
    ```javascript
    var options = {
      enableHighAccuracy: true,
