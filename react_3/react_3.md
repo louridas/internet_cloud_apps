@@ -680,17 +680,17 @@ npm install jquery
            <Router className="App">
              <div>
                <Navbar color="light" light expand="md">
-                 <NavbarBrand href="/">Converters</NavbarBrand>
+                 <NavbarBrand tag={Link} to="/">Converters</NavbarBrand>
                  <Nav className="ml-auto" navbar>
-                   <NavItem>
-                     <NavLink href="/temperature/">Temperature</NavLink>
-                   </NavItem>
-                   <NavItem>
-                     <NavLink href="/distance/">Distance</NavLink>
-                   </NavItem>
-                   <NavItem>
-                     <NavLink href="/energy/">Energy</NavLink>
-                   </NavItem>
+               <NavItem>
+                 <NavLink tag={Link} to="/temperature/">Temperature</NavLink>
+               </NavItem>
+               <NavItem>
+                 <NavLink tag={Link} to="/distance/">Distance</NavLink>
+               </NavItem>
+               <NavItem>
+                 <NavLink tag={Link} to="/energy/">Energy</NavLink>
+               </NavItem>
                  </Nav>
                </Navbar>
                <Route exact path="/" component={Home}/>
