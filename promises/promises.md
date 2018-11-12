@@ -177,8 +177,8 @@ Accuracy at more or less 107 meters.
    }
 
    var result1 = doSomething();
-   var result2 = doSomethingElse(result2);
-   var result3 = doThirdThing(result3);
+   var result2 = doSomethingElse(result1);
+   var result3 = doThirdThing(result2);
    ```
 
 ## Γιατί Χρειαζόμαστε Callbacks; (2)
