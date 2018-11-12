@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
+
+import {
+  Navbar,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+} from 'reactstrap';
 
 function toCelsius(fahrenheit) {
   return (fahrenheit - 32) * 5 / 9;
@@ -7,6 +16,22 @@ function toCelsius(fahrenheit) {
 
 function toFahrenheit(celsius) {
   return (celsius * 9 / 5) + 32;
+}
+
+function toKilometers(miles) {
+  return (miles / 1.60934);
+}
+
+function toMiles(kilometers) {
+  return (kilometers * 1.60934);
+}
+
+function toCalories(joules) {
+  return (joules * 4.184);
+}
+
+function toJoules(calories) {
+  return (calories / 4.184);
 }
 
 function tryConvert(measurement, convert) {
@@ -81,6 +106,7 @@ class Converter extends Component {
     
     return (
       <div>
+        <h1>{this.props.children}</h1>
 	<MeasurementInput
 	  quantity={quantity}
 	  unit={firstUnit}
@@ -98,17 +124,66 @@ class Converter extends Component {
   }
 }
 
+const Home = () => (
+  <div>Welcome to the ultimate unit converter</div>
+);
+
+const TemperatureConverter = () => (
+  <Converter 
+    quantity="Temperature"
+    firstUnit="Celsius"
+    secondUnit="Fahrenheit"
+    firstUnitConverter={toCelsius}
+    secondUnitConverter={toFahrenheit}
+  >Temperature Converter</Converter>
+);
+
+const DistanceConverter = () => (
+  <Converter 
+    quantity="Distance"
+    firstUnit="Kilometers"
+    secondUnit="Miles"
+    firstUnitConverter={toKilometers}
+    secondUnitConverter={toMiles}
+  >Distance Converter</Converter> 
+);
+
+const EnergyConverter = () => (
+  <Converter 
+    quantity="Energy"
+    firstUnit="Joules"
+    secondUnit="Calories"
+    firstUnitConverter={toJoules}
+    secondUnitConverter={toCalories}
+  >Energy Converter</Converter> 
+);
+
 class App extends Component {
   render() {
     return (
-      <div className="App">
-	<Converter 
-	  quantity="Temperature"
-	  firstUnit="Celsius"
-	  secondUnit="Fahrenheit"
-          firstUnitConverter={toCelsius}
-          secondUnitConverter={toFahrenheit}
-	/>
+      <div className="container">
+	<Router className="App">
+	  <div>
+	    <Navbar color="light" light expand="md">
+	      <NavbarBrand tag={Link} to="/">Converters</NavbarBrand>
+	      <Nav className="ml-auto" navbar>                
+		<NavItem>
+		  <NavLink tag={Link} to="/temperature/">Temperature</NavLink>
+		</NavItem>
+		<NavItem>
+		  <NavLink tag={Link} to="/distance/">Distance</NavLink>
+		</NavItem>
+		<NavItem>
+		  <NavLink tag={Link} to="/energy/">Energy</NavLink>
+		</NavItem>
+	      </Nav>
+	    </Navbar>
+	    <Route exact path="/" component={Home}/>
+	    <Route path="/temperature/" component={TemperatureConverter}/>
+	    <Route path="/distance/" component={DistanceConverter}/>
+	    <Route path="/energy/" component={EnergyConverter}/>
+	  </div>
+	</Router>
       </div>
     );
   }
