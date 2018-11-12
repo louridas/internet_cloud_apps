@@ -9,8 +9,8 @@ function toFahrenheit(celsius) {
   return (celsius * 9 / 5) + 32;
 }
 
-function tryConvert(temperature, convert) {
-  const input = parseFloat(temperature);
+function tryConvert(measurement, convert) {
+  const input = parseFloat(measurement);
   if (Number.isNaN(input)) {
     return '';
   }
@@ -72,10 +72,10 @@ class Converter extends Component {
 
     const measurement = this.state.measurement;    
     const unit = this.state.unit;
-    const firstMeasurement = unit == 1
+    const firstMeasurement = unit === 1
           ? tryConvert(measurement, firstUnitConverter)
           : measurement;
-    const secondMeasurement = unit == 0
+    const secondMeasurement = unit === 0
           ? tryConvert(measurement, secondUnitConverter)
           : measurement;
     
