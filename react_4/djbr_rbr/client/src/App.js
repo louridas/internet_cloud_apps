@@ -20,12 +20,12 @@ class Search extends Component {
     const { searchTerm, onSearchChange } = this.props;
     return (
       <Form>
-	<Input
-	  type="text"
+        <Input
+          type="text"
           placeholder="search title"
-	  value={searchTerm}
-	  onChange={onSearchChange}
-	/>
+          value={searchTerm}
+          onChange={onSearchChange}
+        />
       </Form>
     );
   } 
@@ -74,6 +74,7 @@ class App extends Component {
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
     this.onBookInsert = this.onBookInsert.bind(this);
+    this.onBookUpdate = this.onBookUpdate.bind(this);
   }
 
   componentDidMount() {
@@ -92,11 +93,20 @@ class App extends Component {
       .catch(error => error);
   }
 
-  onBookInsert(book) {
-    const updatedList = [...this.state.list, book];
+  onBookInsert(newBook) {
+    const updatedList = [...this.state.list, newBook];
     this.setState({ list: updatedList });
   }
-  
+
+  onBookUpdate(updatedBook) {
+    const updatedList = this.state.list.map(book => {
+      return (book.id === updatedBook.id
+              ? updatedBook
+              : book);
+    });
+    this.setState({ list: updatedList });
+  }
+ 
   onSearchChange(event) {
     // shallow merge, so list is preserved
     this.setState({ searchTerm: event.target.value });
@@ -129,7 +139,12 @@ class App extends Component {
               </Link>
               <Container>
                 <Route path="/" component={(props) => <div/>}/>              
-                <Route path="/api/books/:id" component={BookDetails}/>
+                <Route path="/api/books/:id"
+                       render={(props) => <BookDetails
+                                            onBookUpdate={this.onBookUpdate}
+                                            {...props}
+                                          />}
+                />
                 <Route path="/api/books" exact
                        render={(props) => <BookDetails
                                             onBookInsert={this.onBookInsert}
@@ -143,7 +158,6 @@ class App extends Component {
         </Container>
     );
   }
-  x
 }
 
 export default App;

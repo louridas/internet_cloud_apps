@@ -56,7 +56,7 @@ class BookDetails extends Component {
   
   handleSubmit(event) {
     const id = this.state.id || '';
-    let book = this.state;
+    const book = this.state;
     const method = this.state.id ? "PUT" : "POST";
     fetch(`/api/books/${id}`, {
       method: method,
@@ -67,10 +67,13 @@ class BookDetails extends Component {
     })
       .then(response => response.json())
       .then(result => {
-        book = Object.assign({}, emptyBook);
-        this.setState({book});
-        console.log(this.state.book);
-        this.props.onBookInsert(result);
+        const fillerBook = Object.assign({}, emptyBook);
+        this.setState({fillerBook});
+        if (method === "POST") {
+          this.props.onBookInsert(result, true);
+        } else {
+          this.props.onBookUpdate(result, false);
+        }
       })
       .catch(error => console.error('Error:', error));
     event.preventDefault();
@@ -78,7 +81,6 @@ class BookDetails extends Component {
  
   render() {
     const book = this.state;
-    // if (!book.id) { return null; }
 
     return (
       <div className="book">
