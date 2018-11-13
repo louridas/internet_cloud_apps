@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import {
+  Container,
+  Button,
+  Badge,
+  ListGroup,
+  ListGroupItem,
+  Form,
+  Input,
+  Row
+} from 'reactstrap';
 
 import BookDetails from './BookDetails.js';
 
@@ -9,15 +19,14 @@ class Search extends Component {
   render() {
     const { searchTerm, onSearchChange } = this.props;
     return (
-      <div className="Search">
-	<form>
-	  <input
-	    type="text"
-	    value={searchTerm}
-	    onChange={onSearchChange}
-	  />
-        </form>
-      </div>
+      <Form>
+	<Input
+	  type="text"
+          placeholder="search title"
+	  value={searchTerm}
+	  onChange={onSearchChange}
+	/>
+      </Form>
     );
   } 
 }
@@ -32,22 +41,21 @@ class ItemList extends Component {
   render() {
     return (
       <div className="books">
-      <ul>
+      <ListGroup>
       {this.props.list.filter(item => this.searchItem(item)).map(
         item =>
-        <li key={item.id}>
-          <span className="badge">{item.id}</span>
-          <span className="title">
-            <Link to={'/api/books/' + item.id}>{item.title}</Link>
-          </span>
-          <button
-            className="delete"
-            onClick={() => this.props.onDismiss(item.id)}>
-              x
-            </button>
-        </li>          
+          <ListGroupItem
+            key={item.id}
+            className="justify-content-between">
+            <div className="book-item">
+            <Badge pill>{item.id}</Badge>&nbsp;              
+            <Link 
+              to={'/api/books/' + item.id}>{item.title}</Link>
+            </div>            
+            <Button close onClick={() => this.props.onDismiss(item.id)} />
+          </ListGroupItem>          
       )}
-      </ul>
+      </ListGroup>
       </div>
     );
   }
@@ -64,7 +72,8 @@ class App extends Component {
     };
 
     this.onSearchChange = this.onSearchChange.bind(this);
-    this.onDismiss = this.onDismiss.bind(this);    
+    this.onDismiss = this.onDismiss.bind(this);
+    this.onBookInsert = this.onBookInsert.bind(this);
   }
 
   componentDidMount() {
@@ -83,6 +92,11 @@ class App extends Component {
       .catch(error => error);
   }
 
+  onBookInsert(book) {
+    const updatedList = [...this.state.list, book];
+    this.setState({ list: updatedList });
+  }
+  
   onSearchChange(event) {
     // shallow merge, so list is preserved
     this.setState({ searchTerm: event.target.value });
@@ -92,12 +106,15 @@ class App extends Component {
 
     if (!this.state.list) { return null; }
     
-    return (
-      <div className="App">
+    return (      
+      <Container className="App">
+        <Row>
         <Search
           value={this.searchTerm}
           onSearchChange={this.onSearchChange}
         />
+        </Row>
+        <Row>
         <Router>
           <div>
             <ItemList
@@ -105,12 +122,24 @@ class App extends Component {
               searchTerm={this.state.searchTerm}
               onDismiss={this.onDismiss}
             />
+            <Link to='/api/books/'>
+              <Button color="primary">New</Button>
+            </Link>
+            <Container>
+              <Route path="/" component={(props) => <div/>}/>              
             <Route path="/api/books/:id" component={BookDetails}/>
-            {/* {this.state.list[0].id} */}
-            {/* <BookDetails bookId={this.state.list[0].id}/> */}
+            <Route path="/api/books" exact
+                   render={(props) => <BookDetails
+                                        onBookInsert={this.onBookInsert}
+                                        {...props}
+                                      />}
+            />
+            </Container>
           </div>
-        </Router>        
-        </div>
+          
+      </Router>
+        </Row>      
+        </Container>
     );
   }
   

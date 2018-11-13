@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import {
+  Button,
+  ButtonGroup,
+  Form,
+  FormGroup,
+  Label,
+  Input
+} from 'reactstrap';
+import { Link } from "react-router-dom";
 import './App.css';
 
 class BookDetails extends Component {
 
   constructor(props) {
     super(props);
-    console.log(props.match.params.id);
     this.state = {
       book: null,
     };
@@ -23,11 +30,20 @@ class BookDetails extends Component {
   }
   
   componentDidMount() {
-    this.loadBook(this.props.match.url);
+    if (!this.props.match.params.id) {
+      const book = {
+        title: '',
+        URL: '',
+        year_published: ''
+      };
+      this.setState({book});
+    } else {
+      this.loadBook(this.props.match.url);
+    }
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.match.url !== this.props.match.url) {      
+    if (prevProps.match.url !== this.props.match.url) {
       this.loadBook(this.props.match.url);
     }
   }
@@ -43,17 +59,26 @@ class BookDetails extends Component {
   }
   
   handleSubmit(event) {
-    const id = this.state.book.id;
-    const book = this.state.book;
+    const id = this.state.book.id || '';
+    let book = this.state.book;
+    const method = this.state.book.id ? "PUT" : "POST";
     fetch(`/api/books/${id}`, {
-      method: "PUT",
+      method: method,
       body: JSON.stringify(book),
       headers:{
         'Content-Type': 'application/json'
       }
     })
       .then(response => response.json())
-      .then(result => console.log('Result: ', JSON.stringify(result)))
+      .then(result => {
+        book = {
+          title: '',
+          URL: '',
+          year_published: '',
+        };
+        this.setState({book});
+        this.props.onBookInsert(result);
+      })
       .catch(error => console.error('Error:', error));
     event.preventDefault();
   }
@@ -96,7 +121,10 @@ class BookDetails extends Component {
               onChange={this.handleInputChange}              
             />
           </FormGroup>
-          <Button>Submit</Button>
+          <Button color="success">Submit</Button>{' '}
+          <Link to='/'>
+            <Button color="secondary">Dismiss</Button>{' '}
+          </Link>
         </Form>
       </div>
     );
