@@ -383,7 +383,7 @@
 * Για να το προσθέσουμε στην εφαρμογή μας κατ' αρχήν δίνουμε:
 
    ```
-   npm install reactstrap
+       npm install reactstrap bootstrap@4
    ```
 
 * Εισάγουμε τα στυλ του Boostrap βάζοντας στην αρχή `src/index.js`:
