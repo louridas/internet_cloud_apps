@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   Button,
-  ButtonGroup,
   Form,
   FormGroup,
   Label,
@@ -10,13 +9,17 @@ import {
 import { Link } from "react-router-dom";
 import './App.css';
 
+const emptyBook = {
+  title: '',
+  url: '',
+  pub_year: ''
+};
+
 class BookDetails extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      book: null,
-    };
+    this.state = {...emptyBook};
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,18 +28,13 @@ class BookDetails extends Component {
   loadBook(url) {
     fetch(url)
       .then(response => response.json())
-      .then(result => this.setState({book: result}))                     
+      .then(result => this.setState({...result}))
       .catch(error => error);
   }
   
   componentDidMount() {
     if (!this.props.match.params.id) {
-      const book = {
-        title: '',
-        URL: '',
-        year_published: ''
-      };
-      this.setState({book});
+      this.setState({...emptyBook});
     } else {
       this.loadBook(this.props.match.url);
     }
@@ -52,16 +50,14 @@ class BookDetails extends Component {
     const target = event.target;
     const name = target.name;
     const value = target.value;
-    const book = this.state.book;
     
-    book[name] = value;
-    this.setState({book});
+    this.setState({[name]: value});
   }
   
   handleSubmit(event) {
-    const id = this.state.book.id || '';
-    let book = this.state.book;
-    const method = this.state.book.id ? "PUT" : "POST";
+    const id = this.state.id || '';
+    let book = this.state;
+    const method = this.state.id ? "PUT" : "POST";
     fetch(`/api/books/${id}`, {
       method: method,
       body: JSON.stringify(book),
@@ -71,12 +67,9 @@ class BookDetails extends Component {
     })
       .then(response => response.json())
       .then(result => {
-        book = {
-          title: '',
-          URL: '',
-          year_published: '',
-        };
+        book = Object.assign({}, emptyBook);
         this.setState({book});
+        console.log(this.state.book);
         this.props.onBookInsert(result);
       })
       .catch(error => console.error('Error:', error));
@@ -84,8 +77,8 @@ class BookDetails extends Component {
   }
  
   render() {
-    const book = this.state.book;
-    if (!book) { return null; }
+    const book = this.state;
+    // if (!book.id) { return null; }
 
     return (
       <div className="book">
@@ -106,7 +99,7 @@ class BookDetails extends Component {
                  rel="noopener noreferrer">URL</a>
             </Label>
             <Input
-              type="url"
+              type="text"
               name="url"
               value={book.url}
               onChange={this.handleInputChange}              

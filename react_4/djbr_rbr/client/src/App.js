@@ -108,41 +108,42 @@ class App extends Component {
     
     return (      
       <Container className="App">
+        
         <Row>
-        <Search
-          value={this.searchTerm}
-          onSearchChange={this.onSearchChange}
-        />
+          <Search
+            value={this.searchTerm}
+            onSearchChange={this.onSearchChange}
+          />
         </Row>
-        <Row>
-        <Router>
-          <div>
-            <ItemList
-              list={this.state.list}
-              searchTerm={this.state.searchTerm}
-              onDismiss={this.onDismiss}
-            />
-            <Link to='/api/books/'>
-              <Button color="primary">New</Button>
-            </Link>
-            <Container>
-              <Route path="/" component={(props) => <div/>}/>              
-            <Route path="/api/books/:id" component={BookDetails}/>
-            <Route path="/api/books" exact
-                   render={(props) => <BookDetails
-                                        onBookInsert={this.onBookInsert}
-                                        {...props}
-                                      />}
-            />
-            </Container>
-          </div>
-          
-      </Router>
-        </Row>      
+        
+        <Row>          
+          <Router>
+            <div>
+              <ItemList
+                list={this.state.list}
+                searchTerm={this.state.searchTerm}
+                onDismiss={this.onDismiss}
+              />
+              <Link to='/api/books/'>
+                <Button color="primary">New</Button>
+              </Link>
+              <Container>
+                <Route path="/" component={(props) => <div/>}/>              
+                <Route path="/api/books/:id" component={BookDetails}/>
+                <Route path="/api/books" exact
+                       render={(props) => <BookDetails
+                                            onBookInsert={this.onBookInsert}
+                                            {...props}
+                                          />}
+                />
+              </Container>
+            </div>          
+          </Router>
+        </Row> 
         </Container>
     );
   }
-  
+  x
 }
 
 export default App;
