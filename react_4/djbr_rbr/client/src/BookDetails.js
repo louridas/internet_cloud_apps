@@ -70,9 +70,10 @@ class BookDetails extends Component {
         const fillerBook = Object.assign({}, emptyBook);
         this.setState({fillerBook});
         if (method === "POST") {
-          this.props.onBookInsert(result, true);
+          this.props.onBookInsert(result);
+          this.setState({...emptyBook});          
         } else {
-          this.props.onBookUpdate(result, false);
+          this.props.onBookUpdate(result);
         }
       })
       .catch(error => console.error('Error:', error));

@@ -138,14 +138,14 @@ class App extends Component {
                 <Button color="primary">New</Button>
               </Link>
               <Container>
-                <Route path="/" component={(props) => <div/>}/>              
+                <Route path="/" component={(props) => <div/>}/>
                 <Route path="/api/books/:id"
                        render={(props) => <BookDetails
                                             onBookUpdate={this.onBookUpdate}
                                             {...props}
                                           />}
                 />
-                <Route path="/api/books" exact
+                <Route path="/api/books/" exact
                        render={(props) => <BookDetails
                                             onBookInsert={this.onBookInsert}
                                             {...props}
