@@ -9,7 +9,7 @@ import {
   ListGroupItem,
   Form,
   Input,
-  Row
+  Alert
 } from 'reactstrap';
 
 import BookDetails from './BookDetails.js';
@@ -19,7 +19,7 @@ class Search extends Component {
   render() {
     const { searchTerm, onSearchChange } = this.props;
     return (
-      <Form>
+      <Form className="books-search">
         <Input
           type="text"
           placeholder="search title"
@@ -40,26 +40,93 @@ class ItemList extends Component {
 
   render() {
     return (
-      <div className="books">
-      <ListGroup>
-      {this.props.list.filter(item => this.searchItem(item)).map(
-        item =>
-          <ListGroupItem
-            key={item.id}
-            className="justify-content-between">
-            <div className="book-item">
-            <Badge pill>{item.id}</Badge>&nbsp;              
-            <Link 
-              to={'/api/books/' + item.id}>{item.title}</Link>
-            </div>            
-            <Button close onClick={() => this.props.onDismiss(item.id)} />
-          </ListGroupItem>          
-      )}
-      </ListGroup>
+      <div>
+        <div className="books">
+          <ListGroup>
+            {this.props.list.filter(item => this.searchItem(item)).map(
+              item =>
+                <ListGroupItem
+                  key={item.id}
+                  className="justify-content-between">
+                  <div className="book-item">
+                    <Badge pill>{item.id}</Badge>&nbsp;              
+                    <Link 
+                      to={'/books/' + item.id}>{item.title}</Link>
+                  </div>            
+                  <Button close onClick={() => this.props.onDismiss(item.id)} />
+                </ListGroupItem>          
+            )}
+          </ListGroup>
+        </div>
       </div>
     );
   }
 }
+
+class Message extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      visible: true
+    };
+
+    this.onDismiss = this.onDismiss.bind(this);
+  }
+
+  onDismiss() {
+    this.setState({ visible: false });
+  }
+
+  render() {
+    return (
+      <Alert
+        className="message"
+        color={this.props.color}
+        isOpen={this.state.visible}
+        toggle={this.onDismiss}>
+        {this.props.message}
+      </Alert>
+    );
+  }
+}
+
+
+function Home(props) {
+  
+  const referrerState = props.location.state;
+  let message = '';
+  if (referrerState) {
+    message = referrerState.message;
+    referrerState.message = '';
+  }
+  
+  return(
+    <div>
+      <Search
+        value={this.searchTerm}
+        onSearchChange={this.onSearchChange}
+      />                          
+      <ItemList
+        {...props}
+        list={this.state.list}
+        searchTerm={this.state.searchTerm}
+        onDismiss={this.onDismiss}
+      />
+      <div>
+        <Link to='/books/'>
+          <Button color="primary">New</Button>
+        </Link>
+      </div>
+      { message &&
+        <Message
+          color="success"
+          message={message}
+        />
+      }
+    </div>
+  );
+};
 
 class App extends Component {
 
@@ -115,46 +182,35 @@ class App extends Component {
   render() {
 
     if (!this.state.list) { return null; }
+
+    const HomeComponent = Home.bind(this);
     
     return (      
       <Container className="App">
-        
-        <Row>
-          <Search
-            value={this.searchTerm}
-            onSearchChange={this.onSearchChange}
-          />
-        </Row>
-        
-        <Row>          
-          <Router>
+        <Router>
             <div>
-              <ItemList
-                list={this.state.list}
-                searchTerm={this.state.searchTerm}
-                onDismiss={this.onDismiss}
-              />
-              <Link to='/api/books/'>
-                <Button color="primary">New</Button>
-              </Link>
-              <Container>
-                <Route path="/" component={(props) => <div/>}/>
-                <Route path="/api/books/:id"
-                       render={(props) => <BookDetails
-                                            onBookUpdate={this.onBookUpdate}
-                                            {...props}
-                                          />}
+                <Route
+                  path="/" exact
+                  component={HomeComponent}
                 />
-                <Route path="/api/books/" exact
-                       render={(props) => <BookDetails
-                                            onBookInsert={this.onBookInsert}
-                                            {...props}
-                                          />}
+                <Route
+                  path="/books/:id"
+                  render={(props) =>
+                          <BookDetails
+                            {...props}                            
+                            onBookUpdate={this.onBookUpdate}
+                          />}
                 />
-              </Container>
-            </div>          
-          </Router>
-        </Row> 
+                <Route
+                  path="/books/" exact
+                  render={(props) =>
+                          <BookDetails
+                            {...props}                            
+                            onBookInsert={this.onBookInsert}
+                          />}
+                />
+            </div>
+        </Router>
         </Container>
     );
   }

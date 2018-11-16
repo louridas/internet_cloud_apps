@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
+
 import {
   Button,
   Form,
   FormGroup,
   Label,
-  Input
+  Input,
+  Alert
 } from 'reactstrap';
-import { Link } from "react-router-dom";
+
+import {
+  Redirect,
+  Link
+} from "react-router-dom";
+
+import axios from 'axios';
+
 import './App.css';
 
 const emptyBook = {
@@ -19,30 +28,24 @@ class BookDetails extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {...emptyBook};
+    this.state = {
+      toMain: false,
+      message: '',
+      book: {...emptyBook},
+    };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  loadBook(url) {
-    fetch(url)
-      .then(response => response.json())
-      .then(result => this.setState({...result}))
-      .catch(error => error);
-  }
-  
   componentDidMount() {
     if (!this.props.match.params.id) {
-      this.setState({...emptyBook});
+      this.setState({book: {...emptyBook}});
     } else {
-      this.loadBook(this.props.match.url);
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.match.url !== this.props.match.url) {
-      this.loadBook(this.props.match.url);
+      fetch('/api/' + this.props.match.url)
+        .then(response => response.json())
+        .then(result => this.setState({book: {...result}}))
+        .catch(error => error);
     }
   }
 
@@ -50,38 +53,69 @@ class BookDetails extends Component {
     const target = event.target;
     const name = target.name;
     const value = target.value;
-    
-    this.setState({[name]: value});
+    const newBook = {...this.state.book};
+
+    newBook[name] = value;
+    this.setState({book: newBook});
   }
   
   handleSubmit(event) {
-    const id = this.state.id || '';
-    const book = this.state;
-    const method = this.state.id ? "PUT" : "POST";
-    fetch(`/api/books/${id}`, {
+    const id = this.state.book.id || '';
+    const book = this.state.book;
+    const method = this.state.book.id ? "PUT" : "POST";
+    axios(`/api/books/${id}`, {
       method: method,
-      body: JSON.stringify(book),
+      data: JSON.stringify(book),
       headers:{
         'Content-Type': 'application/json'
       }
     })
-      .then(response => response.json())
-      .then(result => {
-        const fillerBook = Object.assign({}, emptyBook);
-        this.setState({fillerBook});
+      .then(response => {
+        let message = '';
+        let data = response.data;
         if (method === "POST") {
-          this.props.onBookInsert(result);
-          this.setState({...emptyBook});          
+          this.props.onBookInsert(data);
+          message = 'book inserted';
         } else {
-          this.props.onBookUpdate(result);
+          this.props.onBookUpdate(data);
+          message = 'book updated';
         }
+        this.setState({toMain: true, message });
       })
-      .catch(error => console.error('Error:', error));
+      .catch(error => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          this.setState({toMain: false, message: error.response.data});
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest
+          console.log(error.request);
+          this.setState({toMain: false, message: 'No response'});
+        } else {
+          // Something happened in setting up the request that
+          // triggered an Error
+          console.log('Error', error.message);
+          this.setState({toMain: false, message: error.message});          
+        }
+      });
     event.preventDefault();
   }
  
   render() {
-    const book = this.state;
+    if (this.state.toMain) {
+      return <Redirect
+               to={{
+                 pathname: "/",
+                 state: { message: this.state.message }
+               }}
+        />;
+    }
+    
+    const book = this.state.book;
 
     return (
       <div className="book">
@@ -117,11 +151,19 @@ class BookDetails extends Component {
               onChange={this.handleInputChange}              
             />
           </FormGroup>
-          <Button color="success">Submit</Button>{' '}
+          <Button color="primary">Submit</Button>{' '}
           <Link to='/'>
-            <Button color="secondary">Dismiss</Button>{' '}
+            <Button color="secondary">Back</Button>{' '}
           </Link>
         </Form>
+        {this.state.message && 
+         <Alert
+           className="message"
+           color="danger">
+           Error<span> </span>
+           {this.state.message}
+         </Alert>
+        }
       </div>
     );
   }
