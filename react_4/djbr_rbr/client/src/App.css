@@ -20,7 +20,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 20em;
+  width: 19em;
   display: inline-block;  
 }
 
@@ -34,4 +34,12 @@
   color: #888;
 }
 
+.books-buttons {
+    float: right;
+    font-size: 1rem;
+    color: gray;
+}
 
+.books-buttons a:hover {
+    color: gray;
+}

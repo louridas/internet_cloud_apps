@@ -72,12 +72,11 @@ class BookDetails extends Component {
     })
       .then(response => {
         let message = '';
-        let data = response.data;
         if (method === "POST") {
-          this.props.onBookInsert(data);
+          // this.props.onBookInsert(data);
           message = 'book inserted';
         } else {
-          this.props.onBookUpdate(data);
+          // this.props.onBookUpdate(data);
           message = 'book updated';
         }
         this.setState({toMain: true, message });

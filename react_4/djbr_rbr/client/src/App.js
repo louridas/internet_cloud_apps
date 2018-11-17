@@ -9,10 +9,23 @@ import {
   ListGroupItem,
   Form,
   Input,
-  Alert
+  Alert,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
 } from 'reactstrap';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+
+import axios from 'axios';
+
 import BookDetails from './BookDetails.js';
+
+
+library.add(faEye);
 
 class Search extends Component {
 
@@ -51,9 +64,20 @@ class ItemList extends Component {
                   <div className="book-item">
                     <Badge pill>{item.id}</Badge>&nbsp;              
                     <Link 
-                      to={'/books/' + item.id}>{item.title}</Link>
-                  </div>            
-                  <Button close onClick={() => this.props.onDismiss(item.id)} />
+                      to={'/books/' + item.id}>{item.title}
+                    </Link>
+                  </div>
+                  <Button
+                    close
+                    onClick={() => this.props.onDismiss(item.id)} />
+                  <span className="books-buttons">
+                    <a href="#">
+                    <FontAwesomeIcon
+                      icon="eye"
+                      onClick={() => this.props.onPreview(item.id)}
+                    />
+                    </a>
+                  </span>                  
                 </ListGroupItem>          
             )}
           </ListGroup>
@@ -92,56 +116,52 @@ class Message extends React.Component {
 }
 
 
-function Home(props) {
-  
-  const referrerState = props.location.state;
-  let message = '';
-  if (referrerState) {
-    message = referrerState.message;
-    referrerState.message = '';
-  }
-  
-  return(
-    <div>
-      <Search
-        value={this.searchTerm}
-        onSearchChange={this.onSearchChange}
-      />                          
-      <ItemList
-        {...props}
-        list={this.state.list}
-        searchTerm={this.state.searchTerm}
-        onDismiss={this.onDismiss}
-      />
+class BookPreview extends Component {
+
+  render() {
+
+    if (!this.props.book) { return null; }
+    console.log(this.props.book);
+    return (
       <div>
-        <Link to='/books/'>
-          <Button color="primary">New</Button>
-        </Link>
+        <Modal isOpen={this.props.modal} toggle={this.props.toggle}>
+          <ModalHeader
+            toggle={this.props.toggle}>
+            Book Preview
+          </ModalHeader>
+          <ModalBody>
+            <h5>Title</h5>
+              <a href={this.props.book.url}>
+                {this.props.book.title}</a>
+            <h5>Year</h5>{this.props.book.pub_year}
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.props.toggle}>OK</Button>{' '}
+          </ModalFooter>
+        </Modal>
       </div>
-      { message &&
-        <Message
-          color="success"
-          message={message}
-        />
-      }
-    </div>
-  );
-};
+    );
+  }
+}
 
-class App extends Component {
-
+class Home extends Component {
+  
   constructor(props) {
     super(props);
-
+    
     this.state = {
       list: null,
       searchTerm: '',
+      togglePreviewModal: false,
+      bookToPreview: null,
     };
-
+    
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
     this.onBookInsert = this.onBookInsert.bind(this);
     this.onBookUpdate = this.onBookUpdate.bind(this);
+    this.onPreview = this.onPreview.bind(this);
+    this.togglePreview = this.togglePreview.bind(this);
   }
 
   componentDidMount() {
@@ -149,6 +169,12 @@ class App extends Component {
       .then(response => response.json())
       .then(result =>  this.setState({list: result}))
       .catch(error => error);
+  }
+
+  togglePreview() {
+    this.setState({
+      togglePreviewModal: !this.state.togglePreviewModal
+    });
   }
   
   onDismiss(id) {
@@ -160,6 +186,15 @@ class App extends Component {
       .catch(error => error);
   }
 
+  onPreview(id) {
+    axios.get(`/api/books/${id}`)
+      .then(response => {
+        this.setState({bookToPreview: response.data});
+        this.togglePreview();
+      })
+      .catch(error => error);    
+  }
+  
   onBookInsert(newBook) {
     const updatedList = [...this.state.list, newBook];
     this.setState({ list: updatedList });
@@ -178,36 +213,71 @@ class App extends Component {
     // shallow merge, so list is preserved
     this.setState({ searchTerm: event.target.value });
   }
- 
+
   render() {
 
-    if (!this.state.list) { return null; }
-
-    const HomeComponent = Home.bind(this);
+    const referrerState = this.props.location.state;
+    let message = '';
+    if (referrerState) {
+      message = referrerState.message;
+      referrerState.message = '';
+    }
+    const bookToPreview = this.state.bookToPreview;
     
+    if (!this.state.list) { return null; }
+    
+    return(
+      <div>
+        <BookPreview
+          book={bookToPreview}
+          modal={this.state.togglePreviewModal}
+          toggle={this.togglePreview}/>
+	<Search
+	  value={this.searchTerm}
+	  onSearchChange={this.onSearchChange}
+	/>                          
+	<ItemList
+	  list={this.state.list}
+	  searchTerm={this.state.searchTerm}
+	  onDismiss={this.onDismiss}
+          onPreview={this.onPreview}
+	/>
+	<div>
+	  <Link to='/books/'>
+	    <Button color="primary">New</Button>
+	  </Link>
+	</div>
+	{ message &&
+	  <Message
+	    color="success"
+	    message={message}
+	  />
+	}
+      </div>
+    );
+  }
+};
+
+
+class App extends Component {
+ 
+  render() {
+   
     return (      
       <Container className="App">
         <Router>
             <div>
                 <Route
                   path="/" exact
-                  component={HomeComponent}
+                  component={Home}
                 />
                 <Route
                   path="/books/:id"
-                  render={(props) =>
-                          <BookDetails
-                            {...props}                            
-                            onBookUpdate={this.onBookUpdate}
-                          />}
+                  component={BookDetails}
                 />
                 <Route
                   path="/books/" exact
-                  render={(props) =>
-                          <BookDetails
-                            {...props}                            
-                            onBookInsert={this.onBookInsert}
-                          />}
+                  component={BookDetails}
                 />
             </div>
         </Router>
