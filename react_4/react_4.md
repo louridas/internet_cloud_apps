@@ -282,9 +282,6 @@ class ItemList extends Component {
    }
    ```
 
-
-
-
 ## Λειτουργία Modal
 
 * Ένα παράθυρο διαλόγου modal είναι ένα εξάρτημα.
