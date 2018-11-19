@@ -62,7 +62,15 @@ class ItemList extends Component {
                   key={item.id}
                   className="justify-content-between">
                   <div className="book-item">
-                    <Badge pill>{item.id}</Badge>&nbsp;              
+                    <Badge pill>{item.id}</Badge>
+                    <span className="books-buttons">
+                      <Button color="link">
+                        <FontAwesomeIcon
+                          icon="eye"
+                          onClick={() => this.props.onPreview(item.id)}
+                        />
+                      </Button>
+                    </span>                    
                     <Link 
                       to={'/books/' + item.id}>{item.title}
                     </Link>
@@ -70,14 +78,6 @@ class ItemList extends Component {
                   <Button
                     close
                     onClick={() => this.props.onDismiss(item.id)} />
-                  <span className="books-buttons">
-                    <a href="#">
-                    <FontAwesomeIcon
-                      icon="eye"
-                      onClick={() => this.props.onPreview(item.id)}
-                    />
-                    </a>
-                  </span>                  
                 </ListGroupItem>          
             )}
           </ListGroup>
@@ -121,7 +121,7 @@ class BookPreview extends Component {
   render() {
 
     if (!this.props.book) { return null; }
-    console.log(this.props.book);
+
     return (
       <div>
         <Modal isOpen={this.props.modal} toggle={this.props.toggle}>
@@ -158,16 +158,13 @@ class Home extends Component {
     
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
-    this.onBookInsert = this.onBookInsert.bind(this);
-    this.onBookUpdate = this.onBookUpdate.bind(this);
     this.onPreview = this.onPreview.bind(this);
     this.togglePreview = this.togglePreview.bind(this);
   }
 
   componentDidMount() {
-    fetch('/api/books')
-      .then(response => response.json())
-      .then(result =>  this.setState({list: result}))
+    axios.get('/api/books')
+      .then(response =>  this.setState({list: response.data}))
       .catch(error => error);
   }
 
@@ -178,7 +175,7 @@ class Home extends Component {
   }
   
   onDismiss(id) {
-    fetch(`/api/books/${id}`, {method: "DELETE"})
+    axios(`/api/books/${id}`, {method: "DELETE"})
       .then(response => {
         const updatedList = this.state.list.filter(item => item.id !== id);
         this.setState({ list: updatedList });
@@ -195,26 +192,14 @@ class Home extends Component {
       .catch(error => error);    
   }
   
-  onBookInsert(newBook) {
-    const updatedList = [...this.state.list, newBook];
-    this.setState({ list: updatedList });
-  }
-
-  onBookUpdate(updatedBook) {
-    const updatedList = this.state.list.map(book => {
-      return (book.id === updatedBook.id
-              ? updatedBook
-              : book);
-    });
-    this.setState({ list: updatedList });
-  }
- 
   onSearchChange(event) {
     // shallow merge, so list is preserved
     this.setState({ searchTerm: event.target.value });
   }
 
   render() {
+    
+    if (!this.state.list) { return null; }
 
     const referrerState = this.props.location.state;
     let message = '';
@@ -223,36 +208,34 @@ class Home extends Component {
       referrerState.message = '';
     }
     const bookToPreview = this.state.bookToPreview;
-    
-    if (!this.state.list) { return null; }
-    
+
     return(
       <div>
         <BookPreview
           book={bookToPreview}
           modal={this.state.togglePreviewModal}
           toggle={this.togglePreview}/>
-	<Search
-	  value={this.searchTerm}
-	  onSearchChange={this.onSearchChange}
-	/>                          
-	<ItemList
-	  list={this.state.list}
-	  searchTerm={this.state.searchTerm}
-	  onDismiss={this.onDismiss}
+        <Search
+          value={this.searchTerm}
+          onSearchChange={this.onSearchChange}
+        />                          
+        <ItemList
+          list={this.state.list}
+          searchTerm={this.state.searchTerm}
+          onDismiss={this.onDismiss}
           onPreview={this.onPreview}
-	/>
-	<div>
-	  <Link to='/books/'>
-	    <Button color="primary">New</Button>
-	  </Link>
-	</div>
-	{ message &&
-	  <Message
-	    color="success"
-	    message={message}
-	  />
-	}
+        />
+        <div>
+          <Link to='/books/'>
+            <Button color="primary">New</Button>
+          </Link>
+        </div>
+        { message &&
+          <Message
+            color="success"
+            message={message}
+          />
+        }
       </div>
     );
   }

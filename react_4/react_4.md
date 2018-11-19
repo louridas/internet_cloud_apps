@@ -29,7 +29,10 @@
     ```
     App
       |__Router
-           |__ItemList (search)
+           |__Home
+           |    |__BookPreview
+           |    |__Search
+           |    |__ItemList
            |__Home (return)
            |__BookDetails (update)
            |__BookDetails (insert)
@@ -46,62 +49,296 @@
   * διαγραφή βιβλίων
 
 
-## Κώδικας `ItemList`
+## Εξάρτημα `ItemList`
 
 * Ο κώδικας του εξαρτήματος `ItemList` δεν διαφέρει πολύ από αυτόν που
   είχαμε ήδη φτιάξει.
   
-* Η βασική αλλαγή είναι ότι η λίστα αποτελείται από συνδέσμους που
+* Μία βασική αλλαγή είναι ότι η λίστα αποτελείται από συνδέσμους που
   διαχειρίζεται ο δρομολογητής.
   
-   ```javascript
-   class ItemList extends Component {
+* Μία άλλη βασική αλλαγή είναι ότι προσθέτουμε ένα κουμπί για να
+  εμφανίζεται μια προεπισκόπιση του κάθε βιβλίου.
+  
+## Κώδικας `ItemList`
+  
+```javascript
+class ItemList extends Component {
 
-     searchItem(item) {
-       return item.title.toLowerCase()
-         .includes(this.props.searchTerm.toLowerCase());
-     }
+  searchItem(item) {
+    return item.title.toLowerCase()
+      .includes(this.props.searchTerm.toLowerCase());
+  }
+
+  render() {
+    return (
+      <div>
+        <div className="books">
+          <ListGroup>
+            {this.props.list.filter(item => this.searchItem(item)).map(
+              item =>
+                <ListGroupItem
+                  key={item.id}
+                  className="justify-content-between">
+                  <div className="book-item">
+                    <Badge pill>{item.id}</Badge>
+                    <span className="books-buttons">
+                      <Button color="link">
+                        <FontAwesomeIcon
+                          icon="eye"
+                          onClick={() => this.props.onPreview(item.id)}
+                        />
+                      </Button>
+                    </span>
+                    <Link 
+                      to={'/books/' + item.id}>{item.title}
+                    </Link>
+                  </div>
+                  <Button
+                    close
+                    onClick={() => this.props.onDismiss(item.id)} />
+                </ListGroupItem>
+            )}
+          </ListGroup>
+        </div>
+      </div>
+    );
+  }
+}
+```
+ 
+## Προεπισκόπιση Βιβλίου
+
+* Η προεπισκόπιση ενός βιβλίου θα λειτουργεί εμφανίζοντας ένα modal
+  κουτί διαλόγου.
+  
+* Το κουτί διαλόγου είναι παιδί του εξαρτήματος `Home`.
+
+* Επομένως, θα πρέπει το εξάρτημα `ItemList` να ενημερώνει το εξάρτημα
+  `Home` ότι πρέπει να το εμφανίσει.
+  
+## Διασύνδεση Προεπισκόπισης
+
+* Αυτό από τη μεριά του `ItemList` γίνεται δηλώνοντας τον κατάλληλο
+  χειριστή:
+
+   ```javascript
+   <Button color="link">
+     <FontAwesomeIcon
+       icon="eye"
+       onClick={() => this.props.onPreview(item.id)}
+     />
+   </Button>
+   ```
+
+* Τον οποίο χειριστή θέτει το εξάρτημα `Home` όταν χρησιμοποιεί το
+  `ItemList`:
+  
+   ```javascript
+ 	<ItemList
+	  list={this.state.list}
+	  searchTerm={this.state.searchTerm}
+	  onDismiss={this.onDismiss}
+      onPreview={this.onPreview}
+	/>
+    ```
+
+## Ο Χειριστής `onPreview`
+
+* Ο χειριστής `onPreview`:
+  
+  1. διαβάζει το βιβλίο από τον εξυπηρετητή
+  
+  2. το αποθηκεύει στην κατάστασή του
+  
+  3.  ενεργοποιεί το modal παράθυρο διαλόγου καλώντας τη μέθοδο
+  `togglePreview()`.
+  
+   ```javascript
+   onPreview(id) {
+     axios.get(`/api/books/${id}`)
+       .then(response => {
+         this.setState({bookToPreview: response.data});
+         this.togglePreview();
+       })
+       .catch(error => error);
+   }
+   ```
+
+
+## Παρένθεση: axios (1)
+
+* Μέχρι τώρα χρησιμοποιούσαμε τη μέθοδο `fetch()` για να επικοινωνούμε
+  με τον εξυπηρετητή.
+
+* Αυτή η μέθοδος, παρότι δουλεύει, έχει κάποια προβλήματα:
+
+  * Χρειάζονται δύο βήματα προκειμένου να πάρουμε τα δεδομένα:
+  
+     ```javascript
+     fetch('/api/books')
+       .then(response => response.json())
+       .then(result =>  this.setState({list: result}))
+       .catch(error => error);
+     ```
+     
+   * Δεν θεωρεί λάθος απαντήσεις του εξυπηρετητή με κωδικό κατάστασης
+     διαφορετικό του `2xx`.
+
+
+## Παρένθεση: axios (2)
+
+* Για το λόγο αυτό, από εδώ και πέρα θα χρησιμοποιούμε το
+  [axios](βhttps://github.com/axios/axios) για την επικοινωνία με τον
+  εξυπηρετητή.
+  
+* Το εγκαθιστούμε δίνοντας:
+
+   ```bash
+   npm install axios
+   ```
+
+## Λάθη από το Django Rest Framework
+
+* Το Django Rest Framework χειρίζεται τις παρακάτω εξαιρέσεις:
+
+  * `APIException`
+  
+  * `Http404`
+  
+  * `PermissionDenied`
+  
+* Πλην όμως, *δεν* χειρίζεται άλλες εξαιρέσεις, όπως για παράδειγμα
+  αυτές που πετάγονται από τη βάση δεδομένων.
+  
+* Αυτές οι εξαιρέσεις δυστυχώς προωθούνται ως HTML στον πελάτη, και
+  όχι ως JSON.
+  
+
+## Προσαρμογή Χειρισμού Λαθών 
+
+* Για να χειριστούμε όλα τα λάθη στο Django Rest Framework, και αυτά
+  που προέρχονται από τη βάση δεδομένων, πρέπει να γράψουμε έναν δικό
+  μας χειριστή εξαιρέσεων.
+  
+* Στο αρχείο `views.py` προσθέτουμε την παρακάτω συνάρτηση:
+
+   ```python
+   def custom_exception_handler(exc, context):
+    # Call REST framework's default exception handler first,
+    # to get the standard error response.
+    response = exception_handler(exc, context)
+    
+    # Now add the HTTP status code to the response.
+    if response is not None:
+        print(response)
+        response.data['status_code'] = response.status_code
+    else:
+        response = Response(data=str(exc), status=status.HTTP_400_BAD_REQUEST)
+        
+    return response
+    ```
+    
+* Επιστρέφουμε την εξαίρεση σε JSON με κωδικό κατάστασης 400 (bad
+  request), αν το Django Rest Framework δεν τη χειρίζεται.
+
+
+## Λειτουργία Modal
+
+* Ένα παράθυρο διαλόγου modal είναι ένα εξάρτημα.
+
+* Για να λειτουργήσει, θα πρέπει να έχουμε τα εξής:
+
+  * Μία λογική (boolean) μεταβλητή στην κατάστασή *του εξαρτήματος που
+    το περιέχει* που να δείχνει αν είναι ανοιχτό.
+    
+  * Μία μέθοδο *στο εξάρτημα που το περιέχει* μέσω της οποία να μπορούμε
+    να αλλάζουμε αυτήν τη μεταβλητή κατάστασης.
+
+## Προσαρμογή `Home` για το `BookPreview`
+
+* Αφού το εξάρτημα `Home` περιέχει το `BookPreview`, βάζουμε τη
+  σχετική μεταβλητή στην κατάστασή.
+  
+* Επίσης, προσθέτουμε στην κατάστασή του και το ίδιο το βιβλίο το
+  οποίο θα προεπισκοπίσουμε (και το είδαμε στο `onBookPreview()`):
+
+   ```javascript
+   this.state = {
+     /* ... */
+     togglePreviewModal: false,
+     bookToPreview: null,
+   };
+   ```
+
+* Έτσι, γράφουμε τη μέθοδο που θα αλλάζει την κατάσταση του modal:
+
+   ```javascript
+   togglePreview() {
+     this.setState({
+       togglePreviewModal: !this.state.togglePreviewModal
+     });
+   }
+   ```
+
+## Χρήση `BookPreview`
+
+* Το εξάρτημα `Home` χρησιμοποιεί το εξάρτημα `BookPreview` παιρνόντας
+  ως ιδιότητες:
+  
+    1. το βιβλίο που θα προεπισκοπίσει
+
+    2. τη μεταβλητή που δείχνει αν θα πρέπει να εμφανιστεί ή όχι
+    
+    3. τη μέθοδο που θα καλεί για να αλλάζει την κατάσταση της
+       μεταβλητής αυτής.
+       
+    ```javascript
+    <BookPreview
+      book={bookToPreview}
+      modal={this.state.togglePreviewModal}
+      toggle={this.togglePreview}/>
+    ```
+    
+* Παρατηρούμε ότι και πάλι δεδομένα και πληροφορίες κατάστασης
+  μεταφέρονται από πάνω προς τα κάτω στην ιεραρχία.
+
+## Το Εξάρτημα `BookPreview`
+
+* Το εξάρτημα `BookPreview` εμφανίζει την προεπισκόπιση και επιπλέον
+  δηλώνει σε κατάλληλες ιδιότητες τη μεταβλητή που δείχνει αν είναι
+  ανοιχτό και τη μέθοδο με την οποία αλλάζει η μεταβλητή:
+  
+   ```javascript
+   class BookPreview extends Component {
 
      render() {
+
+       if (!this.props.book) { return null; }
+
        return (
-         <div className="books">
-         <ListGroup>
-         {this.props.list.filter(item => this.searchItem(item)).map(
-           item =>
-             <ListGroupItem
-               key={item.id}
-               className="justify-content-between">
-               <div className="book-item">
-               <Badge pill>{item.id}</Badge>&nbsp;
-               <Link 
-                 to={'/api/books/' + item.id}>{item.title}</Link>
-               </div>            
-               <Button close onClick={() => this.props.onDismiss(item.id)} />
-             </ListGroupItem>
-         )}
-         </ListGroup>
+         <div>
+           <Modal isOpen={this.props.modal} toggle={this.props.toggle}>
+             <ModalHeader
+               toggle={this.props.toggle}>
+               Book Preview
+             </ModalHeader>
+             <ModalBody>
+               <h5>Title</h5>
+                 <a href={this.props.book.url}>
+                   {this.props.book.title}</a>
+               <h5>Year</h5>{this.props.book.pub_year}
+             </ModalBody>
+             <ModalFooter>
+               <Button color="primary" onClick={this.props.toggle}>OK</Button>{' '}
+             </ModalFooter>
+           </Modal>
          </div>
        );
      }
    }
    ```
-   
-## Εξάρτημα Επιστροφής
 
-* Κάθε φορά που επιλέγουμε ένα σύνδεσμο από το `ItemList`, θα
-  εμφανίζονται οι λεπτομέρειες ενός βιβλίου.
-  
-* Χρειαζόμαστε όμως έναν τρόπο για να απομακρύνουμε τις λεπτομέρειες
-  και να επιστρέφουμε στην αρχική οθόνη, όπου εμφανίζεται μόνο η λίστα
-  των βιβλίων.
-  
-* Για το σκοπό αυτό φτιάχνουμε ένα μικρό, στοιχειώδες, ανώνυμο
-  εξάρτημα.
-  
-   ```javascript
-   <Route path="/" component={(props) => <div/>}/>
-   ```
-   
 ## Χειρισμός Βιβλίου
 
 * Για τον χειρισμό ενός συγκεκριμένου βιβλίου, θα χρειαστούμε να
@@ -113,21 +350,7 @@
 * Θα δημιουργήσουμε λοιπόν και θα εργαστούμε με το αρχείο
   `src/BookDetails.js`
   
-
-## Διάβασμα Βιβλίου
-
-* Για να διαβάσουμε ένα βιβλίο από τον εξυπηρετητή θα χρησιμοποιήσουμε
-  μια βοηθητική συνάρτηση:
-
-   ```javascript
-   loadBook(url) {
-     fetch(url)
-       .then(response => response.json())
-       .then(result => this.setState({...result}))
-       .catch(error => error);
-   }
-   ```
-   
+  
 ## Εμφάνιση Βιβλίου 
 
 * Για να εμφανίσουμε ένα βιβλίο όταν τοποθετηθεί το εξάρτημα στη θέση
@@ -136,9 +359,11 @@
    ```javascript
    componentDidMount() {
      if (!this.props.match.params.id) {
-       this.setState({...emptyBook});
+       this.setState({book: {...emptyBook}});
      } else {
-       this.loadBook(this.props.match.url);
+       axios.get('/api/' + this.props.match.url)
+         .then(response => this.setState({book: {...response.data}}))
+         .catch(error => this.handleError(error));
      }
    }
    ```
@@ -163,7 +388,67 @@
      pub_year: ''
    };
    ```
+
+## Χειρισμός Λαθών
+
+* Ένας από τους λόγους που χρησιμοποιούμε το axios είναι για τον
+  καλύτερο χειρισμό λαθών.
+  
+* Στο `componentDidMount()`, αν εμφανιστεί λάθος, καλούμε μια μέθοδο
+  `handleError()`.
+
+
+## Μέθοδος `handleError()`
+
+* Στη μέθοδο `handleError()`:
+
+  * αποθηκεύουμε το μήνυμα λάθους στην κατάσταση του εξαρτήματος (θα δούμε
+  μετά τι θα το κάνουμε) 
+  
+  * ενημερώνουμε την κατάσταση ότι δεν θέλουμε να επιστρέψουμε
+  πίσω στο εξάρτημα που μας κάλεσε (επίσης θα το δούμε μετά αυτό).
+  
+   ```javascript
+   handleError(error) {
+     if (error.response) {
+       // The request was made and the server responded with a status code
+       // that falls out of the range of 2xx
+       console.log(error.response.data);
+       console.log(error.response.status);
+       console.log(error.response.headers);
+       this.setState({toMain: false, message: error.response.data});
+     } else if (error.request) {
+       // The request was made but no response was received
+       // `error.request` is an instance of XMLHttpRequest
+       console.log(error.request);
+       this.setState({toMain: false, message: 'No response'});
+     } else {
+       // Something happened in setting up the request that
+       // triggered an Error
+       console.log('Error', error.message);
+       this.setState({toMain: false, message: error.message});
+     }
+   }
+   ```
    
+## Εμφάνιση Λαθών
+
+* Για να εμφανίζουμε τα λάθη στον χρήστη, χρησιμοποιούμε ένα εξάρτημα
+  `Alert`, στο οποίο απλώς δίνουμε το μήνυμα που έχουμε αποθηκεύσει
+  στην κατάσταση του `BookDetails`:
+  
+   ```javascript
+    {this.state.message && 
+     <Alert
+       className="message"
+       color="danger">
+       Error<span> </span>
+       {this.state.message}
+     </Alert>
+    }
+   ```
+
+
 ## Διασπορά
 
 * Σε νέες εκδόσεις JavaScript (ECMAScript 2015, ECMAScript 2018)
@@ -229,7 +514,7 @@
    ```javascript
    var arr = [1, 2, 3];
    var arr2 = [...arr]; // like arr.slice()
-   arr2.push(4);
+   arr2.push(4); // arr2 is now [1, 2, 3, 4]
    ```
    
 ## Ένωση Πινάκων
@@ -299,34 +584,6 @@
     var copy = Object.assign({}, obj);
     ```
 
-## Ενημέρωση `BookDetails`
-
-* Στην εφαρμογή μας, το εξάρτημα `BookDetails` πρέπει να ανανεώνεται
-  και κάθε φορά που αλλάζει το βιβλίο του οποίου τις λεπτομέρειες
-  θέλουμε να δούμε.
-  
-* Η μέθοδος `componentDidMount()` καλείται μόνο όταν το εξάρτημα
-  τοποθετείται στη θέση του.
-  
-* Επομένως, θα χρειαστούμε και τη μέθοδο του κύκλου ζωής
-  `componentDidUpdate()`, η οποία καλείται κάθε φορά που αλλάζει κάτι
-  στο εξάρτημα.
-
-
-## `componentDidUpdate()`
-
-* Η `componengDidUpdate()` θα ελέγχει αν έχει αλλάξει η ιδιότητα που
-  αντιστοιχεί στο URL του βιβλίου.
-  
-* Αν ναι, πρέπει να δείξει νέο βιβλίο· αν όχι, απλώς δεν κάνει τίποτε:
-
-   ```javascript
-   componentDidUpdate(prevProps) {
-     if (prevProps.match.url !== this.props.match.url) {
-       this.loadBook(this.props.match.url);
-     }
-   }
-   ```
 
 ## Φόρμα Βιβλίου
 
@@ -337,7 +594,17 @@
 
    ```javascript
    render() {
-     const book = this.state;
+     if (this.state.toMain) {
+       const message = this.state.message;
+       return <Redirect
+                to={{
+                  pathname: "/",
+                  state: { message }
+                }}
+         />;
+     }
+
+     const book = this.state.book;
 
      return (
        <div className="book">
@@ -373,15 +640,37 @@
                onChange={this.handleInputChange}
              />
            </FormGroup>
-           <Button color="success">Submit</Button>{' '}
+           <Button color="primary">Submit</Button>{' '}
            <Link to='/'>
-             <Button color="secondary">Dismiss</Button>{' '}
+             <Button color="secondary">Back</Button>{' '}
            </Link>
          </Form>
+         {this.state.message && 
+          <Alert
+            className="message"
+            color="danger">
+            Error<span> </span>
+            {this.state.message}
+          </Alert>
+         }
        </div>
      );
    }
    ```
+
+## Λειτουργία της Φόρμας
+
+* Όταν ο χρήστης αλλάζει τις τιμές στα πεδία εισόδου, καλείται η
+  μέθοδος `handleInputChange()`.
+  
+* Όταν ο χρήστης υποβάλει τη φόρμα, καλείτα η μέθοδος
+  `handleSubmit()`.
+  
+* Εάν ο χρήστης έχει υποβάλει τη φόρμα με επιτυχία, τότε θα έχουμε
+  θέσει την ιδιότητα `this.state.toMain` σε `true`, ώστε ο χρήστης θα
+  επιστρέφει στην κεντρική σελίδα, περνώντας σε αυτήν ό,τι μήνυμα
+  θέλουμε να εμφανιστεί.
+
 
 ## Χειρισμός Αλλαγών στη Φόρμα
 
@@ -393,16 +682,18 @@
      const target = event.target;
      const name = target.name;
      const value = target.value;
+     const newBook = {...this.state.book};
 
-     this.setState({[name]: value});
+     newBook[name] = value;
+     this.setState({book: newBook});
    }
    ```
 
 ## Υπολογιζόμενα Ονόματα Ιδιοτήτων
 
-* Η `handleInputChange()` χρησιμοποιεί το συντακτικό για [υπολογιζόμνα
-  ονόματα ιδιοτήτων (computer property
-  names)[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#Computed_property_names)
+* Η `handleInputChange()` χρησιμοποιεί το συντακτικό για
+  [υπολογιζόμενα ονόματα ιδιοτήτων (computer property
+  names)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#Computed_property_names)
   που είναι στη διάθεσή μας από την ES6:
   
    ```javascript
@@ -433,93 +724,131 @@
   
    ```javascript
    handleSubmit(event) {
-     const id = this.state.id || '';
-     const book = this.state;
-     const method = this.state.id ? "PUT" : "POST";
-     fetch(`/api/books/${id}`, {
+     const id = this.state.book.id || '';
+     const book = this.state.book;
+     const method = this.state.book.id ? "PUT" : "POST";
+     axios(`/api/books/${id}`, {
        method: method,
-       body: JSON.stringify(book),
+       data: JSON.stringify(book),
        headers:{
          'Content-Type': 'application/json'
        }
      })
-       .then(response => response.json())
-       .then(result => {
-         const fillerBook = Object.assign({}, emptyBook);
-         this.setState({fillerBook});
+       .then(response => {
+         let message = '';
          if (method === "POST") {
-           this.props.onBookInsert(result);
-           this.setState({...emptyBook});
+           message = 'book inserted';
          } else {
-           this.props.onBookUpdate(result);
+           message = 'book updated';
          }
+         this.setState({toMain: true, message });
        })
-       .catch(error => console.error('Error:', error));
+       .catch(error => this.handleError(error));
      event.preventDefault();
    }
    ```
 
-## Εξάρτημα Ενημέρωσης Βιβλίου
+## Περιεχόμενο του `Home`
 
-* Το εξάρτημα ενημέρωσης βιβλίου ορίζεται στον `Router` του εξαρτήματος
-  `App`.
-  
-* Δεδομένου ότι θέλουμε η ενημέρωση βιβλίου να αλλάζει την κατάσταση
-  στο `App`, θα πρέπει να του περάσουμε τη μέθοδο του `App` που θα
-  καλεί για να το πετύχει αυτό:
+* Το περιεχόμενο του εξαρτήματος `Home` αποδίδεται από την αντίστοιχη
+  μέθοδο `render()`:
   
    ```javascript
-    <Route path="/api/books/:id"
-        render={(props) => <BookDetails
-                             onBookUpdate={this.onBookUpdate}
-                             {...props}
-                           />}
-    />
-    ```
-    
-## `onBookUpdate()`
+   render() {
 
-* Η `onBookUpdate()` πλέον ορίζεται στο εξάρτημα `App` και ενημερώνει
-  τη λίστα με το ενημερωμένο βιβλίο:
-  
-   ```javascript
-   onBookUpdate(updatedBook) {
-     const updatedList = this.state.list.map(book => {
-       return (book.id === updatedBook.id
-               ? updatedBook
-               : book);
-     });
-     this.setState({ list: updatedList });
+     if (!this.state.list) { return null; }
+
+     const referrerState = this.props.location.state;
+     let message = '';
+     if (referrerState) {
+       message = referrerState.message;
+       referrerState.message = '';
+     }
+     const bookToPreview = this.state.bookToPreview;
+
+     return(
+       <div>
+         <BookPreview
+           book={bookToPreview}
+           modal={this.state.togglePreviewModal}
+           toggle={this.togglePreview}/>
+         <Search
+           value={this.searchTerm}
+           onSearchChange={this.onSearchChange}
+         /> 
+         <ItemList
+           list={this.state.list}
+           searchTerm={this.state.searchTerm}
+           onDismiss={this.onDismiss}
+           onPreview={this.onPreview}
+         />
+         <div>
+           <Link to='/books/'>
+             <Button color="primary">New</Button>
+           </Link>
+         </div>
+         { message &&
+           <Message
+             color="success"
+             message={message}
+           />
+         }
+       </div>
+     );
    }
    ```
 
-## Εξάρτημα Εισαγωγής Βιβλίου
+## Η `render()` στο `Home`
 
-* Το εξάρτημα εισαγωγής βιβλίου ορίζεται ομοίως στον `Router` του εξαρτήματος
-  `App`.
+* Αν δεν υπάρχει λίστα βιβλίων για να δείξει, η `render()` δεν κάνει
+  τίποτε.
   
-* Και πάλι, δεδομένου ότι θέλουμε η εισαγωγή βιβλίου να αλλάζει την
-  κατάσταση στο `App`, θα πρέπει να του περάσουμε τη μέθοδο του `App`
-  που θα καλεί για να το πετύχει αυτό:
+* Εξάγει το μήνυμα που τυχόν της έχει περάσει η φόρμα εισαγωγής
+  βιβλίων.
+  
+* Εμφανίζει τα παρακάτω εξαρτήματα:
+
+  * `BookPreview`
+  
+  * `Search`
+  
+  * `ItemList`
+  
+* Επίσης εμφανίζει ένα κουμπί για την εισαγωγή βιβλίου και το μήνυμα
+  που της έχει περάσει η φόρμα εισαγωγής βιβλίων, αν υπάρχει.
+
+
+## Εξάρτημα `Message`
+
+* Για την εμφάνιση των μηνυμάτων, χρησιμοποιούμε ένα μικρό εξάρτημα
+  `Message`:
   
    ```javascript
-   <Route path="/api/books/" exact
-          render={(props) => <BookDetails
-                               onBookInsert={this.onBookInsert}
-                               {...props}
-                             />}
-   />
-    ```
-    
-## `onBookInsert()`
+   class Message extends React.Component {
+     constructor(props) {
+       super(props);
 
-* Η `onBookInsert()` ορίζεται και αυτή στο εξάρτημα `App` και ενημερώνει
-  τη λίστα, προσθέτοντας στο τέλος της το νέο βιβλίο:
-  
-   ```javascript
-   onBookInsert(newBook) {
-     const updatedList = [...this.state.list, newBook];
-     this.setState({ list: updatedList });
+       this.state = {
+         visible: true
+       };
+
+       this.onDismiss = this.onDismiss.bind(this);
+     }
+
+     onDismiss() {
+       this.setState({ visible: false });
+     }
+
+     render() {
+       return (
+         <Alert
+           className="message"
+           color={this.props.color}
+           isOpen={this.state.visible}
+           toggle={this.onDismiss}>
+           {this.props.message}
+         </Alert>
+       );
+     }
    }
    ```
-

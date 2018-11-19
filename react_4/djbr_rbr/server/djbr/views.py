@@ -4,14 +4,14 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 
-from django.contrib.staticfiles import views
-
 from rest_framework import status
+from rest_framework.views import exception_handler
+
+from django.contrib.staticfiles import views
 
 def index(request):
     return views.serve(request, 'index.html')
 
-from rest_framework.views import exception_handler
 
 def custom_exception_handler(exc, context):
     # Call REST framework's default exception handler first,

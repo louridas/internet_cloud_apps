@@ -34,12 +34,6 @@
   color: #888;
 }
 
-.books-buttons {
-    float: right;
-    font-size: 1rem;
-    color: gray;
-}
-
-.books-buttons a:hover {
+.books-buttons button {
     color: gray;
 }

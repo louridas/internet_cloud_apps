@@ -38,14 +38,34 @@ class BookDetails extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  handleError(error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+      this.setState({toMain: false, message: error.response.data});
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest
+      console.log(error.request);
+      this.setState({toMain: false, message: 'No response'});
+    } else {
+      // Something happened in setting up the request that
+      // triggered an Error
+      console.log('Error', error.message);
+      this.setState({toMain: false, message: error.message});          
+    }
+  }
+
   componentDidMount() {
     if (!this.props.match.params.id) {
       this.setState({book: {...emptyBook}});
     } else {
-      fetch('/api/' + this.props.match.url)
-        .then(response => response.json())
-        .then(result => this.setState({book: {...result}}))
-        .catch(error => error);
+      axios.get('/api/' + this.props.match.url)
+        .then(response => this.setState({book: {...response.data}}))
+        .catch(error => this.handleError(error));
     }
   }
 
@@ -73,43 +93,23 @@ class BookDetails extends Component {
       .then(response => {
         let message = '';
         if (method === "POST") {
-          // this.props.onBookInsert(data);
           message = 'book inserted';
         } else {
-          // this.props.onBookUpdate(data);
           message = 'book updated';
         }
         this.setState({toMain: true, message });
       })
-      .catch(error => {
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-          this.setState({toMain: false, message: error.response.data});
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest
-          console.log(error.request);
-          this.setState({toMain: false, message: 'No response'});
-        } else {
-          // Something happened in setting up the request that
-          // triggered an Error
-          console.log('Error', error.message);
-          this.setState({toMain: false, message: error.message});          
-        }
-      });
+      .catch(error => this.handleError(error));
     event.preventDefault();
   }
  
   render() {
     if (this.state.toMain) {
+      const message = this.state.message;
       return <Redirect
                to={{
                  pathname: "/",
-                 state: { message: this.state.message }
+                 state: { message }
                }}
         />;
     }
