@@ -12,7 +12,6 @@ from django.contrib.staticfiles import views
 def index(request):
     return views.serve(request, 'index.html')
 
-
 def custom_exception_handler(exc, context):
     # Call REST framework's default exception handler first,
     # to get the standard error response.
@@ -20,9 +19,12 @@ def custom_exception_handler(exc, context):
     
     # Now add the HTTP status code to the response.
     if response is not None:
-        print(response)
-        response.data['status_code'] = response.status_code
+        # Make sure the message gets in the "data" property
+        # and the status in the "status" property.        
+        response = Response(data=str(response.data),
+                            status=response.status_code)
     else:
+        # Create a new Response from scratch.        
         response = Response(data=str(exc), status=status.HTTP_400_BAD_REQUEST)
         
     return response

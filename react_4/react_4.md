@@ -143,6 +143,29 @@ class ItemList extends Component {
 	/>
     ```
 
+## Χρήση Εικονιδίων FontAwesome
+
+* Για να χρησιμοποιήσουμε εικονίδια FontAwesome με το React, θα πρέπει
+  πρώτα να εγκαταστήσουμε τις κατάλληλες βιβλιοθήκες:
+  
+   ```bash
+   npm i @fortawesome/fontawesome-svg-core \
+   npm i @fortawesome/free-solid-svg-icons \
+   npm i @fortawesome/react-fontawesome
+   ```
+
+* Στη συνέχεια πρέπει να εισάγουμε τις βιβλιοθήκες και να προσθέσουμε
+  το εικονίδιο που θέλουμε στη βιβλιοθήκη των εικονιδίων:
+  
+   ```javascript
+   import { library } from '@fortawesome/fontawesome-svg-core';
+   
+   import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+   import { faEye } from '@fortawesome/free-solid-svg-icons';
+
+   library.add(faEye);
+   ```
+
 ## Ο Χειριστής `onPreview`
 
 * Ο χειριστής `onPreview`:
@@ -231,16 +254,35 @@ class ItemList extends Component {
     
     # Now add the HTTP status code to the response.
     if response is not None:
-        print(response)
-        response.data['status_code'] = response.status_code
+        # Make sure the message gets in the "data" property
+        # and the status in the "status" property.
+        response = Response(data=str(response.data),
+                            status=response.status_code)
     else:
+        # Create a new Response from scratch.
         response = Response(data=str(exc), status=status.HTTP_400_BAD_REQUEST)
         
     return response
     ```
-    
-* Επιστρέφουμε την εξαίρεση σε JSON με κωδικό κατάστασης 400 (bad
-  request), αν το Django Rest Framework δεν τη χειρίζεται.
+
+## Προσαρμογή `settings.py`
+
+* Θα πρέπει τώρα να ενημερώσουμε το Django για τη χρήση του δικού μας
+  χειριστή λαθών.
+  
+* Αυτό γίνεται στο αρχείο `settings.py`:
+
+   ```python
+   REST_FRAMEWORK = {
+       'DEFAULT_RENDERER_CLASSES': (
+           'rest_framework.renderers.JSONRenderer',
+           'rest_framework.renderers.BrowsableAPIRenderer',
+       ),
+       'EXCEPTION_HANDLER': 'djbr.views.custom_exception_handler',
+   }
+   ```
+
+
 
 
 ## Λειτουργία Modal
@@ -625,7 +667,7 @@ class ItemList extends Component {
                   rel="noopener noreferrer">URL</a>
              </Label>
              <Input
-               type="text"
+               type="url"
                name="url"
                value={book.url}
                onChange={this.handleInputChange}

@@ -135,7 +135,7 @@ class BookDetails extends Component {
                  rel="noopener noreferrer">URL</a>
             </Label>
             <Input
-              type="text"
+              type="url"
               name="url"
               value={book.url}
               onChange={this.handleInputChange}              
