@@ -13,18 +13,20 @@
 * Μας επιτρέπει να δημιουργήσουμε εφαρμογές με πολύπλοκα μοντέλα
   αλληλεπίδρασης με το χρήστη.
 
-* Αυτό παλαιότερα μπορούσε να γίνει μόνο με τη χρήση ιδιωμάτων JavaScript.
+* Αυτό παλαιότερα μπορούσε να γίνει μόνο με τη χρήση ιδιωμάτων
+  JavaScript.
 
+* Οι σημειώσεις αυτές έχουν δοκιμαστεί με την έκδοση 7 του Angular.
 
-# Angular quickstart
+# Angular Quickstart
 
-## Γενικά
+## Το Πλάνο
 
 * Θα ακολουθήσουμε το [σύντομο παράδειγμα
   (quickstart)](https://angular.io/guide/quickstart) της Google.
 
 
-## Εγκατάσταση απαιτήσεων (1)
+## Εγκατάσταση Απαιτήσεων (1)
 
 * Για να δουλέψουμε με το Angular θα πρέπει να χρησιμοποιήσουμε το
   Node.js.
@@ -36,7 +38,7 @@
   browser.
 
 
-## Εγκατάσταση απαιτήσεων (2)
+## Εγκατάσταση Απαιτήσεων (2)
 
 * Το Node.js μας δίνει τη δυνατότητα να τη χρησιμοποιήσουμε σαν
   αυτοτελή γλώσσα, εκτός browser.
@@ -46,12 +48,13 @@
 
 * Επιβεβαιώστε ότι έχει εγκατασταθεί σωστά δίνοντας `node -v` και
   `npm -v` σε ένα τερματικό παράθυρο. Οι εκδόσεις που θα δείτε πρέπει να
-  είναι node v.6.9.x και έπειτα και npm 3.x.x και έπειτα.
+  είναι node v.10.x.x και έπειτα και npm 6.x.x και έπειτα.
 
 * Αν η έκδοση του npm είναι παλαιότερη, δώστε:
-    ```bash
-    sudo npm install npm -g
-    ```
+
+   ```bash
+   sudo npm install npm -g
+   ```
 
 * Το sudo απαιτείται σε υπολογιστές Mac και Linux. Σε MS-Windows απλώς
     πρέπει να τις τρέξετε ως διαχειριστής.
@@ -60,13 +63,14 @@
   Version Manager)](https://github.com/creationix/nvm).
 
 
-## Δημιουργία του περιβάλλοντος ανάπτυξης
+## Δημιουργία Περιβάλλοντος Ανάπτυξης
 
 * Εγκαταστείστε το εργαλείο γραμμής εντολών του Angular, [Angular
   CLI](https://github.com/angular/angular-cli):
-    ```bash
-    npm install -g @angular/cli
-    ```
+  
+   ```bash
+   npm install -g @angular/cli
+   ```
   η παράμετρος `-g` υποδεικνύει ότι το Angular CLI θα εγκατασταθεί
   συνολικά (globally) και όχι μόνο για το συγκεκριμένο χρήστη.
 
@@ -78,34 +82,37 @@
 Σε περίπτωση που χρησιμοποιούμε το nvm, η παράμετρος `-g` δεν θα
 εγκαταστήσει το Angular CLI σε κάποιον κεντρικό κατάλογο του
 συστήματός μας, αλλά στον κατάλογο
-`~/.nvm/versions/node/v6.11.5/lib/node_modules`, όπου `v6.11.5` είναι
+`~/.nvm/versions/node/v10.13.0/lib/node_modules`, όπου `v10.13.0` είναι
 η έκδοση του node που έχει εγκατασταθεί.
 
 </div>
 
-## Δημιουργία project
+## Δημιουργία Έργου
 
-* Για να δημιουργήσουμε ένα νέο project το οποίο θα περιέχει μια
+* Για να δημιουργήσουμε ένα νέο έργο (project) το οποίο θα περιέχει μια
   στοιχειώδη εφαρμογή, δίνουμε:
-    ```bash
-    ng new my-app
-    ```
+  
+   ```bash
+   ng new my-app
+   ```
 
 * Η εντολή αυτή μπορεί να χρειαστεί αρκετή ώρα να εκτελεστεί, αφού θα
   πρέπει να κατέβουν και να εγκατασταθούν αρκετά πακέτα.
 
 
-## Εκτέλεση της εφαρμογής
+## Εκτέλεση της Εφαρμογής
 
 * Για να εκτελέσουμε την εφαρμογή πρώτα μπαίνουμε στον κατάλογό της:
-    ```bash
-    cd my-app
-    ```
+   
+   ```bash
+   cd my-app
+   ```
 
 * Στη συνέχεια τρέχουμε τον εξυπηρετητή:
-    ```bash
-    ng serve --open
-    ```
+   
+   ```bash
+   ng serve --open
+   ```
 
 <div class="notes">
 
@@ -118,34 +125,37 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
 </div>
 
 
-## Αλλάζοντας την επικεφαλίδα
+## Αλλάζοντας την Επικεφαλίδα
 
 * Αυτή τη στιγμή η επικεφαλίδα λέει «Welcome to app!».
 
 * Έστω ότι θέλουμε να την αλλάξουμε σε «Welcome to My First Angular
   App!».
 
-* Ανοίγουμε το αρχείο `app.component.ts`.
+* Ανοίγουμε το αρχείο `my-app/src/app.component.ts`.
 
 * Αλλάζουμε τη γραμμή:
-    ```javascript
-    title = 'app';
-    ```
+
+   ```javascript
+   title = 'app';
+   ```
   σε:
-    ```javascript
-    title = 'My First Angular App';
-    ```
+
+   ```javascript
+   title = 'My First Angular App';
+   ```
 
 * Παρατηρούμε ότι μόλις σώσουμε το αρχείο η σελίδα της εφαρμογής μας
   ανανεώνεται αυτομάτως.
 
 
-## Αλλάζοντας το στυλ
+## Αλλάζοντας το Στυλ
 
 * Έστω επίσης ότι θέλουμε να αλλάξουμε το στυλ της σελίδας.
 
 * Ανοίγουμε το αρχείο `app.component.css` (το οποίο είναι
   άδειο) και γράφουμε:
+  
     ```css
     h1 {
       color: #369;
@@ -168,23 +178,23 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
 * Και πάλι οι αλλαγές θα εφαρμοστούν μόλις σώσουμε το αρχείο.
 
 
-# Η δομή του project
+# Η δομή του Έργου
 
-## Γενικά
+## Έργα Angular 
 
-* Ένα project Angular έχει την παρακάτω δομή:
+* Ένα έργο Angular έχει την παρακάτω δομή:
+
     ```
     my-app
-    ├── .angular-cli.json
     ├── .editorconfig
     ├── .gitignore
     ├── README.md
-    ├── e2e/
-    ├── karma.conf.js
-    ├── node_modules/
+    ├── angular.json
+    ├── e2e
+    ├── node_modules
+    ├── package-lock.json
     ├── package.json
-    ├── protractor.conf.js
-    ├── src/
+    ├── src
     ├── tsconfig.json
     └── tslint.json
     ```
@@ -193,9 +203,7 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
   κατάλογοι.
 
 
-## Αρχεία στο βασικό κατάλογο (1)
-
-* `.angular-cli.json`: ρυθμίσεις για το Angular CLI.
+## Αρχεία στο Βασικό Κατάλογο (1)
 
 * `.editorconfig`: ρυθμίσεις ώστε να εξασφαλίζεται ότι όλοι οι
   συνεργάτες στο project χρησιμοποιούν τις ίδιες ρυθμίσεις στον editor
@@ -207,14 +215,12 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
 * `README.md`: βασική τεκμηρίωση για το project (αρχικά, οδηγίες
   χρήσης του Angular CLI).
 
+* `angular.json`: ρυθμίσεις για το Angular CLI.
+
 * `e2e`: κατάλογος που περιέχει end-to-end tests.
 
 
-## Αρχεία στο βασικό κατάλογο (2)
-
-* `karma.conf.js`: ρυθμίσεις τον οδηγό ελέγχων (test runner)
-  [Karma](https://karma-runner.github.io/). Χρησιμοποιούνται όταν
-  δίνουμε `ng test`.
+## Αρχεία στο Βασικό Κατάλογο (2)
 
 * `node_modules`: βιβλιοθήκες που αναφέρονται στο αρχείο
   `package.json`.
@@ -222,12 +228,8 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
 * `package.json`: περιέχει τις προαπαιτούμενες βιβλιοθήκες, όπως
   επίσης και τυχόν κώδικα (scripts) που θέλουμε να εκτελείται.
 
-* `protractor.conf.js`: ρυθμίσεις για τον οδηγό ελέγχων end-to-end
-  [Protactor](http://www.protractortest.org/). Χρησιμοποιείται όταν
-  δίνουμε `ng e2e`.
 
-
-## Αρχεία στο βασικό κατάλογο (3)
+## Αρχεία στο Βασικό Κατάλογο (3)
 
 * `src`: περιέχει τα αρχεία της εφαρμογής μας.
 
@@ -240,7 +242,7 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
   του ύφους του κώδικάς μας, όταν εκτελούμε `ng lint`.
 
 
-## Το αρχείο `package.json`
+## Το Αρχείο `package.json`
 
 * Οι εφαρμογές του Angular (και του Node.js) χρησιμοποιούν πλήθος
   βιβλιοθηκών.
@@ -262,7 +264,7 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
       για τη συγγραφή του προγράμματός μας, αλλά όχι για την εκτέλεσή
       του.
 
-## Εξαρτήσεις εκτέλεσης
+## Εξαρτήσεις Εκτέλεσης
 
 * Οι εξαρτήσεις εκτέλεσης περιλαμβάνουν:
 
@@ -277,7 +279,7 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
     * Άλλες βιβλιοθήκες, όπως π.χ. για τη χρήση του bootstrap.
 
 
-## Εξαρτήσεις ανάπτυξης
+## Εξαρτήσεις Ανάπτυξης
 
 * Οι εξαρτήσεις ανάπτυξης περιλαμβάνουν βιβλιοθήκες όπως:
 
@@ -293,8 +295,8 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
 ## TypeScript
 
 * Η προτεινόμενη γλώσσα για να δουλέψουμε με το Angular είναι η
-  [TypeScript](https://www.typescriptlang.org/). Για το λόγο αυτό το
-  Angular 2 δεν ονομάζεται πλέον Angular.js.
+  [TypeScript](https://www.typescriptlang.org/). Για το λόγο αυτό από
+  το Angular 2 και έπειτα το Angular.js είναι ξεχωριστό προϊόν.
 
 * Η TypeScript είναι μια γλώσσα που βελτιώνει την JavaScript και
   μεταγλωττίζεται σε αυτήν.
@@ -305,7 +307,7 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
 * Ο μεταγλωττιστής (ή μάλλον ο διαγλωττιστής) είναι ο `tsc`.
 
 
-## Συντακτικό εξαρτήσεων (1)
+## Συντακτικό Εξαρτήσεων (1)
 
 * Το npm χρησιμοποιεί συγκεκριμένο συντακτικό για τον προσδιορισμό των
   βιβλιοθηκών που θέλουμε, σύμφωνα με τη βιβλιοθήκη
@@ -319,11 +321,11 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
   `>=`, `=`.
 
 
-## Συντακτικό εξαρτήσεων (2)
+## Συντακτικό Εξαρτήσεων (2)
 
 * Επίσης μπορούμε να χρησιμοποιήσουμε τον τελεστή `~` που σημαίνει:
 
-    * Αν δίνεται το patch, επιτρέπονται αλλαγές στο patch μεχρι το
+    * Αν δίνεται το patch, επιτρέπονται αλλαγές στο patch μέχρι το
     επόμενο minor.
     ```
     ~1.2.3 := >= 1.2.3 < 1.3.0
@@ -341,7 +343,7 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
     ```
 
 
-## Συντακτικό εξαρτήσεων (3)
+## Συντακτικό Εξαρτήσεων (3)
 
 * Ο τελεστής `^` επιτρέπει αλλαγές που δεν επηρεάζουν το πρώτο
   μη-μηδενικό ψηφίο.
@@ -362,12 +364,12 @@ front-end της εφαρμογής μας. Το back-end μπορεί να υλ
 </div>
 
 
-# Δομή της εφαρμογής
+# Δομή της Εφαρμογής
 
-## Αρχεία της εφαρμογής
+## Αρχεία της Εφαρμογής
 
 ```
-src/
+src
 ├── app
 │   ├── app.component.css
 │   ├── app.component.html
@@ -375,18 +377,20 @@ src/
 │   ├── app.component.ts
 │   └── app.module.ts
 ├── assets
+├── browserslist
 ├── environments
 │   ├── environment.prod.ts
 │   └── environment.ts
 ├── favicon.ico
 ├── index.html
+├── karma.conf.js
 ├── main.ts
 ├── polyfills.ts
 ├── styles.css
 ├── test.ts
 ├── tsconfig.app.json
 ├── tsconfig.spec.json
-└── typings.d.ts
+└── tslint.json
 ```
 
 ## Αρθρώματα
@@ -402,13 +406,13 @@ src/
 * Ένα άρθρωμα συνήθως υλοποιεί ένα σύνολο λειτουργιών.
 
 
-## Root module (1)
+## Root Module (1)
 
 * Κάθε εφαρμογή έχει τουλάχιστον ένα άρθρωμα, το root module.
 
 * Στην εφαρμογή μας βρίσκεται στο αρχείο `app.module.ts`.
 
-## Root module (2)
+## Root Module (2)
 
 ```javascript
 import { BrowserModule } from '@angular/platform-browser';
@@ -429,7 +433,7 @@ import { AppComponent } from './app.component';
 export class AppModule { }
 ```
 
-## Root module (3)
+## Root Module (3)
 
 * Ξεκινάμε διαβάζοντας τα αρθρώματα `NgModule` και `BrowserModule`.
 
@@ -442,23 +446,24 @@ export class AppModule { }
 * Στο τέλος, δηλώνουμε την κλάση που θα αποτελεί το root module μας.
 
 
-## Root module (4)
+## Root Module (4)
 
-* To `NgModule` είναι ένας διακοσμητής που περιέχει τα μετα-δεδομένα
+* To `NgModule` είναι ένας διακοσμητής που περιέχει τα μεταδεδομένα
   που περιγράφουν το άρθρωμά μας. Συγκεκριμένα, μπορεί να περιγράφει:
 
-    * `declarations`: τις κλάσεις σελίδων (view classes) που ανήκουν
-      στο άρθρωμα. Αυτές μπορεί να είναι *εξαρτήματα* (components),
-      *οδηγίες* (directives), και *σωληνώσεις* (pipes).
-    * `imports`: κλάσεις που χρειαζόμαστε από άλλα αρθρώματα.
-    * `exports`: κλάσεις του αρθρώματος που θα μπορούν να
+    * `declarations`: στοιχεία του αρθρώματος, ώστε να μπορούν να
+      χρησιμοποιούνται από άλλα στοιχεία του αρθρώματος. Τα στοιχεία
+      μπορεί να είναι *εξαρτήματα* (components), *οδηγίες*
+      (directives), και *σωληνώσεις* (pipes).
+    * `imports`: στοιχεία που χρειαζόμαστε από άλλα αρθρώματα.
+    * `exports`: στοιχεία του αρθρώματος που θα μπορούν να
       χρησιμοποιηθούν από άλλα αρθρώματα.
     * `providers`: δημιουργοί *υπηρεσιών* (services)· αυτές είναι
       διαθέσιμες στο σύνολο της εφαρμογής μας.
     * `bootstrap`: το βασικό άρθρωμα της εφαρμογής· το προσδιορίζουμε
       στο root module.
 
-## Έναρξη εφαρμογής
+## Έναρξη Εφαρμογής
 
 * Για να ξεκινήσει μια εφαρμογή Angular, πρέπει να ξεκινήσουμε το root
   module.
@@ -479,7 +484,7 @@ if (environment.production) {
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.log(err));
+  .catch(err => console.error(err));
 ```
 
 ## Εξαρτήματα
@@ -560,9 +565,9 @@ platformBrowserDynamic().bootstrapModule(AppModule)
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h1>
-    Welcome to {{title}}!
+    Welcome to {{ title }}!
   </h1>
-  <img width="300" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
 </div>
 <h2>Here are some links to help you start: </h2>
 <ul>
@@ -578,7 +583,7 @@ platformBrowserDynamic().bootstrapModule(AppModule)
 </ul>
 ```
 
-## Διασύνδεση δεδομένων εξαρτήματος και προτύπου
+## Διασύνδεση Δεδομένων Εξαρτήματος και Προτύπου
 
 * Στο πρότυπο της εφαρμογής μας χρησιμοποιούμε τα δεδομένα του
   εξαρτήματος.
@@ -601,7 +606,7 @@ platformBrowserDynamic().bootstrapModule(AppModule)
   βρίσκεται στο αρχείο `app.component.css`.
 
 
-## Έλεγχοι μονάδας
+## Έλεγχοι Μονάδας
 
 * Οι έλεγχοι μονάδας (unit tests) για το άρθρωμα βρίσκονται στο αρχείο
   `app.component.spec.ts`.
@@ -612,15 +617,28 @@ platformBrowserDynamic().bootstrapModule(AppModule)
   * ο τίτλος εμφανίζεται σε μία επικεφαλίδα `h1`.
   
 * Για να τρέξουμε τους ελέγχους δίνουμε:
-    ```bash
-    ng test
-    ```
-    
+
+   ```bash
+   ng test
+   ```
+
+## Αποτέλεσμα Ελέγχων
+
+* Αν τρέχουμε τους ελέγχους, θα δούμε ότι αποτυγχάνουν.
+
+* Αυτό, διότι ελέγχουν ότι ο τίτλος είναι `my-app` και η επικεφαλίδα
+  `<h1>` γράφει `Welcome to my-app!`, όπως ήταν στην αρχή.
+  αλλάξουμε.
+
+* Άρα θα πρέπει να αλλάξουμε τους σχετικούς ελέγχους.
+
+
 ## `app.component.spec.ts`
 
 ```javascript
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -629,32 +647,34 @@ describe('AppComponent', () => {
       ],
     }).compileComponents();
   }));
-  it('should create the app', async(() => {
+
+  it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
-  }));
-  it(`should have as title 'app'`, async(() => {
+  });
+
+  it(`should have as title 'app'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('My First Angular App');
-  }));
-  it('should render title in a h1 tag', async(() => {
+  });
+
+  it('should render title in a h1 tag', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent)
-      .toContain('Welcome to My First Angular App!');
-  }));
+    expect(compiled.querySelector('h1').textContent).toContain('Welcome to My First Angular App!');
+  });
 });
 ```
 
 <div class="notes">
 
-Προσέξτε ότι το αρχείο `app.component.spec.ts` όπως κατασκευάστηκε
-αρχικά περνάει τους ελέγχους με τον *αρχικό* τίτλο της εφαρμογής μας.
-Όμως στο μεταξύ τον αλλάξαμε. Άρα θα πρέπει να κάνουμε τις εξής
-προσαρμογές στο αρχικό αρχείο:
+Πράγματι, το αρχείο `app.component.spec.ts` όπως κατασκευάστηκε αρχικά
+περνάει τους ελέγχους με τον *αρχικό* τίτλο της εφαρμογής μας. Όμως
+στο μεταξύ τον αλλάξαμε. Άρα θα πρέπει να κάνουμε τις εξής προσαρμογές
+στο αρχικό αρχείο:
 
 * Η γραμμή:
 ```javascript
@@ -677,15 +697,15 @@ expect(compiled.querySelector('h1').textContent)
 
 Αυτές τις αλλαγές τις έχουμε κάνει στον παραπάνω κώδικα.
 
-
 </div>
 
-# Άλλα αρχεία στον κατάλογο `src`
+
+# Άλλα Αρχεία στον Κατάλογο `src`
 
 ## `src`
 
 ```
-src/
+src
 ├── app
 │   ├── app.component.css
 │   ├── app.component.html
@@ -693,18 +713,20 @@ src/
 │   ├── app.component.ts
 │   └── app.module.ts
 ├── assets
+├── browserslist
 ├── environments
 │   ├── environment.prod.ts
 │   └── environment.ts
 ├── favicon.ico
 ├── index.html
+├── karma.conf.js
 ├── main.ts
 ├── polyfills.ts
 ├── styles.css
 ├── test.ts
 ├── tsconfig.app.json
 ├── tsconfig.spec.json
-└── typings.d.ts
+└── tslint.json
 ```
 
 ## Κεντρική σελίδα
@@ -740,7 +762,7 @@ src/
 ```
 
   
-## Τα υπόλοιπα (1)
+## Τα Υπόλοιπα (1)
 
 * `assets`: κατάλογος στον οποίο βάζουμε εικόνες και άλλους πόρους που
   θα χρησιμοποιηθούν αυτούσιοι.
@@ -755,7 +777,7 @@ src/
 * `polyfills.ts`: εξασφαλίζει ότι διαφορετικοί browsers ακολουθούν
   κοινά πρότυπα.
 
-## Τα υπόλοιπα (2)
+## Τα Υπόλοιπα (2)
 
 * `styles.css`: ρυθμίσεις ύφους που αφορούν το σύνολο της εφαρμογής
   (αντί για τις ρυθμίσεις των επιμέρους αρθρωμάτων).
@@ -763,20 +785,18 @@ src/
 * `test.ts`: ρυθμίσεις για ελέγχους μονάδας (δεν χρειάζεται να το
   πειράξουμε).
   
-* `tsconfig.app.json`: ρυθμίσεις τον μεταγλωττιστή TypeScript για την
+* `tsconfig.app.json`: ρυθμίσεις του μεταγλωττιστή TypeScript για την
   εφαρμογή Angular.
   
-* `tsconfig.spec.json`: ρυθμίσεις τον μεταγλωττιστή TypeScript για
+* `tsconfig.spec.json`: ρυθμίσεις του μεταγλωττιστή TypeScript για
   τους ελέγχους μονάδας.
 
-* `typings.d.ts`: TypeScript type definition file: δεν χρειάζεται να
-  το πειράξουμε. Χρησιμοποιείται από το μεταγλωττιστή της TypeScript.
 
-
-## Καθολικό στυλ
+## Καθολικό Στυλ
 
 * Για να ρυθμίσουμε το καθολικό στυλ της εφαρμογής μας, βάζουμε τα
   παρακάτω στο αρχείο `styles.css`:
+  
     ```css
     body {
       margin: 2em;
