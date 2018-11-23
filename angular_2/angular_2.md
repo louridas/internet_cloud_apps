@@ -4,7 +4,7 @@
 
 # Angular 2
 
-## Γενικά
+## Γενικά {#angular-general}
 
 * Μέχρι στιγμής έχουμε δει τη δομή μιας εφαρμογής Angular, αλλά δεν
   έχουμε δει πώς μπορούμε να φτιάξουμε μια εφαρμογή με πιο ρεαλιστική
@@ -20,14 +20,15 @@
 
 # Αρχικό στήσιμο
 
-## Γενικά
+## Δημιουργία Σκελετού
 
 * Θα φτιάξουμε μια εφαρμογή η οποία θα χειρίζεται βιβλία, κριτικές,
   κ.λπ.
   
 * Θα ονομάσουμε την εφαρμογή μας bangular (= books Angular).
   
-* Για να δημιουργήσουμε τον σκελετό της εφαρμογής δίνουμε
+* Για να δημιουργήσουμε τον σκελετό της εφαρμογής δίνουμε:
+
     ```bash
     ng new bangular
     ```
@@ -35,6 +36,7 @@
 ## Εκκίνηση εφαρμογής
 
 * Για να τρέξει η εφαρμογή μας δίνουμε:
+
     ```bash
     ng serve --open
     ```
@@ -44,10 +46,12 @@
   πρέπει να πλοηγηθούμε εμείς στη διεύθυνση `http://localhost:4200/`.
   
 * Εναλλακτικά, μπορούμε να δώσουμε:
+
     ```bash
     npm start
     ```
-  και στη συνέχεια να πλοηγηθούμε στη διεύθυνση
+  και στη συνέχεια να πλοηγηθούμε στη διεύθυνση:
+  
     `http://localhost:4200/`.
 
 
@@ -64,16 +68,18 @@
 
 Η αντιστοιχία μεταξύ `ng serve` και `npm start` φαίνεται στο αρχείο
 `package.json`. Εκεί μπορούμε να βρούμε το:
-```javascript
-"scripts": {
-  "ng": "ng",
-  "start": "ng serve",
-  "build": "ng build",
-  "test": "ng test",
-  "lint": "ng lint",
-  "e2e": "ng e2e"
- }
-```
+
+   ```javascript
+   "scripts": {
+     "ng": "ng",
+     "start": "ng serve",
+     "build": "ng build",
+     "test": "ng test",
+     "lint": "ng lint",
+     "e2e": "ng e2e"
+    }
+   ```
+
 όπου ορίζονται οι εντολές που μπορούμε να εκτελέσουμε μέσω του
 εργαλείου npm. Έτσι, με `npm test` θα εκτελεστεί το `ng test`, κ.λπ.
 
@@ -86,24 +92,59 @@ mode). Έτσι, όποτε αλλάζουμε ένα αρχείο TypeScript, �
 </div>
 
 
-## Κέλυφος της εφαρμογής
+## Root Module
 
 * Αυτή τη στιγμή έχουμε κατασκευάσει το *κέλυφος* (shell) της
   εφαρμογής μας. 
+
+* Το κέλυφος της εφαρμογής υλοποείται σε ένα *άρθρωμα* (module) το οποίο
+  έχει κατασκευάσει το Angular.
   
+* Κάθε εφαρμογή έχει τουλάχιστον ένα άρθρωμα το οποίο ονομάζεται root module. 
+
+
+## Αρθρώματα
+
+* Κάθε άρθρωμα στο Angular είναι μια *ενότητα μεταγλώττισης* (compilation
+  context).
+
+* Αυτό σημαίνει ότι κάθε άρθρωμα περιέχει ό,τι χρειάζεται για να
+  μεταγλωττιστεί από τον μεταγλωττιστή στης TypeScript χωρίς λάθη.
+  
+* Ένα άρθρωμα μπορεί να περιέχει διάφορα αρχεία που υλοποιούν
+  επιμέρους λειτουργικότητες.
+  
+
+## Εξαρτήματα
+
+* Ένα *εξάρτημα* (component) είναι ένα από τα στοιχεία ενός
+  αρθρώματος.
+  
+* Ένα εξάρτημα ελέγχει ένα μέρος της οθόνης, το οποίο ονομάζεται *view*. 
+
+* Ένα view ορίζεται από τον κώδικα του εξαρτήματος, το πρότυπο, και το
+  στυλ εμφάνισης.
+
+
+## `AppComponent`
+
 * Το κέλυφος της εφαρμογής ελέγχεται από ένα εξάρτημα το οποίο
   ονομάζεται `AppComponent`.
   
 * Η υλοποίηση του εξαρτήματος αυτού μοιράζεται στα αρχεία:
-    * `app.component.ts`: ο κώδικας της κλάσης του εξαρτήματος, σε TypeScript.
-    * `app.component.html`: το πρότυπο του εξαρτήματος, σε HTML.
-    * `app.compponent.css`: το στυλ του εξαρτήματος, σε CSS.
+
+  * `app.component.ts`: ο κώδικας της κλάσης του εξαρτήματος, σε TypeScript.
+    
+  * `app.component.html`: το πρότυπο του εξαρτήματος, σε HTML.
+   
+  * `app.compponent.css`: το στυλ του εξαρτήματος, σε CSS.
 
 
 ## Αλλαγή του τίτλου της εφαρμογής
 
-* Για να αλλάξουμε τον τίτλο της εφαρμογής αλλάζουμε αναλόγως το αρχείο
-  `app.compopnent.ts`:
+* Για να αλλάξουμε τον τίτλο της εφαρμογής ώστε να ξεκινάει με
+  κεφαλαίο αλλάζουμε αναλόγως το αρχείο `app.component.ts`:
+  
     ```javascript
     import { Component } from '@angular/core';
 
@@ -118,6 +159,7 @@ mode). Έτσι, όποτε αλλάζουμε ένα αρχείο TypeScript, �
     ```
     
 <div class="notes">
+
 
 Η λέξη `export` που βλέπουμε μπροστά από το `class AppComponent`
 σημαίνει ότι η κλάση αυτή μπορεί να χρησιμοποιηθεί και από άλλα
@@ -145,104 +187,106 @@ browsers.
 
 * Επίσης θα αλλάξουμε το `app.component.html`, το οποίο θα γίνει
   απλώς:
-    ```html
-    <h1>{{title}}</h1>
-    ```
+  
+   ```html
+   <h1>{{title}}</h1>
+   ```
 
 ## Καθολικό στυλ
 
-* Στο αρχείο `styles.css` θα ορίσουμε το καθολικό στυλ της εφαρμογής.
+* Στο αρχείο `src/styles.css` θα ορίσουμε το καθολικό στυλ της εφαρμογής.
 
 * Το αρχείο θα γίνει ως εξής (διάφορα στοιχεία θα μας χρειαστούν στη
   συνέχεια):
+  
     ```css
-    /* Master Styles */
-    h1 {
-      color: #369;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 250%;
-    }
-    
-    h2, h3 {
-      color: #444;
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: lighter;
-    }
-    
-    body {
-      margin: 2em;
-    }
-    
-    body, input[text], button {
-      color: #888;
-      font-family: Cambria, Georgia;
-    }
-    
-    a {
-      cursor: pointer;
-      cursor: hand;
-    }
-    
-    button {
-      font-family: Arial;
-      background-color: #eee;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      cursor: hand;
-    }
-    
-    button:hover {
-      background-color: #cfd8dc;
-    }
-    
-    button:disabled {
-      background-color: #eee;
-      color: #aaa;
-      cursor: auto;
-    }
+   /* Master Styles */
+   h1 {
+     color: #369;
+     font-family: Arial, Helvetica, sans-serif;
+     font-size: 250%;
+   }
 
-    /* Navigation link styles */
-    nav a {
-      padding: 5px 10px;
-      text-decoration: none;
-      margin-right: 10px;
-      margin-top: 10px;
-      display: inline-block;
-      background-color: #eee;
-      border-radius: 4px;
-    }
-    
-    nav a:visited, a:link {
-      color: #607D8B;
-    }
-    
-    nav a:hover {
-      color: #039be5;
-      background-color: #CFD8DC;
-    }
-    
-    nav a.active {
-      color: #039be5;
-    }
+   h2, h3 {
+     color: #444;
+     font-family: Arial, Helvetica, sans-serif;
+     font-weight: lighter;
+   }
 
-    /* everywhere else */
-    * {
-      font-family: Arial, Helvetica, sans-serif;
-    }
+   body {
+     margin: 2em;
+   }
+
+   body, input[text], button {
+     color: #888;
+     font-family: Cambria, Georgia;
+   }
+
+   a {
+     cursor: pointer;
+     cursor: hand;
+   }
+
+   button {
+     font-family: Arial;
+     background-color: #eee;
+     border: none;
+     padding: 5px 10px;
+     border-radius: 4px;
+     cursor: pointer;
+     cursor: hand;
+   }
+
+   button:hover {
+     background-color: #cfd8dc;
+   }
+
+   button:disabled {
+     background-color: #eee;
+     color: #aaa;
+     cursor: auto;
+   }
+
+   /* Navigation link styles */
+   nav a {
+     padding: 5px 10px;
+     text-decoration: none;
+     margin-right: 10px;
+     margin-top: 10px;
+     display: inline-block;
+     background-color: #eee;
+     border-radius: 4px;
+   }
+
+   nav a:visited, a:link {
+     color: #607D8B;
+   }
+
+   nav a:hover {
+     color: #039be5;
+     background-color: #CFD8DC;
+   }
+
+   nav a.active {
+     color: #039be5;
+   }
+
+   /* everywhere else */
+   * {
+     font-family: Arial, Helvetica, sans-serif;
+   }
 
 
-    /*
-    Copyright 2017 Google Inc. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license
-    */
-    ```
+   /*
+   Copyright 2017-2018 Google Inc. All Rights Reserved.
+   Use of this source code is governed by an MIT-style license that
+   can be found in the LICENSE file at http://angular.io/license
+   */
+   ```
 
 # Χειρισμός βιβλίου
 
-## Γενικά
+## Εξάρτημα Βιβλίου
 
 * Θα προχωρήσουμε στην κατασκευή του εξαρτήματος για την εμφάνιση και
   το χειρισμό βιβλίων.
@@ -253,15 +297,20 @@ browsers.
 ## Κατασκευή σκελετού εξαρτήματος
 
 * Για να κατασκευάσουμε ένα νέο εξάρτημα, δίνουμε:
-    ```bash
-    ng generate component books
-    ```
+
+   ```bash
+   ng generate component books
+   ```
     
 * Η εντολή αυτή θα δημιουργήσει έναν νέο κατάλογο, `src/app/books`, με
   τα εξής αρχεία:
+  
     * `books.component.css`
+    
     * `books.component.html`
+    
     * `books.component.spec.ts`
+    
     * `books.component.ts`
 
 * Επίσης ενημερώνει κατάλληλα το αρχείο `app.module.ts` (θα δούμε μετά
@@ -271,23 +320,24 @@ browsers.
 ## `books.component.ts`
 
 * Το αρχείο `books.component.ts` είναι ως εξής:
-    ```javascript
-    import { Component, OnInit } from '@angular/core';
 
-    @Component({
-      selector: 'app-books',
-      templateUrl: './books.component.html',
-      styleUrls: ['./books.component.css'],
-    })
-    export class BooksComponent implements OnInit {
+   ```javascript
+   import { Component, OnInit } from '@angular/core';
 
-      constructor() { }
+   @Component({
+     selector: 'app-books',
+     templateUrl: './books.component.html',
+     styleUrls: ['./books.component.css']
+   })
+   export class BooksComponent implements OnInit {
 
-      ngOnInit() {
-      }
+     constructor() { }
 
-    }
-    ```
+     ngOnInit() {
+     }
+
+   }
+   ```
  
 <div class="notes">
 
@@ -302,65 +352,40 @@ Angular θα καλέσει αυτή τη μέθοδο λίγο μετά τη δ
  
    * Τον επιλογέα του (`selector`), με τον οποίο θα μπορούμε να το
      χρησιμοποιούμε στον κώδικα HTML.
+     
    * Το πρότυπό του (`templateURL`).
+   
    * Τα στυλ του (`styleUrls`).
    
-Προσοχή: αναλόγως την έκδοση του Angular CLI που χρησιμοποιούμε,
-μπορεί στα μεταδεδομένα να εμφανίζεται και η γραμμή:
-
-```javascript
-encapsulation: ViewEncapsulation.None
-```
-    
-Αν εμφανίζεται, *τη σβήνουμε*. Είναι *bug* το οποίο ο διδάσκων έχει
-αναφέρει στην ομάδα ανάπτυξης του Angular, συνεπώς μπορεί τη στιγμή
-που διαβάζετε αυτές τις γραμμές να έχει ήδη διορθωθεί.
-
-Αν αναρωτιέστε τι κάνει, ορίζει κατά πόσο θέλουμε τα στυλ που θα
-χρησιμοποιήσουμε στο εξάρτημά μας να φαίνονται στο σύνολο της
-εφαρμογής μας ή όχι. Αυτό ορίζεται με τις τρεις δυνατές τιμές της
-ιδιότητας `encapsulation`:
-
-  * `ViewEncapsulation.None`: το στυλ προστίθεται στα συνολικά στυλ
-     της εφαρμογής και άρα είναι ορατό στο σύνολο της εφαρμογής.
-
-  * `ViewEncapsulation.Emulated`: το στυλ δεν είναι ορατό στην
-     υπόλοιπη εφαρμογή, χρησιμοποιώντας εξομοίωση της τεχνικής
-     [Shadow
-     DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Shadow_DOM).
-     Είναι η προκαθορισμένη (default) τιμή.
-   
-  * `ViewEncapsulation.Native`: το στυλ είναι ορατό στην υπόλοιπη
-     εφαρμογή, χρησιμοποιώντας τις δυνατότητες Shadow DOM του browser.
-
 </div>
 
 
-## Εμφάνιση βιβλίου (1)
+## Εμφάνιση Βιβλίου (1)
 
 * Προσθέτουμε στο `books.component.ts` μια ιδιότητα `title` με τον
   τίτλο ενός βιβλίου:
-    ```javascript
-    import { Component, OnInit } from '@angular/core';
-
-    @Component({
-      selector: 'app-books',
-      templateUrl: './books.component.html',
-      styleUrls: ['./books.component.css'],
-    })
-    export class BooksComponent implements OnInit {
-
-      title = 'Infinite Jest';
-
-      constructor() { }
-
-      ngOnInit() {
-      }
-
-    }
-    ```
   
-## Εμφάνιση βιβλίου (2)
+   ```javascript
+   import { Component, OnInit } from '@angular/core';
+
+   @Component({
+     selector: 'app-books',
+     templateUrl: './books.component.html',
+     styleUrls: ['./books.component.css']
+   })
+   export class BooksComponent implements OnInit {
+
+     title = 'Infinite Jest';
+
+     constructor() { }
+
+     ngOnInit() {
+     }
+
+   }
+   ``` 
+
+## Εμφάνιση Βιβλίου (2)
 
 * Στη συνέχεια αλλάζουμε το πρότυπο στο αρχείο `books.component.html`:
 
@@ -383,10 +408,11 @@ encapsulation: ViewEncapsulation.None
 
 * Θα το βάλουμε στο πρότυπο του κελύφους της εφαρμογής, άρα το αρχείο
   `app.component.html` θα γίνει:
-    ```html
-    <h1>{{title}}</h1>
-    <app-books></app-books>
-    ```
+  
+   ```html
+   <h1>{{title}}</h1>
+   <app-books></app-books>
+   ```
 
 * Μπορείτε να επιβεβαιώσετε ότι η εμφάνιση της σελίδας στον browser
   έχει αλλάξει.
@@ -399,19 +425,20 @@ encapsulation: ViewEncapsulation.None
   να τον έχουμε σε ξεχωριστό αρχείο.
   
 * Στην περίπτωσή μας, θα γράφαμε στο `app.component.ts`:
-    ```javascript
-    import { Component } from '@angular/core';
-    
-    @Component({
-      selector: 'app-root',
-      template: `<h1>{{title}}</h1>
-                <app-books></app-books>`
-      styleUrls: ['./app.component.css']
-    })
-    export class AppComponent {
-      title = 'Bangular';
-    }
-    ```
+
+   ```javascript
+   import { Component } from '@angular/core';
+
+   @Component({
+     selector: 'app-root',
+     template: `<h1>{{title}}</h1>
+               <app-books></app-books>`
+     styleUrls: ['./app.component.css']
+   })
+   export class AppComponent {
+     title = 'Bangular';
+   }
+   ```
 
 * Προσέξτε τα backticks (` `). Μπορούμε να βάλουμε και ' ' ή " ",
     αλλά τα backticks στην TypeScript μας επιτρέπουν να έχουμε
@@ -433,23 +460,26 @@ encapsulation: ViewEncapsulation.None
 * Φτιάχνουμε στον κατάλογο `src/app` ένα αρχείο `book.ts` με τα
   ακόλουθα περιεχόμενα:
 
-    ```javascript
-    export class Book {
-      id: number;
-      title: string;
-      pub_year: number;
-    }
-    ```
+   ```javascript
+   export class Book {
+     id: number;
+     title: string;
+     url: string;
+     pub_year: number;
+   }
+   ```
 
 ## Εναλλακτική δημιουργία αρχείου
 
 * Εναλλακτικά, μπορούμε να δώσουμε:
-    ```bash
-    ng generate class book
-    ```
+
+   ```bash
+   ng generate class book
+   ```
     
 * Στην περίπτωση αυτή το Angular CLI θα δημιουργήσει το αρχείο
-  `src/app.book.ts` με περιεχόμενα:
+  `src/app/book.ts` με περιεχόμενα:
+  
     ```javascript
     export class Book {
     }
@@ -476,7 +506,7 @@ encapsulation: ViewEncapsulation.None
     * `never`
     
 
-## Δημιουργία βιβλίου (1)
+## Δημιουργία Βιβλίου (1)
 
 * Από τη στιγμή που έχουμε στη διάθεσή μας μια κλάση `Book`, μπορούμε
   να κατασκευάσουμε ένα αντικείμενο αυτής της κλάσης.
@@ -484,31 +514,31 @@ encapsulation: ViewEncapsulation.None
 * Συγκεκριμένα, η ιδιότητα `book` του `BooksComponent` θα είναι ένα
   αντικείμενο: 
 
-    ```javascript
-    import { Component, OnInit } from '@angular/core';
+   ```javascript
+   import { Component, OnInit } from '@angular/core';
+   import { Book } from '../book';
+   
+   @Component({
+     selector: 'app-books',
+     templateUrl: './books.component.html',
+     styleUrls: ['./books.component.css']
+   })
+   export class BooksComponent implements OnInit {
 
-    import { Book } from '../book';
+     book: Book = {
+       id: 1,
+       title: 'Infinite Jest',
+       url: 'https://en.wikipedia.org/wiki/Infinite_Jest',
+       pub_year: 1996
+     };
 
-    @Component({
-      selector: 'app-books',
-      templateUrl: './books.component.html',
-      styleUrls: ['./books.component.css'],
-    })
-    export class BooksComponent implements OnInit {
+     constructor() { }
 
-      book: Book = {
-        id: 1,
-        title: 'Infinite Jest',
-        pub_year: 1996
-      };
+     ngOnInit() {
+     }
 
-      constructor() { }
-
-      ngOnInit() {
-      }
-
-    }
-    ```
+   }
+   ```
 
 <div class="notes">
 
@@ -517,26 +547,29 @@ encapsulation: ViewEncapsulation.None
 
 </div>
 
-## Δημιουργία βιβλίου (2)
+## Δημιουργία Bιβλίου (2)
 
 * Μπορούμε να παρατηρήσουμε ότι τώρα η σελίδα μας δεν εμφανίζεται
   σωστά.
 
 * Θα πρέπει ταυτόχρονα να αλλάξουμε και το πρότυπο
   `books.component.html`, ώστε να χρησιμοποιεί πλέον αυτό το βιβλίο:
-    ```html
-    <h2>{{ book.title | uppercase }} Details </h2>
-    <div><span>id: </span>{{ book.id }}</div>
-    <div><span>title: </span>{{ book.title }}</div>
-    <div><span>publication year: </span>{{ book.pub_year }}</div>
-    ```
+  
+   ```html   
+   <h2>{{ book.title | uppercase }} Details </h2>
+   <div><span>id: </span>{{ book.id }}</div>
+   <div><span>title: </span>{{ book.title }}</div>
+   <div><span>URL: </span>{{ book.url }}</div>
+   <div><span>publication year: </span>{{ book.pub_year }}</div>
+   ```
 
 ## Διοχετεύσεις
 
 * Για την επικεφαλίδα με τον τίτλο χρησιμοποιήσαμε τον κώδικα:
-    ```html
-    <h2>{{ book.title | uppercase }} Details </h2>
-    ```
+
+   ```html
+   <h2>{{ book.title | uppercase }} Details </h2>
+   ```
     
 * Το `uppercase` είναι μία οδηγία (directive) *διοχέτευση* (pipe).
 
@@ -567,48 +600,52 @@ encapsulation: ViewEncapsulation.None
   χρησιμοποιήσουμε το πακέτο `FormsModule`. Για το σκοπό αυτό πρέπει
   το αρχείο `app.module.ts` να γίνει όπως το παρακάτω:
 
-    ```javascript
-    import { BrowserModule } from '@angular/platform-browser';
-    import { NgModule } from '@angular/core';
-    import { FormsModule } from '@angular/forms';
+   ```javascript
+   import { BrowserModule } from '@angular/platform-browser';
+   import { NgModule } from '@angular/core';
+   import { FormsModule } from '@angular/forms';
 
-    import { AppComponent } from './app.component';
-    import { BooksComponent } from './books/books.component';
+   import { AppComponent } from './app.component';
+   import { BooksComponent } from './books/books.component';
 
-    @NgModule({
-      declarations: [
-        AppComponent,
-        BooksComponent
-      ],
-      imports: [
-        BrowserModule,
-        FormsModule
-      ],
-      providers: [],
-      bootstrap: [AppComponent]
-    })
-    export class AppModule { }
-    ```
+   @NgModule({
+     declarations: [
+       AppComponent,
+       BooksComponent
+     ],
+     imports: [
+       BrowserModule,
+       FormsModule
+     ],
+     providers: [],
+     bootstrap: [AppComponent]
+   })
+   export class AppModule { }
+   ```
 
 <div class="notes">
 
-Κάναμε δύο αλλάγες. Η δυνατότητα της αμφίδρομης σύνδεσης προσφέρεται
-από το άρθρωμα `FormsModule`, οπότε χρειάζεται να το εισάγουμε στο
-τρέχον άρθρωμα:
-```javascript
-import { FormsModule }   from '@angular/forms';
-```
+Κάναμε δύο αλλάγες. 
 
-Με τον τρόπο αυτό εισάγουμε ένα άρθρωμα JavaScript σε ένα άλλο άρθρωμα
-JavaScript. Στην περίπτωσή μας όμως, το `FormsModule` είναι και
-άρθρωμα της Angular (θυμηθείτε, είναι δύο διαφορετικά πράγματα). Άρα
-θα πρέπει να δηλώσουμε μέσα στο διακοσμητή `NgModule` ότι θέλουμε να
-το εισάγουμε. Για το λόγο αυτό το προσθέτουμε στη λίστα `imports`.
+1. Η δυνατότητα της αμφίδρομης σύνδεσης προσφέρεται από το άρθρωμα
+  `FormsModule`, οπότε χρειάζεται να το εισάγουμε στο τρέχον άρθρωμα:
+
+   ```javascript
+   import { FormsModule }   from '@angular/forms';
+   ```
+   
+   Με τον τρόπο αυτό εισάγουμε ένα άρθρωμα TypeScript σε ένα άλλο άρθρωμα
+   TypeScript. 
+  
+2. Στην περίπτωσή μας όμως, το `FormsModule` είναι και
+  άρθρωμα της Angular (θυμηθείτε, είναι δύο διαφορετικά πράγματα). Άρα
+  θα πρέπει να δηλώσουμε μέσα στο διακοσμητή `NgModule` ότι θέλουμε να
+  το εισάγουμε. Για το λόγο αυτό το προσθέτουμε στη λίστα `imports`.
 
 </div>
 
 
-## Δήλωση εξαρτημάτων
+## Δήλωση Εξαρτημάτων
 
 * Στο Angular, κάθε εξάρτημα πρέπει να δηλώνεται σε ακριβώς ένα
   άρθρωμα (module).
@@ -623,23 +660,26 @@ JavaScript. Στην περίπτωσή μας όμως, το `FormsModule` εί
   περιλαμβάνεται στον πίνακα `imports` και `declarations`.
   
 
-## Αμφίδρομη σύνδεση (1)
+## Αμφίδρομη Σύνδεση (1)
 
 * Στη συνέχεια, αλλάζουμε το `books.component.html`:
-    ```html
-    <h2>{{ book.title | uppercase }} Details </h2>
-    <div><span>id: </span>{{ book.id }}</div>
-    <div>
-      <label>title:
-        <input [(ngModel)]="book.title" placeholder="name">
-      </label>
-    <div><span>publication year: </span>{{ book.pub_year }}</div>
-    ```
+
+   ```html
+   <h2>{{ book.title | uppercase }} Details </h2>
+   <div><span>id: </span>{{ book.id }}</div>
+   <div>
+     <label>title:
+       <input [(ngModel)]="book.title" placeholder="name"/>
+     </label>
+   </div>
+   <div><span>URL: </span> {{ book.url }} </div>
+   <div><span>publication year: </span>{{ book.pub_year }}</div>
+   ```
 
 * Τώρα, οι αλλαγές που κάνουμε φαίνονται αμέσως στον τίτλο.
 
 
-## Αμφίδρομη σύνδεση (2)
+## Αμφίδρομη Σύνδεση (2)
 
 * Για να δείξουμε στο Angular ότι η σύνδεση μεταξύ δεδομένων και
   οθόνης είναι αμφίδρομη, χρησιμοποιούμε τη σύνταξη `[()]`.
@@ -666,37 +706,86 @@ JavaScript. Στην περίπτωσή μας όμως, το `FormsModule` εί
   ίδια* με τα μοντέλα που μπορεί να έχουμε στο back-end. 
   
 
-# Λίστα βιβλίων
+# Λίστα Βιβλίων
 
-## Γενικά
+## Προσθήκη Λίστας
 
 * Μέχρι τώρα έχουμε μόνο ένα βιβλίο στην εφαρμογή μας.
 
 * Τώρα θέλουμε να την εξελίξουμε ώστε να έχουμε μία λίστα από βιβλία.
 
 
-## Δημιουργία βιβλίων
+## Δημιουργία Βιβλίων
 
 * Θα ξεκινήσουμε προσθέτοντας έναν πίνακα από βιβλία στο αρχείο
   `mock-books.ts`, στον κατάλογο `src/app`:
 
-    ```javascript
-    import { Book } from './book';
+   ```javascript
+   import { Book } from './book';
 
-    export const BOOKS: Book[] = [
-      { id: 11, title: 'Infinite Jest', pub_year: 1996},
-      { id: 12, title: 'Oblivion', pub_year: 2004 },
-      { id: 13, title: 'Ulysses', pub_year: 1922 },
-      { id: 14, title: 'The Crying of Lot 49', pub_year: 1966 },
-      { id: 15, title: 'City on Fire', pub_year: 2015 },
-      { id: 16, title: 'The Narrow Road to the Deep North', pub_year: 2013 },
-      { id: 17, title: 'The Dispossessed', pub_year: 1974 },
-      { id: 18, title: 'The Left Hand of Darkness', pub_year: 1969 },
-      { id: 19, title: 'A Death in the Family: My Struggle Book 1',
-        pub_year: 2013 },
-      { id: 20, title: 'A Man in Love: My Struggle Book 2', pub_year: 2013 }
-    ];
-    ```
+   export const BOOKS: Book[] = [
+     {
+       id: 11,
+       title: 'Infinite Jest',
+       url: 'https://en.wikipedia.org/wiki/Infinite_Jest',
+       pub_year: 1996
+     },
+     {
+       id: 12,
+       title: 'Ulysses',
+       url: 'https://en.wikipedia.org/wiki/Ulysses_(novel)',
+       pub_year: 1922
+     },
+     {
+       id: 13,
+       title: "Gravity's Rainbow",
+       url: 'https://en.wikipedia.org/wiki/Gravity%27s_Rainbow',
+       pub_year: 1973
+     },
+     {
+       id: 14,
+       title: 'City on Fire',
+       url: 'https://en.wikipedia.org/wiki/City_on_Fire_(Hallberg_novel)',
+       pub_year: 2015
+     },
+     {
+       id: 15,
+       title: 'The Narrow Way to the Deep North',
+       url: 'https://en.wikipedia.org/wiki/The_Narrow_Road_to_the_Deep_North_(novel)',
+       pub_year: 2013
+     },
+     {
+       id: 16,
+       title: 'The Dispossessed',
+       url: 'https://en.wikipedia.org/wiki/The_Dispossessed',
+       pub_year: 1974
+     },
+     {
+       id: 17,
+       title: 'A Death in the Family: My Struggle Book 1',
+       url: 'https://en.wikipedia.org/wiki/My_Struggle_(Knausg%C3%A5rd_novels)',
+       pub_year: 2009
+     },
+     {
+       id: 18,
+       title: 'Conversations with Friends',
+       url: 'https://en.wikipedia.org/wiki/Conversations_with_Friends',
+       pub_year: 2017
+     },
+     {
+       id: 19,
+       title: 'La Septième Fonction du Langage',
+       url: 'https://fr.wikipedia.org/wiki/La_Septi%C3%A8me_Fonction_du_langage',
+       pub_year: 2015
+     },
+     {
+       id: 20,
+       title: "La Vérité sur l' Affaire Harry Quebert",
+       url: 'https://fr.wikipedia.org/wiki/La_V%C3%A9rit%C3%A9_sur_l%27affaire_Harry_Quebert',
+       pub_year: 2012
+     }
+   ];
+   ```
 
 <div class="notes">
 
@@ -713,9 +802,9 @@ back-end, θα την ταΐσουμε με όσα δεδομένα χρειαζ
 * Μέσα στην κλάση `BooksComponent`, στο αρχείο `books.component.ts`,
   δηλώνουμε μία ιδιότητα που αναφέρεται στα βιβλία που φτιάξαμε:
 
-    ```javascript
-    books = BOOKS;
-    ```
+   ```javascript
+   books = BOOKS;
+   ```
 
 * Αντιστρόφως δεν χρειαζόμαστε πλέον την ιδιότητα `book` που είχαμε
   βάλει προηγουμένως.
@@ -725,43 +814,43 @@ back-end, θα την ταΐσουμε με όσα δεδομένα χρειαζ
 
 * Επίσης θα χρειαστεί να εισάγουμε τα βιβλία που ορίσαμε, άρα στην
   αρχή θα προσθέσουμε:
-    ```javascript
-    import { BOOKS } from '../mock-books';
-    ```
-
-
+  
+   ```javascript
+   import { BOOKS } from '../mock-books';
+   ```
 
 ## `books.component.ts`
 
 * Το αρχείο `books.component.ts` θα είναι τότε:
-    ```javascript
-    import { Component, OnInit } from '@angular/core';
 
-    import { Book } from '../book';
-    import { BOOKS } from '../mock-books';
+   ```javascript
+   import { Component, OnInit } from '@angular/core';
 
-    @Component({
-      selector: 'app-books',
-      templateUrl: './books.component.html',
-      styleUrls: ['./books.component.css'],
-    })
-    export class BooksComponent implements OnInit {
+   import { Book } from '../book';
+   import { BOOKS } from '../mock-books';
 
-      books = BOOKS;
-      selectedBook : Book;
+   @Component({
+     selector: 'app-books',
+     templateUrl: './books.component.html',
+     styleUrls: ['./books.component.css'],
+   })
+   export class BooksComponent implements OnInit {
 
-      constructor() { }
+     books = BOOKS;
+     selectedBook : Book;
+
+     constructor() { }
 
       ngOnInit() {
       }
 
-    }
-    ```
+   }
+   ```
 
 
 ## Εξέλιξη προτύπου βιβλίων
 
-* Για να δούμε όλα τα βιβλία, αλλάζουμε το  `books.component.html` ως εξής:
+* Για να δούμε όλα τα βιβλία, αλλάζουμε το `books.component.html` ως εξής:
 
     ```html
     <h2>Books</h2>
@@ -793,7 +882,7 @@ back-end, θα την ταΐσουμε με όσα δεδομένα χρειαζ
 
 ## Δομικές οδηγίες
 
-* Στον προηγούμενο κώδικα το `*ngFor` και το `*ngIf`.
+* Στον προηγούμενο κώδικα προσέξτε το `*ngFor` και το `*ngIf`.
 
 * Αυτά είναι *δομικές οδηγίες* (structural directives) που
   υποδεικνύουν με ποιον τρόπο θα αλλάξει η δομή της HTML σελίδας (το
@@ -809,9 +898,10 @@ back-end, θα την ταΐσουμε με όσα δεδομένα χρειαζ
 ## Η δομική οδηγία `*ngFor`
 
 * Η δομική οδηγία `*ngFor` συντάσσεται ως εξής:
-    ```html
-    <li *ngFor="let book of books">
-    ```
+
+   ```html
+   <li *ngFor="let book of books">
+   ```
 
 * Αυτό σημαίνει ότι θα δημιουργηθεί ένα στοιχείο `<li>` για κάθε ένα
   βιβλίο.
@@ -826,9 +916,10 @@ back-end, θα την ταΐσουμε με όσα δεδομένα χρειαζ
 ## Η δομική οδηγία `*ngIf`
 
 * Στο παράδειγμά μας, η δομική οδηγία `*ngIf` είναι:
-    ```html
-    <div *ngIf="selectedBook">
-    ```
+
+   ```html
+   <div *ngIf="selectedBook">
+   ```
     
 * Αυτό σημαίνει ότι το `<div>` και τα περιεχόμενά του θα εισαχθούν
   στην HTML σελίδα (για την ακρίβεια, στο DOM), αν το πεδίο
@@ -838,19 +929,27 @@ back-end, θα την ταΐσουμε με όσα δεδομένα χρειαζ
 ## Διασύνδεση κλάσης CSS
 
 * Παρατηρήστε την ακόλουθη γραμμή του κώδικά μας:
-    ```html
-    [class.selected]="book === selectedBook"
-    ```
 
-* Αυτή είναι ένα παράδειγμα *διασύνδεσης κλάσης* (class binding).
+   ```html
+   [class.selected]="book === selectedBook"
+   ```
 
-* Στην ιδιότητα class του συγκεκριμένου HTML στοιχείου θα προστεθεί ή
-  θα αφαιρεθεί η τιμή `selected` αναλόγως της τιμής της έκφρασης `book
-  === selectedBook`.
+* Αυτή είναι ένα παράδειγμα *διασύνδεσης κλάσης* (class binding). Στην
+  ιδιότητα class του συγκεκριμένου HTML στοιχείου θα προστεθεί ή θα
+  αφαιρεθεί η τιμή `selected` αναλόγως της τιμής της έκφρασης:
   
-* Γενικότερα, με την έκφραση `[class.some-css-class]="some-condition"`
-  στο στοιχείο θα προστίθεται ή θα αφαιρείται η κλάση `some-css-class`
-  αναλόγως της τιμής της έκφρασης `some-condition`.
+   ```javascript
+   book === selectedBook
+   ```
+  
+* Γενικότερα, με την έκφραση 
+
+   ```javascript
+   [class.some-css-class]="some-condition"
+   ```
+   
+   στο στοιχείο θα προστίθεται ή θα αφαιρείται η κλάση `some-css-class`
+   αναλόγως της τιμής της έκφρασης `some-condition`.
 
 
 ## Εκφράσεις προτύπων
@@ -888,9 +987,10 @@ operators](https://angular.io/guide/template-syntax#expression-operators))
 ## Διασύνδεση γεγονότος
 
 * Τέλος, παρατηρείστε τη γραμμή:
-    ```html
-    (click)="onSelect(book)"
-    ```
+
+   ```html
+   (click)="onSelect(book)"
+   ```
     
 * Αυτή είναι ένα παράδειγμα *διασύνδεσης γεγονότος* (event binding).
 
@@ -907,33 +1007,33 @@ operators](https://angular.io/guide/template-syntax#expression-operators))
 
 * Αυτόν τον προσθέτουμε στην κλάση `BooksComponent`:
 
-    ```javascript
-    import { Component, OnInit } from '@angular/core';
+   ```javascript
+   import { Component, OnInit } from '@angular/core';
 
-    import { Book } from '../book';
-    import { BOOKS } from '../mock-books';
+   import { Book } from '../book';
+   import { BOOKS } from '../mock-books';
 
-    @Component({
-      selector: 'app-books',
-      templateUrl: './books.component.html',
-      styleUrls: ['./books.component.css'],
-    })
-    export class BooksComponent implements OnInit {
+   @Component({
+     selector: 'app-books',
+     templateUrl: './books.component.html',
+     styleUrls: ['./books.component.css'],
+   })
+   export class BooksComponent implements OnInit {
 
-      books = BOOKS;
-      selectedBook : Book;
+     books = BOOKS;
+     selectedBook : Book;
 
-      constructor() { }
+     constructor() { }
 
-      ngOnInit() {
-      }
+     ngOnInit() {
+     }
 
-      onSelect(book: Book): void {
-        this.selectedBook = book;
-      }
+     onSelect(book: Book): void {
+       this.selectedBook = book;
+     }
 
-    }
-    ```
+   }
+   ```
 
 
 ## Στυλ βιβλίων
@@ -943,74 +1043,74 @@ operators](https://angular.io/guide/template-syntax#expression-operators))
 
 * Το αρχείο αυτό θα είναι το `books.component.css`:
 
-    ```css
-    .selected {
-        background-color: #CFD8DC !important;
-        color: white;
-    }
+   ```css
+   .selected {
+       background-color: #CFD8DC !important;
+       color: white;
+   }
 
-    .books {
-        margin: 0 0 2em 0;
-        list-style-type: none;
-        padding: 0;
-        width: 15em;
-      }
+   .books {
+       margin: 0 0 2em 0;
+       list-style-type: none;
+       padding: 0;
+       width: 15em;
+     }
 
-    .books li {
-        cursor: pointer;
-        position: relative;
-        left: 0;
-        background-color: #EEE;
-        margin: .5em;
-        padding: .3em 0;
-        height: 1.6em;
-        border-radius: 4px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+   .books li {
+       cursor: pointer;
+       position: relative;
+       left: 0;
+       background-color: #EEE;
+       margin: .5em;
+       padding: .3em 0;
+       height: 1.6em;
+       border-radius: 4px;
+       overflow: hidden;
+       text-overflow: ellipsis;
+       white-space: nowrap;
+   }
 
-    .books li.selected:hover {
-        background-color: #BBD8DC !important;
-        color: white;
-    }
+   .books li.selected:hover {
+       background-color: #BBD8DC !important;
+       color: white;
+   }
 
-    .books li:hover {
-        color: #607D8B;
-        background-color: #DDD;
-        left: .1em;
-    }
+   .books li:hover {
+       color: #607D8B;
+       background-color: #DDD;
+       left: .1em;
+   }
 
-    .books .text {
-        position: relative;
-        top: -3px;
-    }
+   .books .text {
+       position: relative;
+       top: -3px;
+   }
 
-    .books .badge {
-        display: inline-block;
-        font-size: small;
-        color: white;
-        padding: 0.8em 0.7em 0 0.7em;
-        background-color: #607D8B;
-        line-height: 1em;
-        position: relative;
-        left: -1px;
-        top: -4px;
-        height: 1.8em;
-        margin-right: .8em;
-        border-radius: 4px 0 0 4px;
-    }
-    
-    /*
-    Copyright 2017 Google Inc. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license
-    */
-    ```
+   .books .badge {
+       display: inline-block;
+       font-size: small;
+       color: white;
+       padding: 0.8em 0.7em 0 0.7em;
+       background-color: #607D8B;
+       line-height: 1em;
+       position: relative;
+       left: -1px;
+       top: -4px;
+       height: 1.8em;
+       margin-right: .8em;
+       border-radius: 4px 0 0 4px;
+   }
+
+   /*
+   Copyright 2017-2018 Google Inc. All Rights Reserved.
+   Use of this source code is governed by an MIT-style license that
+   can be found in the LICENSE file at http://angular.io/license
+   */
+   ```
 
 # Δημιουργία οδηγίας
 
-## Γενικά
+## Οδηγίες Ιδιοτήτων
 
 * Αν θέλουμε να αλλάζουμε την εμφάνιση ή τη συμπεριφορά ενός στοιχείου
   HTML (για την ακρίβεια, ενός στοιχείου DOM), μπορούμε να
@@ -1051,18 +1151,19 @@ operators](https://angular.io/guide/template-syntax#expression-operators))
 ## Ο σκελετός της οδηγίας
 
 * Ο σκελετός της οδηγίας έχει ως εξής:
-    ```javascript
-    import { Directive } from '@angular/core';
 
-    @Directive({
-      selector: '[appItalics]'
-    })
-    export class ItalicsDirective {
+   ```javascript
+   import { Directive } from '@angular/core';
 
-      constructor() { }
+   @Directive({
+     selector: '[appItalics]'
+   })
+   export class ItalicsDirective {
 
-    }
-    ```
+     constructor() { }
+
+   }
+   ```
     
 * Βλέπουμε ότι θα μπορούμε να την εφαρμόσουμε γράφοντας `appItalics`.
 
@@ -1071,20 +1172,21 @@ operators](https://angular.io/guide/template-syntax#expression-operators))
 
 * Τώρα θα φτιάξουμε την οδηγία μας ώστε όταν εφαρμόζεται να μεταβάλλει
   τους χαρακτήρες του στοιχείου στο οποίο εφαρμόζεται σε πλάγιους.
-    ```javascript
-    import { Directive, ElementRef } from '@angular/core';
 
-    @Directive({
-      selector: '[appItalics]'
-    })
-    export class ItalicsDirective {
+   ```javascript
+   import { Directive, ElementRef } from '@angular/core';
 
-      constructor(el: ElementRef) {
-        el.nativeElement.style['font-style'] = 'italic';
-      }
+   @Directive({
+     selector: '[appItalics]'
+   })
+   export class ItalicsDirective {
 
-    }
-    ```
+     constructor(el: ElementRef) {
+       el.nativeElement.style['font-style'] = 'italic';
+     }
+
+   }
+   ```
   
 ## Λειτουργία οδηγίας
 
@@ -1092,9 +1194,10 @@ operators](https://angular.io/guide/template-syntax#expression-operators))
   οποίο εφαρμόζεται η οδηγία.
   
 * Με τον κώδικα:
-    ```javascript
-    el.nativeElement.style['font-style'] = 'italic';
-    ```
+
+   ```javascript
+   el.nativeElement.style['font-style'] = 'italic';
+   ```
   πηγαίνουμε στο στοιχείο του DOM και προσδίδουμε στην ιδιότητα
     `font-style` την τιμή `italic`.
     
@@ -1105,10 +1208,12 @@ operators](https://angular.io/guide/template-syntax#expression-operators))
   
 * Στην περίπτωσή μας, αλλάζουμε το `books.component.html` και τη
   γραμμή:
-    ```html
-      <h2>{{ selectedBook.title }} details:</h2>
-    ```
+
+   ```html
+   <h2>{{ selectedBook.title }} details:</h2>
+   ```
   την κάνουμε:
-    ```html
-    <h2><span appItalics> {{ selectedBook.title }}</span> details:</h2>
-    ```
+  
+   ```html
+   <h2><span appItalics> {{ selectedBook.title }}</span> details:</h2>
+   ```

@@ -6,12 +6,11 @@ import { AppComponent } from './app.component';
 import { BooksComponent } from './books/books.component';
 import { ItalicsDirective } from './italics.directive';
 
-
 @NgModule({
   declarations: [
     AppComponent,
     BooksComponent,
-    ItalicsDirective,
+    ItalicsDirective
   ],
   imports: [
     BrowserModule,
