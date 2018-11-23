@@ -117,8 +117,7 @@ mode). Έτσι, όποτε αλλάζουμε ένα αρχείο TypeScript, �
 
 ## Εξαρτήματα
 
-* Ένα *εξάρτημα* (component) είναι ένα από τα στοιχεία ενός
-  αρθρώματος.
+* Ένα άρθρωμα μπορεί να περιέχει έναν αριθμό *εξαρτημάτων* (components).
   
 * Ένα εξάρτημα ελέγχει ένα μέρος της οθόνης, το οποίο ονομάζεται *view*. 
 
@@ -313,9 +312,46 @@ browsers.
     
     * `books.component.ts`
 
-* Επίσης ενημερώνει κατάλληλα το αρχείο `app.module.ts` (θα δούμε μετά
-  πώς ακριβώς).
 
+## Ενημέρωση `app.module.ts`
+
+* Επίσης ενημερώνει κατάλληλα το αρχείο `app.module.ts`:
+
+   ```javascript
+   import { BrowserModule } from '@angular/platform-browser';
+   import { NgModule } from '@angular/core';
+
+   import { AppComponent } from './app.component';
+   import { BooksComponent } from './books/books.component';
+
+   @NgModule({
+     declarations: [
+       AppComponent,
+       BooksComponent
+     ],
+     imports: [
+       BrowserModule
+     ],
+     providers: [],
+     bootstrap: [AppComponent]
+   })
+   export class AppModule { }
+   ```
+
+## Δήλωση Εξαρτημάτων
+
+* Στο Angular, κάθε εξάρτημα πρέπει να δηλώνεται σε ακριβώς ένα
+  άρθρωμα (module).
+  
+* Αυτό ισχύει και για το `BooksComponent`.
+
+* Δεν χρειάστηκε να το δηλώσουμε εμείς γιατί το Angular CLI έκανε τις
+  απαραίτητες αλλαγές στο `app.module.ts` όταν δημιουργήσαμε το
+  `BooksComponent`. 
+  
+* Πράγματι, μπορείτε να δείτε ότι εισάγεται (`import`), και ότι
+  περιλαμβάνεται στον πίνακα `declarations`.
+  
 
 ## `books.component.ts`
 
@@ -644,21 +680,6 @@ Angular θα καλέσει αυτή τη μέθοδο λίγο μετά τη δ
 
 </div>
 
-
-## Δήλωση Εξαρτημάτων
-
-* Στο Angular, κάθε εξάρτημα πρέπει να δηλώνεται σε ακριβώς ένα
-  άρθρωμα (module).
-  
-* Αυτό ισχύει και για το `BooksComponent`.
-
-* Δεν χρειάστηκε να το δηλώσουμε εμείς γιατί το Angular CLI έκανε τις
-  απαραίτητες αλλαγές στο `app.module.ts` όταν δημιουργήσαμε το
-  `BooksComponent`. 
-  
-* Πράγματι, μπορείτε να δείτε ότι εισάγεται (`import`), και ότι
-  περιλαμβάνεται στον πίνακα `imports` και `declarations`.
-  
 
 ## Αμφίδρομη Σύνδεση (1)
 
