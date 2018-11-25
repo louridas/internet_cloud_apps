@@ -890,6 +890,7 @@ back-end, θα την ταΐσουμε με όσα δεδομένα χρειαζ
         <label>title: </label>
         <input [(ngModel)]="selectedBook.title" placeholder="name">
       </div>
+      <div><label>URL: </label> {{ selectedBook.url }} </div>
       <div><label>Publication year: </label>{{selectedBook.pub_year}}</div>
     </div>
     ```
