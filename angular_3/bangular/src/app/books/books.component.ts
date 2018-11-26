@@ -6,11 +6,11 @@ import { BookService } from '../book.service';
 @Component({
   selector: 'app-books',
   templateUrl: './books.component.html',
-  styleUrls: ['./books.component.css'],
+  styleUrls: ['./books.component.css']
 })
 export class BooksComponent implements OnInit {
 
-  books: Book[];
+  books : Book[];
   selectedBook : Book;
 
   constructor(private bookService: BookService) { }
@@ -24,9 +24,8 @@ export class BooksComponent implements OnInit {
   }
 
   getBooks(): void {
-    this.bookService.getBooks().then(books => {
-      this.books = books;
-    });
+    this.bookService.getBooks()
+      .subscribe(books => this.books = books);
   }
 
 }

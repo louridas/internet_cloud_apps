@@ -1,9 +1,10 @@
 <div *ngIf="book">
-  <h2><span appItalics> {{ book.title }}</span> details:</h2>
+  <h2>{{ book.title }} details:</h2>
   <div><label>id: </label>{{book.id}}</div>
   <div>
     <label>title: </label>
     <input [(ngModel)]="book.title" placeholder="name">
   </div>
+   <div><label>URL: </label> {{ book.url }} </div>
   <div><label>Publication year: </label>{{book.pub_year}}</div>
 </div>

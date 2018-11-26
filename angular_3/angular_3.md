@@ -14,7 +14,7 @@
   [online tutorial](https://angular.io/docs/ts/latest/tutorial/)
   της Google.
 
-## Δημιουργία εξαρτήματος λεπτομερειών
+## Δημιουργία Εξαρτήματος Λεπτομερειών
 
 * Αυτή τη στιγμή το εξάρτημα `BooksComponent` είναι αρμόδιο τόσο για την
   εμφάνιση της λίστας των βιβλίων, όσο και την εμφάνιση των
@@ -27,21 +27,50 @@
 ## Δημιουργία `BookDetailComponent`
 
 * Αρχίζουμε δημιουργώντας ένα νέο εξάρτημα:
-    ```bash
-    ng generate component book-detail
-    ```
+
+   ```bash
+   ng generate component book-detail
+   ```
     
 * Με την εντολή αυτή θα δημιουργηθεί ο κατάλογος `src/app/book-detail`
   και μέσα σε αυτόν θα δημιουργηθούν τα αρχεία:
+  
     * `book-detail.component.css`
+    
     * `book-detail.component.html`
+    
     * `book-detail.component.spec.ts`
+    
     * `book-detail.component.ts`
     
 * Επίσης θα γίνουν οι απαραίτητες αλλαγές (εισαγωγή και δήλωση) στο
   αρχείο `app.module.ts`.
 
-## Αλλαγές στα πρότυπα
+## Υπάρχον `books.component.html`
+
+```javascript
+<h2>Books</h2>
+<ul class="books">
+  <li *ngFor="let book of books"
+      [class.selected]="book === selectedBook"
+      (click)="onSelect(book)">
+    <span class="badge">{{book.id}}</span> {{book.title}}
+  </li>
+</ul>
+
+<div *ngIf="selectedBook">
+  <h2>{{ selectedBook.title }} details:</h2>
+  <div><label>id: </label>{{selectedBook.id}}</div>
+  <div>
+    <label>title: </label>
+    <input [(ngModel)]="selectedBook.title" placeholder="name">
+  </div>
+   <div><label>URL: </label> {{ selectedBook.url }} </div>
+  <div><label>Publication year: </label>{{selectedBook.pub_year}}</div>
+</div>
+```
+
+## Αλλαγές στα Πρότυπα
 
 * Θα μεταφέρουμε το κάτω μέρος του προτύπου `books.component.html` στο
   `book-detail.component.html`.
@@ -54,22 +83,25 @@
 ## `book-detail.component.html`
 
 * Έτσι, το αρχείο `book-detail.component.html` θα είναι:
-    ```html
-    <div *ngIf="book">
-    <h2><span appItalics> {{ book.title }}</span> details:</h2>
-    <div><label>id: </label>{{book.id}}</div>
-    <div>
-      <label>title: </label>
-      <input [(ngModel)]="book.title" placeholder="name">
-    </div>
-    <div><label>Publication year: </label>{{book.pub_year}}</div>
-    </div>
+
+   ```html
+   <div *ngIf="book">
+     <h2>{{ book.title }} details:</h2>
+     <div><label>id: </label>{{book.id}}</div>
+     <div>
+       <label>title: </label>
+       <input [(ngModel)]="book.title" placeholder="name">
+     </div>
+      <div><label>URL: </label> {{ book.url }} </div>
+     <div><label>Publication year: </label>{{book.pub_year}}</div>
+   </div>
     ```
 
-## Σκελετός εξαρτήματος
+## Σκελετός Εξαρτήματος
 
-* Ο σκελετός του εξαρτήματος, όπως έχει δημιουργηθεί από το Angular
+* Ο σκελετός του κώδικα του εξαρτήματος, όπως έχει δημιουργηθεί από το Angular
     CLI, είναι ο εξής:
+    
     ```javascript
     import { Component, OnInit } from '@angular/core';
 
@@ -88,37 +120,38 @@
     }
     ```
 
-## Προσθήκη ιδιότητας `book`
+## Προσθήκη Ιδιότητας `book`
 
 * Αφού το `BookDetailComponent` είναι υπεύθυνο για την εμφάνιση ενός
 βιβλίου, προσθέτουμε μια ιδιότητα `book` στο `BookDetailComponent`:
-    ```javascript
-    import { Component, OnInit } from '@angular/core';
 
-    import { Book } from '../book';
+   ```javascript
+   import { Component, OnInit } from '@angular/core';
 
-    @Component({
-      selector: 'app-book-detail',
-      templateUrl: './book-detail.component.html',
-      styleUrls: ['./book-detail.component.css']
-    })
-    export class BookDetailComponent implements OnInit {
+   import { Book } from '../book';
 
-      book: Book;
+   @Component({
+     selector: 'app-book-detail',
+     templateUrl: './book-detail.component.html',
+     styleUrls: ['./book-detail.component.css']
+   })
+   export class BookDetailComponent implements OnInit {
 
-      constructor() { }
+     book: Book;
 
-      ngOnInit() {
-      }
+     constructor() { }
 
-    }
-    ```
+     ngOnInit() {
+     }
+     
+   }
+   ```
 
 * Προσοχή, θα πρέπει να την εισάγουμε κιόλας (δείτε το σχετικό
   `import` κοντά στην αρχή).
 
 
-## Αλληλεπίδραση των εξαρτημάτων
+## Αλληλεπίδραση των Εξαρτημάτων
 
 * To `BookDetailComponent` πρέπει να ξέρει ποιο βιβλίο θα παρουσιάσει.
 
@@ -127,21 +160,21 @@
 * Συγκεκριμένα, το πρότυπο `books.component.html` θα αλλάξει και θα
   γίνει:
 
-    ```html
-    <h1>{{title}}</h1>
-    <h2>Books</h2>
-    <ul class="books">
-      <li *ngFor="let book of books"
-          [class.selected]="book === selectedBook"
-          (click)="onSelect(book)">
-        <span class="badge">{{book.id}}</span> {{book.title}}
-      </li>
-    </ul>
-    
-    <app-book-detail [book]="selectedBook"></app-book-detail>
-    ```
+   ```html
+   <h1>{{title}}</h1>
+   <h2>Books</h2>
+   <ul class="books">
+     <li *ngFor="let book of books"
+         [class.selected]="book === selectedBook"
+         (click)="onSelect(book)">
+       <span class="badge">{{book.id}}</span> {{book.title}}
+     </li>
+   </ul>
 
-## Δήλωση ιδιότητας εισόδου (1)
+   <app-book-detail [book]="selectedBook"></app-book-detail>
+   ```
+
+## Δήλωση Ιδιότητας Εισόδου (1)
 
 * Η ιδιότητα `book` είναι ο *αποδέκτης* (target) της διασύνδεσης.
 
@@ -149,34 +182,34 @@
   τρόπο αυτό την καθιστούμε *ιδιότητα εισόδου* (input property).
 
 
-## Δήλωση ιδιότητας εισόδου (2)
+## Δήλωση Ιδιότητας Εισόδου (2)
 
 * Για να λειτουργήσει όμως ως ιδιότητα εισόδου, θα πρέπει να κάνουμε
   την αντίστοιχη δήλωση και στο `BookDetailComponent` χρησιμοποιώντας
   το διακοσμητή `@Input()`:
 
-    ```javascript
-    import { Component, OnInit, Input } from '@angular/core';
+   ```javascript
+   import { Component, OnInit, Input } from '@angular/core';
 
-    import { Book } from '../book';
+   import { Book } from '../book';
 
-    @Component({
-      selector: 'app-book-detail',
-      templateUrl: './book-detail.component.html',
-      styleUrls: ['./book-detail.component.css']
-    })
-    export class BookDetailComponent implements OnInit {
+   @Component({
+     selector: 'app-book-detail',
+     templateUrl: './book-detail.component.html',
+     styleUrls: ['./book-detail.component.css']
+   })
+   export class BookDetailComponent implements OnInit {
 
-      @Input()
-      book: Book;
+     @Input()
+     book: Book;
 
-      constructor() { }
+     constructor() { }
 
-      ngOnInit() {
-      }
+     ngOnInit() {
+     }
 
-    }
-    ```
+   }
+   ```
 
 <div class="notes">
 
@@ -193,18 +226,9 @@
 </div>
 
 
-## Εκκίνηση της εφαρμογής
+# Δημιουργία Υπηρεσιών
 
-* Ελέγχουμε ότι όλα πάνε καλά και ότι παρ' όλες τις αλλαγές η εφαρμογή
-παραμένει λειτουργική με:
-    ```bash
-    ng serve --open
-    ```
-
-
-# Δημιουργία υπηρεσιών
-
-## Γενικά
+## Γενικά {#services-general}
 
 * Στο Angular, τα δεδομένα που χρειάζονται τα εξαρτήματά μας
   παρέχονται από *υπηρεσίες* (services).
@@ -217,37 +241,43 @@
   χρήστη. 
 
 
-## Δημιουργία σκελετού υπηρεσίας
+## Δημιουργία Σκελετού Υπηρεσίας
 
 * Δημιουργούμε τον σκελετό της υπηρεσίας με το Angular
   CLI ως εξής:
-    ```bash
-    ng generate service book
-    ```
+  
+   ```bash
+   ng generate service book
+   ```
     
 * Σε αυτήν την περίπτωση το Angular CLI θα δημιουργήσει το ακόλουθα
   αρχεία στον κατάλογο `src/app`:
-      * `book.service.ts`
-      * `book.service.spec.ts`
+  
+    * `book.service.ts`
+     
+    * `book.service.spec.ts`
 
-* Το `book.service.ts` είναι:
-    ```javascript
-    import { Injectable } from '@angular/core';
 
-    @Injectable()
-    export class BookService {
+## `book.service.ts`
 
-      constructor() { }
+```javascript
+import { Injectable } from '@angular/core';
 
-    }
-    ```
+@Injectable({
+  providedIn: 'root'
+})
+export class BookService {
+
+  constructor() { }
+}
+```
 
 ## `@Injectable()`
 
 * Ο διακοσμητής `@Injectable()` που βλέπουμε στον παραπάνω κώδικα
   ενημερώνει το Angular ότι η παρούσα υπηρεσία μπορεί να
   χρησιμοποιήσει άλλες υπηρεσίες μέσω της διαδικασίας *ένθεσης
-  εξαρτήσεων* (dependency injection).
+  εξάρτησης* (dependency injection).
   
 * Η ένθεση εξαρτήσεων είναι ένα σημαντικό σχεδιαστικό πρότυπο (design
   pattern) που διέπει τη λειτουργία του Angular.
@@ -261,134 +291,233 @@
   Wikipedia](https://en.wikipedia.org/wiki/Dependency_injection).
 
 
-## Παροχή βιβλίων
+## Ένθεση Εξάρτησης (1)
+
+* Για να δούμε την αξία του σχεδιαστικού προτύπου της ένθεσης
+  εξάρτησης, μπορούμε να δούμε το παρακάτω
+  [παράδειγμα](https://en.wikipedia.org/wiki/Dependency_injection) σε
+  Java:
+  
+   ```java
+   // An example without dependency injection
+   public class Client {
+       // Internal reference to the service used by this client
+       private Service service;
+
+       // Constructor
+       Client() {
+           // ExampleService is an implementation of Service
+           service = new ExampleService();
+       }
+
+       // Method within this client that uses the services
+       public String greet() {
+           return "Hello " + service.getName();
+       }
+   }
+   ```
+   
+## Ένθεση Εξάρτησης (2)
+
+* Το πρόβλημα στο παραπάνω παράδειγμα είναι ότι δεν θέλουμε ο χρήστης
+  του `Service` να εξαρτάται από τη συγκεκριμένη υλοποίηση (εδώ,
+  `ExampleService`).
+  
+* Επιπλέον, είναι πιθανόν να χρειαζόμαστε μόνο ένα στιγμιότυπο του
+  `Service` στην εφαρμογή μας.
+  
+* Άρα θα έπρεπε να χρησιμοποιήσουμε ένα εργοστάσιο (factory) που θα
+  μας επέστρεφε ένα μοναδικό στιγμιότυπο (singleton).
+  
+## Ένθεση Εξάρτησης (3)
+
+* Αλλάζουμε την κλάση `Client` ώστε η εξάρτηση να είναι παράμετρος του
+  κατασκευαστή:
+
+   ```java
+   // An example without dependency injection
+   public class Client {
+       // Internal reference to the service used by this client
+       private Service service;
+
+       // Constructor
+       Client(Service service) {
+           // ExampleService is an implementation of Service
+           this.service = service;
+       }
+
+       // Method within this client that uses the services
+       public String greet() {
+           return "Hello " + service.getName();
+       }
+   }
+   ```
+    
+<div class="notes">
+
+Αυτός είναι ένας τρόπος να ενθέσουμε την εξάρτηση και βασίζεται
+ακριβώς στην ένθεση μέσω του κατασκευαστή του χρήστη. Υπάρχουν άλλοι
+δύο τρόποι. Μπορεί η ένθεση να γίνει μέσω μεθόδου setter ή μέσω μιας
+διεπαφής (interface). Για λεπτομέρειες δείτε το [άρθρο της
+Wikipedia](https://en.wikipedia.org/wiki/Dependency_injection).
+
+</div>
+   
+## Ένθεση Εξάρτησης (4)
+
+* Η ένθεση της εξάρτησης γίνεται συνήθως μέσω ενός *ενθέτη* (injector). 
+ 
+* Σε πολύ απλοποιημένη μορφή μπορεί να είναι κάτι όπως:
+
+   ```java
+   public class Injector {
+       public static void main(String[] args) {
+           // Build the dependencies first
+           Service service = new ExampleService();
+
+           // Inject the service, constructor style
+           Client client = new Client(service);
+
+           // Use the objects
+           System.out.println(client.greet());
+       }	
+   }
+   ```
+   
+## Ένθεση Εξάρτησης στο Angular
+
+* Στο Angular, πρέπει να καταγράψουμε την εξάρτηση, δηλαδή την
+  υπηρεσία μας, με έναν ενθέτη.
+  
+* Ο ενθέτης θα δημιουργήσει την υπηρεσία και θα καλέσει τον
+  κατασκευαστή του εξαρτήματος δίνοντάς του το στιγμιότυπο της
+  υπηρεσίας ως παράμετρο.
+  
+* Αυτό κάνει ο διακοσμητής `Injectable()`:
+
+   ```javascript
+   @Injectable({
+     providedIn: 'root'
+   })
+   ```
+
+* Στη συγκεκριμένη περίπτωση, καταγράφουμε την εξάρτηση στον ενθέτη
+  `root` ώστε η εξάρτηση να είναι διαθέσιμη στο σύνολο της εφαρμογής.
+
+
+<div class="notes">
+
+Υπάρχουν και άλλοι τρόποι να καταγράψουμε την εξάρτηση σε έναν ενθέτη.
+Για περισσότερες πληροφορίες, δείτε την [τεκμηρίωση του
+Angular](https://angular.io/guide/dependency-injection).
+
+</div>
+
+## Παροχή Βιβλίων
 
 * Το `BookService` θα είναι αρμόδιο για την παροχή βιβλίων στα
   εξαρτήματα της εφαρμογής.
 
 * Αυτή τη στιγμή γράφουμε μια μέθοδο η οποία επιστρέφει τα δεδομένα
   δοκιμών: 
-    ```javascript
-    import { Injectable } from '@angular/core';
+  
+   ```javascript
+   import { Injectable } from '@angular/core';
 
-    import { Book } from './book';
-    import { BOOKS } from './mock-books';
+   import { Book } from './hero';
+   import { BOOKS } from './mock-books';
 
-    @Injectable()
-    export class BookService {
+   @Injectable({
+     providedIn: 'root'
+   })
+   export class BookService {
 
-      getBooks(): Book[] {
-        return BOOKS;
-      }
+     constructor() { }
 
-    }
-    ```
+     getBooks(): Book[] {
+       return BOOKS;
+     }
 
-## Δήλωση της υπηρεσίας
+   }
+   ```
 
-* Για να μπορέσουμε να χρησιμοποιήσουμε την υπηρεσία που φτιάξαμε, την
-  εισάγουμε στο `AppComponent`, βάζοντας κάπου στην αρχή:
-    ```javascript
-    import { BookService } from './book.service';
-    ```
-
-* Επίσης, την προσθέτουμε στο πίνακα `providers` του `AppComponent`:
-    ```javascript
-    providers: [ BookService ],
-    ```
-    
-* Ο πίνακας `providers` υποδεικνύει στο Angular να δημιουργήσει ένα
-  μοναδικό στιγμιότυπο του `BookService` και να το παρέχει σε όποια
-  κλάση το χρειάζεται.
-
-<div class="notes">
-
-Προκειμένου να μπορεί να γίνει η ένθεση των υπηρεσιών που θέλουμε,
-πρέπει να καταγράψουμε (register) τους παρόχους (providers) των
-υπηρεσιών αυτών. Η καταγραφή αυτή γίνεται στον πίνακα `providers`. Η
-καταγραφή αυτή μπορεί να γίνει είτε στον πίνακα `providers` του
-`NgModule`, είτε στον αντίστοιχο πίνακα του επιμέρους εξαρτήματός μας. 
-
-* Αν καταγράψουμε έναν πάροχο στο `NgModule`, η υπηρεσία που παρέχει
-  είναι διαθέσιμη στο σύνολο της εφαρμογής μας.
-
-* Αν καταγράψουμε έναν πάροχο σε ένα επιμέρους εξάρτημα, η υπηρεσία
-  που παρέχει είναι διαθέσιμη στο εξάρτημα αυτό και στα τυχόν παιδιά
-  του.
-
-</div>
-
-## Χρήση της υπηρεσίας
+## Χρήση της Υπηρεσίας
 
 * Στη συνέχεια, θα πρέπει να χρησιμοποιήσουμε το `BookService` στο
   `BooksComponent`. Συγκεκριμένα, θα γίνει ως εξής:
-    ```javascript
-    import { Component, OnInit } from '@angular/core';
+  
+   ```javascript
+   import { Component, OnInit } from '@angular/core';
 
-    import { Book } from '../book';
-    import { BookService } from '../book.service';
+   import { Book } from '../book';
+   import { BookService } from '../book.service';
 
-    @Component({
-      selector: 'app-books',
-      templateUrl: './books.component.html',
-      styleUrls: ['./books.component.css'],
-    })
-    export class BooksComponent implements OnInit {
+   @Component({
+     selector: 'app-books',
+     templateUrl: './books.component.html',
+     styleUrls: ['./books.component.css']
+   })
+   export class BooksComponent implements OnInit {
 
-      books: Book[];
-      selectedBook : Book;
+     books : Book[];
+     selectedBook : Book;
 
-      constructor(private bookService: BookService) { }
+     constructor(private bookService: BookService) { }
 
-      ngOnInit() {
-        this.getBooks();
-      }
+     ngOnInit() {
+       this.getBooks();
+     }
 
-      onSelect(book: Book): void {
-        this.selectedBook = book;
-      }
+     onSelect(book: Book): void {
+       this.selectedBook = book;
+     }
 
-      getBooks(): void {
-        this.books = this.bookService.getBooks();
-      }
+     getBooks(): void {
+       this.books = this.bookService.getBooks();
+     }
 
-    }
-    ```
+   }
+   ```
 
-## Ένθεση της υπηρεσίας
+## Ένθεση της Υπηρεσίας
 
 * Βλέπουμε ότι η χρήση της υπηρεσίας δεν γίνεται απλώς με κάτι του τύπου:
-    ```javascript
-    bookService = new BookService(); // don't do this
-    ```
+
+   ```javascript
+   bookService = new BookService(); // don't do this
+   ```
 * Πράγματι, αν κάναμε κάτι τέτοιο:
+
     * Το `BooksComponent` θα έπρεπε να ξέρει ακριβώς πώς να κατασκευάζει
       ένα `BookService`. Αν αλλάξουμε τον κατασκευαστή (constructor)
       του `BookService`, μπορεί να χρειαστεί να αλλάξουμε τον κώδικα
       σε κάθε σημείο που καλείται.
+      
     * Κάθε φορά δημιουργείται ένα νέο `BookService`, ενώ μπορεί να
       θέλουμε να υπάρχει μόνο ένα για όλα τα εξαρτήματα της εφαρμογής.
+      
     * Το `BooksComponent` δένεται πολύ στενά με τη συγκεκριμένη
       υλοποίηση του `BookService`. Δεν διευκολύνει την εναλλαγή
       διαφορετικών υλοποιήσεων (π.χ. άλλη για ελέγχους και άλλη για
       παραγωγή). 
+      
 
-## Ένθεση εξάρτησης
+## Ένθεση Eξάρτησης μέσω Κατασκευαστή
 
-* Για να αποφύγουμε τα παραπάνω προβλήματα, χρησιμοποιούμε το
-  *σχεδιαστικό πρότυπο* (design pattern) *ένθεση εξάρτησης* (dependency
-  injection).
+* Όπως είπαμε, για να αποφύγουμε τα παραπάνω προβλήματα,
+  χρησιμοποιούμε ένθεση εξάρτησης.
 
 * Στην πράξη φτιάχνουμε ένα κατασκευαστή (constructor) του
   `AppComponent` ο οποίος δηλώνει μία ιδιωτική ιδιότητα `bookService`:
   
-    ```javascript
-    constructor(private bookService: BookService) { }
-    ```
+   ```javascript
+   constructor(private bookService: BookService) { }
+   ```
 
 * Πλην όμως, αν προσέξετε, *δεν κατασκευάζουμε πουθενά εμείς ένα*
-  `BookService`. Το `BookService` κατασκευάζεται από το Angular και
-  γίνεται ένθεση (injection) μέσα στο `BookService` αυτομάτως.
+  `BookService`. Το `BookService` κατασκευάζεται από το Angular, από
+  τον ενθέτη `root`, και γίνεται ένθεση (injection) μέσα στο
+  `BookService` αυτομάτως.
 
 <div class="notes">
 
@@ -415,8 +544,7 @@ constructor(private bookService: BookService) { }
 
 </div>
 
-
-## Αρχικοποίηση βιβλίων
+## Αρχικοποίηση Βιβλίων
 
 * Το `BooksComponent` πρέπει να διαβάζει τα βιβλία καλώντας τη συνάρτηση
   `getBooks()`.
@@ -430,30 +558,37 @@ constructor(private bookService: BookService) { }
   σύνδεση με άλλα εξαρτήματα, εξυπηρετητές κ.λπ.
 
 
-## Κύκλος ζωής εξαρτημάτων
+## Κύκλος Ζωής Εξαρτημάτων
 
 * Κάθε εξάρτημα στο Angular έχει έναν κύκλο ζωής.
 
 * Ο κύκλος ζωής αποτελείται από συγκεκριμένα στάδια.
 
 
-## Διεπαφές σταδίων ζωής
+## Διεπαφές Σταδίων Ζωής
 
 * Μπορούμε να δηλώσουμε τι θα εκτελεστεί σε κάθε στάδιο της ζωής ενός
   εξαρτήματος, υλοποιώντας τις κατάλληλες *διεπαφές* (interfaces), οι
   οποίες είναι:
 
     * `OnChanges`
+    
     * `OnInit`
+    
     * `DoCheck`
+    
     * `AfterContentInit`
+    
     * `AfterConcentChecked`
+    
     * `AfterViewInit`
+    
     * `AfterViewChecked`
+    
     * `OnDestroy`
 
 
-## Το στάδιο `OnInit`
+## Το Στάδιο `OnInit`
 
 * Το στάδιο `OnInit` συμβαίνει στην αρχικοποίηση ενός εξαρτήματος,
   αφού το Angular εμφανίσει τις ιδιότητες που έχουν σύνδεση με
@@ -472,20 +607,21 @@ constructor(private bookService: BookService) { }
 
 * Για τους παραπάνω λόγους, στο `BooksComponent` υλοποιήσαμε την
   `ngOnInit()`:
-    ```javascript
-    ngOnInit() {
-      this.getBooks();
-    }
-    ```
+  
+   ```javascript
+   ngOnInit() {
+     this.getBooks();
+   }
+   ```
     
 * Άρα η μέθοδος `getBooks()`, η οποία χρησιμοποιεί την υπηρεσία
   `BookService`, θα κληθεί έχοντας εξασφαλίσει ότι το `BookService`
   έχει δημιουργηθεί και αρχικοποιηθεί πλήρως.
 
 
-# Ασύγχρονες υπηρεσίες
+# Ασύγχρονες Υπηρεσίες
 
-## Γενικά
+## Γενικά {#general-asynchronous-services}
 
 * Η εφαρμογή μας λειτουργεί, διαβάζοντας τα βιβλία και εμφανίζοντάς τα
   στην οθόνη.
@@ -497,161 +633,107 @@ constructor(private bookService: BookService) { }
   να λειτουργούν *ασύγχρονα*, γιατί δεν ξέρουμε πόσος χρόνος μπορεί να
   απαιτηθεί για να μας δώσει αποτελέσματα μια λειτουργία ή υπηρεσία.
 
+## `Observable`
 
-## Υποσχέσεις
-
-* Ένας τρόπος με τον οποίο χειριζόμαστε ασύγχρονες υπηρεσίες είναι μέσω
-  *υποσχέσεων* (promises).
-
-* Μια υπόσχεση είναι ένα αντικείμενο το οποίο υποκαθιστά τα
-  αποτελέσματα που περιμένουμε.
-
-
-## Καταστάσεις υποσχέσεων
-
-* Μια υπόσχεση μπορεί να βρίσκεται στις εξής καταστάσεις:
-
-    * Εν αναμονή (pending)
-        * Διευθετημένη (settled)
-            * Εκπληρωμένη (fulfilled)
-            * Αθετημένη (rejected) 
-
-* Όταν μια υπόσχεση διευθετηθεί, ενημερωνόμαστε για το αποτέλεσμά της
-μέσω κομματιών κώδικα (συναρτήσεων) που έχουμε ορίσει.
-
-* Αν η υπόσχεση έχει εκπληρωθεί, θα εκτελεστεί ο κώδικας που έχουμε
-ορίσει χρησιμοποιώντας τη μέθοδο `then()`.
-
-* Αν η υπόσχεση αθετηθεί, θα εκτελεστεί ο κώδικας που έχουμε ορίσει
-  χρησιμοποιώντας τη μέθοδο `catch()`.
-
-
-## Υπόδειγμα Υπόσχεσης
-
-* Ως αποδέκτες μιας υπόσχεσης, ενημερωνόμαστε για την εκπλήρωση ή την
-  αθέτησή της δίνοντάς της τον κώδικα που θα πρέπει να εκτελεστεί σε
-  κάθε μία από τις δύο περιπτώσεις.
+* Οι περισσότερες ασύγχρονες υπηρεσίες στο Angular υλοποιούνται μέσω
+  της κλάσης `Observable`.
   
-* Επειδή ο κώδικας αυτός θα κληθεί όταν η υπόσχεση εκπληρωθεί ή
-  αθετηθεί, ονομάζεται *callback*. 
-    ```javascript
-    promise
-    .then(value => { /* fulfillment */ })
-    .catch(error => { /* rejection */ });
-    ```
+* Η κλάση `Observable` υλοποιείται στη βιβλιοθήκη
+  [RxJS](http://reactivex.io/rxjs/).
+  
+* Η βασική ιδέα είναι ότι ένα `Observable` «σπρώχνει» (push) μία ή
+  περισσότερες τιμές, όπως εμφανίζονται, σε *συνδρομητές*
+  (subscribers). 
 
 <div class="notes">
 
-Επειδή ουσιαστικά η όλη λογική είναι: «κάνε αυτό που σου λέω, και όταν
-τελειώσεις, κάλεσέ με να με ενημερώσεις», έχει επικρατήσει ο όρος
-callback για το ιδίωμα αυτό.
-
-Τα callbacks είναι πολύ συνηθισμένα στον ασύγχρονο προγραμματισμό: η
-συνάρτηση που θα κληθεί (το callback) καλείται ασύγχρονα όταν
-εκπληρωθεί ή όταν έχει αθετηθεί η υπόσχεση.
-
-Στον παραπάνω κώδικα, ορίζουμε στην υπόσχεση τι θα πρέπει να κάνει
-όταν ολοκληρωθεί:
-
-  * αν έχει εκπληρωθεί, θα εκτελεστεί η συνάρτηση που περνάμε ως
-    παράμετρο στο `.then()` και η παράμετρος `value` θα περιέχει το
-    αποτέλεσμα της εκπλήρωσης
-  * αν έχει αποτύχει, θα εκτελεστεί η συνάρτηση που περνάμε ως
-    παράμετρο στο `.catch()` και η παράμετρος `error` θα περιέχει το
-    λόγο της αθέτησης
-
-Για (πολλές) περισσότερες πληροφορίες, δείτε [αυτό το
-κεφάλαιο](http://exploringjs.com/es6/ch_promises.html), από όπου
-    προέρχεται και το παραπάνω παράδειγμα.
+Η βασική διαφορά μεταξύ ενός `Observable` και μιας υπόσχεσης είναι ότι
+μια υπόσχεση εκπληρώνεται *άπαξ*. Όταν εκπληρώνεται επιστρέφει κάποια
+τιμή (ή κάποια δομή δεδομένων, όπως πίνακας, με πολλές τιμές). Ένα
+`Observable` μπορεί να επιστρέφει τιμές καθ' όλη τη διάρκεια της ζωής
+του, εφ' όσον έχει συνδρομητές.
 
 </div>
 
+## Χρήση `Observable`
 
-## Υπόσχεση στο `BooksComponent`
+* Για να χρησιμοποιήσουμε ένα `Observable` στο `BookService`, απλώς θα
+  μετατρέψουμε τον πίνακα των βιβλίων που επιστρέφει το `getBooks()`
+  σε ένα `Observable` που επιστρέφει πίνακα βιβλίων.
+  
+* Μελλοντικά, θα αλλάξουμε το `BookService` ώστε να επιστρέφει βιβλία
+  από έναν εξυπηρετητή.
 
-* Αλλάζουμε τη μέθοδο `getBooks()` του `BooksComponent` ώστε να
-  χρησιμοποιήσει μια υπόσχεση που θα του δίνει το `BookService`:
-
-    ```javascript
-    getBooks(): void {
-      this.bookService.getBooks().then(books => this.books = books);
-    }
-    ```
-* Όταν η υπόσχεση εκπληρωθεί, ο πίνακας βιβλίων θα βρίσκεται στη
-  μεταβλητή `books`, την οποία την αποθηκεύουμε στο `this.books`.
-
-* Δεν ορίζουμε τι θα γίνει σε περίπτωση αθέτησης, γιατί στη
-  συγκεκριμένη περίπτωση γνωρίζουμε με σιγουριά ότι δεν θα υπάρξει.
+* Πρέπει να εισάγουμε τις κατάλληλες δηλώσεις από τη βιβλιοθήκη `rjxs`
+  και να αλλάξουμε την `getBooks()`.
 
 
-## Ανώνυμες συναρτήσεις με βέλη
+## `book.service.ts` {#book.service.ts-observable}
 
-* Στην `getBooks()` χρησιμοποιήσαμε μια ανώνυμη συνάρτηση με τον
-  τελεστή `=>`.
+```javascript
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
-* Το βασικό συντακτικό είναι ως εξής:
+import { Book } from './book';
+import { BOOKS } from './mock-books';
 
-    ```javascript
-    (param1, param2, ..., paramN) => { statements }
-    (param1, param2, ..., paramN) => expression
-      // equivalent to:  => { return expression; }
+@Injectable({
+  providedIn: 'root'
+})
+export class BookService {
 
-    // Parentheses are optional when there's only one parameter:
-    (singleParam) => { statements }
-    singleParam => { statements }
+  constructor() { }
 
-    // A function with no parameters requires parentheses:
-    () => { statements }
-    ```
+  getBooks(): Observable<Book[]> {
+    return of(BOOKS);
+  }
 
-## Υπόσχεση στο `BookService`
+}
+```
 
-* Η υπόσχεση δημιουργείται στο `BookService`, όπου θα αλλάξουμε τη
-  μέθοδο `getBooks()` ώστε να γίνει:
+## Εγγραφή Συνδρομητή του `BooksComponent`
 
-    ```javascript
-    getBooks(): Promise<Book[]> {
-      return Promise.resolve(BOOKS);
-    }
-    ```
+* Τώρα το `BooksComponent` θα πρέπει να γραφτεί συνδρομητής στο
+  `BookService`. 
+  
+* Αυτό γίνεται καλώντας τη μέθοδο `subscribe()` του `Observable`.
 
-* Στη συγκεκριμένη περίπτωση, δημιουργούμε μια υπόσχεση η οποία
-  εκπληρώνεται αμέσως με την τιμή `BOOKS`, μέσω της μεθόδου
-  `resolve()`.
+   ```javascript
+   getBooks(): void {
+     this.bookService.getBooks()
+       .subscribe(books => this.books = books);
+   }
+   ```
 
-* Γενικά, η κλήση `Promise.resolve(x)` επιστρέφει μια υπόσχεση η οποία
-  εκπληρώνεται με την τιμή `x`.
+# Εμφάνιση Μηνυμάτων
 
-* Στην πραγματικότητα, η υπόσχεση αυτή θα εκπληρωνόταν όταν θα
-  ολοκληρωνόταν η επικοινωνία με τη βάση δεδομένων ή τον εξυπηρετητή
-  που έχει τα στοιχεία για τα βιβλία.
+## Γενικά {#general-messages}
 
-
-## Εμφάνιση μηνυμάτων
-
-* Θα φτιάξουμε ένα εξάρτημα το οποίο θα εμφανίζει μηνύματα στον
-  χρήστη, στο κάτω μέρος της εφαρμογής.
+* Θα φτιάξουμε ένα εξάρτημα, το `MessagesComponent`, το οποίο θα
+  εμφανίζει μηνύματα στον χρήστη, στο κάτω μέρος της εφαρμογής.
   
 * Τα μηνύματα θα αποστέλονται μέσω μίας υπηρεσίας που θα φτιάξουμε για
   αυτό το λόγο, τη `MessageService`.
   
-* Τα μηνύματα θα εμφανίζονται μέσω ενός εξαρτήματος που επίσης θα
-  φτιάξουμε για αυτό το λόγο, το `MessagesComponent`.
-
 
 ## Δημιουργία σκελετού `MessagesComponent`
 
 * Χρησιμοποιούμε το Angular CLI για να δημιουργήσουμε τον σκελετό του
   `MessagesComponent`: 
-    ```bash
-    ng generate component messages
-    ```
+  
+   ```bash
+   ng generate component messages
+   ```
   
 * Με την εντολή αυτή θα δημιουργηθεί ο κατάλογος `src/app/messages`
   και μέσα σε αυτόν θα δημιουργηθούν τα αρχεία:
+  
     * `messages.component.css`
+    
     * `messages.component.html`
+    
     * `messages.component.spec.ts`
+    
     * `messages.component.ts` 
 
 * Επίσης θα γίνουν οι απαραίτητες αλλαγές (εισαγωγή και δήλωση) στο
@@ -662,57 +744,60 @@ callback για το ιδίωμα αυτό.
 
 * Για να εμφανίζεται το εξάρτημα των μηνυμάτων, αλλάζουμε κατάλληλα το
   `app.component.html`: 
-    ```html
-    <h1>{{title}}</h1>
-    <app-books></app-books>
-    <app-messages></app-messages>
-    ```
+  
+   ```html
+   <h1>{{title}}</h1>
+   <app-books></app-books>
+   <app-messages></app-messages>
+   ```
 
-## Δημιουργία σκελετού `MessageService`
+## Δημιουργία Σκελετού `MessageService`
 
 * Χρησιμοποιούμε το Angular CLI για να δημιουργήσουμε τον σκελετό του
   `MessagesComponent`: 
-    ```bash
-    ng generate service message --module=app
-    ```
+  
+   ```bash
+   ng generate service message 
+   ```
   
 * Με την εντολή αυτή θα δημιουργηθούν τα παρακάτω αρχεία στον κατάλογο
   `src/app`: 
+  
     * `message.service.spec.ts`
+    
     * `message.service.ts`
 
 * Επίσης θα γίνουν οι απαραίτητες αλλαγές (εισαγωγή και δήλωση) στο
   αρχείο `app.module.ts`.
 
-* Η παράμετρος `--module=app` δηλώνει ότι η υπηρεσία θα συμπεριληφθεί
-  στον πίνακα `providers` του `AppModule` (άρα δεν χρειάζεται να το
-  κάνουμε εμείς με το χέρι).
-  
 
 ## Συγγραφή `MessageService`
 
 * Αλλάζουμε τα περιεχόμενα του `message.service.ts` ώστε να γίνει ως
   εξής:
-    ```javascript
-    import { Injectable } from '@angular/core';
+  
+   ```javascript
+   import { Injectable } from '@angular/core';
 
-    @Injectable()
-    export class MessageService {
+   @Injectable({
+     providedIn: 'root'
+   })
+   export class MessageService {
 
-      messages: string[] = [];
+     messages: string[] = [];
 
-      add(message: string) {
-        this.messages.push(message);
-      }
+     constructor() { }
 
-      clear() {
-        this.messages.length = 0;
-      }
+     add(message: string) {
+       this.messages.push(message);
+     }
 
-      constructor() { }
+     clear() {
+       this.messages.length = 0;
+     }
 
-    }
-    ```
+   }
+   ```
     
 ## Χρήση του `MessageService` από το `BookService`
 
@@ -727,29 +812,40 @@ callback για το ιδίωμα αυτό.
   `getBooks()`.
   
 
-## `book.service.ts`
+<div class="notes">
 
-* Άρα το `BookService` θα γίνει:
-    ```javascript
-    import { Injectable } from '@angular/core';
+Έχουμε φτιάξει δύο υπηρεσίες, την `BookService` και την
+`MessageService`, και η `BookService` χρησιμοποιεί την
+`MessageService`. Αυτό είναι ένα σενάριο «υπηρεσία-σε-υπηρεσία»
+(service-in-service).
 
-    import { MessageService } from './message.service';
+</div>
 
-    import { Book } from './book';
-    import { BOOKS } from './mock-books';
+## `book.service.ts` {#book.service.ts-message.service}
 
-    @Injectable()
-    export class BookService {
+```javascript
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
-      getBooks(): Promise<Book[]> {
-        this.messageService.add('BookService: fetched books');
-        return Promise.resolve(BOOKS);
-      }
+import { MessageService } from './message.service';
 
-      constructor(private messageService: MessageService) { }
+import { Book } from './book;
+import { BOOKS } from './mock-books';
 
-    }
-    ```
+@Injectable({
+ providedIn: 'root'
+})
+export class BookService {
+
+  constructor(private messageService: MessageService) { }
+
+  getBooks(): Observable<Book[]> {
+    this.messageService.add('BookService: fetched books');
+    return of(BOOKS);
+  }
+
+}
+```
     
 <div class="notes">
 
@@ -761,7 +857,7 @@ callback για το ιδίωμα αυτό.
 </div>
   
   
-## Εμφάνιση του μηνύματος (1)
+## Εμφάνιση του Μηνύματος
 
 * Το μήνυμα που αποστέλει το `BookService` θα εμφανίζεται από το
   `MessagesComponent`. 
@@ -773,28 +869,28 @@ callback για το ιδίωμα αυτό.
   χρησιμοποιήσουμε στο πρότυπο `messages.component.html`.
 
 
-## Εμφάνιση του μηνύματος (2)
+## `messages.component.ts`
 
-* To `MessagesComponent` λοιπόν θα γίνει:
-    ```javascript
-    import { Component, OnInit } from '@angular/core';
 
-    import { MessageService } from '../message.service';
+```javascript
+import { Component, OnInit } from '@angular/core';
 
-    @Component({
-      selector: 'app-messages',
-      templateUrl: './messages.component.html',
-      styleUrls: ['./messages.component.css'],
-    })
-    export class MessagesComponent implements OnInit {
+import { MessageService } from '../message.service';
 
-      constructor(public messageService: MessageService) {}
+@Component({
+  selector: 'app-messages',
+  templateUrl: './messages.component.html',
+  styleUrls: ['./messages.component.css'],
+})
+export class MessagesComponent implements OnInit {
 
-      ngOnInit() {
-      }
+  constructor(public messageService: MessageService) {}
 
-    }
-    ```
+  ngOnInit() {
+  }
+
+}
+```
 
 <div class="notes">
 
@@ -808,67 +904,70 @@ callback για το ιδίωμα αυτό.
 
 * Αλλάζουμε το αρχείο `messages.component.html` ώστε το πρότυπο του
   `MessagesComponent` θα είναι ως εξής:
-    ```javascript
-    <div *ngIf="messageService.messages.length">
+  
+   ```javascript
+   <div *ngIf="messageService.messages.length">
 
-      <h2>Messages</h2>
-      <button class="clear"
-              (click)="messageService.clear()">clear</button>
-      <div *ngFor='let message of messageService.messages'> {{message}} </div>
+     <h2>Messages</h2>
+     <button class="clear"
+             (click)="messageService.clear()">clear</button>
+     <div *ngFor='let message of messageService.messages'> {{message}} </div>
 
-    </div>
-    ```
+   </div>
+   ```
 
 ## Στυλ `MessagesComponent`
 
 * Για τη βελτίωση της εμφάνισης του `MessagesComponent` θα
   χρησιμοποιήσουμε το παρακάτω αρχείο CSS:
-    ```css
-    /* MessagesComponent's private CSS styles */
-    h2 {
-      color: red;
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: lighter;
-    }
+  
+   ```css
+   /* MessagesComponent's private CSS styles */
+   h2 {
+     color: red;
+     font-family: Arial, Helvetica, sans-serif;
+     font-weight: lighter;
+   }
 
-    body {
-      margin: 2em;
-    }
+   body {
+     margin: 2em;
+   }
 
-    body, input[text], button {
-      color: crimson;
-      font-family: Cambria, Georgia;
-    }
+   body, input[text], button {
+     color: crimson;
+     font-family: Cambria, Georgia;
+   }
 
-    button.clear {
-      font-family: Arial;
-      background-color: #eee;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      cursor: hand;
-    }
+   button.clear {
+     font-family: Arial;
+     background-color: #eee;
+     border: none;
+     padding: 5px 10px;
+     border-radius: 4px;
+     cursor: pointer;
+     cursor: hand;
+   }
 
-    button:hover {
-      background-color: #cfd8dc;
-    }
+   button:hover {
+     background-color: #cfd8dc;
+   }
 
-    button:disabled {
-      background-color: #eee;
-      color: #aaa;
-      cursor: auto;
-    }
+   button:disabled {
+     background-color: #eee;
+     color: #aaa;
+     cursor: auto;
+   }
 
-    button.clear {
-      color: #888;
-      margin-bottom: 12px;
-    }
+   button.clear {
+     color: #888;
+     margin-bottom: 12px;
+   }
 
 
-    /*
-    Copyright 2017 Google Inc. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license
-    */
-    ```
+   /*
+   Copyright 2017-2018 Google Inc. All Rights Reserved.
+   Use of this source code is governed by an MIT-style license that
+   can be found in the LICENSE file at http://angular.io/license
+   */
+   ```
+
