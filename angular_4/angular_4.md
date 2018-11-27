@@ -21,7 +21,7 @@
 
 # Πλοήγηση
 
-## Γενικά
+## Γενικά {#general-navigation}
 
 * Αντί να εμφανίζεται αυτομάτως η λίστα των βιβλίων, θέλουμε να
   εμφανίζεται ένα ταμπλό.
@@ -40,8 +40,10 @@
   σύνδεσμο που επιλέγει ο χρήστης.
 
 * Για κάθε διαδρομή ορίζουμε:
-    * το μονομάτι (path)
-    * το εξάρτημα που θα χρησιμοποιηθεί στο συγκεκριμένο μονοπάτι
+
+  * το μονομάτι (path)
+    
+  * το εξάρτημα που θα χρησιμοποιηθεί στο συγκεκριμένο μονοπάτι
 
 * Για το χειρισμό των διαδρομών αρμόδιος είναι ένας *δρομολογητής*
   (router). 
@@ -56,10 +58,11 @@
   στο αρχείο `app-routing.module.ts`.
   
 * Φτιάχνουμε το αρχείο `app-routimg.module.ts` στον κατάλογο `src/app`
-    ως εξής:
-    ```bash
-    ng generate module app-routing --flat --module=app
-    ```
+  ως εξής:
+  
+   ```bash
+   ng generate module app-routing --flat --module=app
+   ```
 
 <div class="notes">
 
@@ -73,17 +76,18 @@
 ## `app-routing.module.ts`
 
 * Το αρχείο που δημιουργήθηκε έχει ως εξής:
-    ```javascript
-    import { NgModule } from '@angular/core';
-    import { CommonModule } from '@angular/common';
 
-    @NgModule({
-      imports: [
-        CommonModule
-      ],
-      declarations: []
-    })
-    ```
+   ```javascript
+   import { NgModule } from '@angular/core';
+   import { CommonModule } from '@angular/common';
+
+   @NgModule({
+     imports: [
+       CommonModule
+     ],
+     declarations: []
+   })
+   ```
 
 * Σβήνουμε το `declarations` και τις αναφορές στο `CommonModule` γιατί
   δεν μας χρειαστούν.
@@ -94,59 +98,49 @@
 * Στη συνέχεια, προκειμένου να δηλώσουμε τη διαδρομή με την οποία θα
   εμφανίζεται η λίστα των βιβλίων, αλλάζουμε το `AppRoutingModule` ως εξής:
 
-    ```javascript
-    import { NgModule } from '@angular/core';
-    import { RouterModule, Routes } from '@angular/router';
+   ```javascript
+   import { NgModule } from '@angular/core';
+   import { RouterModule, Routes } from '@angular/router';
 
-    import { BooksComponent } from './books/books.component';
+   import { BooksComponent } from './books/books.component';
 
-    const routes: Routes = [
-      { path: 'books', component: BooksComponent }
-    ];
+   const routes: Routes = [
+     { path: 'books', component: BooksComponent }
+   ];
 
-    @NgModule({
-      imports: [ RouterModule.forRoot(routes) ],
-      exports: [ RouterModule ]
-    })
-    export class AppRoutingModule { }
-    ```
+   @NgModule({
+     imports: [ RouterModule.forRoot(routes) ],
+     exports: [ RouterModule ]
+   })
+   export class AppRoutingModule { }
+   ```
 
 ## Εισαγωγή-εξαγωγή του `RouterModule`
 
 * Βλέπουμε ότι το `AppRoutingModule` εισάγει *και εξάγει* το
   `RooterModule`.
   
-* Εισάγει το `RootingModule` για να μπορεί να ορίσει διαδρομές
+* Εισάγει το `RooterModule` για να μπορεί να ορίσει διαδρομές
   χρησιμοποιώντας αυτήν τη βιβλιοθήκη.
   
-* Εξάγει το `RootingModule` έτσι ώστε οδηγίες (directives) που
-  ορίζονται από το `RootingModule` να είναι διαθέσιμες στα εξαρτήματα
+* Εξάγει το `RooterModule` έτσι ώστε οδηγίες (directives) που
+  ορίζονται από το `RooterModule` να είναι διαθέσιμες στα εξαρτήματα
   του `AppModule`.
-
-
-##  Ορισμός διαδρομών
-
-* Κάθε διαδρομή στο Angular ορίζεται μέσω ενός αντικειμένου τύπου
-  `Routes`.
-  
-* Κάθε ένα τέτοιο αντικείμενο έχει συνήθως τις ακόλουθες ιδιότητες:
-    * `path`: μια συμβολοσειρά που δείχνει τι θα πρέπει να έχει
-      εισαχθεί στο URL του browser.
-    * `component`: το εξάρτημα το οποίο θα δημιουργήσει και θα μας
-      οδηγήσει ο δρομολογητής.
 
 
 ## `RouterModule.forRoot()`
 
 * Για να αρχικοποιηθεί ο δρομολογητής και να το χρησιμοποιήσει η
   εφαρμογή μας, πρέπει να:
-      * τον προσθέσουμε στον πίνακα `imports` του `AppModule`
-      * να τον ρυθμίσουμε σύμφωνα με τις διαδρομές που έχουμε ορίσει.
+  
+    * τον προσθέσουμε στον πίνακα `imports` του `AppModule`
+    * να τον ρυθμίσουμε σύμφωνα με τις διαδρομές που έχουμε ορίσει.
       
 * Αυτά τα δύο βήματα εκτελούνται μαζί μέσω της γραμμής:
-    ```javascript
-    imports: [ RouterModule.forRoot(routes) ],
-    ```
+
+   ```javascript
+   imports: [ RouterModule.forRoot(routes) ]
+   ```
     
 <div class="notes">
 
@@ -157,28 +151,72 @@
 εφαρμογής μας, η αρχικοποίηση γίνεται μέσω μια μεθόδου με το όνομα
 `forChild()`.
 
+Πιο συγκεκριμένα, ένας δρομολογητής είναι ένα άρθρωμα, το οποίο
+περιέχει ανάμεσα στα άλλα τις οδηγίες για τις διαδρομές και μια
+υπηρεσία (service) η οποία υλοποιεί τη δρομολόγηση.
+
+Επειδή θέλουμε να έχουμε *μία* μόνο υπηρεσία δρομολόγησης στην
+εφαρμογή, θέλουμε να μπορούμε να δημιουργήσουμε δρομολογητές με *μία*,
+κοινή υπηρεσία.
+
+Όταν λοιπόν δίνουμε:
+
+```javascript
+RouterModule.forRoot(routes)
+```
+
+δημιουργείται ένας δρομολογητής ο οποίος περιέχει όλες τις οδηγίες,
+όλες τις διαδρομες, και την υπηρεσία.
+
+Αν έχουμε επιπλέον δρομολογητές στην εφαρμογή μας, θα τους
+δημιουργούμε με:
+
+```javascript
+RouterModule.forRoot(routes)
+```
+
+οπότε δημιουργείται ένας δρομολογητής ο οποίος περιέχει όλες τις
+οδηγίες και όλες τις διαδρομές, αλλά δεν περιλαμβάνει την υπηρεσία
+δρομολόγησης. 
+
 </div>
       
+
+##  Ορισμός διαδρομών
+
+* Κάθε διαδρομή στο Angular ορίζεται μέσω ενός αντικειμένου τύπου
+  `Routes`.
+  
+* Κάθε ένα τέτοιο αντικείμενο έχει συνήθως τις ακόλουθες ιδιότητες:
+
+  * `path`: μια συμβολοσειρά που δείχνει τι θα πρέπει να έχει
+    εισαχθεί στο URL του browser.
+
+  * `component`: το εξάρτημα το οποίο θα δημιουργήσει και θα μας
+     οδηγήσει ο δρομολογητής.
+     
 
 ## Οδηγίες πλοήγησης
 
 * Τώρα, θα χρησιμοποιήσουμε το σύνδεσμο `/books` στο πρότυπο του
   `AppComponent`, οπότε το αρχείο `app.component.html` θα γίνει:
 
-    ```html
-    <h1>{{title}}</h1>
-    <nav>
-      <a routerLink="/books">Books</a>
-    </nav>
-    <router-outlet></router-outlet>
-    <app-messages></app-messages>
-    ```
+   ```html
+   <h1>{{title}}</h1>
+   <nav>
+     <a routerLink="/books">Books</a>
+   </nav>
+   <router-outlet></router-outlet>
+   <app-messages></app-messages>
+   ```
 
 * Τα `routerLink` και `routerOutlet` ορίζονται στο `RooterModule` και
   μπορούμε να τα χρησιμοποιήσουμε γιατί, όπως είδαμε:
-      * τα εξάγουμε από το `AppRoutingModule`
-      * εισάγουμε το `AppRoutingModule` στο `AppModule`, άρα είναι
-        ορατά στα εξαρτήματά του.
+  
+    * τα εξάγουμε από το `AppRoutingModule`
+    
+    * εισάγουμε το `AppRoutingModule` στο `AppModule`, άρα είναι
+      ορατά στα εξαρτήματά του.
 
 
 ## Η οδηγία `RouterOutlet`
@@ -203,7 +241,7 @@
 
 # Προσθήκη ταμπλό
 
-## Γενικά
+## Γενικά {#general-dashboard}
 
 * Θα φτιάξουμε μία κεντρική οθόνη πλοήγησης.
 
@@ -215,15 +253,20 @@
 
 * Θα ξεκινήσουμε την κατασκευή του ταμπλό χρησιμοποιώντας το
   Angular CLI:
-    ```bash
-    ng generate component dashboard
-    ```
+  
+   ```bash
+   ng generate component dashboard
+   ```
 
 * Θα δημιουργηθεί ο κατάλογος `src/app/dashboard` και μέσα σε αυτόν τα
   αρχεία:
+  
     * `dashboard.component.css`
+    
     * `dashboard.component.html`
+    
     * `dashboard.component.spec.ts`
+    
     * `dashboard.component.ts`
     
 * Επίσης θα γίνουν οι απαραίτητες αλλαγές (εισαγωγή, δήλωση) στο
@@ -232,48 +275,49 @@
 
 ## Προσαρμογή `dashboard.component.ts`
 
-* Αλλάζουμε το `dashboard.component.ts` έτσι ώστε να είναι:
-    ```javascript
-    import { Component, OnInit } from '@angular/core';
+```javascript
+import { Component, OnInit } from '@angular/core';
 
-    import { Book } from '../book';
-    import { BookService } from '../book.service';
+import { Book } from '../book';
+import { BookService } from '../book.service';
 
-    @Component({
-      selector: 'app-dashboard',
-      templateUrl: './dashboard.component.html',
-      styleUrls: ['./dashboard.component.css'],
-    })
-    export class DashboardComponent implements OnInit {
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css'],
+})
+export class DashboardComponent implements OnInit {
 
-      books: Book[] = [];
+  books: Book[] = [];
 
-      constructor(private bookService: BookService) { }
+  constructor(private bookService: BookService) { }
 
-      ngOnInit() {
-        this.getBooks();
-      }
+  ngOnInit() {
+    this.getBooks();
+  }
 
-      getBooks(): void {
-        this.bookService.getBooks().then(books => this.books = books.slice(1, 5));
-      }
+  getBooks(): void {
+    this.bookService.getBooks()
+      .subscribe(books => this.books = books.slice(1, 5));
+  }
 
-    }
-    ```
+}
+```
 
 ## Προσαρμογή `dashboard.component.html`
 
 * Αλλάζουμε το `dashboard.component.html` ώστε να είναι:
-    ```html
-    <h3>Top Books</h3>
-    <div class="grid grid-pad">
-      <a *ngFor="let book of books" class="col-1-4">
-        <div class="module book">
-          <h4>{{book.title}}</h4>
-        </div>
-      </a>
-    </div>
-    ```
+
+   ```html
+   <h3>Top Books</h3>
+   <div class="grid grid-pad">
+     <a *ngFor="let book of books" class="col-1-4">
+       <div class="module book">
+         <h4>{{book.title}}</h4>
+       </div>
+     </a>
+   </div>
+   ```
     
 ## Δήλωση της διαδρομής του ταμπλό
 
@@ -281,24 +325,24 @@
   προσθέτοντάς την στον πίνακα `routes` στο
   `app-routing.module.ts`:
 
-    ```javascript
-    import { NgModule } from '@angular/core';
-    import { RouterModule, Routes } from '@angular/router';
+   ```javascript
+   import { NgModule } from '@angular/core';
+   import { RouterModule, Routes } from '@angular/router';
 
-    import { BooksComponent } from './books/books.component';
-    import { DashboardComponent } from './dashboard/dashboard.component';
+   import { BooksComponent } from './books/books.component';
+   import { DashboardComponent } from './dashboard/dashboard.component';
 
-    const routes: Routes = [
-      { path: 'books', component: BooksComponent },
-      { path: 'dashboard', component: DashboardComponent }
-    ];
+   const routes: Routes = [
+     { path: 'books', component: BooksComponent },
+     { path: 'dashboard', component: DashboardComponent }
+   ];
 
-    @NgModule({
-      imports: [ RouterModule.forRoot(routes) ],
-      exports: [ RouterModule ]
-    })
-    export class AppRoutingModule { }
-    ```
+   @NgModule({
+     imports: [ RouterModule.forRoot(routes) ],
+     exports: [ RouterModule ]
+   })
+   export class AppRoutingModule { }
+   ```
 
 ## Ανακατεύθυνση
 
@@ -308,25 +352,25 @@
 
 * Βάζουμε λοιπόν τη διαδρομή αυτή στο `app.routing-module.ts`:
 
-    ```javascript
-    import { NgModule } from '@angular/core';
-    import { RouterModule, Routes } from '@angular/router';
+   ```javascript
+   import { NgModule } from '@angular/core';
+   import { RouterModule, Routes } from '@angular/router';
 
-    import { BooksComponent } from './books/books.component';
-    import { DashboardComponent } from './dashboard/dashboard.component';
+   import { BooksComponent } from './books/books.component';
+   import { DashboardComponent } from './dashboard/dashboard.component';
 
-    const routes: Routes = [
-      { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-      { path: 'books', component: BooksComponent },
-      { path: 'dashboard', component: DashboardComponent }
-    ];
+   const routes: Routes = [
+     { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+     { path: 'books', component: BooksComponent },
+     { path: 'dashboard', component: DashboardComponent }
+   ];
 
-    @NgModule({
-      imports: [ RouterModule.forRoot(routes) ],
-      exports: [ RouterModule ]
-    })
-    export class AppRoutingModule { }
-    ```
+   @NgModule({
+     imports: [ RouterModule.forRoot(routes) ],
+     exports: [ RouterModule ]
+   })
+   export class AppRoutingModule { }
+   ```
 
 ## Πλοήγηση στο ταμπλό
 
@@ -334,27 +378,31 @@
   βιβλίων, θα προσθέσουμε ένα σχετικό σύνδεσμο στο
   `app.component.html`:
 
-    ```html
-    <h1>{{title}}</h1>
-    <nav>
-      <a routerLink="/dashboard">Dashboard</a>
-      <a routerLink="/books">Books</a>
-    </nav>
-    <router-outlet></router-outlet>
-    ```
+   ```html
+   <h1>{{title}}</h1>
+   <nav>
+     <a routerLink="/dashboard">Dashboard</a>
+     <a routerLink="/books">Books</a>
+   </nav>
+   <router-outlet></router-outlet>
+   ```
 
 # Πλοήγηση στις λεπτομέρειες βιβλίου
 
-## Γενικά
+## Γενικά {#general-book-details}
 
 * Οι λεπτομέρειες ενός βιβλίου εμφανίζονται όταν ο χρήστης το
   επιλέγει από τη λίστα των βιβλίων.
   
 * Θέλουμε όμως ο χρήστης να μπορεί να πλοηγηθεί στις λεπτομέρειες
   ενός βιβλίου με τρεις τρόπους:
-    1. όταν ο χρήστης επιλέγει το βιβλίο από τη λίστα των βιβλίων (όπως τώρα)
+  
+    1. όταν ο χρήστης επιλέγει το βιβλίο από τη λίστα των βιβλίων
+       (όπως τώρα)
+       
     2. όταν ο χρήστης επιλέγει το βιβλίο από τα τέσσερα πρώτα, που
        εμφανίζονται στο ταμπλό
+       
     3. όταν ο χρήστης δίνει ένα URL που αντιστοιχεί σε συγκεκριμένο
        βιβλίο
 
@@ -371,9 +419,10 @@
   *στη θέση* της λίστας των βιβλίων, και όχι από κάτω της.
   
 * Σβήνουμε λοιπόν τη γραμμή:
-    ```html
-    <app-book-detail [book]="selectedBook"></app-book-detail>
-    ```
+
+   ```html
+   <app-book-detail [book]="selectedBook"></app-book-detail>
+   ```
   από το κάτω μέρος του `books.component.html`.
 
 
@@ -381,31 +430,34 @@
 
 * Τώρα το `books.component.html` ως πρότυπο περιέχει τον κώδικα μόνο
   για την εμφάνιση της λίστας των βιβλίων:
-    ```html
-    <h2>Books</h2>
-    <ul class="books">
-      <li *ngFor="let book of books"
-          [class.selected]="book === selectedBook"
-          (click)="onSelect(book)">
-        <span class="badge">{{book.id}}</span> {{book.title}}
-      </li>
-    </ul>
-    ```
+  
+   ```html
+   <h2>Books</h2>
+   <ul class="books">
+     <li *ngFor="let book of books"
+         [class.selected]="book === selectedBook"
+         (click)="onSelect(book)">
+       <span class="badge">{{book.id}}</span> {{book.title}}
+     </li>
+   </ul>
+   ```
     
 ## Προσθήκη διαδρομής λεπτομερειών βιβλίου
 
 * Για να εμφανιστούν οι λεπτομέρειες ενός βιβλίου θα χρησιμοποιούμε
   URL της μορφής:
-    ```
-    /detail/13
-    ```
+
+   ```
+   /detail/13
+   ```
   όπου `13` είναι ο κωδικός του βιβλίου.
 
 * Για να το κάνουμε αυτό θα χρησιμοποιήσουμε μια *παραμετροποιημένη*
   διαδρομή, της μορφής:
-    ```javascript
-    { path: 'detail/:id', component: BookDetailComponent }
-    ```
+  
+   ```javascript
+   { path: 'detail/:id', component: BookDetailComponent }
+   ```
 
 * Στο παραπάνω το `:id` θα αντικατασταθεί με το `id` του βιβλίου.
 
@@ -414,27 +466,28 @@
 
 * Μετά την προσθήκη της διαδρομής στον πίνακα `routes`, το
   `app-routing.module.ts` θα γίνει:
-    ```javascript
-    import { NgModule } from '@angular/core';
-    import { RouterModule, Routes } from '@angular/router';
+  
+   ```javascript
+   import { NgModule } from '@angular/core';
+   import { RouterModule, Routes } from '@angular/router';
 
-    import { BooksComponent } from './books/books.component';
-    import { BookDetailComponent } from './book-detail/book-detail.component';
-    import { DashboardComponent } from './dashboard/dashboard.component';
+   import { BooksComponent } from './books/books.component';
+   import { BookDetailComponent } from './book-detail/book-detail.component';
+   import { DashboardComponent } from './dashboard/dashboard.component';
 
-    const routes: Routes = [
-      { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-      { path: 'books', component: BooksComponent },
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'detail/:id', component: BookDetailComponent },
-    ];
+   const routes: Routes = [
+     { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+     { path: 'books', component: BooksComponent },
+     { path: 'dashboard', component: DashboardComponent },
+     { path: 'detail/:id', component: BookDetailComponent },
+   ];
 
-    @NgModule({
-      imports: [ RouterModule.forRoot(routes) ],
-      exports: [ RouterModule ]
-    })
-    export class AppRoutingModule { }
-    ```
+   @NgModule({
+     imports: [ RouterModule.forRoot(routes) ],
+     exports: [ RouterModule ]
+   })
+   export class AppRoutingModule { }
+   ```
 
 <div class="notes">
 
@@ -451,29 +504,32 @@
   
 * Για να το κάνουμε αυτό, θα αλλάξουμε στο `dashboard.component.html`
   το:
-    ```html
-    <a *ngFor="let book of books" class="col-1-4">
-    ```
+  
+   ```html
+   <a *ngFor="let book of books" class="col-1-4">
+   ```
   σε:
-    ```html
-    <a *ngFor="let book of books" class="col-1-4"
-       routerLink="/detail/{{book.id}}">
+  
+   ```html
+   <a *ngFor="let book of books" class="col-1-4"
+      routerLink="/detail/{{book.id}}">
     ```
 
 ## `dashborad.component.html`
 
 * Μετά την αλλαγή αυτή, το αρχείο `dashboard.component.html` θα γίνει:
-    ```html
-    <h3>Top Books</h3>
-    <div class="grid grid-pad">
-      <a *ngFor="let book of books" class="col-1-4"
-         routerLink="/detail/{{book.id}}">
-        <div class="module book">
-          <h4>{{book.title}}</h4>
-        </div>
-      </a>
-    </div>
-    ```
+
+   ```html
+   <h3>Top Books</h3>
+   <div class="grid grid-pad">
+     <a *ngFor="let book of books" class="col-1-4"
+        routerLink="/detail/{{book.id}}">
+       <div class="module book">
+         <h4>{{book.title}}</h4>
+       </div>
+     </a>
+   </div>
+   ```
 
 ## Σύνδεσμοι στο `books.component.html`
 
@@ -482,36 +538,40 @@
   λόγω βιβλίο.
 
 * Για να το κάνουμε αυτό, θα αλλάξουμε στο `books.component.html` το: 
-    ```html
-    <li *ngFor="let book of books"
-      [class.selected]="book === selectedBook"
-      (click)="onSelect(book)">
-      <span class="badge">{{book.id}}</span> {{book.title}}
-    </li>
-    ```
-  σε:
-    ```html
-    <li *ngFor="let book of books">
-      <a routerLink="/detail/{{book.id}}">
-        <span class="badge">{{book.id}}</span> {{book.title}}
-      </a>
-    </li>
-    ```
+
+   ```html
+   <li *ngFor="let book of books"
+     [class.selected]="book === selectedBook"
+     (click)="onSelect(book)">
+     <span class="badge">{{book.id}}</span> {{book.title}}
+   </li>
+   ```
+
+   σε:
+   
+   ```html
+   <li *ngFor="let book of books">
+     <a routerLink="/detail/{{book.id}}">
+       <span class="badge">{{book.id}}</span> {{book.title}}
+     </a>
+   </li>
+   ```
     
 ## `books.component.html`
 
 * Μετά την αλλαγή αυτή, το αρχείο `books.component.html` θα έχει
   απλοποιηθεί ως εξής:
-    ```html
-    <h2>Books</h2>
-    <ul class="books">
+
+   ```html
+   <h2>Books</h2>
+   <ul class="books">
       <li *ngFor="let book of books">
         <a routerLink="/detail/{{book.id}}">
           <span class="badge">{{book.id}}</span> {{book.title}}
         </a>
       </li>
-    </ul>
-    ```
+   </ul>
+   ```
 
 ## Καθαριότητα
 
@@ -529,33 +589,35 @@
 
 * Μετά το ξεκαθάρισμα του κώδικα, το αρχείο `books.component.ts` θα
   είναι:
-    ```javascript
-    import { Component, OnInit } from '@angular/core';
+  
+   ```javascript
+   import { Component, OnInit } from '@angular/core';
 
-    import { Book } from '../book';
-    import { BookService } from '../book.service';
+   import { Book } from '../book';
+   import { BookService } from '../book.service';
 
-    @Component({
-      selector: 'app-books',
-      templateUrl: './books.component.html',
-      styleUrls: ['./books.component.css'],
-    })
-    export class BooksComponent implements OnInit {
+   @Component({
+     selector: 'app-books',
+     templateUrl: './books.component.html',
+     styleUrls: ['./books.component.css']
+   })
+   export class BooksComponent implements OnInit {
 
-      books: Book[];
+     books : Book[];
 
-      constructor(private bookService: BookService) { }
+     constructor(private bookService: BookService) { }
 
-      ngOnInit() {
-        this.getBooks();
-      }
+     ngOnInit() {
+       this.getBooks();
+     }
 
-      getBooks(): void {
-        this.bookService.getBooks().then(books => this.books = books);
-      }
+     getBooks(): void {
+       this.bookService.getBooks()
+         .subscribe(books => this.books = books);
+     }
 
-    }
-    ```
+   }
+   ```
     
 ## Δρομολόγηση στο `BookDetailComponent`
 
@@ -572,8 +634,11 @@
 
 * Για να βρει το `BookDetailComponent` ποιο βιβλίο να δείξει, θα
   πρέπει να εκτελέσει τα παρακάτω βήματα:
+  
     1. να βρει τη διαδρομή που του υποδεικνύεται
+    
     2. να εξάγει το `id` του βιβλίου από τη διαδρομή αυτή
+    
     3. να βρει το συγκεκριμένο βιβλίο από το `BookService`
     
 
@@ -581,12 +646,13 @@
 
 * Θα χρειαστεί να προσθέσουμε τα παρακάτω στην αρχή του
   `BookDetailComponent`:
-    ```javascript
-    import { ActivatedRoute } from '@angular/router';
-    import { Location } from '@angular/common';
+  
+   ```javascript
+   import { ActivatedRoute } from '@angular/router';
+   import { Location } from '@angular/common';
 
-    import { BookService }  from '../book.service';
-    ```
+   import { BookService }  from '../book.service';
+   ```
 
 * Ο λόγος είναι ότι θα χρησιμοποιήσουμε τις τρεις αυτές υπηρεσίες
   (`ActivateRoute`, `Location`, `BookService`) στη συνέχεια.
@@ -612,32 +678,36 @@
   
 * Η ένθεση γίνεται απλώς με τη δήλωσή τους ως παραμέτρους στον
   κατασκευαστή:
-    ```javascript
-    constructor(
-      private route: ActivatedRoute,
-      private bookService: BookService,
-      private location: Location
-    ) { }
-    ```
+  
+   ```javascript
+   constructor(
+     private route: ActivatedRoute,
+     private bookService: BookService,
+     private location: Location
+   ) { }
+   ```
 
 ## Εξαγωγή της παραμέτρου `id`
 
 * Στο `BookDetailComponent` θέλουμε όταν αρχικοποιείται να φέρνει τα
   δεδομένα του συγκεκριμένου βιβλίου. Αυτό θα γίνει από τη μέθοδο
   `ngOnInit()`:
-    ```javascript
-    ngOnInit(): void {
-      this.getBook();
-    }
-    ```
+  
+   ```javascript
+   ngOnInit(): void {
+     this.getBook();
+   }
+   ```
 
 * Οπότε θα πρέπει να υλοποιήσουμε τη μέθοδο `getBook()`:
-    ```javascript
-    getBook(): void {
-      const id = +this.route.snapshot.paramMap.get('id');
-      this.bookService.getBook(id).then(book => this.book = book);
-    }
-    ```
+
+   ```javascript
+   getBook(): void {
+     const id = +this.route.snapshot.paramMap.get('id');
+     this.bookService.getBook(id)
+       .subscribe(book => this.book = book);
+   }
+   ```
 
 <div class="notes">
 
@@ -662,52 +732,55 @@
 
 * Με όλες αυτές τις αλλαγές, το `book-detail.component.ts` θα έχει
   μεταλλαχθεί στο παρακάτω:
-    ```javascript
-    import { Component, OnInit, Input } from '@angular/core';
 
-    import { ActivatedRoute } from '@angular/router';
-    import { Location } from '@angular/common';
+   ```javascript
+   import { Component, OnInit, Input } from '@angular/core';
 
-    import { BookService }  from '../book.service';
+   import { ActivatedRoute } from '@angular/router';
+   import { Location } from '@angular/common';
 
-    import { Book } from '../book';
+   import { BookService }  from '../book.service';
 
-    @Component({
-      selector: 'app-book-detail',
-      templateUrl: './book-detail.component.html',
-      styleUrls: ['./book-detail.component.css']
-    })
-    export class BookDetailComponent implements OnInit {
+   import { Book } from '../book';
 
-      @Input()
-      book: Book;
+   @Component({
+     selector: 'app-book-detail',
+     templateUrl: './book-detail.component.html',
+     styleUrls: ['./book-detail.component.css']
+   })
+   export class BookDetailComponent implements OnInit {
 
-      constructor(
-        private route: ActivatedRoute,
-        private bookService: BookService,
-        private location: Location
-      ) { }
+     @Input()
+     book: Book;
 
-      ngOnInit() {
+     constructor(
+       private route: ActivatedRoute,
+       private bookService: BookService,
+       private location: Location
+     ) { }
+
+     ngOnInit(): void {
         this.getBook();
-      }
+     }
 
-      getBook(): void {
-        const id = +this.route.snapshot.paramMap.get('id');
-        this.bookService.getBook(id).then(book => this.book = book);
-      }
+     getBook(): void {
+       const id = +this.route.snapshot.paramMap.get('id');
+       this.bookService.getBook(id)
+         .subscribe(book => this.book = book);
+     }
 
-    }
-    ```
+   }
+   ```
 
 ## Υλοποίηση `getBook()` στο `BookService`
 
-* Το `getBook()` επιστρέφει μια υπόσχεση, η οποία εκπληρώνεται αμέσως,
-  φέρνοντας το βιβλίο με το συγκεκριμένο `id`:
+* Το `getBook()` επιστρέφει ένα `Observable` το οποίο θα περιέχει το
+  βιβλίο με το συγκεκριμένο `id`:
+  
     ```javascript
-    getBook(id: number): Promise<Book> {
+    getBook(id: number): Observable<Book> {
       this.messageService.add(`BookService: fetched book id=${id}`);
-      return Promise.resolve(BOOKS.find(book => book.id === id));
+      return of(BOOKS.find(book => book.id === id));
     }
     ```
 
@@ -719,31 +792,35 @@
 ## `book.service.ts`
 
 * Το `book.service.ts` με την προσθήκη της `getBook()` θα γίνει:
-    ```javascript
-    import { Injectable } from '@angular/core';
 
-    import { MessageService } from './message.service';
+   ```javascript
+   import { Injectable } from '@angular/core';
+   import { Observable, of } from 'rxjs';
 
-    import { Book } from './book';
-    import { BOOKS } from './mock-books';
+   import { MessageService } from './message.service';
 
-    @Injectable()
-    export class BookService {
+   import { Book } from './book';
+   import { BOOKS } from './mock-books';
 
-      getBooks(): Promise<Book[]> {
-        this.messageService.add('BookService: fetched books');
-        return Promise.resolve(BOOKS);
-      }
+   @Injectable({
+     providedIn: 'root'
+   })
+   export class BookService {
 
-      getBook(id: number): Promise<Book> {
-        this.messageService.add(`BookService: fetched book id=${id}`);
-        return Promise.resolve(BOOKS.find(book => book.id === id));
-      }
+     constructor(private messageService: MessageService) { }
 
-      constructor(private messageService: MessageService) { }
+     getBooks(): Observable<Book[]> {
+       this.messageService.add('BookService: fetched books');
+       return of(BOOKS);
+     }
 
-    }
-    ```
+     getBook(id: number): Observable<Book> {
+       this.messageService.add(`BookService: fetched book id=${id}`);
+       return of(BOOKS.find(book => book.id === id));
+     }
+
+   }
+   ```
     
 <div class="notes">
 
@@ -770,18 +847,20 @@
 
 * Προσθέτουμε ένα κουμπί επιστροφής στο τέλος του
   `book-detail.component.html`:
-    ```html
-    <div *ngIf="book">
-      <h2><span appItalics> {{ book.title }}</span> details:</h2>
-      <div><label>id: </label>{{book.id}}</div>
-      <div>
-        <label>title: </label>
-        <input [(ngModel)]="book.title" placeholder="name">
-      </div>
+  
+   ```html
+   <div *ngIf="book">
+     <h2>{{ book.title }} details:</h2>
+     <div><label>id: </label>{{book.id}}</div>
+     <div>
+       <label>title: </label>
+       <input [(ngModel)]="book.title" placeholder="name">
+     </div>
+      <div><label>URL: </label> {{ book.url }} </div>
       <div><label>Publication year: </label>{{book.pub_year}}</div>
       <button (click)="goBack()">go back</button>
-    </div>
-    ```
+   </div>
+   ```
 
 <div class="notes">
 
@@ -794,11 +873,12 @@
 ## Η μέθοδος `goBack()`
 
 * Ορίζουμε τη μέθοδο `goBack()` στο `BookDetailComponent`:
-    ```javascript
-    goBack(): void {
-      this.location.back();
-    }
-    ```
+
+   ```javascript
+   goBack(): void {
+     this.location.back();
+   }
+   ```
     
 * Η υπηρεσία `Location` που ενθέσαμε προηγουμένως μας επιτρέπει να
   μεταβούμε στις προηγούμενες τοποθεσίες που έχουμε επισκεπτεί με τον
@@ -809,51 +889,53 @@
 
 * Μετά την προσθήκη της μεθόδου `goBack()`, το
   `book-detail.component.ts` θα είναι:
-    ```javascript
-    import { Component, OnInit, Input } from '@angular/core';
+  
+   ```javascript
+   import { Component, OnInit, Input } from '@angular/core';
 
-    import { ActivatedRoute } from '@angular/router';
-    import { Location } from '@angular/common';
+   import { ActivatedRoute } from '@angular/router';
+   import { Location } from '@angular/common';
 
-    import { BookService }  from '../book.service';
+   import { BookService }  from '../book.service';
 
-    import { Book } from '../book';
+   import { Book } from '../book';
 
-    @Component({
-      selector: 'app-book-detail',
-      templateUrl: './book-detail.component.html',
-      styleUrls: ['./book-detail.component.css']
-    })
-    export class BookDetailComponent implements OnInit {
+   @Component({
+     selector: 'app-book-detail',
+     templateUrl: './book-detail.component.html',
+     styleUrls: ['./book-detail.component.css']
+   })
+   export class BookDetailComponent implements OnInit {
 
-      @Input()
-      book: Book;
+     @Input()
+     book: Book;
 
-      constructor(
-        private route: ActivatedRoute,
-        private bookService: BookService,
-        private location: Location
-      ) { }
+     constructor(
+       private route: ActivatedRoute,
+       private bookService: BookService,
+       private location: Location
+     ) { }
 
-      ngOnInit() {
+     ngOnInit(): void {
         this.getBook();
-      }
+     }
 
-      getBook(): void {
-        const id = +this.route.snapshot.paramMap.get('id');
-        this.bookService.getBook(id).then(book => this.book = book);
-      }
+     getBook(): void {
+       const id = +this.route.snapshot.paramMap.get('id');
+       this.bookService.getBook(id)
+         .subscribe(book => this.book = book);
+     }
 
-      goBack(): void {
-        this.location.back();
-      }
+     goBack(): void {
+         this.location.back();
+     }
 
-    }
-    ```
+   }
+   ```
     
 # Αισθητική
 
-## Γενικά
+## Γενικά {#general-styles}
 
 * Για τη βελτίωση της αισθητικής της εφαρμογής χρησιμοποιούμε αρχεία
   CSS.
@@ -866,346 +948,319 @@
 
 * Εκτός από τα επιμέρους στυλ που εφαρμόζονται στα εξαρτήματα, στο
   αρχείο `src/styles.css` ορίζουμε το καθολικό στυλ της εφαρμογής:
-    ```css
-    /* Master Styles */
-    h1 {
-      color: #369;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 250%;
-    }
+  
+   ```css
+   /* Master Styles */
+   h1 {
+     color: #369;
+     font-family: Arial, Helvetica, sans-serif;
+     font-size: 250%;
+   }
+   h2, h3 {
+     color: #444;
+     font-family: Arial, Helvetica, sans-serif;
+     font-weight: lighter;
+   }
+   body {
+     margin: 2em;
+   }
+   body, input[text], button {
+     color: #888;
+     font-family: Cambria, Georgia;
+   }
+   a {
+     cursor: pointer;
+     cursor: hand;
+   }
+   button {
+     font-family: Arial;
+     background-color: #eee;
+     border: none;
+     padding: 5px 10px;
+     border-radius: 4px;
+     cursor: pointer;
+     cursor: hand;
+   }
+   button:hover {
+     background-color: #cfd8dc;
+   }
+   button:disabled {
+     background-color: #eee;
+     color: #aaa;
+     cursor: auto;
+   }
 
-    h2, h3 {
-      color: #444;
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: lighter;
-    }
+   /* Navigation link styles */
+   nav a {
+     padding: 5px 10px;
+     text-decoration: none;
+     margin-right: 10px;
+     margin-top: 10px;
+     display: inline-block;
+     background-color: #eee;
+     border-radius: 4px;
+   }
+   nav a:visited, a:link {
+     color: #607D8B;
+   }
+   nav a:hover {
+     color: #039be5;
+     background-color: #CFD8DC;
+   }
+   nav a.active {
+     color: #039be5;
+   }
 
-    body {
-      width: 50%;
-      margin: 2em;
-    }
-
-    body, input[text], button {
-      color: #888;
-      font-family: Cambria, Georgia;
-    }
-
-    a {
-      cursor: pointer;
-      cursor: hand;
-    }
-
-    button {
-      font-family: Arial;
-      background-color: #eee;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      cursor: hand;
-    }
-
-    button:hover {
-      background-color: #cfd8dc;
-    }
-
-    button:disabled {
-      background-color: #eee;
-      color: #aaa;
-      cursor: auto;
-    }
-
-
-    /* Navigation link styles */
-    nav a {
-      padding: 5px 10px;
-      text-decoration: none;
-      margin-right: 10px;
-      margin-top: 10px;
-      display: inline-block;
-      background-color: #eee;
-      border-radius: 4px;
-    }
-
-    nav a:visited, a:link {
-      color: #607D8B;
-    }
-
-    nav a:hover {
-      color: #039be5;
-      background-color: #CFD8DC;
-    }
-
-    nav a.active {
-      color: #039be5;
-    }
-
-    /* everywhere else */
-    * {
-      font-family: Arial, Helvetica, sans-serif;
-    }
+   /* everywhere else */
+   * {
+     font-family: Arial, Helvetica, sans-serif;
+   }
 
 
-    /*
-    Copyright 2017 Google Inc. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license
-    */
-    ```
+   /*
+   Copyright 2017-2018 Google Inc. All Rights Reserved.
+   Use of this source code is governed by an MIT-style license that
+   can be found in the LICENSE file at http://angular.io/license
+   */
+   ```
 
 ## Προσαρμογή `dashboard.component.css`
 
 * Για τη βελτίωση της αισθητικής του ταμπλό, θα χρησιμοποιήσουμε το
-    αρχείο `dashboard.component.css`, το οποίο αφορά *μόνο* το
-    συγκεκριμένο εξάρτημα: 
-    ```css
-    /* DashboardComponent's private CSS styles */
-    [class*='col-'] {
-      float: left;
-      padding-right: 20px;
-      padding-bottom: 20px;
-    }
+   αρχείο `dashboard.component.css`, το οποίο αφορά *μόνο* το
+   συγκεκριμένο εξάρτημα:
+    
+   ```css
+   /* DashboardComponent's private CSS styles */
+   [class*='col-'] {
+     float: left;
+     padding-right: 20px;
+     padding-bottom: 20px;
+   }
+   [class*='col-']:last-of-type {
+     padding-right: 0;
+   }
+   a {
+     text-decoration: none;
+   }
+   *, *:after, *:before {
+     -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     box-sizing: border-box;
+   }
+   h3 {
+     text-align: center; margin-bottom: 0;
+   }
+   h4 {
+     position: relative;
+   }
+   .grid {
+     margin: 0;
+   }
+   .col-1-4 {
+     width: 25%;
+   }
+   .module {
+     padding: 20px;
+     text-align: center;
+     color: #eee;
+     max-height: 120px;
+     min-width: 120px;
+     background-color: #607d8b;
+     border-radius: 2px;
+   }
+   .module:hover {
+     background-color: #eee;
+     cursor: pointer;
+     color: #607d8b;
+   }
+   .grid-pad {
+     padding: 10px 0;
+   }
+   .grid-pad > [class*='col-']:last-of-type {
+     padding-right: 20px;
+   }
+   @media (max-width: 600px) {
+     .module {
+       font-size: 10px;
+       max-height: 75px; }
+   }
+   @media (max-width: 1024px) {
+     .grid {
+       margin: 0;
+     }
+     .module {
+       min-width: 60px;
+     }
+   }
 
-    [class*='col-']:last-of-type {
-      padding-right: 0;
-    }
 
-    a {
-      text-decoration: none;
-    }
-
-    *, *:after, *:before {
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-    }
-
-    h3 {
-      text-align: center; margin-bottom: 0;
-    }
-
-    h4 {
-      position: relative;
-    }
-
-    .grid {
-      margin: 0;
-    }
-
-    .col-1-4 {
-      width: 25%;
-    }
-
-    .module {
-      padding: 20px;
-      text-align: center;
-      color: #eee;
-      max-height: 120px;
-      min-width: 120px;
-      background-color: #607D8B;
-      border-radius: 2px;
-    }
-
-    .module:hover {
-      background-color: #EEE;
-      cursor: pointer;
-      color: #607d8b;
-    }
-
-    .grid-pad {
-      padding: 10px 0;
-    }
-
-    .grid-pad > [class*='col-']:last-of-type {
-      padding-right: 20px;
-    }
-
-    @media (max-width: 600px) {
-      .module {
-        font-size: 10px;
-        max-height: 75px; }
-    }
-
-    @media (max-width: 1024px) {
-      .grid {
-        margin: 0;
-      }
-      .module {
-        min-width: 60px;
-      }
-    }
-
-    /*
-    Copyright 2017 Google Inc. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license
-    */
-    ```
+   /*
+   Copyright 2017-2018 Google Inc. All Rights Reserved.
+   Use of this source code is governed by an MIT-style license that
+   can be found in the LICENSE file at http://angular.io/license
+   */
+   ```
 
 
 ## `book-detail.component.css`
 
 * Ομοίως το αρχείο `book-detail.component.css` ορίζει το στυλ του
   `BookDetailComponent` και μόνο αυτό:
-    ```css
-    /* BookDetailComponent's private CSS styles */
-    label {
-      display: inline-block;
-      width: 3em;
-      margin: .5em 0;
-      color: #607D8B;
-      font-weight: bold;
-    }
-    input {
-      height: 2em;
-      font-size: 1em;
-      padding-left: .4em;
-    }
-    button {
-      margin-top: 20px;
-      font-family: Arial;
-      background-color: #eee;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer; cursor: hand;
-    }
-    button:hover {
-      background-color: #cfd8dc;
-    }
-    button:disabled {
-      background-color: #eee;
-      color: #ccc;
-      cursor: auto;
-    }
+  
+   ```css
+   /* HeroDetailComponent's private CSS styles */
+   label {
+     display: inline-block;
+     width: 3em;
+     margin: .5em 0;
+     color: #607D8B;
+     font-weight: bold;
+   }
+   input {
+     height: 2em;
+     font-size: 1em;
+     padding-left: .4em;
+   }
+   button {
+     margin-top: 20px;
+     font-family: Arial;
+     background-color: #eee;
+     border: none;
+     padding: 5px 10px;
+     border-radius: 4px;
+     cursor: pointer; cursor: hand;
+   }
+   button:hover {
+     background-color: #cfd8dc;
+   }
+   button:disabled {
+     background-color: #eee;
+     color: #ccc;
+     cursor: auto;
+   }
 
 
-    /*
-    Copyright 2017 Google Inc. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license
-    */
+   /*
+   Copyright 2017-2018 Google Inc. All Rights Reserved.
+   Use of this source code is governed by an MIT-style license that
+   can be found in the LICENSE file at http://angular.io/license
+   */
     ```
 
 ## `books.component.css`
 
 * Το στυλ του `BooksComponent` θα διέπεται από το αρχείο
   `books.component.css`: 
-    ```css
-    /* BooksComponent's private CSS styles */
-    .books {
-      margin: 0 0 2em 0;
-      list-style-type: none;
-      padding: 0;
-      width: 15em;
-    }
-    .books li {
-      position: relative;
-      cursor: pointer;
-      background-color: #EEE;
-      margin: .5em;
-      padding: .3em 0;
-      height: 1.6em;
-      border-radius: 4px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+  
+   ```css
+   /* BooksComponent's private CSS styles */
+   .books {
+     margin: 0 0 2em 0;
+     list-style-type: none;
+     padding: 0;
+     width: 15em;
+   }
+   .books li {
+     position: relative;
+     cursor: pointer;
+     background-color: #EEE;
+     margin: .5em;
+     padding: .3em 0;
+     height: 1.6em;
+     border-radius: 4px;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     white-space: nowrap;
+   }
 
-    }
+   .books li:hover {
+     color: #607D8B;
+     background-color: #DDD;
+     left: .1em;
+   }
 
-    .books li:hover {
-      color: #607D8B;
-      background-color: #DDD;
-      left: .1em;
-    }
+   .books a {
+     color: #888;
+     text-decoration: none;
+     position: relative;
+   }
 
-    .books a {
-      color: #888;
-      text-decoration: none;
-      position: relative;
-      display: block;
-      width: 250px;
-    }
+   .books a:hover {
+     color:#607D8B;
+   }
 
-    .books a:hover {
-      color:#607D8B;
-    }
-
-    .books .badge {
-      display: inline-block;
-      font-size: small;
-      color: white;
-      padding: 0.8em 0.7em 0 0.7em;
-      background-color: #607D8B;
-      line-height: 1em;
-      position: relative;
-      left: -1px;
-      top: -4px;
-      height: 1.8em;
-      min-width: 16px;
-      text-align: right;
-      margin-right: .8em;
-      border-radius: 4px 0 0 4px;
-    }
+   .books .badge {
+     display: inline-block;
+     font-size: small;
+     color: white;
+     padding: 0.8em 0.7em 0 0.7em;
+     background-color: #607D8B;
+     line-height: 1em;
+     position: relative;
+     left: -1px;
+     top: -4px;
+     height: 1.8em;
+     min-width: 16px;
+     text-align: right;
+     margin-right: .8em;
+     border-radius: 4px 0 0 4px;
+   }
 
 
-    /*
-    Copyright 2017 Google Inc. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license
-    */
-    ```
+   /*
+   Copyright 2017-2018 Google Inc. All Rights Reserved.
+   Use of this source code is governed by an MIT-style license that
+   can be found in the LICENSE file at http://angular.io/license
+   */
+   ```
     
 ## `messages.component.css`
 
 * Τέλος, η εμφάνιση του `MessagesComponent` θα διέπεται από το
   `messages.component.css`:
-    ```css
-    /* MessagesComponent's private CSS styles */
-    h2 {
-      color: red;
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: lighter;
-    }
+  
+   ```css
+   /* MessagesComponent's private CSS styles */
+   h2 {
+     color: red;
+     font-family: Arial, Helvetica, sans-serif;
+     font-weight: lighter;
+   }
+   body {
+     margin: 2em;
+   }
+   body, input[text], button {
+     color: crimson;
+     font-family: Cambria, Georgia;
+   }
 
-    body {
-      margin: 2em;
-    }
-
-    body, input[text], button {
-      color: crimson;
-      font-family: Cambria, Georgia;
-    }
-
-    button.clear {
-      font-family: Arial;
-      background-color: #eee;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      cursor: hand;
-    }
-
-    button:hover {
-      background-color: #cfd8dc;
-    }
-
-    button:disabled {
-      background-color: #eee;
-      color: #aaa;
-      cursor: auto;
-    }
-
-    button.clear {
-      color: #888;
-      margin-bottom: 12px;
-    }
+   button.clear {
+     font-family: Arial;
+     background-color: #eee;
+     border: none;
+     padding: 5px 10px;
+     border-radius: 4px;
+     cursor: pointer;
+     cursor: hand;
+   }
+   button:hover {
+     background-color: #cfd8dc;
+   }
+   button:disabled {
+     background-color: #eee;
+     color: #aaa;
+     cursor: auto;
+   }
+   button.clear {
+     color: #888;
+     margin-bottom: 12px;
+   }
 
 
-    /*
-    Copyright 2017 Google Inc. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license
-    */
-    ```
+   /*
+   Copyright 2017-2018 Google Inc. All Rights Reserved.
+   Use of this source code is governed by an MIT-style license that
+   can be found in the LICENSE file at http://angular.io/license
+   */
+   ```
