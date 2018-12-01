@@ -2,179 +2,64 @@
 % Αν. Καθηγητής Π. Λουρίδας
 % Οικονομικό Πανεπιστήμιο Αθηνών
 
-# Angular 5
+# Angular & Django
 
+* Μέχρι τώρα δεν έχουμε χρησιμοποιήσει κάποιον κανονικό εξυπηρετητεί ο
+  οποίος θα ακούει τις αιτήσεις της εφαρμογής μας.
 
-## Γενικά
-
-* Η εφαρμογή μας διαβάζει τα δεδομένα που χρειάζεται από ένα στατικό
-  αρχείο που περιέχει τα βιβλία που εμφανίζει.
-
-* Στην πραγματικότητα όμως, θα τα διαβάζει από κάποιον εξυπηρετητή.
-
-* Η επικοινωνία μεταξύ του εξυπηρετητή και της εφαρμογής μας θα
-  γίνεται μέσω HTTP.
-
+* Τώρα θα χρησιμοποιήσουμε το Angular στο frontend και το Django στο
+  backend. 
+  
 * Συνεχίζουμε προσαρμόζοντας το
   [online tutorial](https://angular.io/docs/ts/latest/tutorial/)
   της Google.
+  
 
+## Δύο Εφαρμογές σε Μία
 
-## Προσομοίωση εξυπηρετητή
+* Αν θυμηθούμε, είχαμε φτιάξει μια εφαρμογή, την `djbr`,
+  χρησιμοποιώντας το Django.
+  
+* Επίσης έχουμε φτιάξει μια εφαρμογή, την `bangular`, χρησιμοποιώντας
+  το Angular.
+  
+* Τώρα θα τις συνδέσουμε.
 
-* Θα εξομοιώσουμε την επικοινωνία με έναν εξυπηρετητή.
+## Δομή καταλόγων
 
-* Ενώ η εφαρμογή μας θα πιστεύει ότι επικοινωνεί με έναν εξυπηρετητή
-  που αποθηκεύει τα βιβλία, στην πραγματικότητα δεν θα συμβαίνει αυτό.
+* Φτιάχνουμε έναν κατάλογο `bangular_djbr`.
 
-* Οι αιτήσεις προς τον εξυπηρετητή θα υποκλέπονται από μία βιβλιοθήκη
-  που θα εγκαταστήσουμε.
-
-* Η βιβλιοθήκη αυτή επίσης θα συνθέτει τις απαντήσεις που κανονικά θα
-  παίρναμε από τον εξυπηρετητή.
-
-* Η βιβλιοθήκη αυτή ονομάζεται [In Memory Web
-  API](https://github.com/angular/in-memory-web-api).
-
-
-## Εγκατάσταση In Memory Web API
-
-* Για να εγκαταστήσουμε το In Memory Web API δίνουμε το εξής:
-
-  ```bash
-     npm install angular-in-memory-web-api --save
-  ```
-
-* Η παράμετρος `--save` σημαίνει ότι η βιβλιοθήκη θα προστεθεί στις
-  εξαρτήσεις της εφαρμογής.
-
-* Αυτό θα γίνει προσθέτοντάς την στο τμήμα `dependencies` του αρχείου
-  `package.json`, το οποίο ακριβώς γίνεται με την παράμετρο `--save`.
-
-
-## Χρήση του `HttpClient` και του In Memory Web API
-
-* Η επικοινωνία με τον εξυπηρετητή θα γίνεται με το `HTTPClient`, άρα
-  θα πρέπει να το εισάγουμε στο `AppModule`.
-
-* Όπως είπαμε, η επικοινωνία θα υποκλέπτεται από το In Memory Web API
-  οπότε θα το εισάγουμε και αυτό στο `AppModule`.
-
-* Η υποκλοπή θα χρησιμοποιεί τα δεδομένα που θα χειρίζεται μια δική
-  μας υπηρεσία, η `InMemoryDataService`, την οποία θα γράψουμε σε
-  λίγο, και την εισάγουμε και αυτή.
-
-
-## Το αρχείο `app.module.ts`
-
-* Σύμφωνα με τα παραπάνω, το αρχείο `app.module.ts` θα εξελιχθεί ως
-  εξής:
-  ```javascript
-  import { BrowserModule } from '@angular/platform-browser';
-  import { NgModule } from '@angular/core';
-  import { FormsModule } from '@angular/forms';
-
-  import { HttpClientModule }    from '@angular/common/http';
-  import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-  import { InMemoryDataService }  from './in-memory-data.service';
-
-  import { AppComponent } from './app.component';
-  import { BooksComponent } from './books/books.component';
-  import { ItalicsDirective } from './italics.directive';
-  import { BookDetailComponent } from './book-detail/book-detail.component';
-  import { BookService } from './book.service';
-  import { MessagesComponent } from './messages/messages.component';
-  import { MessageService } from './message.service';
-  import { AppRoutingModule } from './app-routing.module';
-  import { DashboardComponent } from './dashboard/dashboard.component';
-  import { BookSearchComponent } from './book-search/book-search.component';
-
-  @NgModule({
-    declarations: [
-      AppComponent,
-      BooksComponent,
-      ItalicsDirective,
-      BookDetailComponent,
-      MessagesComponent,
-      DashboardComponent,
-      BookSearchComponent,
-    ],
-    imports: [
-      BrowserModule,
-      FormsModule,
-      AppRoutingModule,
-      HttpClientModule,
-      HttpClientInMemoryWebApiModule.forRoot(
-        InMemoryDataService, { dataEncapsulation: false }
-      )
-    ],
-    providers: [ BookService, MessageService ],
-    bootstrap: [AppComponent]
-  })
-  export class AppModule { }
-  ```
-
-<div class="notes">
-
-Η επικοινωνία του Angular με τον εξυπηρετητή γίνεται μέσω της
-υπηρεσίας `HTTPClient`. Εμείς θα παρεμβάλουμε στην επικοινωνία την υπηρεσία
-`HttpClientInMemoryWebApiModule`. Η αρχικοποίησή της γίνεται με την
-εντολή:
-
-```javascript
-HttpClientInMemoryWebApiModule.forRoot(
-  InMemoryDataService, { dataEncapsulation: false }
-)
-```
-
-Στην εντολή αυτή δηλώνουμε ότι θα χρησιμοποιεί την υππηρεσία
-`InMemoryDataService`, που θα γράψουμε σε λίγο. Επίσης δηλώνουμε ότι η
-ιδιότητα `dataEncapsulation` θα είναι `false`. Η ιδιότητα
-`dataEncapsulation` έχει την εξής σημασία:
-
-* αν είναι `true`, τότε τα δεδομένα της εφαρμογής θα επιστρέφονται
-από το In Memory Web API μέσα σε ένα αντικείμενο με το όνομα
-`data`.
-
-* αν είναι `false`, τότε τα δεδομένα της εφαρμογής θα επιστρέφονται
-από το In Memory Web API όπως είναι, χωρίς να εμπεριέχονται σε
-κάποιο επιπλέον αντικείμενο.
-
-</div>
-
-## Δημιουργία `InMemoryDataService`
-
-* Δημιουργούμε το `InMemoryDataService` στο αρχείο
-  `in-memory-data.service.ts` στον κατάλογο `src/app`:
-  ```javascript
-  import { InMemoryDbService} from 'angular-in-memory-web-api';
-
-  import { Book } from './book';
-
-  export class InMemoryDataService implements InMemoryDbService {
-
-    createDb() {
-      const books: Book[] = [
-        { id: 11, title: 'Infinite Jest', pub_year: 1996},
-        { id: 12, title: 'Oblivion', pub_year: 2004 },
-        { id: 13, title: 'Ulysses', pub_year: 1922 },
-        { id: 14, title: 'The Crying of Lot 49', pub_year: 1966 },
-        { id: 15, title: 'City on Fire', pub_year: 2015 },
-        { id: 16, title: 'The Narrow Road to the Deep North', pub_year: 2013 },
-        { id: 17, title: 'The Dispossessed', pub_year: 1974 },
-        { id: 18, title: 'The Left Hand of Darkness', pub_year: 1969 },
-        { id: 19, title: 'A Death in the Family: My Struggle Book 1',
-          pub_year: 2013 },
-        { id: 20, title: 'A Man in Love: My Struggle Book 2', pub_year: 2013 }
-      ];
-      return {books};
-    }
-  }
-  ```
-
-* Επίσης σβήνουμε το αρχείο `mock-books.ts`, αφού δεν το χρειαζόμαστε
-  πλέον.
-
+* Μέσα στον κατάλογο αυτό μεταφέρουμε την εφαρμογή `djbr`, σε έναν
+  κατάλογο που τον ονομάζουμε `server`.
+  
+* Επίσης μεταφέρουμε την εφαρμογή `bangular` σε έναν κατάλογο που τον
+  ονομάζουμε `client`.
+  
+* Θα έχουμε λοιπόν μια δομή καταλόγων που τα δύο πρώτα επίπεδά της θα
+  είναι:
+  
+   ```
+   bangular_djbr
+   ├── client
+   │   ├── README.md
+   │   ├── angular.json
+   │   ├── e2e
+   │   ├── node_modules
+   │   ├── package-lock.json
+   │   ├── package.json
+   │   ├── src
+   │   ├── tsconfig.json
+   │   └── tslint.json
+   └── server
+       ├── db.sqlite3
+       ├── djbr
+       ├── manage.py
+       ├── project_site
+       ├── seed_books.csv
+       ├── seed_books.csv~
+       ├── setup.py
+       └── venv
+   ```
 
 # Ανάκτηση βιβλίων
 
@@ -186,113 +71,225 @@ HttpClientInMemoryWebApiModule.forRoot(
 * Για το σκοπό αυτό θα χρησιμοποιήσει την υπηρεσία `HTTPClient`
   του Angular.
 
-* Από εδώ και στο εξής, ξεχνάμε τα πάντα περί υποκλοπών. Η εφαρμογή
-  μας νομίζει ότι επικοινωνεί με έναν εξυπηρετητή.
+* Εισάγουμε την υπηρεσία `HTTPClient` στο `AppModule`.
 
+* Προσαρμόζουμε τον πίνακα `@NgModule.imports`
+
+
+## `app.module.ts`
+
+```javascript
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule }    from '@angular/common/http';
+
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { AppComponent } from './app.component';
+import { BooksComponent } from './books/books.component';
+import { ItalicsDirective } from './italics.directive';
+import { BookDetailComponent } from './book-detail/book-detail.component';
+import { MessagesComponent } from './messages/messages.component';
+import { AppRoutingModule } from './app-routing.module';
+import { DashboardComponent } from './dashboard/dashboard.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    BooksComponent,
+    ItalicsDirective,
+    BookDetailComponent,
+    MessagesComponent,
+    DashboardComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule,
+    HttpClientModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
 
 ## Κλήση HTTP από το `BookService` (1)
 
 * Για να γίνει η κλήση HTTP από το `BookService`, θα πρέπει να
   εισάγουμε τα εξής:
-  ```javascript
-  import { HttpClient, HttpHeaders } from '@angular/common/http';
-  ```
+  
+   ```javascript
+   import { HttpClient, HttpHeaders } from '@angular/common/http';
+   ```
 
 * Για να ενθέσουμε το `HttpClient` στο `BookService` θα το δηλώσουμε
   σε μία ιδιωτική ιδιότητα στον κατασκευαστή:
-  ```javascript
-  constructor(private http: HttpClient,
-              private messageService: MessageService) { }
-  ```
+  
+   ```javascript
+   constructor(private http: HttpClient,
+               private messageService: MessageService) { }
+   ```
 
 ## Κλήση HTTP από το `BookService` (2)
 
 * Στη συνέχεια, θα προσθέσουμε μια ιδιότητα που θα δείχνει το URL το
   οποίο θα χρησιμοποιούμε για να επικοινωνήσουμε με τον εξυπηρετητή:
-  ```javascript
-  private booksUrl = 'api/books';
-  ```
+  
+   ```javascript
+   private booksUrl = 'api/books';
+   ```
 
 * Θα προσθέσουμε επίσης μια μέθοδο για να καταγράφουμε τη χρήση της
   υπηρεσίας:
-  ```javascript
-  private log(message: string): void {
-    this.messageService.add('BookService: ' + message);
-  }
-  ```
-
-## Η κλάση `Observable`
-
-* Μέχρι τώρα για να χειριστούμε ασύγχρονα δεδομένα χρησιμοποιούσαμε
-  την κλάση `Promise`.
-
-* Η υπηρεσία `HttpClient` χρησιμοποιεί την κλάση `Observable` αντ'
-  αυτής.
-
-* Η κλάση `Observable` είναι η βασική κλάση της βιβλιοθήκης
-  [RxJS](http://reactivex.io/rxjs/) που χρησιμοποιείται στο Angular
-  αλλά και αλλού· είναι πολύ δημοφιλής.
-
-
-## `Promise` και `Observable`
-
-* Αντικείμενα της κλάσης `Promise` μπορεί να επιστρέψουν κάποια τιμή
-  από τη στιγμή που θα κληθούν.
-
-* Ένα αντικείμενο της κλάσης `Promise` μπορεί είτε να εκπληρωθεί είτε
-  να αθετηθεί.
-
-* Αντικείμενα της κλάσης `Observable` μπορεί να γυρίσουν από μηδέν
-  μέχρι (εν δυνάμει) άπειρες τιμές από τη στιγμή που θα κληθούν.
-
-* Για να πάρουμε τις τιμές από ένα αντικείμενο `Observable` πρέπει να
-  *γραφτούμε συνδρομητές* σε αυτό.
   
-* Ένας συνδρομητής ονομάζεται *παρατηρητής* (observer).
-
-
-## Τιμές από `Observable`
-
-* Υπάρχουν τριών τύπων τιμές που μπορεί να διανείμει ένα `Observable`
-  στους συνδρομητές του:
-  * `next`: διανείμει την επόμενη τιμή (`Number`, `String`, `Object`,
-    κ.λπ.) 
-  * `error`: διανείμει ένα λάθος ή μια εξαίρεση
-  * `complete`: δείχνει ότι έχει ολοκληρωθεί
+   ```javascript
+   private log(message: string): void {
+     this.messageService.add('BookService: ' + message);
+   }
+   ```
   
-  
-## Βολοδιάγραμμα (Marble Diagram)
-
-<img src="observable.png" alt="Observable" style="width: 800px;"/>
-
-
 ## Η μέθοδος `getBooks()`
 
 * Για να διαβάσουμε βιβλία από τον εξυπηρετητή θα αλλάξουμε τη μέθοδο
-  `getBooks()` στο `BookService` ώστε να είναι:
-  ```javascript
-  /** GET books from the server */
-  getBooks(): Observable<Book[]> {
-   return this.http.get<Book[]>(this.booksUrl)
-     .pipe(
-       tap(books => this.log(`fetched books`)),
-       catchError(this.handleError('getBooks', []))
-     );
-  }
-  ```
+  `getBooks()` στο `BookService` από:
+
+   ```javascript
+   getBooks(): Observable<Book[]> {
+     this.messageService.add('BookService: fetched books');
+     return of(BOOKS);
+   }
+   ```
+  σε:
+  
+   ```javascript
+   getBooks(): Observable<Book[]> {
+     return this.http.get<Book[]>(this.booksUrl);
+   }
+   ```
+
+## Χρήση Διαμεσολαβητή (Proxy)
+
+* Στη διάρκεια της ανάπτυξης, μας βολεύει να τρέχουμε το Angular μέσω
+  του node.js, όπως κάνουμε μέχρι τώρα.
+  
+* Για να το κάνουμε αυτό, θα χρησιμοποιήσουμε ένα διαμεσολαβητή
+  (proxy).
+
+
+## `proxy.conf.json`
+
+* Δημιουργούμε ένα αρχείο `proxy.conf.json` στον κατάλογο `client/`
+  με τα εξής περιεχόμενα:
+  
+   ```javascript
+   {
+     "/api": {
+       "target": "http://localhost:8000",
+       "secure": false
+     }
+   }
+   ``` 
 
 <div class="notes">
 
-Η μέθοδος `HttpClient.get()` επιστρέφει ένα `Observable`. Εμείς
-θέλουμε στη συνέχεια να εφαρμόσουμε δύο τελεστές επάνω του:
+Η παράμετρος `secure: false` σημαίνει ότι δεν θα παραπονεθεί αν το
+πιστοποιητικό που θα δώσει ο εξυπηρετητής, στην περίπτωση που
+χρησιμοποιούμε HTTPS, δεν είναι έγκυρο.
+
+</div>
+
+
+## `angular.json`
+
+* Στο αρχείο `client/angular.json` ρυθμίσουμε την παράμετρο
+  `proxyConfig` ώστε να χρησιμοποιεί το διαμεσολαβητή που περιγράψαμε.
+  
+   ```javascript
+   "serve": {
+     "builder": "@angular-devkit/build-angular:dev-server",
+     "options": {
+       "browserTarget": "bangular:build",
+       "proxyConfig": "proxy.conf.json"
+   },
+   ```
+
+## Χειρισμός Λαθών
+
+* Θα πρέπει να εξασφαλίσουμε ότι η εφαρμογή μας εξακολουθεί να
+  λειτουργεί σωστά ακόμα και αν προκύψουν λάθη.
+  
+* Θα φτιάξουμε μια μέθοδο `handleError()` στο `BookService` για να
+  χειριζόμαστε τα λάθη που μπορεί να εμφανιστούν.
+  
+   ```javascript
+   /**
+    * Handle Http operation that failed.
+    * Let the app continue.
+    * @param operation - name of the operation that failed
+    * @param result - optional value to return as the observable result
+    */
+   private handleError<T> (operation = 'operation', result?: T) {
+     return (error: any): Observable<T> => {
+
+       // TODO: send the error to remote logging infrastructure
+       console.error(error); // log to console instead
+
+       // TODO: better job of transforming error for user consumption
+       this.log(`${operation} failed: ${error.message}`);
+
+       // Let the app keep running by returning an empty result.
+       return of(result as T);
+     };
+   }
+   ```
+
+<div class="notes">
+
+Στην JavaScript όλες οι παράμετροι μιας συνάρτησης είναι προαιρετικές.
+Για να δηλώσουμε ότι μια παράμετρος μιας συνάρτησης είναι προαιρετική
+στην TypeScript, προσθέτουμε το `?` στο τέλος του ονόματός της.
+
+</div>
+
+## Διασύνδεση Τελεστών (1)
+
+* Η μέθοδος `HttpClient.get()` επιστρέφει ένα `Observable`.
+
+* Εμείς θέλουμε στη συνέχεια να εφαρμόσουμε δύο τελεστές επάνω του:
+
   * `tap`
+  
   * `catchError`
   
-Για να το κάνουμε αυτό, τους καλούμε μέσα στη μέθοδο `pipe()`. Το
-`Observable` που προέρχεται από την κλήση της `HttpClient.get()`
-διοχετεύεται στον τελεστή `tap`· ο τελεστής επιστρέφει ένα
-`Observable` το οποίο με τη σειρά του διοχετεύεται στον τελεστή
-`catchError`. 
+
+## Διασύνδεση Τελεστών (2)
+
+* Κατ' αρχήν πρέπει να τους εισάγουμε στο `BookService`:
+
+   ```javascript
+   import { catchError, map, tap } from 'rxjs/operators';
+   ```
+
+* Στη συνέχεια αλλάζουμε τη μέθοδο `getBooks()`:
+
+   ```javascript
+   getBooks(): Observable<Book[]> {
+     return this.http.get<Book[]>(this.booksUrl)
+       .pipe(
+         tap(_ => this.log('fetched books')),
+         catchError(this.handleError('getBooks', []))
+       );
+   }
+   ```
+
+<div class="notes">
+
+Για να διασυνδέσουμε τους τελεστές, τους καλούμε μέσα στη μέθοδο
+`pipe()`. Το `Observable` που προέρχεται από την κλήση της
+`HttpClient.get()` διοχετεύεται στον τελεστή `tap`· ο τελεστής
+επιστρέφει ένα `Observable` το οποίο με τη σειρά του διοχετεύεται στον
+τελεστή `catchError`.
 
 </div>
 
@@ -316,8 +313,10 @@ TypeScript δεν θα μπορούσαμε να το χρησιμοποιήσο
 
   * η πρώτη δίνει τι θέλουμε να εκτελεστεί για κάθε δεδομένο που μας
     έρχεται 
+    
   * η δεύτερη δίνει τι θέλουμε να εκτελεστεί σε περίπτωση κάποιου
     λάθους
+    
   * η τρίτη δίνει τι θέλουμε να εκτελεστεί αν τελειώσει η σειρά των
     δεδομένων που μας έρχεται
 
@@ -326,7 +325,6 @@ TypeScript δεν θα μπορούσαμε να το χρησιμοποιήσο
 `Observable` που δέχεται, έχοντας κάνει ό,τι επιπλέον του έχουμε ζητήσει.
 
 </div>
-
 
 
 ## Τελεστής `catchError`
@@ -342,97 +340,22 @@ TypeScript δεν θα μπορούσαμε να το χρησιμοποιήσο
 
 </div>
 
-## `books.component.ts`
-
-* Για να δουλέψει το `BooksComponent`, θα πρέπει να γραφτεί
-  συνδρομητής στο `Observable` που επιστρέφει το `BookService`:
-  ```javascript
-  getBooks(): void {
-    this.bookService.getBooks()
-      .subscribe(books => this.books = books);
-  }
-  ```
-
-* Όταν έρθουν τα βιβλία από το `Observable`, τότε τα αποθηκεύουμε στη
-  μεταβλητή `books` του `BooksComponent`.
-  
-* Στην περίπτωσή μας λοιπόν το `Observable` διανείμει μια τιμή, τα
-  βιβλία που έχουν αποθηκευτεί.
-
-
-## `dashboard.component.ts`
-
-* Ομοίως, για να δουλέψει το ταμπλό μας τώρα θα πρέπει να γραφτεί συνδρομητής
-  στο `Observable` που επιστρέφει το `BookService`:
-  ```javascript
-  getBooks(): void {
-    this.bookService.getBooks()
-      .subscribe(books => this.books = books.slice(1, 5));
-  }
-  ```
-
-## `book-detail.component.ts`
-
-* Τέλος, για να δουλέψει η λίστα με τα βιβλία, το
-  `BookDetailComponent` θα γραφτεί συνδρομητής στο `Observable` που
-  επιστρέφει το `BookService`:
-  ```javascript
-  getBook(): void {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.bookService.getBook(id).subscribe(book => this.book = book);
-  }
-  ```
-
-## Η μέθοδος `handleError()`
-
-* Για τη διαχείριση τυχόν λαθών στην επικοινωνία μέσω HTTP θα
-  προσθέσουμε την παρακάτω μέθοδο στο `BookService`:
-  ```javascript 
-  /**
-   * Handle Http operation that failed.
-   * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
-  private handleError<T> (operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      console.error(error); // log to console instead
-
-      this.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
-  ```
-
-<div class="notes">
-
-Στην JavaScript όλες οι παράμετροι μιας συνάρτησης είναι προαιρετικές.
-Για να δηλώσουμε ότι μια παράμετρος μιας συνάρτησης είναι προαιρετική
-στην TypeScript, προσθέτουμε το `?` στο τέλος του ονόματός της.
-
-Ο τελεστής `of` του RxJS κατασκευάζει ένα `Observable` από το
-αντικείμενο που του περνάμε ως παράμετρο. Έτσι εδώ θα επιστρέψει ένα
-`Observable` το οποίο θα παραδώσει την τιμή του `result`.
-
-</div>
 
 ## Εύρεση ενός βιβλίου
 
 * Για την εύρεση των στοιχείων ενός βιβλίου, θα αλλάξουμε τη μέθοδο
   `getBook()` του `BookService`:
-  ```javascript
-  /** GET book by id. Will 404 if id not found */
-  getBook(id: number): Observable<Book> {
-    const url = `${this.booksUrl}/${id}`;
-    return this.http.get<Book>(url).pipe(
-      tap(_ => this.log(`fetched book id=${id}`)),
-      catchError(this.handleError<Book>(`getBook id=${id}`))
-    );
-  }
-  ```
+  
+   ```javascript
+   /** GET book by id. Will 404 if id not found */
+   getBook(id: number): Observable<Book> {
+     const url = `${this.booksUrl}/${id}`;
+     return this.http.get<Book>(url).pipe(
+       tap(_ => this.log(`fetched book id=${id}`)),
+       catchError(this.handleError<Book>(`getBook id=${id}`))
+     );
+   }
+   ```
 
 
 # Ενημέρωση στοιχείων βιβλίου
@@ -449,62 +372,61 @@ TypeScript δεν θα μπορούσαμε να το χρησιμοποιήσο
 * Θα πρέπει, μέσω της υπηρεσίας `HTTPClient`, να αποθηκεύουμε τις
   αλλαγές στον εξυπηρετητή.
   
-<div class="notes">
-
-Προσέξτε, δεδομένου ότι υποκλέπτουμε την επικοινωνία με τον
-εξυπηρετητή και τελικά επικοινωνούμε με το In Memory Web API, οι
-αλλαγές δεν θα αποθηκεύονται μόνιμα, παρά μόνο μέχρι να κλείσει η
-εφαρμογή.
-
-</div>
-
 
 ## Αποθήκευση στοιχείων βιβλίου (1)
 
 * Στο `book-detail.component.html` θα προσθέσουμε ένα κουμπί για
   την αποθήκευση των στοιχείων του βιβλίου.
-  ```html
-  <button (click)="save()">Save</button>
-  ```
+  
+   ```html
+   <button (click)="save()">Save</button>
+   ```
 
 ## Αποθήκευση στοιχείων βιβλίου (2)
 
 * Θα υλοποιήσουμε τη μέθοδο `save()` στο `BookDetailComponent`:
-  ```javascript
-  save(): void {
-    this.bookService.updateBook(this.book)
-      .subscribe(() => this.goBack());
-  }
-  ```
+
+   ```javascript
+   save(): void {
+     this.bookService.updateBook(this.book)
+       .subscribe(() => this.goBack());
+   }
+   ```
 
 ## Αποθήκευση στοιχείων βιβλίου (3)
 
 * Τέλος, θα υλοποιήσουμε τη μέθοδο `updateBook()` στο `BookService`:
-  ```javascript
-  /** PUT: update the book on the server */
-  updateBook (book: Book): Observable<any> {
-    return this.http.put(this.booksUrl, book, httpOptions).pipe(
-      tap(_ => this.log(`updated book id=${book.id}`)),
-      catchError(this.handleError<any>('updateBook'))
-    );
-  }
-  ```
+
+   ```javascript
+   /** PUT: update the book on the server */
+   updateBook (book: Book): Observable<any> { 
+     const url = `${this.booksUrl}/${book.id}`;   
+     return this.http.put(url, book, httpOptions).pipe(
+       tap(_ => this.log(`updated book id=${book.id}`)),
+       catchError(this.handleError<any>('updateBook'))
+     );
+   }
+   ```
 
 ## Η μέθοδος `HttpClient.put()`
 
 * Η μέθοδος `HttpClient.put()` παίρνει τρεις παραμέτρους:
-  * το URL
-  * τα δεδομένα προς ενημέρωση
-  * παραμέτρους για το πρωτόκολλο HTTP
+
+   * το URL
+   
+   * τα δεδομένα προς ενημέρωση
+   
+   * παραμέτρους για το πρωτόκολλο HTTP
 
 * Στην περίπτωσή μας, πρέπει να περάσουμε τις εξής παραμέτρους, τις
   οποίες τις δηλώνουμε στο αρχείο `book.service.ts` πριν τον ορισμό
   της κλάσης `BookService`:
-  ```javascript
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
-  ```
+  
+   ```javascript
+   const httpOptions = {
+     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+   };
+   ```
 
 # Προσθήκη βιβλίων
 
@@ -513,33 +435,38 @@ TypeScript δεν θα μπορούσαμε να το χρησιμοποιήσο
 * Εκτός από αλλαγές σε υπάρχοντα βιβλία, θέλουμε να μπορούμε και να
   αποθηκεύουμε νέα βιβλία.
 
-* Για να προσθέσουμε ένα βιβλίο θα πρέπει να δώσουμε τον τίτλο και το
-  έτος έκδοσής του.
+* Για να προσθέσουμε ένα βιβλίο θα πρέπει να δώσουμε τον τίτλο, ένα
+  URL (μπορεί να το αφήσουμε κενό), και το έτος έκδοσής του.
 
 
 ## Προσθήκη βιβλίου (1)
 
 * Στο `books.component.html` θα προσθέσουμε στο πάνω μέρος τα πεδία
 εισόδου και ένα κουμπί για την προσθήκη νέου βιβλίου.
-  ```html
-  <div>
-    <label>Book title:</label> <input #bookTitle />
-    <label>Publication date:</label> <input #bookPubDate />
-    <!-- (click) passes input values to add() and then clears input -->
-    <button (click)="add(bookTitle.value, bookPubDate.value);
-                     bookTitle.value=''; bookPubDate.value=''">
-      Add
-    </button>
-  </div>
-  ```
+
+   ```html
+   <div>
+     <label>Book title:</label> <input #bookTitle /> 
+     <label>Book URL:</label> <input #bookUrl />
+     <label>Publication date:</label> <input #bookPubDate />
+     <!-- (click) passes input values to add() and then clears input -->
+     <button (click)="add(bookTitle.value, bookUrl.value, bookPubDate.value);
+                      bookTitle.value=''; 
+                      bookUrl.value='';
+                      bookPubDate.value='';
+                      bookTitle.value=''">
+       Add
+     </button>
+   </div>
+   ```
 
 <div class="notes">
 
 Η σύνταξη `#bookTitle` είναι δήλωση μιας *αναφοράς* ([template
 reference
 variable](https://angular.io/guide/template-syntax#ref-vars). Αυτή
-μπορεί να αναφέρεται είτε ένα στοιχείο του DOM είτε μία οδηγία ή
-εξάρτημα του Angular. Αφού δηλώσουμε μια αναφορά, στη συνέχεια
+μπορεί να αναφέρεται είτε σε ένα στοιχείο του DOM είτε σε μία οδηγία ή
+σε ένα εξάρτημα του Angular. Αφού δηλώσουμε μια αναφορά, στη συνέχεια
 μπορούμε να τη χρησιμοποιήσουμε στο υπόλοιπο πρότυπο (χωρίς το `#`). Η
 τιμής της δίνεται από την ιδιότητα `value`.
 
@@ -548,30 +475,38 @@ variable](https://angular.io/guide/template-syntax#ref-vars). Αυτή
 ## Προσθήκη βιβλίου (2)
 
 * Στη συνέχεια θα υλοποιήσουμε τη μέθοδο `add()` στο `BooksComponent`:
-  ```javascript
-  add(title: string, pubYearStr: string): void {
-    title = title.trim();
-    let pub_year = +pubYearStr;
-    if (!title || !pub_year) { return; }
-    this.bookService.addBook({ title, pub_year } as Book)
-      .subscribe(book => {
-        this.books.push(book);
-      });
-  }
-  ```
+
+   ```javascript
+   add(title: string, url: String, pubYearStr: string): void {
+     title = title.trim();
+     url = url.trim();
+     let pub_year = +pubYearStr;
+     if (!title || !pub_year) { return; }
+     this.bookService.addBook({ title, url, pub_year } as Book)
+       .subscribe(book => {
+         // If the operation has failed, BookService's handleError()
+         // will have given an empty result; so we add to the
+         // books array only if a non-empty result has been produced.
+         if (book) { 
+           this.books.push(book);
+         }
+       });
+   }
+   ```
 
 ## Προσθήκη βιβλίου (3)
 
 * Τέλος, θα υλοποιήσουμε τη μέθοδο `addBook()` στο `BookService`:
-  ```javascript
-  /** POST: add a new book to the server */
-  addBook (book: Book): Observable<Book> {
-    return this.http.post<Book>(this.booksUrl, book, httpOptions).pipe(
-      tap((book: Book) => this.log(`added book w/ id=${book.id}`)),
-      catchError(this.handleError<Book>('addBook'))
-    );
-  }
-  ```
+
+   ```javascript
+   /** POST: add a new book to the server */
+   addBook (book: Book): Observable<Book> {
+     return this.http.post<Book>(this.booksUrl, book, httpOptions).pipe(
+       tap((book: Book) => this.log(`added book w/ id=${book.id}`)),
+       catchError(this.handleError<Book>('addBook'))
+     );
+   }
+   ```
 
 # Διαγραφή βιβλίων
 
@@ -588,27 +523,29 @@ variable](https://angular.io/guide/template-syntax#ref-vars). Αυτή
 
 * Στο `books.component.html` θα προσθέσουμε στη λίστα των βιβλίων
   δίπλα στον τίτλο κάθε βιβλίου ένα κουμπί για τη διαγραφή του:
-  ```html
-  <ul class="books">
-    <li *ngFor="let book of books">
-      <a routerLink="/detail/{{book.id}}">
-        <span class="badge">{{book.id}}</span> {{book.title}}
-      </a>
-      <button class="delete" title="delete book"
-              (click)="delete(book)">x</button>
-    </li>
-  </ul>
-  ```
+  
+   ```html
+   <ul class="books">
+     <li *ngFor="let book of books">
+       <a routerLink="/detail/{{book.id}}">
+         <span class="badge">{{book.id}}</span> {{book.title}}
+       </a>
+       <button class="delete" title="delete book"
+               (click)="delete(book)">x</button>
+     </li>
+   </ul>
+   ```
 
 ## Διαγραφή βιβλίου (2)
 
 * Θα υλοποιήσουμε τη μέθοδο `delete()` στο `BooksComponent`:
-  ```javascript
-  delete(book: Book): void {
-    this.books = this.books.filter(h => h !== book);
-    this.bookService.deleteBook(book).subscribe();
-  }
-  ```
+
+   ```javascript
+   delete(book: Book): void {
+     this.books = this.books.filter(h => h !== book);
+     this.bookService.deleteBook(book).subscribe();
+   }
+   ```
 
 <div class="notes">
 
@@ -629,18 +566,19 @@ variable](https://angular.io/guide/template-syntax#ref-vars). Αυτή
 
 * Στη συνέχεια, θα υλοποιήσουμε τη μέθοδο `deleteBook()` στο
   `BookService`:
-  ```javascript
-  /** DELETE: delete the book from the server */
-  deleteBook(book: Book | number): Observable<Book> {
-    const id = typeof book === 'number' ? book : book.id;
-    const url = `${this.booksUrl}/${id}`;
+  
+   ```javascript
+   /** DELETE: delete the book from the server */
+   deleteBook(book: Book | number): Observable<Book> {
+     const id = typeof book === 'number' ? book : book.id;
+     const url = `${this.booksUrl}/${id}`;
 
-    return this.http.delete<Book>(url, httpOptions).pipe(
-      tap(_ => this.log(`deleted book id=${id}`)),
-      catchError(this.handleError<Book>('deleteBook'))
-    );
-  }
-  ```
+     return this.http.delete<Book>(url, httpOptions).pipe(
+       tap(_ => this.log(`deleted book id=${id}`)),
+       catchError(this.handleError<Book>('deleteBook'))
+     );
+   }
+   ```
 
 <div class="notes">
 
@@ -653,33 +591,6 @@ type)](https://www.typescriptlang.org/docs/handbook/advanced-types.html#union-ty
 
 </div>
 
-## Διαγραφή βιβλίου (4)
-
-* Τέλος, στο `books.component.css` θα προσθέσουμε τα κατάλληλα
-  στυλ ώστε το κουμπί να εμφανίζεται στα δεξιά του τίτλου:
-  ```css
-  .button {
-    background-color: #eee;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    cursor: hand;
-    font-family: Arial;
-  }
-
-  button:hover {
-    background-color: #cfd8dc;
-  }
-
-  button.delete {
-    position: relative;
-    left: 194px;
-    top: -32px;
-    background-color: gray !important;
-    color: white;
-  }
-  ```
 
 # Αναζήτηση βιβλίων
 
@@ -693,19 +604,20 @@ type)](https://www.typescriptlang.org/docs/handbook/advanced-types.html#union-ty
 ## Προσθήκη `searchBooks()`
 
 * Στο `BookService` προσθέτουμε τη μέθοδο `searchBooks()`:
-  ```javascript
-  /* GET books whose title contains search term */
-  searchBooks(term: string): Observable<Book[]> {
-    if (!term.trim()) {
-      // if not search term, return empty book array.
-      return of([]);
-    }
-    return this.http.get<Book[]>(`api/books/?title=${term}`).pipe(
-      tap(_ => this.log(`found books matching "${term}"`)),
-      catchError(this.handleError<Book[]>('searchBooks', []))
-    );
-  }
-  ```
+
+   ```javascript
+   /* GET books whose title contains search term */
+   searchBooks(term: string): Observable<Book[]> {
+     if (!term.trim()) {
+       // if not search term, return empty book array.
+       return of([]);
+     }
+     return this.http.get<Book[]>(`api/books/?title=${term}`).pipe(
+       tap(_ => this.log(`found books matching "${term}"`)),
+       catchError(this.handleError<Book[]>('searchBooks', []))
+     );
+   }
+   ```
 
 ## Προσθήκη αναζήτησης στο ταμπλό
 
@@ -713,34 +625,40 @@ type)](https://www.typescriptlang.org/docs/handbook/advanced-types.html#union-ty
   αυτό τον επιλογέα του εξαρτήματος αναζήτησης `app-book-search`, το
   οποίο θα φτιάξουμε αμέσως μετά. Το αρχείο `dashboard.component.html` 
   θα γίνει:
-  ```html
-  <h3>Top Books</h3>
-  <div class="grid grid-pad">
-    <a *ngFor="let book of books" class="col-1-4"
-       routerLink="/detail/{{book.id}}">
-      <div class="module book">
-        <h4>{{book.title}}</h4>
-      </div>
-    </a>
-  </div>
+  
+   ```html
+   <h3>Top Books</h3>
+   <div class="grid grid-pad">
+     <a *ngFor="let book of books" class="col-1-4"
+        routerLink="/detail/{{book.id}}">
+       <div class="module book">
+         <h4>{{book.title}}</h4>
+       </div>
+     </a>
+   </div>
 
-  <app-book-search></app-book-search>
-  ```
+   <app-book-search></app-book-search>
+   ```
 
 ## Δημιουργία εξαρτήματος αναζήτησης
 
 * Θα ξεκινήσουμε την κατασκευή του εξαρτήματος αναζήτησης χρησιμοποιώντας το
   Angular CLI:
-  ```bash
-  ng generate component book-search
-  ```
+  
+   ```bash
+   ng generate component book-search
+   ```
 
 * Θα δημιουργηθεί ο κατάλογος `src/app/book-search` και μέσα σε αυτόν
   τα αρχεία:
-  * `book-search.component.css`
-  * `book-search.component.html`
-  * `book-search.component.spec.ts`
-  * `book-search.component.ts`
+  
+    * `book-search.component.css`
+    
+    * `book-search.component.html`
+    
+    * `book-search.component.spec.ts`
+    
+    * `book-search.component.ts`
 
 * Επίσης θα γίνουν οι απαραίτητες αλλαγές (εισαγωγή, δήλωση) στο
   αρχείο `app.module.ts`.
@@ -750,21 +668,22 @@ type)](https://www.typescriptlang.org/docs/handbook/advanced-types.html#union-ty
 
 * Το εξάρτημα της αναζήτησης θα κατασκευάζεται στην οθόνη σύμφωνα με
   το παρακάτω πρότυπο, στο αρχείο `book-search.component.html`:
-  ```html
-  <div id="search-component">
-    <h4>Book Search</h4>
+  
+   ```html
+   <div id="search-component">
+     <h4>Book Search</h4>
 
-    <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
+     <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
 
-    <ul class="search-result">
-      <li *ngFor="let book of books$ | async" >
-        <a routerLink="/detail/{{book.id}}">
-          {{book.title}}
-        </a>
-      </li>
-    </ul>
-  </div>
-  ```
+     <ul class="search-result">
+       <li *ngFor="let book of books$ | async" >
+         <a routerLink="/detail/{{book.id}}">
+           {{book.title}}
+         </a>
+       </li>
+     </ul>
+   </div>
+   ```
 
 ## Πρότυπο αναζήτησης (2)
 
@@ -805,14 +724,14 @@ type)](https://www.typescriptlang.org/docs/handbook/advanced-types.html#union-ty
   οποία θα σπρώχνουμε στους όρους αναζήτησης αυτά που πληκτρολογεί ο
   χρήστης. 
 
-  ```javascript
-  private searchTerms = new Subject<string>();
+   ```javascript
+   private searchTerms = new Subject<string>();
 
-  // Push a search term into the observable stream.
-  search(term: string): void {
-    this.searchTerms.next(term);
-  }
-  ```
+   // Push a search term into the observable stream.
+   search(term: string): void {
+     this.searchTerms.next(term);
+   }
+   ```
 
 <div class="notes">
 
@@ -830,20 +749,21 @@ type)](https://www.typescriptlang.org/docs/handbook/advanced-types.html#union-ty
 * Όταν αρχικοποιείται η κλάση `BookSearchComponent`, στη μέθοδο
   `ngOnInit()`, θα συνδέουμε τους όρους αναζήτησης (`searchTerms`) με
   τη μεταβλητή `books$` του `BookSearchService`:
-  ```javascript
-  ngOnInit(): void {
-    this.books$ = this.searchTerms.pipe(
-      // wait 300ms after each keystroke before considering the term
-      debounceTime(300),
+  
+   ```javascript
+   ngOnInit(): void {
+     this.books$ = this.searchTerms.pipe(
+       // wait 300ms after each keystroke before considering the term
+       debounceTime(300),
 
-      // ignore new term if same as previous term
-      distinctUntilChanged(),
+       // ignore new term if same as previous term
+       distinctUntilChanged(),
 
-      // switch to new search observable each time the term changes
-      switchMap((term: string) => this.bookService.searchBooks(term)),
-    );
-  }
-  ```
+       // switch to new search observable each time the term changes
+       switchMap((term: string) => this.bookService.searchBooks(term)),
+     );
+   }
+   ```
 
 <div class="notes">
 
@@ -876,6 +796,7 @@ type)](https://www.typescriptlang.org/docs/handbook/advanced-types.html#union-ty
 ## `BookSearchComponent`
 
 * Το αρχείο `book-search.component.ts` στο σύνολό του θα είναι:
+
   ```javascript
   import { Component, OnInit } from '@angular/core';
 
@@ -921,57 +842,57 @@ type)](https://www.typescriptlang.org/docs/handbook/advanced-types.html#union-ty
   }
   ```
 
-
 ## `book-search.component.css`
 
 * Για το αισθητικό κομμάτι του `BookSearchComponent` θα
 χρησιμοποιήσουμε το παρακάτω στυλ, στο αρχείο
 `book-search.component.css`:
-  ```css
-  /* BookSearch private styles */
-  .search-result li {
-    border-bottom: 1px solid gray;
-    border-left: 1px solid gray;
-    border-right: 1px solid gray;
-    width:195px;
-    height: 16px;
-    padding: 5px;
-    background-color: white;
-    cursor: pointer;
-    list-style-type: none;
-  }
 
-  .search-result li:hover {
-    background-color: #607D8B;
-  }
+   ```css
+   /* BookSearch private styles */
+   .search-result li {
+     border-bottom: 1px solid gray;
+     border-left: 1px solid gray;
+     border-right: 1px solid gray;
+     width:195px;
+     height: 16px;
+     padding: 5px;
+     background-color: white;
+     cursor: pointer;
+     list-style-type: none;
+   }
 
-  .search-result li a {
-    color: #888;
-    display: block;
-    text-decoration: none;
-  }
+   .search-result li:hover {
+     background-color: #607D8B;
+   }
 
-  .search-result li a:hover {
-    color: white;
-  }
-  .search-result li a:active {
-    color: white;
-  }
-  #search-box {
-    width: 200px;
-    height: 20px;
-  }
+   .search-result li a {
+     color: #888;
+     display: block;
+     text-decoration: none;
+   }
 
-
-  ul.search-result {
-    margin-top: 0;
-    padding-left: 0;
-  }
+   .search-result li a:hover {
+     color: white;
+   }
+   .search-result li a:active {
+     color: white;
+   }
+   #search-box {
+     width: 200px;
+     height: 20px;
+   }
 
 
-  /*
-  Copyright 2017 Google Inc. All Rights Reserved.
-  Use of this source code is governed by an MIT-style license that
-  can be found in the LICENSE file at http://angular.io/license
-  */
-  ```
+   ul.search-result {
+     margin-top: 0;
+     padding-left: 0;
+   }
+
+
+   /*
+   Copyright 2017-2018 Google Inc. All Rights Reserved.
+   Use of this source code is governed by an MIT-style license that
+   can be found in the LICENSE file at http://angular.io/license
+   */
+   ```
