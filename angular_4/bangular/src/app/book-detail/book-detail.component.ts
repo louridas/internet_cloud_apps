@@ -14,7 +14,6 @@ import { Book } from '../book';
 })
 export class BookDetailComponent implements OnInit {
 
-  @Input()
   book: Book;
 
   constructor(
@@ -34,7 +33,7 @@ export class BookDetailComponent implements OnInit {
   }
 
   goBack(): void {
-      this.location.back();
+    this.location.back();
   }
 
 }
