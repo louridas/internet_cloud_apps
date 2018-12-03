@@ -27,7 +27,7 @@ export class BooksComponent implements OnInit {
     title = title.trim();
     url = url.trim();
     let pub_year = +pubYearStr;
-    if (!title || !pub_year) { return; }
+    if (!title || !url || !pub_year) { return; }
     this.bookService.addBook({ title, url, pub_year } as Book)
       .subscribe(book => {
         // If the operation has failed, BookService's handleError()
