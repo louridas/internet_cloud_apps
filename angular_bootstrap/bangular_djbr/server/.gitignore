@@ -1,15 +1,16 @@
-# Emacs
 *~
-
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Django stuff:
-*.log
-.static_storage/
-.media/
-static/
+venv/
+*.egg-info
+*.pot
+*.py[co]
+.tox/
+__pycache__
+MANIFEST
 dist/
-site_config.py
+docs/_build/
+docs/locale/
+node_modules/
+tests/coverage_html/
+tests/.coverage
+build/
+tests/report/

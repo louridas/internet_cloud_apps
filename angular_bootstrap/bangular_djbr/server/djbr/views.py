@@ -4,11 +4,8 @@ from rest_framework import generics
 
 from django.contrib.staticfiles import views
 
-def index(request, path=''):
-    if (path.endswith('.js')):
-        return views.serve(request, path)
-    else:
-        return views.serve(request, 'index.html')
+def index(request):
+    return views.serve(request, 'index.html')
 
 class BookList(generics.ListCreateAPIView):
     serializer_class = BookSerializer
@@ -17,7 +14,7 @@ class BookList(generics.ListCreateAPIView):
         queryset = Book.objects.all()
         title = self.request.query_params.get('title', None)
         if title is not None:
-            queryset = queryset.filter(title__icontains=title)
+            queryset = queryset.filter(title__contains=title)
         return queryset
 
 class BookDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -37,4 +34,3 @@ class ReviewList(generics.ListCreateAPIView):
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    

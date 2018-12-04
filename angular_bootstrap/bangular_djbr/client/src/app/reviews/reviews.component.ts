@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/do';
-
 import { Review } from '../review';
 import { ReviewService } from '../review.service';
 
@@ -24,12 +21,10 @@ export class ReviewsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.paramMap
-      .switchMap((params: ParamMap) => {
-        let bookId = +params.get('id');
-        this.review = this.newReview(bookId);
-        return this.reviewService.getReviews(+params.get('id'))
-      }).subscribe(reviews => this.reviews = reviews);
+    const bookId = +this.route.snapshot.paramMap.get('id');
+    this.review = this.newReview(bookId);
+    return this.reviewService.getReviews(bookId)
+      .subscribe(reviews => this.reviews = reviews);
   }
 
   newReview(bookId: number) : Review {
@@ -37,14 +32,17 @@ export class ReviewsComponent implements OnInit {
     review.book = bookId;
     review.title = '';
     review.text = '';
+    review.review_date = new Date();
     return review;
   }
 
   onSubmit() : void {
     this.reviewService.addReview(this.review)
       .subscribe(review => {
-        this.reviews.unshift(review);
-        this.review = this.newReview(review.book);
+        if (review) {
+          this.reviews.unshift(review);
+          this.review = this.newReview(review.book);
+        }
       });
   }
 

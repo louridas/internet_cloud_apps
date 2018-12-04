@@ -1,16 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/merge';
+import {
+  debounceTime, distinctUntilChanged, switchMap, tap, catchError
+ } from 'rxjs/operators';
 
 import { Book } from '../book';
 import { BookService } from '../book.service';
@@ -24,36 +19,37 @@ export class BookSearchComponent {
   public model: any;
   searching = false;
   searchFailed = false;
-  hideSearchingWhenUnsubscribed =
-    new Observable(() => () => this.searching = false);
 
   public books$: Observable<Book[]>;
 
-  constructor(
-    private router: Router,
-    private bookService: BookService
-  ) { }
+  constructor(private router: Router,
+              private bookService: BookService) {}
 
+  // Push a search term into the observable stream.
   search = (text$: Observable<string>) =>
-    text$
-      .debounceTime(300)
-      .distinctUntilChanged()
-      .do(() => this.searching = true)
-      .switchMap(term =>
-        this.bookService.searchBooks(term)
-          .do(() => this.searchFailed = false)
-          .catch(() => {
-            console.log('Failed!');
-            this.searchFailed = true;
-            return Observable.of([]);
-          }))
-      .do(() => {this.searching = false;} )
-      .merge(this.hideSearchingWhenUnsubscribed);
+    text$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      tap(() => this.searching = true),
+      switchMap(term =>
+                this.bookService.searchBooks(term).pipe(
+                  tap(() => this.searchFailed = false),
+                  catchError(() => {
+                    console.log('Failed!');
+                    this.searchFailed = true;
+                    return of([]);
+                  }))
+               ),
+      tap(() => {this.searching = false;})
+    )
 
-  formatter = (b: Book) => b.title;
+  formatter(b: Book): string {
+    return b.title;
+  }
 
-  selectedItem(item) {
-    var book = item.item;
+  selectedItem(event) : void {
+    console.log(event);
+    var book = event.item;
     this.router.navigate([`/books/${book.id}`]);
   }
 

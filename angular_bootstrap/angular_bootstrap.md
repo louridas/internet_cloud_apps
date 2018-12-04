@@ -33,6 +33,7 @@
 * Θα χρησιμοποιήσουμε τη βιβλιοθήκη
   [ng-bootstrap](https://ng-bootstrap.github.io/#/home).
 
+
 ## Εγκατάσταση `ng-bootstrap`
 
 * Εκτελούμε:
@@ -41,29 +42,36 @@
     npm install --save @ng-bootstrap/ng-bootstrap
     ```
 
+## Ενημέρωση Εφαρμογής (1)
+
 * Στη συνέχεια θα πρέπει να ενημερώσουμε την εφαρμογή μας να
   χρησιμοποιεί τα στυλ του Bootstrap.
 
-* Στο αρχείο `index.html` προσθέτουμε στο στοιχείο `<head>` τη γραμμή:
-  ```html
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
-          crossorigin="anonymous">
-  ```
+* Στο αρχείο `index.html` προσθέτουμε στο στοιχείο <head> τη γραμμή:
+
+   ```html
+   <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    ```
+
+## Ενημέρωση Εφαρμογής (2)
 
 * Μετά χρειάζεται απλώς να εισάγουμε το ng-bootstrap στο
   `AppModule`.
 
 * Προσθέτουμε κοντά στην αρχή του `app.module.ts`:
-  ```javascript
-  import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-  ```
+
+   ```javascript
+   import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+   ```
 
 * Επίσης προσθέτουμε στον πίνακα `imports` τη γραμμή:
-  ```javascript
-  NgbModule.forRoot(),
-  ```
+
+   ```javascript
+   NgbModule
+   ```
 
 ## Καθάρισμα CSS
 
@@ -89,41 +97,42 @@
 ## `app.module.html`
 
 * Ανοίγουμε το `src/app/app.component.html` και το αλλάζουμε ως εξής:
-  ```html
-  <div class="container">
-    <h1>{{title}}</h1>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <button class="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link"
-               routerLink="/dashboard"
-               href="#">Dashboard
-              <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link"
-               routerLink="/books"
-               href="#">Books</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+   ```html
+   <div class="container">
+     <h1>{{title}}</h1>
+     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+       <button class="navbar-toggler"
+               type="button"
+               data-toggle="collapse"
+               data-target="#navbarSupportedContent"
+               aria-controls="navbarSupportedContent"
+               aria-expanded="false"
+               aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+       </button>
 
-    <router-outlet></router-outlet>
-    <app-messages></app-messages>
-  </div>
-  ```
+       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+         <ul class="navbar-nav mr-auto">
+           <li class="nav-item" routerLinkActive="active">
+             <a class="nav-link"
+                routerLink="/dashboard"
+                href="#">Dashboard
+               <span class="sr-only">(current)</span></a>
+           </li>
+           <li class="nav-item" routerLinkActive="active">
+             <a class="nav-link"
+                routerLink="/books"
+                href="#">Books</a>
+           </li>
+         </ul>
+       </div>
+     </nav>
+
+     <router-outlet></router-outlet>
+     <app-messages></app-messages>
+   </div>
+   ```
 
 ## `app.component.css`
 
@@ -261,30 +270,31 @@ h4 {
 ## `book-search.component.html` (1)
 
 * To `book-search.component.html` θα πρέπει να τροποποιηθεί όπως παρακάτω:
-  ```html
-  <div id="search-component">
 
-    <ng-template #rt let-r="result">
-      {{r.title}}
-    </ng-template>
+   ```html
+   <div id="search-component">
 
-    <label for="search-box">Book search:</label>
-    <input id="search-box"
-           type="text"
-           class="form-control"
-           [class.is-invalid]="searchFailed"
-           (selectItem)="selectedItem($event)"
-           [(ngModel)]="model"
-           [ngbTypeahead]="search"
-           [resultTemplate]="rt"
-           [inputFormatter]="formatter"/>
+     <ng-template #rt let-r="result">
+       {{r.title}}
+     </ng-template>
 
-    <span *ngIf="searching">searching...</span>
-    <div class="invalid-feedback" *ngIf="searchFailed">
-      Sorry, suggestions could not be loaded.
-    </div>
-  </div>
-  ```
+     <label for="search-box">Book search:</label>
+     <input id="search-box"
+            type="text"
+            class="form-control"
+            [class.is-invalid]="searchFailed"
+            (selectItem)="selectedItem($event)"
+            [(ngModel)]="model"
+            [ngbTypeahead]="search"
+            [resultTemplate]="rt"
+            [inputFormatter]="formatter"/>
+
+     <span *ngIf="searching">searching...</span>
+     <div class="invalid-feedback" *ngIf="searchFailed">
+       Sorry, suggestions could not be loaded.
+     </div>
+   </div>
+   ```
 
 <div class="notes">
 
@@ -322,69 +332,65 @@ h4 {
 ## `book-search.component.ts` (1)
 
 * Αντίστοιχα θα πρέπει να τροποποιήσουμε το `book-search.component.ts`:
-  ```javascript
-  import { Component } from '@angular/core';
-  import { Router } from '@angular/router';
 
-  import { Observable } from 'rxjs/Observable';
+   ```javascript
+   import { Component } from '@angular/core';
+   import { Router } from '@angular/router';
 
-  import 'rxjs/add/observable/of';
-  import 'rxjs/add/operator/catch';
-  import 'rxjs/add/operator/debounceTime';
-  import 'rxjs/add/operator/distinctUntilChanged';
-  import 'rxjs/add/operator/do';
-  import 'rxjs/add/operator/map';
-  import 'rxjs/add/operator/switchMap';
-  import 'rxjs/add/operator/merge';
+   import { Observable, of } from 'rxjs';
 
-  import { Book } from '../book';
-  import { BookService } from '../book.service';
+   import {
+     debounceTime, distinctUntilChanged, switchMap, tap, catchError
+    } from 'rxjs/operators';
 
-  @Component({
-    selector: 'app-book-search',
-    templateUrl: './book-search.component.html',
-    styleUrls: [ './book-search.component.css' ]
-  })
-  export class BookSearchComponent {
-    public model: any;
-    searching = false;
-    searchFailed = false;
-    hideSearchingWhenUnsubscribed =
-      new Observable(() => () => this.searching = false);
+   import { Book } from '../book';
+   import { BookService } from '../book.service';
 
-    public books$: Observable<Book[]>;
+   @Component({
+     selector: 'app-book-search',
+     templateUrl: './book-search.component.html',
+     styleUrls: [ './book-search.component.css' ]
+   })
+   export class BookSearchComponent {
+     public model: any;
+     searching = false;
+     searchFailed = false;
 
-    constructor(
-      private router: Router,
-      private bookService: BookService
-    ) { }
+     public books$: Observable<Book[]>;
 
-    search = (text$: Observable<string>) =>
-      text$
-        .debounceTime(300)
-        .distinctUntilChanged()
-        .do(() => this.searching = true)
-        .switchMap(term =>
-          this.bookService.searchBooks(term)
-            .do(() => this.searchFailed = false)
-            .catch(() => {
-              console.log('Failed!');
-              this.searchFailed = true;
-              return Observable.of([]);
-            }))
-        .do(() => {this.searching = false;} )
-        .merge(this.hideSearchingWhenUnsubscribed);
+     constructor(private router: Router,
+                 private bookService: BookService) {}
 
+     // Push a search term into the observable stream.
+     search = (text$: Observable<string>) =>
+       text$.pipe(
+         debounceTime(300),
+         distinctUntilChanged(),
+         tap(() => this.searching = true),
+         switchMap(term =>
+                   this.bookService.searchBooks(term).pipe(
+                     tap(() => this.searchFailed = false),
+                     catchError(() => {
+                       console.log('Failed!');
+                       this.searchFailed = true;
+                       return of([]);
+                     }))
+                  ),
+         tap(() => {this.searching = false;})
+       )
 
-    formatter = (b: Book) => b.title;
+     formatter(b: Book): string {
+       return b.title;
+     }
 
-    selectedItem(item) {
-      var book = item.item;
-      this.router.navigate([`/books/${book.id}`]);
-    }
+     selectedItem(event) : void {
+       console.log(event);
+       var book = event.item;
+       this.router.navigate([`/books/${book.id}`]);
+     }
 
-  }
-  ```
+   }
+   ```
 
 
 ## `book-search.component.css`
@@ -392,15 +398,16 @@ h4 {
 * Τέλος, δεν χρειαζόμαστε κανένα από τα στυλ που είχαμε ορίσει για το
   `BookSearchComponent`, οπότε αλλάζουμε το αρχείο
   `book-search.component.css` ώστε να είναι:
-  ```css
-  .search-component {
-    margin-top: 1em;
-  }
+  
+   ```css
+   .search-component {
+     margin-top: 1em;
+   }
 
-  #search-box {
-    width: 20em;
-  }
-  ```
+   #search-box {
+     width: 20em;
+   }
+   ```
 
 
 # Προσθήκη κριτικών
@@ -424,23 +431,24 @@ from django.utils import timezone
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
+    url = models.URLField(null=True)
     pub_year = models.IntegerField('date published', default=2000)
 
     def was_published_recently(self):
         return (self.pub_year >= timezone.now().year - 1)
 
     def __str__(self):
-        return "%s %s" % (self.title, self.pub_year)
+        return "%s %s %s" % (self.title, self.url, self.pub_year)
 
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     text = models.TextField(default="")
-    review_date = models.DateTimeField('review date',
-                                       default=timezone.now)
+    review_date = models.DateTimeField('review date')
 
     def __str__(self):
         return "%s %s %s" % (self.title, self.text, self.review_date)
+
 
 class Author(models.Model):
     name = models.CharField(max_length=200)
@@ -448,7 +456,6 @@ class Author(models.Model):
 
     def __str__(self):
         return self.name
-
 ```
 
 ## `serializers.py`
@@ -463,7 +470,7 @@ from .models import Book, Review
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ('id', 'title', 'pub_year')
+        fields = ('id', 'title', 'url', 'pub_year')
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
@@ -477,41 +484,48 @@ class ReviewSerializer(serializers.ModelSerializer):
   προσπελάσιμες μέσω αυτού.
 
 * Έτσι, για να δούμε τις κριτικές ενός βιβλίο, θα δίνουμε:
-  ```
-  GET /api/books/book_id/reviews
-  ```
+
+   ```
+   GET /api/books/book_id/reviews
+   ```
 
 * Για να δημιουργήσουμε μια κριτική, θα δίνουμε:
-  ```
-  POST /api/books/book_id/reviews/
-  ```
+
+   ```
+   POST /api/books/book_id/reviews/
+   ```
 
 * Ενώ για να αλλάξουμε μια κριτική, θα δίνουμε:
-  ```
-  PUT /api/books/book_id/reviews/review_id
-  ```
+
+   ```
+   PUT /api/books/book_id/reviews/review_id
+   ```
 
 ## `djbr/urls.py`
 
 * Για να επιτύχουμε τα παραπάνω, αλλάζουμε το αρχείο `djbr/urls.py`
   ώστε να είναι:
-  ```python
-  from django.conf.urls import url
-  from . import views
+  
+   ```python
+   from django.urls import re_path
 
-  app_name = 'djbr'
+   from . import views
 
-  urlpatterns = [
-      url(r'^books/?$', views.BookList.as_view()),
-      url(r'^books/(?P<pk>[0-9]+)/?$', views.BookDetail.as_view()),
-      url(r'^books/(?P<book_id>[0-9]+)/reviews/?$', views.ReviewList.as_view()),
-  ]
-  ```
+   app_name = 'djbr'
+
+   urlpatterns = [
+       re_path('^books/?$', views.BookList.as_view()),    
+       re_path(r'^books/(?P<pk>\d+)/?$', views.BookDetail.as_view()),
+       re_path(r'^books/(?P<book_id>[0-9]+)/reviews/?$',
+               views.ReviewList.as_view()),
+   ]
+   ```
 
 ## `views.py`
 
 * Αντίστοιχα, θα προσθέσουμε δύο νέα views, μία για να παίρνουμε όλες
   τις κριτικές, και μία για να μπορούμε να χειριστούμε μία.
+  
   ```python
   from .models import Book, Review
   from .serializers import BookSerializer, ReviewSerializer
@@ -519,11 +533,8 @@ class ReviewSerializer(serializers.ModelSerializer):
 
   from django.contrib.staticfiles import views
 
-  def index(request, path=''):
-      if (path.endswith('.js')):
-          return views.serve(request, path)
-      else:
-          return views.serve(request, 'index.html')
+  def index(request):
+      return views.serve(request, 'index.html')
 
   class BookList(generics.ListCreateAPIView):
       serializer_class = BookSerializer
@@ -532,7 +543,7 @@ class ReviewSerializer(serializers.ModelSerializer):
           queryset = Book.objects.all()
           title = self.request.query_params.get('title', None)
           if title is not None:
-              queryset = queryset.filter(title__icontains=title)
+              queryset = queryset.filter(title__contains=title)
           return queryset
 
   class BookDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -544,7 +555,6 @@ class ReviewSerializer(serializers.ModelSerializer):
 
       def get_queryset(self):
           queryset = Review.objects.all()
-          print(self.kwargs)
           book_id = self.kwargs.get('book_id', None)
           if book_id is not None:
               queryset = queryset.filter(book=book_id)
@@ -557,14 +567,24 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 <div class="notes">
 
-Η κλάση `ReviewDetail()` δεν έχει καμμία ιδιαιτερότητα. Χειρίζεται μια συγκεκριμένη κριτική. Το φίλτρο για την εύρεση της κριτικής εφαρμόζεται αυτομάτως από το Django Rest framework, όπως
-ακριβώς γίνεται και τη μέθοδο `BookDetail()`.
+Η κλάση `ReviewDetail()` δεν έχει καμμία ιδιαιτερότητα. Χειρίζεται μια
+συγκεκριμένη κριτική. Το φίλτρο για την εύρεση της κριτικής
+εφαρμόζεται αυτομάτως από το Django Rest framework, όπως ακριβώς
+γίνεται και τη μέθοδο `BookDetail()`.
 
-Η μέθοδος `ReviewList()` έχει μεγαλύτερο ενδιαφέρον. Οι κριτικές μας αφορούν πάντοτε συγκεκριμένο βιβλίο. Οι κριτικές αυτές είναι προσβάσιμες μέσω URL του τύπου:
+Η μέθοδος `ReviewList()` έχει μεγαλύτερο ενδιαφέρον. Οι κριτικές μας
+αφορούν πάντοτε συγκεκριμένο βιβλίο. Οι κριτικές αυτές είναι
+προσβάσιμες μέσω URL του τύπου:
+
 ```
 url(r'^books/(?P<book_id>[0-9]+)/reviews/?$', views.ReviewList.as_view()),
 ```
-Όταν η αίτηση φτάνει σε αντικείμενο του τύπου`ReviewList`, η παράμετρος (όπως και όλες οι τυχόν παράμετροι του URL) είναι διαθέσιμες μέσω ενός λεξικού `self.kwargs`. Συνεπώς αναζητούμε στο  `self.kwargs` την παράμετρο `book_id` και εφαρμόζουμε το κατάλληλο φίλτρο με βάση το `book_id` που βρήκαμε.
+
+Όταν η αίτηση φτάνει σε αντικείμενο του τύπου`ReviewList`, η
+παράμετρος (όπως και όλες οι τυχόν παράμετροι του URL) είναι
+διαθέσιμες μέσω ενός λεξικού `self.kwargs`. Συνεπώς αναζητούμε στο
+`self.kwargs` την παράμετρο `book_id` και εφαρμόζουμε το κατάλληλο
+φίλτρο με βάση το `book_id` που βρήκαμε.
 
 </div>
 
@@ -581,26 +601,30 @@ url(r'^books/(?P<book_id>[0-9]+)/reviews/?$', views.ReviewList.as_view()),
 
 * Δημιουργούμε μια κλάση `Review`, η οποία θα αποτελέσει το μοντέλο
   μας στο front-end:
-  ```bash
-  ng generate class review
-  ```
+  
+   ```bash
+   ng generate class review
+   ```
 
 * Θα δούμε ότι δημιουργήθηκε το αρχείο:
-  ```
-  src/app/review.ts
-  ```
+
+   ```
+   src/app/review.ts
+   ```
 
 ## `review.ts`
 
 * Αλλάζουμε το αρχείο `review.ts` ώστε να περιέχει τα παρακάτω:
-  ```javascript
-  export class Review {
-    id: number;
-    book: number;
-    title: string;
-    text: string;
-  }
-  ```
+
+   ```javascript
+   export class Review {
+     id: number;
+     book: number;
+     title: string;
+     text: string;
+     review_date: Date;
+   }
+   ```
 
 ## Δημιουργία `ReviewsComponent`
 
@@ -608,14 +632,19 @@ url(r'^books/(?P<book_id>[0-9]+)/reviews/?$', views.ReviewList.as_view()),
   εξάρτημα `ReviewsComponent`.
 
 * Δίνουμε:
-  ```bash
-  ng generate component reviews
-  ```
 
+   ```bash
+   ng generate component reviews
+   ```
+   
 * Θα δημιουργηθούν τα αρχεία:
+
   * `reviews.component.css`
+  
   * `reviews.component.html`
+  
   * `reviews.component.spec.ts`
+  
   * `reviews.component.ts`
 
 * Επίσης, θα ενημερωθεί κατάλληλα το αρχείο `app.module.ts`.
@@ -627,13 +656,17 @@ url(r'^books/(?P<book_id>[0-9]+)/reviews/?$', views.ReviewList.as_view()),
 χρησιμοποιήσουμε μία υπηρεσία `ReviewService`.
 
 * Δίνουμε:
-  ```bash
-  ng generate service review
-  ```
+
+   ```bash
+   ng generate service review
+   ```
 
 * Θα δημιουργηθούν τα αρχεία:
+
   * `review.service.spec.ts`
+  
   *  `review.service.ts`
+
 
 ## Ενημέρωση `app.module.ts`
 
@@ -736,69 +769,58 @@ export class AppRoutingModule { }
 
 * Ο κώδικας του `ReviewsComponent` θα χειρίζεται τόσο την εμφάνιση των
   υπάρχοντων κριτικών, όσο και τη δημιουργία νέας:
-  ```javascript
-  import { Component, OnInit } from '@angular/core';
-  import { ActivatedRoute, ParamMap } from '@angular/router';
+  
+   ```javascript
+   import { Component, OnInit } from '@angular/core';
+   import { ActivatedRoute, ParamMap } from '@angular/router';
 
-  import 'rxjs/add/operator/switchMap';
-  import 'rxjs/add/operator/do';
+   import { Review } from '../review';
+   import { ReviewService } from '../review.service';
 
-  import { Review } from '../review';
-  import { ReviewService } from '../review.service';
+   @Component({
+     selector: 'app-reviews',
+     templateUrl: './reviews.component.html',
+     styleUrls: ['./reviews.component.css'],
+   })
+   export class ReviewsComponent implements OnInit {
 
-  @Component({
-    selector: 'app-reviews',
-    templateUrl: './reviews.component.html',
-    styleUrls: ['./reviews.component.css'],
-  })
-  export class ReviewsComponent implements OnInit {
+     reviews: Review[];
 
-    reviews: Review[];
+     review: Review;
 
-    review: Review;
+     constructor(
+       private route: ActivatedRoute,
+       private reviewService: ReviewService
+     ) { }
 
-    constructor(
-      private route: ActivatedRoute,
-      private reviewService: ReviewService
-    ) { }
+     ngOnInit() {
+       const bookId = +this.route.snapshot.paramMap.get('id');
+       this.review = this.newReview(bookId);
+       return this.reviewService.getReviews(bookId)
+         .subscribe(reviews => this.reviews = reviews);
+     }
 
-    ngOnInit() {
-      this.route.paramMap
-        .switchMap((params: ParamMap) => {
-          let bookId = +params.get('id');
-          this.review = this.newReview(bookId);
-          return this.reviewService.getReviews(+params.get('id'))
-        }).subscribe(reviews => this.reviews = reviews);
-    }
+     newReview(bookId: number) : Review {
+       var review = new Review();
+       review.book = bookId;
+       review.title = '';
+       review.text = '';
+       review.review_date = new Date();
+       return review;
+     }
 
-    newReview(bookId: number) : Review {
-      var review = new Review();
-      review.book = bookId;
-      review.title = '';
-      review.text = '';
-      return review;
-    }
+     onSubmit() : void {
+       this.reviewService.addReview(this.review)
+         .subscribe(review => {
+           if (review) {
+             this.reviews.unshift(review);
+             this.review = this.newReview(review.book);
+           }
+         });
+     }
 
-    onSubmit() : void {
-      this.reviewService.addReview(this.review)
-        .subscribe(review => {
-          this.reviews.unshift(review);
-          this.review = this.newReview(review.book);
-        });
-    }
-
-  }
-  ```
-
-
-## Χρήση του `switchMap`
-
-* Ενδέχεται ο χρήστης να πλοηγηθεί στη σελίδα με τις κριτικές ενός
-  συγκεκριμένου βιβλίου (με συγκεκριμένο `id`) ενώ ήδη αναζητούμε τις
-  κριτικές ενός προηγούμενου βιβλίου (με άλλο `id`).
-
-* Ο τελεστής `switchMap` εξασφαλίζει ότι δεν θα ληφθούν υπόψη τα αποτελέσματα
-  της προηγούμενης αίτησης `getReviews()`, αλλά μόνο της τρέχουσας.
+   }
+   ```
 
 
 ## `review.service.ts`
@@ -806,73 +828,74 @@ export class AppRoutingModule { }
 * Το `ReviewService` είναι εντελώς αντίστοιχο με το `BookService` που
   έχουμε γράψει παλαιότερα.
 
-  ```javascript
-  import { Injectable } from '@angular/core';
-  import { HttpClient, HttpHeaders } from '@angular/common/http';
+   ```javascript
+   import { Injectable } from '@angular/core';
+   import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-  import { Observable } from 'rxjs/Observable';
-  import { of } from 'rxjs/observable/of';
-  import { catchError, map, tap } from 'rxjs/operators';
+   import { Observable, of } from 'rxjs';
+   import { catchError, map, tap } from 'rxjs/operators';
 
-  import { MessageService } from './message.service';
+   import { MessageService } from './message.service';
 
-  import { Review } from './review';
+   import { Review } from './review';
 
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
+   const httpOptions = {
+     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+   };
 
-  @Injectable()
-  export class ReviewService {
+   @Injectable({
+     providedIn: 'root'
+   })
+   export class ReviewService {
 
-    constructor(
-      private http: HttpClient,
-      private messageService: MessageService
-    ) { }
+     constructor(
+       private http: HttpClient,
+       private messageService: MessageService
+     ) { }
 
-    /** GET reviews from the server */
-    getReviews(bookId: number): Observable<Review[]> {
-      let url = `api/books/${bookId}/reviews`;
-      return this.http.get<Review[]>(url)
-        .pipe(
-          tap(reviews => this.log(`fetched reviews`)),
-          catchError(this.handleError('getReviews', []))
-        );
-    }
+     /** GET reviews from the server */
+     getReviews(bookId: number): Observable<Review[]> {
+       let url = `api/books/${bookId}/reviews`;
+       return this.http.get<Review[]>(url)
+         .pipe(
+           tap(reviews => this.log(`fetched reviews`)),
+           catchError(this.handleError('getReviews', []))
+         );
+     }
 
-    /** POST: add a new review to the server */
-    addReview(review: Review): Observable<Review> {
-      let url = `api/books/${review.book}/reviews`;
-      return this.http.post<Review>(url, review, httpOptions).pipe(
-        tap((review: Review) => this.log(`added review w/ id=${review.id}`)),
-        catchError(this.handleError<Review>('addReview'))
-      );
-    }
+     /** POST: add a new review to the server */
+     addReview(review: Review): Observable<Review> {
+       let url = `api/books/${review.book}/reviews`;
+       return this.http.post<Review>(url, review, httpOptions).pipe(
+         tap((review: Review) => this.log(`added review w/ id=${review.id}`)),
+         catchError(this.handleError<Review>('addReview'))
+       );
+     }
 
-    /**
-     * Handle Http operation that failed.
-     * Let the app continue.
-     * @param operation - name of the operation that failed
-     * @param result - optional value to return as the observable result
-     */
-    private handleError<T> (operation = 'operation', result?: T) {
-      return (error: any): Observable<T> => {
+     /**
+      * Handle Http operation that failed.
+      * Let the app continue.
+      * @param operation - name of the operation that failed
+      * @param result - optional value to return as the observable result
+      */
+     private handleError<T> (operation = 'operation', result?: T) {
+       return (error: any): Observable<T> => {
 
-        console.error(error); // log to console instead
+         console.error(error); // log to console instead
 
-        this.log(`${operation} failed: ${error.message}`);
+         this.log(`${operation} failed: ${error.message}`);
 
-        // Let the app keep running by returning an empty result.
-        return of(result as T);
-      };
-    }
+         // Let the app keep running by returning an empty result.
+         return of(result as T);
+       };
+     }
 
-    private log(message: string): void {
-      this.messageService.add('ReviewService: ' + message);
-    }
+     private log(message: string): void {
+       this.messageService.add('ReviewService: ' + message);
+     }
 
-  }
-  ```
+   }
+   ```
 
 
 ## `books.component.html`
@@ -880,18 +903,19 @@ export class AppRoutingModule { }
 * Τέλος, θέλουμε το εξάρτημα των κριτικών να εμφανίζεται στη σελίδα με
   τις λεπτομέρειες ενός βιβλίου:
 
-  ```html
-  <div *ngIf="book">
-    <h2><span appItalics> {{ book.title }}</span> details:</h2>
-    <div><label>id: </label>{{book.id}}</div>
-    <div>
-      <label>title: </label>
-      <input [(ngModel)]="book.title" placeholder="name">
-    </div>
-    <div><label>Publication year: </label>{{book.pub_year}}</div>
-    <button (click)="goBack()">go back</button>
-    <button (click)="save()">Save</button>
+   ```html
+   <div *ngIf="book">
+     <h2>{{ book.title }} details:</h2>
+     <div><label>id: </label>{{book.id}}</div>
+     <div>
+       <label>title: </label>
+       <input [(ngModel)]="book.title" placeholder="name">
+     </div>
+      <div><label>URL: </label> {{ book.url }} </div>
+      <div><label>Publication year: </label>{{book.pub_year}}</div>
+      <button (click)="goBack()">go back</button>
+      <button (click)="save()">Save</button>
 
-    <app-reviews></app-reviews>
-  </div>
-  ```
+      <app-reviews></app-reviews>
+   </div>
+   ```
