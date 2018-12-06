@@ -226,28 +226,10 @@ h4 {
   συγκεκριμένα το widget typeahead.
 
 
-## `flatMap` και `switchMap`
+## `switchMap`
 
-* Πριν δούμε πώς ακριβώς θα προχωρήσουμε, ας δούμε δύο σημεία
-  ασύγχρονου προγραμμισμού.
-
-* Συγκεκριμένα, θα δούμε τους τελεστές `flatMap` και `switchMap`.
-
-
-## Ο τελεστής `flatMap`
-
-<img src="flatmap.png" alt="flatMap" style="width: 800px;"/>
-
-<div class="notes">
-
-Ο τελεστής `flatMap` μετασχηματίζει ένα `Observable` εφαρμόζοντας μια
-συνάρτηση σε αυτό. Η συνάρτηση παίρνει με τη σειρά κάθε αντικείμενο
-που εκπέμπει το `Observable` και επιστρέφει ένα νέο `Observable`. Στη
-συνέχεια, το `flatMap` συγχωνεύει τις εκπομπές αυτών των `Observable`
-(του αρχικού και αυτών που επιστρέφει η συνάρτηση) και τις εκπέμπει σε
-μία ενιαία σειρά.
-
-</div>
+* Πριν δούμε πώς ακριβώς θα προχωρήσουμε, ας δούμε πάλι τον τελεστή
+  `switchMap`.
 
 ## Ο τελεστής `switchMap`
 
@@ -258,11 +240,10 @@ h4 {
 Ο τελεστής `switchMap` επίσης μετασχηματίζει ένα `Observable`
 εφαρμόζοντας μια συνάρτηση σε αυτό. Όπως και πριν, η συνάρτηση παίρνει
 με τη σειρά κάθε αντικείμενο που εκπέμπει το `Observable` και
-επιστρέφει ένα νέο `Observable`. Στη συνέχεια όμως το `switchMap`,
-όταν συγχωνεύει τις εκπομπές των `Observable` (του αρχικού και αυτών
-που επιστρέφει η συνάρτηση) λαμβάνει υπόψη τις εκπομπές του αρχικού
-`Observable` και του πιο πρόσφατου μόνο `Observable` από αυτά που
-επιστρέφει η συνάρτηση.
+επιστρέφει ένα νέο `Observable`. Στη συνέχεια το `switchMap` όταν
+συγχωνεύει τις εκπομπές των `Observable`λαμβάνει υπόψη τις εκπομπές
+του πιο πρόσφατου μόνο `Observable` από αυτά που επιστρέφει η
+συνάρτηση.
 
 </div>
 
@@ -274,15 +255,15 @@ h4 {
    ```html
    <div id="search-component">
 
-     <ng-template #rt let-r="result">
-       {{r.title}}
+     <ng-template #rt let-r="result" let-t="term">
+       <ngb-highlight [result]="r.title" [term]="t"></ngb-highlight>
      </ng-template>
 
      <label for="search-box">Book search:</label>
      <input id="search-box"
             type="text"
             class="form-control"
-            [class.is-invalid]="searchFailed"
+            [class.alert-warning]="searchFailed"
             (selectItem)="selectedItem($event)"
             [(ngModel)]="model"
             [ngbTypeahead]="search"
@@ -290,7 +271,7 @@ h4 {
             [inputFormatter]="formatter"/>
 
      <span *ngIf="searching">searching...</span>
-     <div class="invalid-feedback" *ngIf="searchFailed">
+     <div class="alert alert-warning" *ngIf="searchFailed">
        Sorry, suggestions could not be loaded.
      </div>
    </div>
@@ -299,31 +280,38 @@ h4 {
 <div class="notes">
 
 * Το:
-  ```javascript
-  [ngbTypeahead]="search"
-  ```
+
+   ```javascript
+   [ngbTypeahead]="search"
+   ```
   ορίζει τη συνάρτηση που θα καλείται για να εκτελεί τις αναζητήσεις
   καθώς ο χρήστης γράφει στο πεδίο αναζήτησης.
 
 * Το:
-  ```javascript
-  [resultTemplate]="rt"
-  ```
+
+   ```javascript
+   [resultTemplate]="rt"
+   ```
+   
   ορίζει πώς θα εμφανίζονται τα αντικείμενα που ταιριάζουν με τον όρο
   αναζήτησης που εισάγει ο χρήστης. Τα αντικείμενα αυτά εμφανίζονται
   δυναμικά σε μία λίστα που πέφτει κάτω από το πεδίο αναζήτησης.
 
 * Το:
-  ```javascript
-  [inputFormatter]="formatter"/>
-  ```
-  ορίζει πώς θα εμφανιστεί το αντικείμενο που επέλεξε τελικά ο χρήστης
-  στο πεδίο αναζήτησης.
+
+   ```javascript
+   [inputFormatter]="formatter"/>
+   ```
+   
+   ορίζει πώς θα εμφανιστεί το αντικείμενο που επέλεξε τελικά ο χρήστης
+   στο πεδίο αναζήτησης.
 
 * Το:
-  ```javascript
-  (selectItem)="selectedItem($event)"
-  ```
+
+   ```javascript
+   (selectItem)="selectedItem($event)"
+   ```
+  
   ορίζει τι θα γίνει όταν ο χρήστης τελικά επιλέξει ένα αντικείμενο.
 
 
@@ -384,7 +372,6 @@ h4 {
      }
 
      selectedItem(event) : void {
-       console.log(event);
        var book = event.item;
        this.router.navigate([`/books/${book.id}`]);
      }
