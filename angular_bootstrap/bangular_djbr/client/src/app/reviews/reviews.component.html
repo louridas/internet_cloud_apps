@@ -31,14 +31,11 @@
     </div>
   </div>
 
-  <div class="row justify-content-start">
-    <div class="col-4">
-      <ul>
-        <li *ngFor="let review of reviews">
-          {{ review.title }}
-          {{ review.text }}
-        </li>
-      </ul>
-    </div>
+  <div class="card col-4" style="margin-top: 2rem; margin-botton: 2rem;">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item" *ngFor="let review of reviews">
+        {{ review.title }}
+        {{ review.text }}
+      </li>
+    </ul>
   </div>
-</div>
