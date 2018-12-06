@@ -28,26 +28,6 @@ export class BookSearchComponent {
 
   }
 
-  // search(text$: Observable<string>) : Observable<any[] {
-  //   console.log(this);
-  //   console.log(this.bookService);
-  //   text$.pipe(
-  //     debounceTime(300),
-  //     distinctUntilChanged(),
-  //     tap(() => this.searching = true),
-  //     switchMap(term =>
-  //               this.bookService.searchBooks(term).pipe(
-  //                 tap(() => this.searchFailed = false),
-  //                 catchError(() => {
-  //                   console.log('Failed!');
-  //                   this.searchFailed = true;
-  //                   return of([]);
-  //                 }))
-  //              ),
-  //     tap(() => {this.searching = false;})
-  //   );
-  // }
-
   // Push a search term into the observable stream.
   search = (text$: Observable<string>) =>
     text$.pipe(

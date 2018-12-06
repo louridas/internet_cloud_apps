@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, tap, delay } from 'rxjs/operators';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -18,7 +18,7 @@ const httpOptions = {
 })
 export class BookService {
 
-  private booksUrl = 'api/books';    
+  private booksUrl = 'api/books';
 
   constructor(private http: HttpClient,
               private messageService: MessageService) { }
@@ -41,8 +41,8 @@ export class BookService {
   }
 
   /** PUT: update the book on the server */
-  updateBook (book: Book): Observable<any> { 
-    const url = `${this.booksUrl}/${book.id}`;   
+  updateBook (book: Book): Observable<any> {
+    const url = `${this.booksUrl}/${book.id}`;
     return this.http.put(url, book, httpOptions).pipe(
       tap(_ => this.log(`updated book id=${book.id}`)),
       catchError(this.handleError<any>('updateBook'))
@@ -79,7 +79,7 @@ export class BookService {
       catchError(this.handleError<Book[]>('searchBooks', []))
     );
   }
-  
+
   private log(message: string): void {
     this.messageService.add('BookService: ' + message);
   }
@@ -102,5 +102,5 @@ export class BookService {
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
-  }    
+  }
 }
