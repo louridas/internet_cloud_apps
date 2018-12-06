@@ -23,7 +23,30 @@ export class BookSearchComponent {
   public books$: Observable<Book[]>;
 
   constructor(private router: Router,
-              private bookService: BookService) {}
+              private bookService: BookService) {
+    this.search = this.search.bind(this);
+
+  }
+
+  // search(text$: Observable<string>) : Observable<any[] {
+  //   console.log(this);
+  //   console.log(this.bookService);
+  //   text$.pipe(
+  //     debounceTime(300),
+  //     distinctUntilChanged(),
+  //     tap(() => this.searching = true),
+  //     switchMap(term =>
+  //               this.bookService.searchBooks(term).pipe(
+  //                 tap(() => this.searchFailed = false),
+  //                 catchError(() => {
+  //                   console.log('Failed!');
+  //                   this.searchFailed = true;
+  //                   return of([]);
+  //                 }))
+  //              ),
+  //     tap(() => {this.searching = false;})
+  //   );
+  // }
 
   // Push a search term into the observable stream.
   search = (text$: Observable<string>) =>
@@ -43,12 +66,11 @@ export class BookSearchComponent {
       tap(() => {this.searching = false;})
     )
 
-  formatter(b: Book): string {
+  formatter(b: Book) : string {
     return b.title;
   }
 
   selectedItem(event) : void {
-    console.log(event);
     var book = event.item;
     this.router.navigate([`/books/${book.id}`]);
   }

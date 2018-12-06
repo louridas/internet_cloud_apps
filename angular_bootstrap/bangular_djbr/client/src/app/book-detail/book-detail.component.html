@@ -1,14 +1,76 @@
 <div *ngIf="book">
   <h2>{{ book.title }} details:</h2>
-  <div><label>id: </label>{{book.id}}</div>
-  <div>
-    <label>title: </label>
-    <input [(ngModel)]="book.title" placeholder="name">
-  </div>
-   <div><label>URL: </label> {{ book.url }} </div>
-   <div><label>Publication year: </label>{{book.pub_year}}</div>
-   <button (click)="goBack()">go back</button>
-   <button (click)="save()">Save</button>
+  <div class="container">
+    <form #bookForm="ngForm">
 
+      <div class="form-group row">
+        <label for="bookId" class="col-sm-1 col-form-label">ID</label>
+        <div class="col-sm-4">
+          <input class="form-control-plaintext" type="text"
+                 id="bookId" placeholder={{book.id}} readonly/>
+        </div>
+      </div>
+
+    <div class="form-group row">
+      <label for="bookTitle" class="col-sm-1 col-form-label">Title</label>
+      <div class="col-sm-4">
+        <input class="form-control"
+               id="bookTitle"
+               name="bookTitle"
+               #title="ngModel"
+               [(ngModel)]="book.title" placeholder="title" required/>
+        <div [hidden]="title.valid || title.pristine"
+             class="alert alert-danger">
+          Title is required
+      </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="bookURL" class="col-sm-1 col-form-label">URL</label>
+      <div class="col-sm-4">
+        <input class="form-control"
+               id="bookURL"
+               name="bookURL"
+               #url="ngModel"
+               [(ngModel)]="book.url" placeholder="URL" required/>
+        <div [hidden]="url.valid || url.pristine"
+             class="alert alert-danger">
+          URL is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="bookPubYear" class="col-sm-1 col-form-label">
+        Year</label>
+      <div class="col-sm-4">
+        <input class="form-control"
+               id="bookPubYear"
+               name="bookPubYear"
+               #pub_year="ngModel"
+               [(ngModel)]="book.pub_year"
+               placeholder="publication year" required/>
+        <div [hidden]="pub_year.valid || pub_year.pristine"
+             class="alert alert-danger">
+          Publication year is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group mr-2" role="group" aria-label="first group">
+          <button type="button" class="btn btn-secondary"
+                  (click)="goBack()">go back</button>
+        </div>
+        <div class="btn-group mr-2" role="group" aria-label="first group">
+          <button type="button" class="btn btn-primary"
+                  (click)="save()">Save</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  </div>
    <app-reviews></app-reviews>
 </div>

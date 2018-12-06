@@ -1,14 +1,14 @@
 <div id="search-component">
 
-  <ng-template #rt let-r="result">
-    {{r.title}}
+  <ng-template #rt let-r="result" let-t="term">
+    <ngb-highlight [result]="r.title" [term]="t"></ngb-highlight>
   </ng-template>
 
   <label for="search-box">Book search:</label>
   <input id="search-box"
          type="text"
          class="form-control"
-         [class.is-invalid]="searchFailed"
+         [class.alert-warning]="searchFailed"
          (selectItem)="selectedItem($event)"
          [(ngModel)]="model"
          [ngbTypeahead]="search"
@@ -16,7 +16,7 @@
          [inputFormatter]="formatter"/>
 
   <span *ngIf="searching">searching...</span>
-  <div class="invalid-feedback" *ngIf="searchFailed">
+  <div class="alert alert-warning" *ngIf="searchFailed">
     Sorry, suggestions could not be loaded.
   </div>
 </div>
