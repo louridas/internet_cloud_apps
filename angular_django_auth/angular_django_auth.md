@@ -188,8 +188,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
    REST_FRAMEWORK = {
        'DEFAULT_AUTHENTICATION_CLASSES': (
            'rest_framework_simplejwt.authentication.JWTAuthentication',
-           'rest_framework.authentication.SessionAuthentication',
-           'rest_framework.authentication.BasicAuthentication',
+           'rest_framework.authentication.SessionAuthentication'
        ),
    }
    ```
@@ -199,7 +198,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 * To token θα μπορεί να ληφθεί από μία αίτηση που περιλαμβάνει το
   username και το password.
 
-* Η αίτηση αυτή θα στέλνεται στη διαδρομή `api-token-auth/`.
+* Η αίτηση αυτή θα στέλνεται στη διαδρομή `api/token/`.
 
 * Άρα θα πρέπει να ενημερώσουμε κατάλληλα το αρχείο
   `project_settings/urls.py`. 
