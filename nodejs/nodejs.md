@@ -19,17 +19,17 @@
 
 * Το διάσημο πρόγραμμα `Hello, World` σε Node είναι ως εξής:
 
-    ```javascript
-    console.log('Hello, World!');
-    ```
+   ```javascript
+   console.log('Hello, World!');
+   ```
 
 * Αν το αποθηκεύσουμε σε ένα αρχείο `hello.js`, εκτελούμε:
 
-    ```bash
-    node hello.js
-    ```
+   ```bash
+   node hello.js
+   ```
 
-## Hello World web server (1)
+## Hello World Web Server (1)
 
 * Με τη βιβλιοθήκη (module) `http` μπορούμε να χειριστούμε αιτήσεις
   και να δημιουργήσουμε απαντήσεις του πρωτοκόλλου HTTP.
@@ -37,26 +37,27 @@
 * Έτσι, είναι εύκολο να φτιάξουμε έναν στοιχειώδη web server.
 
 
-## Hello World web server (2)
+## Hello World Web Server (2)
 
 * Δημιουργούμε ένα αρχείο `hello_world_server.js` στο οποίο βάζουμε τα
   παρακάτω:
-  ```javascript
-  const http = require('http');
+  
+   ```javascript
+   const http = require('http');
 
-  const hostname = '127.0.0.1';
-  const port = 3000;
+   const hostname = '127.0.0.1';
+   const port = 3000;
 
-  const server = http.createServer((request, response) => {
-    response.statusCode = 200;
-    response.setHeader('Content-Type', 'text/plain');
-    response.end('Hello World\n');
-  });
+   const server = http.createServer((request, response) => {
+     response.statusCode = 200;
+     response.setHeader('Content-Type', 'text/plain');
+     response.end('Hello World\n');
+   });
 
-  server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
-  });
-  ```
+   server.listen(port, hostname, () => {
+     console.log(`Server running at http://${hostname}:${port}/`);
+   });
+   ```
 
 <div class="notes">
 
@@ -77,19 +78,19 @@
 Στη συνέχεια, ξεκινάμε τον `server` με τη συνάρτηση `server.listen()`,
 η οποία ως παραμέτρους παίρνει την πόρτα (`port`) και τη διεύθυνση του
 εξυπηρετητή (`hostname`), συν μια συνάρτηση η οποία θα εκτελεστεί
-μόλις ο server ξεκινήσει. Η τελευταία συνάρτηση που περνάμε στην
-`server.listen()` είναι επίσης μια συνάρτηση callback, η οποία θα
-εκτελεστεί μόλις δημιουργηθεί ο `server`. 
+μόλις ο server ξεκινήσει. 
 
 Για να ξεκινήσουμε τον εξυπηρετητή μας, δίνουμε:
+
 ```bash
-node helloworldserver.js
+node hello_world_server.js
 ```
+
 Ο εξυπηρετητής μας τρέχει στη διεύθυνση http://localhost:3000.
 
 </div>
 
-## Ανατομία του server
+## Ανατομία του Server
 
 * Η συνάρτηση που περάσαμε στην `http.createServer()` καλείται για
   κάθε αίτηση, συνεπώς είναι ένας *χειριστής αιτήσεων* (request
@@ -124,21 +125,22 @@ node helloworldserver.js
 
 * Ως ένα απλό παράδειγμα `EventEmitter`, μπορούμε να δημιουργήσουμε το
   παρακάτω αρχείο `event_emmiter_1.js`:
+  
   ```javascript
-  const EventEmitter = require('events');
+   const EventEmitter = require('events');
 
-  class MyEmitter extends EventEmitter {}
+   class MyEmitter extends EventEmitter {}
 
-  const myEmitter = new MyEmitter();
+   const myEmitter = new MyEmitter();
 
-  myEmitter.on('event', () => {
-    console.log('an event occurred!');
-  });
+   myEmitter.on('event', () => {
+     console.log('an event occurred!');
+   });
 
-  myEmitter.emit('event');
-  ```
+   myEmitter.emit('event');
+   ```
 
-## Παράμετροι στους χειριστές (1)
+## Παράμετροι στους Χειριστές (1)
 
 * Μπορούμε να περάσουμε όσες παραμέτρους θέλουμε στις συναρτήσεις που
   προσαρτούμε σε έναν `EventEmitter`.
@@ -148,10 +150,11 @@ node helloworldserver.js
   `EventEmitter`.
 
 
-## Παράμετροι στους χειριστές (2)
+## Παράμετροι στους Χειριστές (2)
 
 * Για να δούμε τα παραπάνω, δημιουργούμε το παρακάτω αρχείο
   `event_emitter_2.js`: 
+  
   ```javascript
   const EventEmitter = require('events');
 
@@ -166,115 +169,132 @@ node helloworldserver.js
   myEmitter.emit('event', 'one', 'two');
   ```
 
-## Παράμετροι στους χειριστές (3)
+* Η έξοδος θα είναι:
+
+```
+one two MyEmitter {
+  _events: { event: [Function] },
+  _eventsCount: 1,
+  _maxListeners: undefined }
+```
+
+## Παράμετροι στους Χειριστές (3)
 
 * Πρέπει να προσέξουμε ότι η λέξη `this` θα αναφέρεται *πάντα* στο
   αντικείμενο `EventEmitter`, και όχι σε κάποιο άλλο αντικείμενο που
   μπορεί ίσως να περιμέναμε.
 
 
-## Παράμετροι στους χειριστές (4)
+## Παράμετροι στους Χειριστές (4)
 
 * Για να δούμε το παραπάνω, δημιουργούμε το παρακάτω αρχείο
   `event_emitter_3.js`: 
-  ```javascript
-  const EventEmitter = require('events');
+  
+   ```javascript
+   const EventEmitter = require('events');
 
-  class MyEmitter extends EventEmitter {}
+   class MyEmitter extends EventEmitter {}
 
-  class MyEmitterUser {
+   class MyEmitterUser {
 
-    constructor() {
-      this.myEmitter = new MyEmitter();
-      this.myEmitter.on('event', function(a, b) {
-        console.log(a, b, this);
-      });
-    }
+     constructor() {
+       this.myEmitter = new MyEmitter();
+       this.myEmitter.on('event', function(a, b) {
+         console.log(a, b, this);
+       });
+     }
 
-    fire() {
-      this.myEmitter.emit('event', 'one', 'two');
-    }
-  }
+     fire() {
+       this.myEmitter.emit('event', 'one', 'two');
+     }
+   }
 
-  var myEmitterUser = new MyEmitterUser();
+   var myEmitterUser = new MyEmitterUser();
 
-  myEmitterUser.fire();
-  ```
+   myEmitterUser.fire();
+   ```
 
-## Παράμετροι στους χειριστές (5)
+* Η έξοδος θα είναι ό,τι και πριν!
+
+
+## Παράμετροι στους Χειριστές (5)
 
 * Αν όμως χρησιμοποιούμε το νεώτερο τρόπο ορισμού ανώνυμων συναρτήσεων
   στη JavaScript, αυτόν με το βελάκι, τότε η λέξη `this` δεν
   αναφέρεται στο στιγμιότυπο του `EventEmitter`.
 
 
-## Παράμετροι στους χειριστές (6)
+## Παράμετροι στους Χειριστές (6)
 
 * Για να δούμε το παραπάνω, δημιουργούμε το παρακάτω αρχείο
   `event_emitter_4.js`: 
-  ```javascript
-  const EventEmitter = require('events');
+  
+   ```javascript
+   const EventEmitter = require('events');
 
-  class MyEmitter extends EventEmitter {}
+   class MyEmitter extends EventEmitter {}
 
-  const myEmitter = new MyEmitter();
+   const myEmitter = new MyEmitter();
 
-  myEmitter.on('event', (a, b) => {
-    console.log(a, b, this);
-  });
+   myEmitter.on('event', (a, b) => {
+     console.log(a, b, this);
+   });
 
-  myEmitter.emit('event', 'one', 'two');
-  ```
+   myEmitter.emit('event', 'one', 'two');
+   // outputs: one two {}
+   ```
 
-## Πόσες φορές θα κληθεί; (1)
+## Πόσες Φορές θα Κληθεί; (1)
 
 * Όταν καταγραφεί ένας χειριστής με το `eventEmitter.on()`, ο
   χειριστής θα καλείται *κάθε φορά* που θα εκπέμπεται το συγκεκριμένο
   γεγονός. 
   
 * Για παράδειγμα, δείτε το παρακάτω στο αρχείο `event_emitter_5.js`:
-  ```javascript
-  const EventEmitter = require('events');
 
-  class MyEmitter extends EventEmitter {}
+   ```javascript
+   const EventEmitter = require('events');
 
-  const myEmitter = new MyEmitter();
+   class MyEmitter extends EventEmitter {}
 
-  let m = 0;
-  myEmitter.on('event', () => {
-    console.log(++m);
-  });
-  myEmitter.emit('event');
-  // Prints: 1
-  myEmitter.emit('event');
-  // Prints: 2
-  ```
+   const myEmitter = new MyEmitter();
+
+   let m = 0;
+   myEmitter.on('event', () => {
+     console.log(++m);
+   });
+   myEmitter.emit('event');
+   // Prints: 1
+   myEmitter.emit('event');
+   // Prints: 2
+   ```
   
-## Πόσες φορές θα κληθεί; (2)
+## Πόσες Φορές θα Κληθεί; (2)
 
 * Αν όμως θέλουμε να κληθεί ο χειριστής *μόνο την πρώτη φορά* που θα
   εκπέμψουμε ένα γεγονός, τότε θα χρησιμοποιήσουμε το
   `eventEmitter.once()`.
   
 * Για παράδειγμα, δείτε το παρακάτω στο αρχείο `event_emitter_6.js`:
-  ```javascript
-  const EventEmitter = require('events');
 
-  class MyEmitter extends EventEmitter {}
+   ```javascript
+   const EventEmitter = require('events');
 
-  const myEmitter = new MyEmitter();
+   class MyEmitter extends EventEmitter {}
 
-  let m = 0;
-  myEmitter.once('event', () => {
-    console.log(++m);
-  });
-  myEmitter.emit('event');
-  // Prints: 1
-  myEmitter.emit('event');
-  // Ignored
-  ```
+   const myEmitter = new MyEmitter();
+
+   let m = 0;
+   myEmitter.once('event', () => {
+     console.log(++m);
+   });
+   myEmitter.emit('event');
+   // Prints: 1
+   myEmitter.emit('event');
+   // Ignored
+   ```
   
-## Χειρισμός λαθών (1)
+## Χειρισμός Λαθών (1)
 
 * Όταν εμφανιστεί ένα λάθος σε έναν `EventEmitter`, εκπέμπεται ένα
   γεγονός `error`.
@@ -286,10 +306,11 @@ node helloworldserver.js
   (crash).
 
 
-## Χειρισμός λαθών (2)
+## Χειρισμός Λαθών (2)
 
 * Δείτε πώς καταγράφουμε έναν χειριστή λαθών στο αρχείο
   `event_emitter_7.js`: 
+  
   ```javascript
   const EventEmitter = require('events');
 
@@ -304,26 +325,27 @@ node helloworldserver.js
   myEmitter.emit('error', new Error('whoops!'));
   ```
 
-## Χειρισμός λαθών (3)
+## Χειρισμός Λαθών (3)
 
 * Επίσης, αν θέλουμε να αποφύγουμε τη συντριβή του προγράμματός μας,
   μπορούμε να καταγράψουμε ένα χειριστή του γεγονότος
   `uncaughtException` του αντικειμένου `process`.
   
 * Δείτε για παράδειγμα το αρχείο `event_emitter_8.js`:
-  ```javascript
-  const EventEmitter = require('events');
 
-  class MyEmitter extends EventEmitter {}
+   ```javascript
+   const EventEmitter = require('events');
 
-  const myEmitter = new MyEmitter();
+   class MyEmitter extends EventEmitter {}
 
-  process.on('uncaughtException', (err) => {
-    console.error('whoops! there was an error');
-  });
+   const myEmitter = new MyEmitter();
 
-  myEmitter.emit('error', new Error('whoops!'));
-  ```
+   process.on('uncaughtException', (err) => {
+     console.error('whoops! there was an error');
+   });
+
+   myEmitter.emit('error', new Error('whoops!'));
+   ```
 
 <div class="notes">
   
@@ -335,33 +357,34 @@ node helloworldserver.js
 </div>
 
 
-## Ανατομία του server (πάλι)
+## Ανατομία του Server (Πάλι)
 
 * Τώρα μπορούμε να δούμε ότι ο τρόπος που δημιουργήσαμε τον web server
   είναι μια συντομευμένη  έκδοση του παρακάτω αρχείου
   `hello_world_server_detailed_.js`: 
-  ```javascript
-  const http = require('http');
+  
+   ```javascript
+   const http = require('http');
 
-  const hostname = '127.0.0.1';
-  const port = 3000;
+   const hostname = '127.0.0.1';
+   const port = 3000;
 
-  const server = http.createServer();
+   const server = http.createServer();
 
-  server.on('request', function(request, response) {
-    response.statusCode = 200;
-    response.setHeader('Content-Type', 'text/plain');
-    response.end('Hello World\n');
-  });
+   server.on('request', function(request, response) {
+     response.statusCode = 200;
+     response.setHeader('Content-Type', 'text/plain');
+     response.end('Hello World\n');
+   });
 
-  server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
-  });
-  ```
+   server.listen(port, hostname, () => {
+     console.log(`Server running at http://${hostname}:${port}/`);
+   });
+   ```
 
-# Χειρισμός αιτήσεων και απαντήσεων
+# Χειρισμός Αιτήσεων και Απαντήσεων
 
-## Αιτήσεις και απαντήσεις
+## Αιτήσεις και Απαντήσεις
 
 * Το αντικείμενο `response` είναι τύπου `ServerResponse`, ενώ το
   αντικείμενο `request` είναι τύπου `IncomingMessage`.
@@ -377,40 +400,45 @@ node helloworldserver.js
 * Αν θέλουμε να βρούμε τη μέθοδο με την οποία έγινε μια αίτηση (π.χ.
   GET, PUSH), την αναζητούμε στην ιδιότητα `method` του αντικειμένου
   της αίτησης:
-  ```javascript
-  const method = request.method;
-  ```
+  
+   ```javascript
+   const method = request.method;
+   ```
 
 * Αν θέλουμε να βρούμε το URL στο οποίο έγινε η αίτηση (δηλαδή ό,τι
-  υπάρχει μετά το `http://` ή `https://`, την αναζητούμε στην ιδιότητα
+  υπάρχει μετά το `http://` ή `https://`), το αναζητούμε στην ιδιότητα
   `url` του αντικειμένου της αίτησης:
-  ```javascript
-  const ulr = request.url;
-  ```
+  
+   ```javascript
+   const ulr = request.url;
+   ```
 
 * Μπορούμε να πάρουμε και τα δύο μαζί:
-  ```javascript
-  const { method, url } = request;
-  ```
+
+   ```javascript
+   const { method, url } = request;
+   ```
 
 ## Επικεφαλλίδες
 
 * Αν θέλουμε να πάρουμε τις επικεφαλλίδες μιας αίτησης, μπορούμε να
   τις βρούμε στην ιδιότητα `headers` του αντικειμένου της αίτησης:
-  ```javascript
-  const headers = request.headers;
-  const userAgent = headers['user-agent'];
-  ```
+  
+   ```javascript
+   const headers = request.headers;
+   const userAgent = headers['user-agent'];
+   ```
 * Για ευκολία, τα ονόματα των επικεφαλλίδων είναι πάντοτε με πεζά
   γράμματα.
 
 * Εναλλακτικά, μπορούμε να πάρουμε τις επικεφαλλίδες ως εξής:
-  ```javascript
-  const { headers } = request;
-  const userAgent = headers['user-agent'];
-  ```
 
-## Σώμα της αίτησης
+   ```javascript
+   const { headers } = request;
+   const userAgent = headers['user-agent'];
+   ```
+
+## Σώμα της Αίτησης
 
 * Το αντικείμενο που αντιπροσωπεύει την αίτηση του χρήστη υλοποιεί τη
   διεπαφή `ReadableStream`.
@@ -421,17 +449,17 @@ node helloworldserver.js
 * Οι χειριστές ακούν στα γεγονότα `data` και `end`.
 
 
-## Χειρισμός δεδομένων (1)
+## Χειρισμός Δεδομένων (1)
 
 * Τα δεδομένα που έρχονται μέσα από το αντικείμενο εκπέμπονται μέσω
   ενός αντικειμένου τύπου `Buffer`.
 
 * Τυπικά, απλώς τα προσθέτουμε σε έναν πίνακα (array), μέχρι να
-  τελειώσουν (όπως σηματοδοτεί το γεγονός `end`), οπότε μπορούμε να τα
-  ενώσουμε και να πάρουμε το σύνολό τους.
+  τελειώσουν (όπως σηματοδοτεί το γεγονός `end`).
+  
+* Όταν τελειώσουν, τα ενώνουμε με τη στατική μέθοδο `Buffer.concat()`.
 
-
-## Χειρισμός δεδομένων (2)
+## Χειρισμός Δεδομένων (2)
 
 ```javascript
 let body = [];
@@ -443,21 +471,22 @@ request.on('data', (chunk) => {
 });
 ```
 
-## Χειρισμός λαθών
+## Χειρισμός Λαθών
 
 * Όπως είπαμε, για να αποφύγουμε καταστροφές στην εκτέλεση των
   προγραμμάτων μας, θα πρέπει να ορίζουμε χειριστές για τις
   περιπτώσεις λαθών.
 
 * Το απλούστερο που μπορούμε να κάνουμε είναι να το καταγράψουμε:
-  ```javascript
-  request.on('error', function(err) {
-    // This prints the error message and stack trace to `stderr`.
-    console.error(err.stack);
-  });
-  ```
 
-## JSON echo server (1)
+   ```javascript
+   request.on('error', function(err) {
+     // This prints the error message and stack trace to `stderr`.
+     console.error(err.stack);
+   });
+   ```
+
+## JSON Echo Server (1)
 
 * Μπορούμε να χρησιμοποιήσουμε όσα έχουμε δει για να φτιάξουμε έναν
   απλό JSON echo server.
@@ -465,78 +494,85 @@ request.on('data', (chunk) => {
 * Ο server αυτός θα παίρνει την αίτηση που λαμβάνει και θα την
   επιστρέφει στον αποστολέα.
 
-## JSON echo server (2)
+## JSON Echo Server (2)
 
 * Μπορούμε να τον υλοποιήσουμε με το παρακάτω αρχείο `echo_server_1.js`:
-  ```javascript
-  const http = require('http');
 
-  http.createServer((request, response) => {
-    const { headers, method, url } = request;
-    let body = [];
-    request.on('error', (err) => {
-      console.error(err);
-    }).on('data', (chunk) => {
-      body.push(chunk);
-    }).on('end', () => {
-      body = Buffer.concat(body).toString();
-      // BEGINNING OF NEW STUFF
+   ```javascript
+   const http = require('http');
 
-      response.on('error', (err) => {
-        console.error(err);
-      });
+   http.createServer((request, response) => {
+     const { headers, method, url } = request;
+     let body = [];
+     request.on('error', (err) => {
+       console.error(err);
+     }).on('data', (chunk) => {
+       body.push(chunk);
+     }).on('end', () => {
+       body = Buffer.concat(body).toString();
+       // BEGINNING OF NEW STUFF
 
-      response.statusCode = 200;
-      response.setHeader('Content-Type', 'application/json');
-      // Note: the 2 lines above could be replaced with this next one:
-      // response.writeHead(200, {'Content-Type': 'application/json'})
+       response.on('error', (err) => {
+         console.error(err);
+       });
 
-      const responseBody = { headers, method, url, body };
+       response.statusCode = 200;
+       response.setHeader('Content-Type', 'application/json');
+       // Note: the 2 lines above could be replaced with this next one:
+       // response.writeHead(200, {'Content-Type': 'application/json'})
 
-      response.write(JSON.stringify(responseBody));
-      response.end();
-      // Note: the 2 lines above could be replaced with this next one:
-      // response.end(JSON.stringify(responseBody))
+       const responseBody = { headers, method, url, body };
 
-      // END OF NEW STUFF
-    });
-  }).listen(8080);
-  ```
+       response.write(JSON.stringify(responseBody));
+       response.end();
+       // Note: the 2 lines above could be replaced with this next one:
+       // response.end(JSON.stringify(responseBody))
 
-## Δοκιμή JSON echo server
+       // END OF NEW STUFF
+     });
+   }).listen(8080, () => {
+     console.log('Server running at http://127.0.0.1:8080/');
+   });
+   ```
+
+## Δοκιμή JSON Echo Server
 
 * Μπορούμε να δοκιμάσουμε τη λειτουργία του JSON echo server δίνοντας
   απλώς:
-  ```bash
-  http PUT http://localhost:8080 message='Hello, World'
-  ```
+  
+   ```bash
+   http PUT http://localhost:8080 message='Hello, World'
+   ```
 
 * Οπότε στο τερματικό μας θα δούμε τι ακριβώς μας επιστρέφει (ό,τι του
   στείλαμε). 
 
 
-## Απλοποίηση echo server
+## Απλοποίηση Echo Server
 
 * Ας απλοποιήσουμε τον echo server ώστε να επιστρέφει μόνο το σώμα της
   αίτησης.
 
 * Συνεπώς, θα αδιαφορήσουμε για τους headers της αίτησης, όπως
   μπορούμε να δούμε στο αρχείο `echo_server_2.js`:
-  ```javascript
-  const http = require('http');
+  
+   ```javascript
+   const http = require('http');
 
-  http.createServer((request, response) => {
-    let body = [];
-    request.on('data', (chunk) => {
-      body.push(chunk);
-    }).on('end', () => {
-      body = Buffer.concat(body).toString();
-      response.end(body);
-    });
-  }).listen(8080);
-  ```
+   http.createServer((request, response) => {
+     let body = [];
+     request.on('data', (chunk) => {
+       body.push(chunk);
+     }).on('end', () => {
+       body = Buffer.concat(body).toString();
+       response.end(body);
+     });
+   }).listen(8080, () => {
+     console.log('Server running at http://127.0.0.1:8080/');
+   });
+   ```
 
-## Echo server με ορισμένο μονοπάτι και πρωτόκολλο (1)
+## Echo Server με Ορισμένο Μονοπάτι και Πρωτόκολλο (1)
 
 * Έστω ότι θέλουμε να περιορίσουμε τις αιτήσεις που δέχεται ο echo
   server.
@@ -547,27 +583,30 @@ request.on('data', (chunk) => {
 * Σε όλες τις άλλες περιπτώσεις θέλουμε να επιστρέψουμε ένα 404.
 
 
-## Echo server με ορισμένο μονοπάτι και πρωτόκολλο (2)
+## Echo Server με Ορισμένο Μονοπάτι και Πρωτόκολλο (2)
 
   * Το αποτέλεσμα είναι στο παρακάτω αρχείο `echo_server_3.js`:
-  ```javascript
-  const http = require('http');
+  
+   ```javascript
+   const http = require('http');
 
-  http.createServer((request, response) => {
-    if (request.method === 'POST' && request.url === '/echo') {
-      let body = [];
-      request.on('data', (chunk) => {
-        body.push(chunk);
-      }).on('end', () => {
-        body = Buffer.concat(body).toString();
-        response.end(body);
-      });
-    } else {
-      response.statusCode = 404;
-      response.end();
-    }
-  }).listen(8080);
-  ```
+   http.createServer((request, response) => {
+     if (request.method === 'POST' && request.url === '/echo') {
+       let body = [];
+       request.on('data', (chunk) => {
+         body.push(chunk);
+       }).on('end', () => {
+         body = Buffer.concat(body).toString();
+         response.end(body);
+       });
+     } else {
+       response.statusCode = 404;
+       response.end();
+     }
+   }).listen(8080, () => {
+     console.log('Server running at http://127.0.0.1:8080/');
+   });
+   ```
 
 <div class="notes">
 
@@ -578,7 +617,7 @@ request.on('data', (chunk) => {
 
 </div>
 
-## Echo server streams (1)
+## Echo Server Streams (1)
 
 * Προσέξτε ότι τόσο το αντικείμενο της αίτησης (request) όσο και το
   αντικείμενο της απάντησης (response) είναι streams.
@@ -590,24 +629,27 @@ request.on('data', (chunk) => {
   το περιεχόμενο της αίτησης στην απάντηση.
 
 
-## Echo server streams (2)
+## Echo Server Streams (2)
 
 * Η διοχέτευση μεταξύ δύο streams γίνεται με τη μέθοδο `pipe()`, όπως
   φαίνεται στο παρακάτω αρχείο `echo_server_4.js`:
-  ```javascript
-  const http = require('http');
+  
+   ```javascript
+   const http = require('http');
 
-  http.createServer((request, response) => {
-    if (request.method === 'POST' && request.url === '/echo') {
-      request.pipe(response);
-    } else {
-      response.statusCode = 404;
-      response.end();
-    }
-  }).listen(8080);
-  ```
+   http.createServer((request, response) => {
+     if (request.method === 'POST' && request.url === '/echo') {
+       request.pipe(response);
+     } else {
+       response.statusCode = 404;
+       response.end();
+     }
+   }).listen(8080, () => {
+     console.log('Server running at http://127.0.0.1:8080/');
+   });
+   ```
 
-## Echo server streams με χειρισμό λαθών (1)
+## Echo Server Streams με Χειρισμό Λαθών (1)
 
 * Σε ένα πραγματικό παραγωγικό περιβάλλον, πάντα μπορούν να προκύψουν
   λάθη, τόσο κατά το χειρισμό της αίτησης, όσο και κατά το χειρισμό
@@ -617,30 +659,33 @@ request.on('data', (chunk) => {
   περιπτώσεις.
 
 
-## Echo server streams με χειρισμό λαθών (2)
+## Echo Server Streams με Χειρισμό Λαθών (2)
 
 * Ακολουθεί μια αντιμετώπιση με απλοϊκό χειρισμό στο αρχείο
-  `echo_server_5.js`: 
-  ```javascript
-  const http = require('http');
+  `echo_server_5.js`:
+  
+   ```javascript
+   const http = require('http');
 
-  http.createServer((request, response) => {
-    request.on('error', (err) => {
-      console.error(err);
-      response.statusCode = 400;
-      response.end();
-    });
-    response.on('error', (err) => {
-      console.error(err);
-    });
-    if (request.method === 'POST' && request.url === '/echo') {
-      request.pipe(response);
-    } else {
-      response.statusCode = 404;
-      response.end();
-    }
-  }).listen(8080);
-  ```
+   http.createServer((request, response) => {
+     request.on('error', (err) => {
+       console.error(err);
+       response.statusCode = 400;
+       response.end();
+     });
+     response.on('error', (err) => {
+       console.error(err);
+     });
+     if (request.method === 'POST' && request.url === '/echo') {
+       request.pipe(response);
+     } else {
+       response.statusCode = 404;
+       response.end();
+     }
+   }).listen(8080, () => {
+     console.log('Server running at http://127.0.0.1:8080/');
+   });
+   ```
 
 # Blocking, Non-Blocking
 
@@ -652,14 +697,14 @@ request.on('data', (chunk) => {
 * Οι blocking συναρτήσεις, εκτελούνται *σύγχρονα*, ενώ οι non-blocking
   συναρτήσεις εκτελούνται *ασύγχρονα*.
 
-## Σύγχρονη ανάγνωση αρχείου
+## Σύγχρονη Ανάγνωση Αρχείου
 
 ```javascript
 const fs = require('fs');
 const data = fs.readFileSync('../nodejs.md'); // blocks here until file is read
 ```
 
-## Ασύγχρονη ανάγνωση αρχείου
+## Ασύγχρονη Ανάγνωση Αρχείου
 
 ```javascript
 const fs = require('fs');
@@ -669,13 +714,14 @@ fs.readFile('/file.md', (err, data) => {
 });
 ```
 
-## Τι θα συμβεί στη σύγχρονη περίπτωση
+## Τι θα Συμβεί στη Σύγχρονη Περίπτωση
 
 * Στη σύγχρονη ανάγνωση του αρχείου, το πρόγραμμα θα περιμένει μέχρι
   να ολοκληρωθεί η ανάγνωση, και μετά θα εκτελεστεί η εντολή που
   ακολουθεί.
   
 * Δοκιμάστε να τρέξτε το πρόγραμμα `file_read_sync.js`:
+
   ```javascript
   const fs = require('fs');
 
@@ -751,7 +797,7 @@ node file_read_async.js | more
 ## Αποφυγή Παγίδων
 
 * Ένας τρόπος να αποφεύγουμε τις παγίδες είναι να χρησιμοποιούμε παντού
-  non-blocking συναρτήσεις.
+  non-blocking συναρτήσεις και callbacks.
 
 * Έτσι, θα αντικαταστήσουμε το `fs.unlinkSync()` με το `fs.unlink()`,
   το οποίο θα καλούμε στο callback του `fs.readFile()`.
@@ -766,3 +812,55 @@ node file_read_async.js | more
   });
   ```
 
+## Παράδειγμα: Non-blocking Fibonacci
+
+```javascript
+const http = require('http');
+const url = require('url');
+
+function fibonacci(n, callback) {
+  
+    var inner = function(n1, n2, i) {
+        if (i > n) {
+            callback(null, n2);
+            return;
+        }
+        var func = (i % 100) ? inner : inner_tick;
+        func(n2, n1 + n2, i + 1);
+    };
+  
+    var inner_tick = function(n1, n2, i) {
+        process.nextTick(function() { inner(n1, n2, i); });
+    };
+  
+    if (n == 1 || n == 2) {
+        callback(null, 1);
+    } else {
+        inner(1, 1, 3);
+    }
+}
+
+http.createServer(function(request, response) {
+  var query;
+  var result = 0;
+  var parsedUrl = url.parse(request.url, parseQueryString=true);
+  if (request.method === 'GET' && parsedUrl.pathname === '/fib') {
+    query = parsedUrl.query;
+    result = fibonacci(query.n, function(err, number) {
+      response.write(''+number);
+       response.end();      
+    });
+  } else {
+    console.log(request.url);
+    response.statusCode = 404;
+    response.end();
+  }
+}).listen(8080);
+```
+
+<div class="notes">
+
+Το παράδειγμα είναι προσαρμοσμένο από το
+<https://github.com/glenjamin/node-fib>.
+
+</div>
