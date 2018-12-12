@@ -90,278 +90,11 @@ node hello_world_server.js
 
 </div>
 
-## Ανατομία του Server
+## Ο Server σε Λεπτομέρεια
 
-* Η συνάρτηση που περάσαμε στην `http.createServer()` καλείται για
-  κάθε αίτηση, συνεπώς είναι ένας *χειριστής αιτήσεων* (request
-  handler).
-
-* Στην ουσία το αντικείμενο `server` είναι ένα αντικείμενο τύπου
-  `EventEmitter`, που σημαίνει ότι εκπέμπει συγκεκριμένα γεγονότα, τα
-  οποία χειρίζονται συγκεκριμένες συναρτήσεις, οι οποίες ονομάζονται
-  *χειριστές γεγονότων* (request handlers) ή ακουστές (listeners).
-
-
-# Γεγονότα
-
-## `EventEmitter`
-
-* Όλα τα αντικείμενα που εκπέμπουν γεγονότα είναι στιγμιότυπα της
-  κλάσης `EventEmitter`.
-
-* Τα αντικείμενα αυτού του τύπου έχουν μια μέθοδο `eventEmitter.on()`,
-  με την οποία μπορούμε να προσκολλήσουμε μία ή περισσότερες
-  συναρτήσεις στα γεγονότα που εκπέμπει.
-
-* Όταν ένα αντικείμενο `EventEmitter` εκπέμπει ένα γεγονός, όλες οι
-  συναρτήσεις που είναι προσκολλημένες σε αυτό καλούνται *σύγχρονα*
-  (synchronously).
-
-* Τυχόν τιμές που επιστρέφονται από τις προσκολλημένες συναρτήσεις
-  *αγνοούνται*.
-
-
-## Παράδειγμα `EventEmitter`
-
-* Ως ένα απλό παράδειγμα `EventEmitter`, μπορούμε να δημιουργήσουμε το
-  παρακάτω αρχείο `event_emmiter_1.js`:
-  
-  ```javascript
-   const EventEmitter = require('events');
-
-   class MyEmitter extends EventEmitter {}
-
-   const myEmitter = new MyEmitter();
-
-   myEmitter.on('event', () => {
-     console.log('an event occurred!');
-   });
-
-   myEmitter.emit('event');
-   ```
-
-## Παράμετροι στους Χειριστές (1)
-
-* Μπορούμε να περάσουμε όσες παραμέτρους θέλουμε στις συναρτήσεις που
-  προσαρτούμε σε έναν `EventEmitter`.
-
-* Αν ορίζουμε τη συνάρτηση με το παραδοσιακό συντακτικό της
-  JavaScript, η λέξη `this` αναφέρεται στο στιγμιότυπο του
-  `EventEmitter`.
-
-
-## Παράμετροι στους Χειριστές (2)
-
-* Για να δούμε τα παραπάνω, δημιουργούμε το παρακάτω αρχείο
-  `event_emitter_2.js`: 
-  
-  ```javascript
-  const EventEmitter = require('events');
-
-  class MyEmitter extends EventEmitter {}
-
-  const myEmitter = new MyEmitter();
-
-  myEmitter.on('event', function(a, b) {
-    console.log(a, b, this);
-  });
-
-  myEmitter.emit('event', 'one', 'two');
-  ```
-
-* Η έξοδος θα είναι:
-
-```
-one two MyEmitter {
-  _events: { event: [Function] },
-  _eventsCount: 1,
-  _maxListeners: undefined }
-```
-
-## Παράμετροι στους Χειριστές (3)
-
-* Πρέπει να προσέξουμε ότι η λέξη `this` θα αναφέρεται *πάντα* στο
-  αντικείμενο `EventEmitter`, και όχι σε κάποιο άλλο αντικείμενο που
-  μπορεί ίσως να περιμέναμε.
-
-
-## Παράμετροι στους Χειριστές (4)
-
-* Για να δούμε το παραπάνω, δημιουργούμε το παρακάτω αρχείο
-  `event_emitter_3.js`: 
-  
-   ```javascript
-   const EventEmitter = require('events');
-
-   class MyEmitter extends EventEmitter {}
-
-   class MyEmitterUser {
-
-     constructor() {
-       this.myEmitter = new MyEmitter();
-       this.myEmitter.on('event', function(a, b) {
-         console.log(a, b, this);
-       });
-     }
-
-     fire() {
-       this.myEmitter.emit('event', 'one', 'two');
-     }
-   }
-
-   var myEmitterUser = new MyEmitterUser();
-
-   myEmitterUser.fire();
-   ```
-
-* Η έξοδος θα είναι ό,τι και πριν!
-
-
-## Παράμετροι στους Χειριστές (5)
-
-* Αν όμως χρησιμοποιούμε το νεώτερο τρόπο ορισμού ανώνυμων συναρτήσεων
-  στη JavaScript, αυτόν με το βελάκι, τότε η λέξη `this` δεν
-  αναφέρεται στο στιγμιότυπο του `EventEmitter`.
-
-
-## Παράμετροι στους Χειριστές (6)
-
-* Για να δούμε το παραπάνω, δημιουργούμε το παρακάτω αρχείο
-  `event_emitter_4.js`: 
-  
-   ```javascript
-   const EventEmitter = require('events');
-
-   class MyEmitter extends EventEmitter {}
-
-   const myEmitter = new MyEmitter();
-
-   myEmitter.on('event', (a, b) => {
-     console.log(a, b, this);
-   });
-
-   myEmitter.emit('event', 'one', 'two');
-   // outputs: one two {}
-   ```
-
-## Πόσες Φορές θα Κληθεί; (1)
-
-* Όταν καταγραφεί ένας χειριστής με το `eventEmitter.on()`, ο
-  χειριστής θα καλείται *κάθε φορά* που θα εκπέμπεται το συγκεκριμένο
-  γεγονός. 
-  
-* Για παράδειγμα, δείτε το παρακάτω στο αρχείο `event_emitter_5.js`:
-
-   ```javascript
-   const EventEmitter = require('events');
-
-   class MyEmitter extends EventEmitter {}
-
-   const myEmitter = new MyEmitter();
-
-   let m = 0;
-   myEmitter.on('event', () => {
-     console.log(++m);
-   });
-   myEmitter.emit('event');
-   // Prints: 1
-   myEmitter.emit('event');
-   // Prints: 2
-   ```
-  
-## Πόσες Φορές θα Κληθεί; (2)
-
-* Αν όμως θέλουμε να κληθεί ο χειριστής *μόνο την πρώτη φορά* που θα
-  εκπέμψουμε ένα γεγονός, τότε θα χρησιμοποιήσουμε το
-  `eventEmitter.once()`.
-  
-* Για παράδειγμα, δείτε το παρακάτω στο αρχείο `event_emitter_6.js`:
-
-   ```javascript
-   const EventEmitter = require('events');
-
-   class MyEmitter extends EventEmitter {}
-
-   const myEmitter = new MyEmitter();
-
-   let m = 0;
-   myEmitter.once('event', () => {
-     console.log(++m);
-   });
-   myEmitter.emit('event');
-   // Prints: 1
-   myEmitter.emit('event');
-   // Ignored
-   ```
-  
-## Χειρισμός Λαθών (1)
-
-* Όταν εμφανιστεί ένα λάθος σε έναν `EventEmitter`, εκπέμπεται ένα
-  γεγονός `error`.
-
-* Η βέλτιστη πρακτική είναι πάντοτε να ορίζουμε χειριστές για τις
-  περιπτώσεις των λαθών.
-
-* Aν *δεν* χειριστούμε ένα λάθος, το πρόγραμμά μας θα συντριβεί
-  (crash).
-
-
-## Χειρισμός Λαθών (2)
-
-* Δείτε πώς καταγράφουμε έναν χειριστή λαθών στο αρχείο
-  `event_emitter_7.js`: 
-  
-  ```javascript
-  const EventEmitter = require('events');
-
-  class MyEmitter extends EventEmitter {}
-
-  const myEmitter = new MyEmitter();
-
-  myEmitter.on('error', (err) => {
-    console.log('whoops! there was an error!');
-  });
-
-  myEmitter.emit('error', new Error('whoops!'));
-  ```
-
-## Χειρισμός Λαθών (3)
-
-* Επίσης, αν θέλουμε να αποφύγουμε τη συντριβή του προγράμματός μας,
-  μπορούμε να καταγράψουμε ένα χειριστή του γεγονότος
-  `uncaughtException` του αντικειμένου `process`.
-  
-* Δείτε για παράδειγμα το αρχείο `event_emitter_8.js`:
-
-   ```javascript
-   const EventEmitter = require('events');
-
-   class MyEmitter extends EventEmitter {}
-
-   const myEmitter = new MyEmitter();
-
-   process.on('uncaughtException', (err) => {
-     console.error('whoops! there was an error');
-   });
-
-   myEmitter.emit('error', new Error('whoops!'));
-   ```
-
-<div class="notes">
-  
-Το αντικείμενο `process` είναι ένα αντικείμενο που παρέχει πληροφορίες
-και ελέγχει τη διαδικασία (process) του Node.js. Είναι ένα καθολικό
-(global) αντικείμενο, άρα είναι διαθέσιμο στο πρόγραμμά μας χωρίς να
-χρειάζεται να το εισάγουμε με `require()`.
-
-</div>
-
-
-## Ανατομία του Server (Πάλι)
-
-* Τώρα μπορούμε να δούμε ότι ο τρόπος που δημιουργήσαμε τον web server
+* Ο τρόπος που δημιουργήσαμε τον web server
   είναι μια συντομευμένη  έκδοση του παρακάτω αρχείου
-  `hello_world_server_detailed_.js`: 
+  `hello_world_server_detailed_.js`:
   
    ```javascript
    const http = require('http');
@@ -382,14 +115,30 @@ one two MyEmitter {
    });
    ```
 
-# Χειρισμός Αιτήσεων και Απαντήσεων
+<div class="notes">
+
+Ο εξυπηρετητής ανταποκρίνεται σε *γεγονότα*. Αφού τον δημιουργήσουμε,
+ορίζουμε με ποιον τρόπο θα ανταποκριθεί στο γεγονός `request`, το
+οποίο σηματοδοτείται όταν έρθει μία αίτηση HTTP. Όταν συμβεί αυτό, θα
+κληθεί η συνάρτηση που παρέχουμε ως callback.
+
+Η συνάρτηση που παρέχουμε ως callback είναι ο χειριστής της αίτησης
+και παίρνει δύο παραμέτρους:
+
+* την αίτηση (`request`)
+
+* την απάντηση (`response`)
+
+</div>
+
 
 ## Αιτήσεις και Απαντήσεις
 
 * Το αντικείμενο `response` είναι τύπου `ServerResponse`, ενώ το
   αντικείμενο `request` είναι τύπου `IncomingMessage`.
 
-* Και τα δύο αντικείμενα είναι τύπου `EventEmitter`.
+* Όσον αφορά την απάντηση, θέτουμε τον κωδικό απάντησης και ό,τι
+  επικεφαλλίδες χρειάζονται.
 
 * Η εκπομπή του γεγονότος `end` σηματοδοτεί ότι όλες οι επικεφαλλίδες
   και το σώμα του μηνύματος έχει σταλεί.
@@ -428,6 +177,7 @@ one two MyEmitter {
    const headers = request.headers;
    const userAgent = headers['user-agent'];
    ```
+   
 * Για ευκολία, τα ονόματα των επικεφαλλίδων είναι πάντοτε με πεζά
   γράμματα.
 
@@ -438,28 +188,22 @@ one two MyEmitter {
    const userAgent = headers['user-agent'];
    ```
 
-## Σώμα της Αίτησης
+## Χειρισμός Δεδομένων Αίτησης (1)
 
-* Το αντικείμενο που αντιπροσωπεύει την αίτηση του χρήστη υλοποιεί τη
-  διεπαφή `ReadableStream`.
+* Τα δεδομένα που έρχονται μέσα από το αντικείμενο `request`
+  εκπέμπονται μέσω του γεγονότος `data`.
 
-* Αυτό σημαίνει ότι μπορούμε να δηλώσουμε χειριστές στα γεγονότα του,
-  ή να διοχετεύσουμε (pipe) τα δεδομένα του σε άλλο stream.
-
-* Οι χειριστές ακούν στα γεγονότα `data` και `end`.
-
-
-## Χειρισμός Δεδομένων (1)
-
-* Τα δεδομένα που έρχονται μέσα από το αντικείμενο εκπέμπονται μέσω
-  ενός αντικειμένου τύπου `Buffer`.
-
-* Τυπικά, απλώς τα προσθέτουμε σε έναν πίνακα (array), μέχρι να
-  τελειώσουν (όπως σηματοδοτεί το γεγονός `end`).
+* Αν λοιπόν θέλουμε να μαζέψουμε όλα τα δεδομένα που υποβλήθηκαν σε
+  μία αίτηση, θα πρέπει να τα μαζέψουμε μέσα από το χειριστή του
+  γεγονότος.
+  
+* Για παράδειγμα, μπορούμε να τα προσθέτουμε σε έναν πίνακα (array),
+  μέχρι να τελειώσουν (όπως σηματοδοτεί το γεγονός `end`).
   
 * Όταν τελειώσουν, τα ενώνουμε με τη στατική μέθοδο `Buffer.concat()`.
 
-## Χειρισμός Δεδομένων (2)
+
+## Χειρισμός Δεδομένων Αίτησης (2)
 
 ```javascript
 let body = [];
@@ -473,9 +217,11 @@ request.on('data', (chunk) => {
 
 ## Χειρισμός Λαθών
 
-* Όπως είπαμε, για να αποφύγουμε καταστροφές στην εκτέλεση των
-  προγραμμάτων μας, θα πρέπει να ορίζουμε χειριστές για τις
-  περιπτώσεις λαθών.
+* Για να αποφύγουμε καταστροφές στην εκτέλεση των προγραμμάτων μας, θα
+  πρέπει να ορίζουμε χειριστές για τις περιπτώσεις λαθών.
+
+* Στην περίπτωση που εμφανιστεί λάθος κατά την εξυπηρέτηση της
+  αίτησης, θα σηματοδοτηθεί με το γεγονός `error`.
 
 * Το απλούστερο που μπορούμε να κάνουμε είναι να το καταγράψουμε:
 
@@ -493,6 +239,7 @@ request.on('data', (chunk) => {
 
 * Ο server αυτός θα παίρνει την αίτηση που λαμβάνει και θα την
   επιστρέφει στον αποστολέα.
+
 
 ## JSON Echo Server (2)
 
@@ -619,8 +366,8 @@ request.on('data', (chunk) => {
 
 ## Echo Server Streams (1)
 
-* Προσέξτε ότι τόσο το αντικείμενο της αίτησης (request) όσο και το
-  αντικείμενο της απάντησης (response) είναι streams.
+* Προσέξτε ότι τόσο το αντικείμενο της αίτησης (`request`) όσο και το
+  αντικείμενο της απάντησης (`response`) είναι streams.
 
 * Η αίτηση είναι `ReadableStream` και η απάντηση είναι
   `WritableStream`.
@@ -694,7 +441,7 @@ request.on('data', (chunk) => {
 * Είναι πολύ σημαντικό να καταλάβουμε τη διαφορά μεταξύ των blocking
   και non-blocking συναρτήσεων στο Node.
 
-* Οι blocking συναρτήσεις, εκτελούνται *σύγχρονα*, ενώ οι non-blocking
+* Οι blocking συναρτήσεις εκτελούνται *σύγχρονα*, ενώ οι non-blocking
   συναρτήσεις εκτελούνται *ασύγχρονα*.
 
 ## Σύγχρονη Ανάγνωση Αρχείου
