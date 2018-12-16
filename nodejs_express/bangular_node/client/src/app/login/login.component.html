@@ -7,11 +7,11 @@
         <label for="username" class="sr-only">Email address</label>
         <input #username
                type="text" id="username" class="form-control"
-               placeholder="username" required="" autofocus="">
+               placeholder="username" autofocus required/>
         <label for="password" class="sr-only">Password</label>
         <input #password
                type="password" id="password" class="form-control"
-               placeholder="Password" required="">
+               placeholder="Password" required/>
 
         <button (click)="login(username.value, password.value)"
                 class="btn btn-lg btn-primary btn-block"

@@ -356,14 +356,16 @@
 ## Δημιουργία εφαρμογής
 
 * Ξεκινάμε εγκαθιστώντας τον Express generator:
-  ```bash
-  npm install express-generator -g
-  ```
+
+   ```bash
+   npm install express-generator -g
+   ```
 
 * Στη συνέχεια δημιουργούμε τον σκελετό της εφαρμογής με:
-  ```bash
-  express --git --view=pug server
-  ```
+
+   ```bash
+   express --git --no-view server
+   ```
 
 <div class="notes">
 
@@ -371,14 +373,15 @@
   `bangular_node`, ώστε να μην ανέβουν στο αποθετήριο αρχεία που δεν
   χρειάζονται. 
 
-* Η παράμετρος `view=pug` ορίζει ότι τα views της εφαρμογής, αν τα
-  δημιουργούσαμε στο node, θα τα χειριζόταν το
-  [Pug](https://pugjs.org/). Εμάς δεν μας αφορά αυτό, γιατί όλη η
-  διεπαφή με τον χρήστη θα γίνεται μέσω Angular.
+* Η παράμετρος `--no-view` ορίζει ότι δεν θα υλοποιήσουμε views στην
+  εφαρμογή, αφού όλη η διεπαφή με τον χρήστη θα γίνεται μέσω
+  Angular.
 
 </div>
  
- 
+
+
+
 ## Εγκατάσταση και εκκίνηση 
 
 * Μετακινούμαστε στον κατάλογο `bangular_node` που δημιουργήθηκε, και
@@ -400,6 +403,30 @@
   
 * Η εφαρμογή μας θα τρέχει στη διεύθυνση `http://localhost:3000`.
 
+## Δομή Εφαρμογής
+
+```
+bangular_node
+├── client/
+└── server/
+    ├── .gitignore
+    ├── app.js
+    ├── bin/
+    │   └── www*
+    ├── node_modules/
+    ├── package-lock.json
+    ├── package.json
+    ├── public/
+    │   ├── images/
+    │   ├── index.html
+    │   ├── javascripts/
+    │   └── stylesheets/
+    │       └── style.css
+    └── routes/
+        ├── index.js
+        └── users.js
+```
+
 ## Αυτόματη επανεκκίνηση σε αλλαγές
 
 * Κατά την ανάπτυξη της εφαρμογής, είναι πρακτικό να φορτώνεται
@@ -409,136 +436,116 @@
 * Αυτό μπορούμε να το κάνουμε με το πακέτο [nodemon](https://nodemon.io/).
 
 * Δίνουμε:
-  ```bash
-  npm install --save-dev nodemon
-  ```
+
+   ```bash
+   npm install -g nodemon
+   npm install --save-dev nodemon
+   ```
     
-* Προσθέτουμε στο `package.json` τα παρακάτω, στην ιδιότητα `scripts`:
-  ```javascript
-  "start-watch": "nodemon ./bin/www"
-  ```
-
 * Για να λειτουργεί η αυτόματη επαναφόρτωση, θα δίνουμε:
+
   ```bash
-  npm start-watch
+  nodemon ./bin/www
   ```
 
-## Δομή εφαρμογής
+<div class="notes">
 
+Με το:
+
+```basj
+npm install -g nodemon
 ```
-server
-├── app.js
-├── bin
-│   └── www
-├── node_modules [256 entries exceeds filelimit, not opening dir]
-├── package-lock.json
-├── package.json
-├── public
-│   ├── images
-│   ├── javascripts
-│   └── stylesheets
-│       └── style.css
-├── routes
-│   ├── index.js
-│   └── users.js
-└── views
-    ├── error.pug
-    ├── index.pug
-    └── layout.pug
+
+εγκαθιστούμε το `nodemon` βάζοντάς το στο μονοπάτι του συστήματος (ή
+στο μονοπάτι που ορίζει το `nvm`).
+
+Με το:
+
+```bash
+npm install --save-dev nodemon
 ```
+
+το εγκαθιστούμε ως εξάρτηση ανάπτυξης (development dependency), οπότε
+θα εγκαθίσταται αυτομάτως σε άλλες εγκαταστάσεις ανάπτυξης όταν
+δίνουμε `npm install`.
+
+</div>
+
 
 ## Καθάρισμα των αρχείων
 
 * To αρχείο `routes/users.js` είναι ένα υπόδειγμα, δεν θα μας
   χρειαστεί, οπότε μπορούμε να το σβήσουμε.
   
-* Ομοίως σβήνουμε το αρχείο `routes/index.js` και το αρχείο
-  `views/index.pug`. 
+* Ομοίως σβήνουμε το αρχείο `routes/index.js`.
   
 * Αντίστοιχα, στο αρχείο `app.js` σβήνουμε τις δύο γραμμές:
-  ```javascript
-  var index = require('./routes/index');
-  var users = require('./routes/users');
-  ```
-   και τις δύο γραμμές:
-  ```javascript
-  app.use('/', index);
-  app.use('/users', users);
-  ```
+
+   ```javascript
+   var indexRouter = require('./routes/index');
+   var usersRouter = require('./routes/users');
+   ```
+  και τις δύο γραμμές:
+
+   ```javascript
+   app.use('/', indexRouter);
+   app.use('/users', usersRouter);
+   ```
+
+## `app.js`
+
+```javascript
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+
+var router = require('./routes/router');
+
+var app = express();
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/api', router);
+
+module.exports = app;
+```
 
 # Υλοποίηση bangular_node
 
 ## Προσθήκη router
 
 * Στο αρχείο `app.js` προσθέτουμε κάπου στην αρχή τη γραμμή:
-  ```javascript
-  var router = require('./routes/router');
-  ```
+
+   ```javascript
+   var router = require('./routes/router');
+   ```
 
 * Στη συνέχεια, προσθέτουμε μετά από τη γραμμή:
-  ```javascript
-  app.use(bodyParser.json());
-  ```
+
+   ```javascript
+   app.use(bodyParser.json());
+   ```
+   
   τη γραμμή:
-  ```javascript
-  app.use('/api', router);
-  ```
+  
+   ```javascript
+   app.use('/api', router);
+   ```
 
 ## `app.js`
 
-* Μετά τις παραπάνω αλλαγές, το κεντρικό τμήμα της εφαρμογής μας,
-  `app.js`, θα είναι ως εξής:
-  ```javascript
-  var express = require('express');
-  var path = require('path');
-  var favicon = require('serve-favicon');
-  var logger = require('morgan');
-  var cookieParser = require('cookie-parser');
-  var bodyParser = require('body-parser');
-
-  var router = require('./routes/router');
-
-  var app = express();
-
-  // view engine setup
-  app.set('views', path.join(__dirname, 'views'));
-  app.set('view engine', 'pug');
-
-  // uncomment after placing your favicon in /public
-  //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-  app.use(logger('dev'));
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(cookieParser());
-  app.use(express.static(path.join(__dirname, 'public')));
-
-  app.use('/api', router);
-
-  // catch 404 and forward to error handler
-  app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-  });
-
-  // error handler
-  app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
-  });
-
-  module.exports = app;
-  ```
+***
 
 ## `routes/router.js`
 
 * Στο αρχείο `routes/router.js` θα βάλουμε προς το παρόν απλώς λίγο
   κώδικα για να μας επιστρέφει κάποια βιβλία:
+  
   ```javascript
   const express = require('express');
   const router = express.Router();
@@ -610,37 +617,51 @@ server
 ## Σύνδεση με τη βάση
 
 * Για να συνδεθούμε με τη βάση φτιάχνουμε το αρχείο `db.js`:
-  ```javascript
-  const mysql = require('mysql');
-  const fs = require('fs');
 
-  const configPath = './db_config.json';
-  const dbConfig = JSON.parse(fs.readFileSync(configPath, 'UTF-8'));
+   ```javascript
+   const mysql = require('mysql');
+   const fs = require('fs');
 
-  const pool  = mysql.createPool({
-    connectionLimit : 10,
-    host            : dbConfig.host,
-    user            : dbConfig.user,
-    password        : dbConfig.password,
-    database        : dbConfig.database
-  });
+   const configPath = './db_config.json';
+   const dbConfig = JSON.parse(fs.readFileSync(configPath, 'UTF-8'));
 
-  module.exports = pool;
-  ```
+   const pool  = mysql.createPool({
+     connectionLimit : 10,
+     host            : dbConfig.host,
+     user            : dbConfig.user,
+     password        : dbConfig.password,
+     database        : dbConfig.database
+   });
+
+   module.exports = pool;
+   ```
   
 ## Ευαίσθητα δεδομένα
 
 * Τα ευαίσθητα δεδομένα της σύνδεσης, τα αποθηκεύουμε σε ένα άλλο
   αρχείο, `db_config.json`, το οποίο *δεν* συμπεριλαμβάνουμε στο
   αποθετήριο:
-  ```javascript
-  {
-    "host" : "127.0.0.1",
-    "user" : "djbr_user",
-    "password" : "whateverthisis",
-    "database" : "djbr"
-  }
-  ```
+  
+   ```javascript
+   {
+     "host" : "127.0.0.1",
+     "user" : "djbr_user",
+     "password" : "whateverthisis",
+     "database" : "djbr"
+   }
+   ```
+
+<div class="notes">
+
+Αναλόγως την έκδοση της MySQL που χρησιμοποιείτε (συγκεκριμένα, αν
+είναι από την 8.0 και μετά) και την έκδοση του πακέτου MySQL του
+Node.js, μπορεί να πρέπει να εκτελέσετε το παρακάτω στη γραμμή εντολών της 
+MySQL:
+
+```sql
+ALTER USER 'djbr_user'@'localhost' IDENTIFIED WITH
+mysql_native_password BY 'whateverthisis';
+```
 
 # Υλοποίηση διασυνδεμένης εφαρμογής
 
@@ -648,16 +669,17 @@ server
 
 * Για να ενταχθούν οι διαδρομές των βιβλίων στην εφαρμογή μας,
   αλλάζουμε το αρχείο `routes/router.js` ως εξής:
-  ```javascript
-  const express = require('express');
-  const router = express.Router();
+  
+   ```javascript
+   const express = require('express');
+   const router = express.Router();
 
-  const books_router = require('./books-router');
+   const books_router = require('./books-router');
 
-  router.use(books_router);
+   router.use(books_router);
 
-  module.exports = router;
-  ```
+   module.exports = router;
+   ```
 
 ## Ανάκτηση όλων των βιβλίων
 
@@ -705,9 +727,10 @@ module.exports = router;
 
 * Για να το κάνουμε αυτό, θα προσθέσουμε στο αρχείο
   `routes/books-router.js` τα ακόλουθα, πριν από το:
-  ```javascript
-  module.exports =  router;
-  ```
+  
+   ```javascript
+   module.exports =  router;
+   ```
 
 ## `routes/books-router.js`
 
@@ -755,9 +778,11 @@ router.post('/books', function(req, res) {
 
 * Η εύρεση συγκεκριμένου βιβλίου, με βάση τον κωδικό του, κατά το
   πρότυπο REST θα είναι μέσω αίτησης GET σε URLs της μορφής:
-  ```
-  api/book/:book_id
-  ```
+  
+   ```
+   api/book/:book_id
+   ```
+   
   όπου το `:book_id` αντιστοιχεί στον κωδικό του βιβλίου.
 
 * Αυτό το χειριζόμαστε προσθέτοντας τον αντίστοιχο χειριστή στο
@@ -792,13 +817,16 @@ router.get('/books/:book_id', function(req, res) {
 
 * Η διαγραφή συγκεκριμένου βιβλίου, με βάση τον κωδικό του, κατά το
   πρότυπο REST θα είναι μέσω αίτησης DELETE σε URLs της μορφής
-  ```
-  api/book/:book_id
-  ```
+  
+   ```
+   api/book/:book_id
+   ```
+   
   όπου το `:book_id` αντιστοιχεί στον κωδικό του βιβλίου.
 
 * Αυτό το χειριζόμαστε προσθέτοντας τον αντίστοιχο χειριστή στο
   `books-router.js`.
+
 
 ## `routes/books-router.js`
 
@@ -828,9 +856,11 @@ router.delete('/books/:book_id', function(req, res) {
 
 * Η αναζήτηση βιβλίου με βάση συγκεκριμένο τίτλο θα γίνει, κατά το
   πρότυπο REST, μέσω αίτησης GET της μορφής:
-  ```javascript
-  api/book?title=:book_title
-  ```
+  
+   ```javascript
+   api/book?title=:book_title
+   ```
+   
   όπου ο τίτλος αντιστοιχεί στον όρο αναζήτησης του τίτλου.
 
 * Αυτό το χειριζόμαστε αλλάζοντας κατάλληλα τον χειριστή της αίτησης

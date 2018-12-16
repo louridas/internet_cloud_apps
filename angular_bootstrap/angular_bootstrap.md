@@ -750,6 +750,16 @@ export class AppRoutingModule { }
    </div>
    ```
 
+<div class="notes">
+
+Σε περίπτωση που η φόρμα δεν δουλεύει, και το μήνυμα λάθους έχει σχέση
+με CSRT token, πιθανώς η φόρμα σας, άθελά σας, να υποβάλει κάποιο CSRF
+token που έχει αποθηκευτεί ως cookie στον browser σας. Θα πρέπει να το
+ξεφορτωθείτε· αναζητείστε τα cookies για το domain localhost στον
+browser σας και σβήστε τα.
+
+</div>
+
 ## `reviews.component.ts`
 
 * Ο κώδικας του `ReviewsComponent` θα χειρίζεται τόσο την εμφάνιση των

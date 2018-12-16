@@ -6,11 +6,11 @@ import { BookService } from '../book.service';
 @Component({
   selector: 'app-books',
   templateUrl: './books.component.html',
-  styleUrls: ['./books.component.css'],
+  styleUrls: ['./books.component.css']
 })
 export class BooksComponent implements OnInit {
 
-  books: Book[];
+  books : Book[];
 
   constructor(private bookService: BookService) { }
 
@@ -23,13 +23,19 @@ export class BooksComponent implements OnInit {
       .subscribe(books => this.books = books);
   }
 
-  add(title: string, pubYearStr: string): void {
+  add(title: string, url: String, pubYearStr: string): void {
     title = title.trim();
+    url = url.trim();
     let pub_year = +pubYearStr;
-    if (!title || !pub_year) { return; }
-    this.bookService.addBook({ title, pub_year } as Book)
+    if (!title || !url || !pub_year) { return; }
+    this.bookService.addBook({ title, url, pub_year } as Book)
       .subscribe(book => {
-        this.books.push(book);
+        // If the operation has failed, BookService's handleError()
+        // will have given an empty result; so we add to the
+        // books array only if a non-empty result has been produced.
+        if (book) { 
+          this.books.push(book);
+        }
       });
   }
 
@@ -37,5 +43,5 @@ export class BooksComponent implements OnInit {
     this.books = this.books.filter(h => h !== book);
     this.bookService.deleteBook(book).subscribe();
   }
-
+  
 }

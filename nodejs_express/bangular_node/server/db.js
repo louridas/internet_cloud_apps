@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 const fs = require('fs');
 
-const configPath = './db_config.json';
+const configPath = './config-db.json';
 const dbConfig = JSON.parse(fs.readFileSync(configPath, 'UTF-8'));
 
 const pool  = mysql.createPool({

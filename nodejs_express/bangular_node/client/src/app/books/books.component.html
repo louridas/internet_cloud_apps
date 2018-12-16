@@ -1,21 +1,40 @@
 <h2>Books</h2>
 
 <div>
-  <label>Book title:</label> <input #bookTitle />
-  <label>Publication date:</label> <input #bookPubDate />
-  <!-- (click) passes input values to add() and then clears input -->
-  <button (click)="add(bookTitle.value, bookPubDate.value);
-                   bookTitle.value=''; bookPubDate.value=''">
-    Add
-  </button>
+  <form>
+    <div class="form-row">
+      <div class="col">
+        <input class="form-control" #bookTitle placeholder="Book Title"/>
+      </div>
+      <div class="col">
+        <input class="form-control" #bookUrl placeholder="URL"/>
+      </div>
+      <div class="col">
+        <input class="form-control" #bookPubDate
+               placeholder="Publication date"/>
+      </div>
+      <!-- (click) passes input values to add() and then clears input -->
+      <button class="btn btn-primary"
+              (click)="add(bookTitle.value, bookUrl.value, bookPubDate.value);
+                       bookTitle.value='';
+                       bookUrl.value='';
+                       bookPubDate.value='';
+                       bookTitle.value=''">
+        Add
+      </button>
+    </div>
+  </form>
 </div>
 
-<ul class="books">
-  <li *ngFor="let book of books">
-    <a routerLink="/books/{{book.id}}">
-      <span class="badge">{{book.id}}</span> {{book.title}}
-    </a>
-    <button class="delete" title="delete book"
-            (click)="delete(book)">x</button>
-  </li>
+<ul class="list-group books">
+  <li class="list-group-item book" *ngFor="let book of books">
+    <div class="book-item">
+     <a routerLink="/books/{{book.id}}">
+       <span class="badge badge-secondary badge-pill">{{book.id}}</span>
+       {{book.title}}
+     </a>
+    </div>
+     <button class="btn btn-secondary" title="delete book"
+             (click)="delete(book)">x</button>
+   </li>
 </ul>

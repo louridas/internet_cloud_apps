@@ -3,4 +3,5 @@ export class Review {
   book: number;
   title: string;
   text: string;
+  review_date: Date;
 }

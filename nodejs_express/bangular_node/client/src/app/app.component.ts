@@ -11,5 +11,4 @@ export class AppComponent {
   title = 'Bangular';
 
   constructor(private auth: AuthService) {}
-
 }

@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 
 import { catchError } from 'rxjs/operators';
 
-import { ErrorHandlingService } from '../errorhandling.service';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -17,7 +16,6 @@ export class LoginComponent {
 
   constructor(
     private auth: AuthService,
-    private eh: ErrorHandlingService,
     private router: Router
   ) { }
 
