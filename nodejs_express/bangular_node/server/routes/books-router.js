@@ -1,4 +1,3 @@
-"use strict;"
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
@@ -28,9 +27,9 @@ router.get('/', function(req, res, next) {
   if (req.query.title) {
     sql = 'SELECT * FROM djbr_book WHERE title LIKE '
       + pool.escape('%' + req.query.title + '%');
-    } else {
-      sql = 'SELECT * FROM djbr_book';
-    }
+  } else {
+    sql = 'SELECT * FROM djbr_book';
+  }
   pool.query(
     sql,
     (err, results, fields) => response_handler(err, res, results, next)    
@@ -44,7 +43,18 @@ router.post('/', function(req, res, next) {
     'url = ?, ' +
     'pub_year = ?',
     [ req.body.title, req.body.url, req.body.pub_year ],
-    (err, results, fields) => response_handler(err, res, results, next)
+    (err, results, fields) => {
+      var inserted_book = results;
+      if (!err) {
+	  inserted_book = {
+	    id: results.insertId,
+	    title: req.body.title,
+	    url: req.body.url,
+	    pub_year: req.body.pub_year
+	  }
+	}
+      response_handler(err, res, inserted_book, next);
+    }
   );
 });
 
@@ -71,7 +81,7 @@ router.get('/:book_id/reviews', function(req, res, next) {
     'SELECT * FROM djbr_review ' +
     'WHERE book_id = ?',
     [req.params.book_id],
-    (err, results, fields) => response_handler(err, res, results, next)    
+    (err, results, fields) => response_handler(err, res, results, next)
   );
 });
 

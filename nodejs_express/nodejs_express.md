@@ -21,43 +21,48 @@
 
 * Αν θέλουμε να ξεκινήσουμε μια νέα εφαρμογή με το Express από το
   μηδέν, δίνουμε:
-  ```bash
-  mkdir myapp
-  cd myapp
-  ```
+  
+   ```bash
+   mkdir myapp
+   cd myapp
+   ```
   
 * Στη συνέχεια αρχικοποιούμε την εφαρμογή δίνοντας:
-  ```bash
-  npm init
-  ```
+
+   ```bash
+   npm init
+   ```
   Αυτή τη στιγμή μπορούμε απλώς να δεχτούμε τις προτεινόμενες τιμές
   των παραμέτρων που μας εμφανίζονται.
   
 * Κατόπιν πρέπει να εγκαταστήσουμε το Express στον κατάλογο `myapp`
   και να το προσθέσουμε στις εξαρτήσεις της εφαρμογής:
-  ```bash
-  npm install express --save
-  ```
+  
+   ```bash
+   npm install express --save
+   ```
 
 
 ## Hello World
 
 * Το διάσημο Hello, World σε Express μπορούμε να το υλοποιήσουμε
   φτιάχνοντας ένα αρχείο `app.js` με τα εξής περιεχόμενα:
-  ```javascript
-  const express = require('express');
-  const app = express();
+  
+   ```javascript
+   const express = require('express');
+   const app = express();
 
-  app.get('/', (req, res) => res.send('Hello World!'));
+   app.get('/', (req, res) => res.send('Hello World!'));
 
-  app.listen(3000, () => console.log('Example app listening on port 3000!'));
-  ```
+   app.listen(3000, () => console.log('Example app listening on port 3000!'));
+   ```
   
 * Για να τρέξουμε τον εξυπηρετητή που υλοποιεί το πρόγραμμα αυτό
   δίνουμε:
-  ```bash
-  node app.js
-  ```
+  
+   ```bash
+   node app.js
+   ```
 
 # Δρομολόγηση
 
@@ -66,9 +71,10 @@
 * Η δρομολόγηση στο Express λειτουργεί με βάση ορισμούς διαδρομών.
 
 * Οι ορισμοί αυτοί έχουν τη μορφή:
-  ```javascript
-  app.METHOD(PATH, HANDLER)
-  ```
+
+   ```javascript
+   app.METHOD(PATH, HANDLER)
+   ```
   
 <div class="notes">
 
@@ -89,34 +95,38 @@
 ## Παραδείγματα διαδρομών (1)
 
 * Εμφάνιση `Hello, World!` στην κεντρική σελίδα:
-  ```javascript
-  app.get('/', function (req, res) {
-    res.send('Hello World!')
-  })
-  ```
+
+   ```javascript
+   app.get('/', function (req, res) {
+     res.send('Hello World!')
+   })
+   ```
   
 * Απόκριση σε POST στην κεντρική σελίδα:
-  ```javascript
-  app.post('/', function (req, res) {
-    res.send('Got a POST request')
-  })
-  ```
+
+   ```javascript
+   app.post('/', function (req, res) {
+     res.send('Got a POST request')
+   })
+   ```
   
 ## Παραδείγματα διαδρομών (2)
 
 * Απόκριση σε POST στη διαδρομή `/user`:
-  ```javascript
-  app.put('/user', function (req, res) {
-    res.send('Got a PUT request at /user')
-  })
-  ```
+
+   ```javascript
+   app.put('/user', function (req, res) {
+     res.send('Got a PUT request at /user')
+   })
+   ```
   
 * Απόκριση σε DELETE στη διαδρομή `/user`:
-  ```javascript
-  app.delete('/user', function (req, res) {
-    res.send('Got a DELETE request at /user')
-  })
-  ```
+
+   ```javascript
+   app.delete('/user', function (req, res) {
+     res.send('Got a DELETE request at /user')
+   })
+   ```
 
 ## Σύνταξη διαδρομών
 
@@ -131,80 +141,89 @@
 ## Παραδείγματα σύνταξης (1)
 
 * Περιγράφει τη διαδρομή `/random.txt`:
-  ```javascript
-  app.get('/random.text', function (req, res) {
-    res.send('random.text')
-  })
-  ```
+
+   ```javascript
+   app.get('/random.text', function (req, res) {
+     res.send('random.text')
+   })
+   ```
 
 * Περιγράφει τις διαδρομές `acd`, `abcd`, `abbbcd`, κ.λπ.:
-  ```javascript
-  app.get('/ab?cd', function (req, res) {
-    res.send('ab+cd')
-  })
-  ```
+
+   ```javascript
+   app.get('/ab?cd', function (req, res) {
+     res.send('ab+cd')
+   })
+   ```
 
 * Περιγράφει τις διαδρομές `abcd`, `abbcd`, `abbbcd`, κ.λπ.:
-  ```javascript
-  app.get('/ab+cd', function (req, res) {
-    res.send('ab+cd')
-  })
-  ```
 
+   ```javascript
+   app.get('/ab+cd', function (req, res) {
+     res.send('ab+cd')
+   })
+   ```
 
 ## Παραδείγματα σύνταξης (2)
 
 
 * Περιγράφει τις διαδρομές `abcd`, `abxcd`, `abRANDOMcd`, κ.λπ.:
-  ```javascript
-  app.get('/ab*cd', function (req, res) {
-    res.send('ab*cd')
-  })
-  ```
+
+   ```javascript
+   app.get('/ab*cd', function (req, res) {
+     res.send('ab*cd')
+   })
+   ```
 
 * Περιγράφει τις διαδρομές `abe` και `abcde`:
-  ```javascript
-  app.get('/ab(cd)?e', function (req, res) {
-    res.send('ab(cd)?e')
-  })
-  ```
+
+   ```javascript
+   app.get('/ab(cd)?e', function (req, res) {
+     res.send('ab(cd)?e')
+   })
+   ```
 
 ## Παραδείγματα σύνταξης με κανονικές εκφράσεις
 
 
 * Περιγράφει τις διαδρομές που περιέχουν `a`:
-  ```javascript
-  app.get('/a/, function (req, res) {
-    res.send('/a/')
-  })
-  ```
+
+   ```javascript
+   app.get('/a/, function (req, res) {
+     res.send('/a/')
+   })
+   ```
 
 * Περιγράφει τις διαδρομές `butterfly` και `dragonfly`, αλλά όχι
   `butterflyman`,  `dragonflyman`, κ.λπ.:
-  ```javascript
-  app.get(/.*fly$/, function (req, res) {
-    res.send('/.*fly$/')
-  })
-  ```
+  
+   ```javascript
+   app.get(/.*fly$/, function (req, res) {
+     res.send('/.*fly$/')
+   })
+   ```
   
 ## Παράμετροι διαδρομών
 
 * Οι διαδρομές που ορίζουμε μπορεί να είναι παραμετροποιημένες:
-  ```javascript
-  app.get('/users/:userId/books/:bookId', function (req, res) {
-    res.send(req.params)
-  })
-  ```
+
+   ```javascript
+   app.get('/users/:userId/books/:bookId', function (req, res) {
+     res.send(req.params)
+   })
+   ```
 
 * Στο παράδειγμα αυτό, το αντικείμενο `req.params` περιέχει τις τιμές
   των παραμέτρων. Π.χ. αν το URL είναι:
-  ```
-  http://localhost:3000/users/34/books/8989
-  ```
+  
+   ```
+   http://localhost:3000/users/34/books/8989
+   ```
   το `req.params` θα είναι:
-  ```
-  { "userId": "34", "bookId": "8989" }
-  ```
+  
+   ```
+   { "userId": "34", "bookId": "8989" }
+   ```
 
 ## Χειρισμός σώματος αίτησης
 
@@ -215,19 +234,11 @@
   
 * Ο χειρισμός μιας αίτησης γίνεται μέσω βιβλιοθηκών.
 
-* Για τον χειρισμό του σώματος των αιτήσεων χρησιμοποιούμε τη
-  βιβλιοθήκη [body-parser](https://github.com/expressjs/body-parser).
-  
 * Για να χειριστούμε αιτήσεις JSON γράφουμε στην εφαρμογή μας:
-  ```javascript
-  app.use(bodyParser.json());
-  ```
-  
-* Για να χειριστούμε την υποβολή παραδοσιακής φόρμας γράφουμε στην
-  εφαρμογή μας:
-  ```javascript
-  app.use(bodyParser.urlencoded({ extended: false }));
-  ```
+
+   ```javascript
+   app.use(express.json());
+   ```
 
 ## express.Router
 
@@ -248,40 +259,42 @@
 
 * Έστω ότι φτιάχνουμε ένα αρχείο `birds.js` στον κατάλογο της
   εφαρμογής μας:
-  ```javascript
-  var express = require('express');
-  var router = express.Router();
-
-  // middleware that is specific to this router
-  router.use(function timeLog (req, res, next) {
-    console.log('Time: ', Date.now());
-    next();
-  });
   
-  // define the home page route
-  router.get('/', function (req, res) {
-    res.send('Birds home page');
-  });
-  
-  // define the about route
-  router.get('/about', function (req, res) {
-    res.send('About birds');
-  });
+   ```javascript
+   var express = require('express');
+   var router = express.Router();
 
-  module.exports = router
-  ```
+   // middleware that is specific to this router
+   router.use(function timeLog (req, res, next) {
+     console.log('Time: ', Date.now());
+     next();
+   });
+
+   // define the home page route
+   router.get('/', function (req, res) {
+     res.send('Birds home page');
+   });
+
+   // define the about route
+   router.get('/about', function (req, res) {
+     res.send('About birds');
+   });
+
+   module.exports = router
+   ```
 
 ## Παράδειγμα express.Router (2)
 
 * Τότε, για να το χρησιμοποιήσουμε, αρκεί να συμπεριλάβουμε τα
   παρακάτω στο `app.js`:
-  ```javascript
-  var birds = require('./birds')
+  
+   ```javascript
+   var birds = require('./birds')
 
-  // ...
+   // ...
 
-  app.use('/birds', birds)
-  ```
+   app.use('/birds', birds)
+   ```
   
 * Με αυτό, η εφαρμογή θα μπορεί να χειριστεί αιτήσεις στο `/birds` και
   στο `/birds/about`, ενώ σε κάθε μία τέτοια αίτηση θα καλείται και η
@@ -312,36 +325,39 @@
 ## Παράδειγμα middleware (1)
 
 * Η παρακάτω συνάρτηση εκτελείται κάθε φορά που λαμβάνεται μια αίτηση:
-  ```javascript
-  var app = express()
 
-  app.use(function (req, res, next) {
-    console.log('Time:', Date.now());
-    next();
-  })
-  ```
+   ```javascript
+   var app = express()
+
+   app.use(function (req, res, next) {
+     console.log('Time:', Date.now());
+     next();
+   })
+   ```
 
 ## Παράδειγμα middleware (2)
 
 * Η παρακάτω συνάρτηση αναρτάται στη διαδρομή `/user/:id`. Θα
   εκτελεστεί για κάθε αίτηση σε αυτή τη διαδρομή:
-  ```javascript
-  app.use('/user/:id', function (req, res, next) {
-    console.log('Request Type:', req.method);
-    next();
-  })
-  ```
+  
+   ```javascript
+   app.use('/user/:id', function (req, res, next) {
+     console.log('Request Type:', req.method);
+     next();
+   })
+   ```
   
 ## Middleware και χειρισμός λαθών
 
 * Αν η συνάρτησή μας παίρνει τέσσερες παραμέτρους, η πρώτη αντιστοιχεί
   σε κάποιο λάθος που έχει εμφανιστεί:
-  ```javascript
-  app.use(function (err, req, res, next) {
-    console.error(err.stack)
-    res.status(500).send('Something broke!')
-  })
-  ```
+  
+   ```javascript
+   app.use(function (err, req, res, next) {
+     console.error(err.stack)
+     res.status(500).send('Something broke!')
+   })
+   ```
   
 # Γεννήτρια εφαρμογών
   
@@ -378,30 +394,32 @@
   Angular.
 
 </div>
- 
-
 
 
 ## Εγκατάσταση και εκκίνηση 
 
 * Μετακινούμαστε στον κατάλογο `bangular_node` που δημιουργήθηκε, και
   εγκαθιστούμε όλα τα απαραίτητα πακέτα:
-  ```bash
-  cd bangular_node
-  npm install
-  ```
+  
+   ```bash
+   cd bangular_node
+   npm install
+   ```
 
 * Για να τρέξουμε την εφαρμογή σε MacOS ή Linux, δίνουμε:
-  ```bash
-  DEBUG=bangular_node:* npm start
-  ```
+
+   ```bash
+   DEBUG=bangular_node:* npm start
+   ```
   
 * Για να τρέξουμε την εφαρμογή σε MS-Windows, δίνουμε:
-  ```bash
-  set DEBUG=bangular_node:* & npm start
-  ```
+
+   ```bash
+   set DEBUG=bangular_node:* & npm start
+   ```
   
 * Η εφαρμογή μας θα τρέχει στη διεύθυνση `http://localhost:3000`.
+
 
 ## Δομή Εφαρμογής
 
@@ -444,9 +462,9 @@ bangular_node
     
 * Για να λειτουργεί η αυτόματη επαναφόρτωση, θα δίνουμε:
 
-  ```bash
-  nodemon ./bin/www
-  ```
+   ```bash
+   nodemon ./bin/www
+   ```
 
 <div class="notes">
 
@@ -485,12 +503,31 @@ npm install --save-dev nodemon
    var indexRouter = require('./routes/index');
    var usersRouter = require('./routes/users');
    ```
-  και τις δύο γραμμές:
+  τις δύο γραμμές:
 
    ```javascript
    app.use('/', indexRouter);
    app.use('/users', usersRouter);
    ```
+  
+  και την:
+  
+   ```javascript
+   app.use(express.urlencoded({ extended: false }));
+   ```
+
+<div class="notes">
+
+Η γραμμή:
+
+```javascript
+app.use(express.urlencoded({ extended: false }));
+```
+
+χρειάζεται για το χειρισμό υποβολής δεδομένων με παραδοσιακούς
+τρόπους, όχι μέσω JSON όπως τώρα.
+
+</div>
 
 ## `app.js`
 
@@ -525,12 +562,12 @@ module.exports = app;
    var router = require('./routes/router');
    ```
 
-* Στη συνέχεια, προσθέτουμε μετά από τη γραμμή:
+* Στη συνέχεια, προσθέτουμε προς το τέλος, πριν από τη γραμμή:
 
    ```javascript
-   app.use(bodyParser.json());
+   module.exports = app;
    ```
-   
+
   τη γραμμή:
   
    ```javascript
@@ -539,53 +576,36 @@ module.exports = app;
 
 ## `app.js`
 
-***
+```javascript
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
 
-## `routes/router.js`
+var router = require('./routes/router');
 
-* Στο αρχείο `routes/router.js` θα βάλουμε προς το παρόν απλώς λίγο
-  κώδικα για να μας επιστρέφει κάποια βιβλία:
-  
-  ```javascript
-  const express = require('express');
-  const router = express.Router();
+var app = express();
 
-  const books = [
-    { id: 11, title: 'Infinite Jest', pub_year: 1996},
-    { id: 12, title: 'Oblivion', pub_year: 2004 },
-    { id: 13, title: 'Ulysses', pub_year: 1922 },
-    { id: 14, title: 'The Crying of Lot 49', pub_year: 1966 },
-    { id: 15, title: 'City on Fire', pub_year: 2015 },
-    { id: 16, title: 'The Narrow Road to the Deep North', pub_year: 2013 },
-    { id: 17, title: 'The Dispossessed', pub_year: 1974 },
-    { id: 18, title: 'The Left Hand of Darkness', pub_year: 1969 },
-    { id: 19, title: 'A Death in the Family: My Struggle Book 1',
-      pub_year: 2013 },
-    { id: 20, title: 'A Man in Love: My Struggle Book 2', pub_year: 2013 }
-  ];
+app.use(logger('dev'));
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-  router.get('/books', function(req, res) {
-    res.json(books);
-  });
+app.use('/api', router);
 
-  module.exports = router;
-  ```
+app.use(function (err, req, res, next) {
+  if (err) {
+    console.error(err.code);
+    if (err.sql) {
+      console.log('While executing: ' + err.sql);
+      console.log(err.sqlMessage);
+    }
+    res.status(500).send({'message': 'Something broke!'});
+  }
+});
 
-## Εκκίνηση της εφαρμογής
-
-* Για να ξεκινήσουμε την εφαρμογή δίνουμε:
-  ```bash
-  DEBUG=bangular_node:* npm start
-  ```
-
-* Για να ξεκινήσουμε την εφαρμογή μας με αυτόματη επαναφόρτωση
-  δίνουμε:
-  ```bash
-  DEBUG=bangular_node:* npm run start-watch
-  ```
-    
-* Η εφαρμογή μας ξεκινάει στη θύρα 3000 (δηλαδή,
-  [http://localhost:3000](http://localhost:3000)).
+module.exports = app;
+```
 
 ## Έλεγχος της εφαρμογής
 
@@ -622,7 +642,7 @@ module.exports = app;
    const mysql = require('mysql');
    const fs = require('fs');
 
-   const configPath = './db_config.json';
+   const configPath = './config-db.json';
    const dbConfig = JSON.parse(fs.readFileSync(configPath, 'UTF-8'));
 
    const pool  = mysql.createPool({
@@ -639,14 +659,14 @@ module.exports = app;
 ## Ευαίσθητα δεδομένα
 
 * Τα ευαίσθητα δεδομένα της σύνδεσης, τα αποθηκεύουμε σε ένα άλλο
-  αρχείο, `db_config.json`, το οποίο *δεν* συμπεριλαμβάνουμε στο
+  αρχείο, `config-db.json`, το οποίο *δεν* συμπεριλαμβάνουμε στο
   αποθετήριο:
   
    ```javascript
    {
      "host" : "127.0.0.1",
      "user" : "djbr_user",
-     "password" : "whateverthisis",
+     "password" : "g8nzmktk6y",
      "database" : "djbr"
    }
    ```
@@ -663,6 +683,8 @@ ALTER USER 'djbr_user'@'localhost' IDENTIFIED WITH
 mysql_native_password BY 'whateverthisis';
 ```
 
+</div>
+
 # Υλοποίηση διασυνδεμένης εφαρμογής
 
 ## Διαδρομή βιβλίων
@@ -676,7 +698,7 @@ mysql_native_password BY 'whateverthisis';
 
    const books_router = require('./books-router');
 
-   router.use(books_router);
+   router.use('/books', books_router);
 
    module.exports = router;
    ```
@@ -692,14 +714,15 @@ mysql_native_password BY 'whateverthisis';
 * Για να το κάνουμε αυτό, φτιάχνουμε ένα αρχείο
   `routes/books-router.js` όπως ακολούθως.
 
-## `routes/books-router.js`
+
+## `routes/books-router.js` (1)
 
 ```javascript
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 
-router.get('/books', function(req, res) {
+router.get('/', function(req, res) {
   pool.getConnection(function(err, connection) {
     if (err) {
       res.send(err);
@@ -720,7 +743,47 @@ router.get('/books', function(req, res) {
 module.exports = router;
 ```
 
-## Εισαγωγή βιβλίου
+## Βελτίωση Ανάκτησης Βιβλίων
+
+* Ο παραπάνω κώδικας μπορεί να απλοποιηθεί σημαντικά.
+
+* Μπορούμε να χρησιμοποιήσουμε τη μέθοδο `pool.query()` με την οποία
+  η διαχείριση της σύνδεσης αυτοματοποιείται.
+  
+* Επίσης, θα γράψουμε μια βοηθητική συνάρτηση την οποία θα χρησιμοποιούμε 
+  για την αποστολή δεδομένων (γιατί το ίδιο πράγμα θα κάνουμε σε όλες
+  τις διαδρομές).
+  
+* Τέλος, θα υλοποιήσουμε και την αναζήτηση με βάση τίτλου.
+  
+## Βελτιωμένη Ανάκτηση Βιβλίων
+
+```javascript
+function response_handler(err, res, results,  next) {
+  if (!err) {
+    res.send(results);
+  } else {
+    next(err);
+  } 
+}
+
+router.get('/', function(req, res, next) {
+  var sql;
+  if (req.query.title) {
+    sql = 'SELECT * FROM djbr_book WHERE title LIKE '
+      + pool.escape('%' + req.query.title + '%');
+  } else {
+    sql = 'SELECT * FROM djbr_book';
+  }
+  pool.query(
+    sql,
+    (err, results, fields) => response_handler(err, res, results, next)
+  );
+});
+
+```
+
+## Εισαγωγή Βιβλίου (1)
 
 * Για την εισαγωγή ενός βιβλίου, θα υλοποιήσουμε ένα χειριστή της
   μεθόδου POST.
@@ -732,49 +795,33 @@ module.exports = router;
    module.exports =  router;
    ```
 
-## `routes/books-router.js`
+## Εισαγωγή Βιβλίου (2)
 
 ```javascript
-router.post('/books', function(req, res) {
-  pool.getConnection(function(err, connection) {
-    if (err) {
-      res.send(err);
-      return;
+router.post('/', function(req, res, next) {
+  pool.query(
+    'INSERT INTO djbr_book SET ' +
+    'title = ?, ' +
+    'url = ?, ' +
+    'pub_year = ?',
+    [ req.body.title, req.body.url, req.body.pub_year ],
+    (err, results, fields) => {
+      var inserted_book = results;
+      if (!err) {
+	  inserted_book = {
+	    id: results.insertId,
+	    title: req.body.title,
+	    url: req.body.url,
+	    pub_year: req.body.pub_year
+	  }
+	}
+      response_handler(err, res, inserted_book, next);
     }
-    connection.query('INSERT INTO djbr_book SET ' +
-      'title = ?, ' +
-      'pub_year = ?',
-      [ req.body.title, req.body.pub_year ],
-      function(err, results, fields) {
-        if (err) {
-          res.send(err);
-        } else {
-          res.send(results);
-        }
-        connection.release();
-    });
-  });
+  );
 });
 ```
 
-## POST με Postman
-
-* Για να κάνουμε ένα  HTTP POST request με το postman, πρέπει να
-  ορίσουμε σωστά την αίτηση.
-
-* Επιλέγουμε τύπο αίτησης POST.
-
-* Επιλέγουμε Body.
-
-* Από κάτω, επιλέγουμε raw.
-
-* Στο dropdown menu που θα εμφανιστεί, επιλέγουμε JSON
-  (application/json)
-
-* Από κάτω εισάγουμε σε JSON το σώμα της αίτησης.
-
-
-## Εύρεση συγκεκριμένου βιβλίου
+## Εύρεση Συγκεκριμένου Βιβλίου (1)
 
 * Η εύρεση συγκεκριμένου βιβλίου, με βάση τον κωδικό του, κατά το
   πρότυπο REST θα είναι μέσω αίτησης GET σε URLs της μορφής:
@@ -789,31 +836,20 @@ router.post('/books', function(req, res) {
   `books-router.js`.
 
 
-## `routes/books-router.js`
+## Εύρεση Συγκεκριμένου Βιβλίου (2)
 
 ```javascript
-router.get('/books/:book_id', function(req, res) {
-  pool.getConnection(function(err, connection) {
-    if (err) {
-      res.send(err);
-      return;
-    }
-    connection.query('SELECT * FROM djbr_book ' +
-      'WHERE id = ?',
-      [req.params.book_id],
-      function(err, results, fields) {
-        if (err) {
-          res.send(err);
-        } else {
-          res.send(results);
-        }
-        connection.release();
-    });
-  });
+router.get('/:book_id', function(req, res, next) {
+  pool.query(
+    'SELECT * FROM djbr_book ' +
+    'WHERE id = ?',
+    [req.params.book_id],
+    (err, results, fields) => response_handler(err, res, results, next)
+  );
 });
 ```
 
-## Διαγραφή βιβλίου
+## Διαγραφή Bιβλίου (1)
 
 * Η διαγραφή συγκεκριμένου βιβλίου, με βάση τον κωδικό του, κατά το
   πρότυπο REST θα είναι μέσω αίτησης DELETE σε URLs της μορφής
@@ -828,70 +864,29 @@ router.get('/books/:book_id', function(req, res) {
   `books-router.js`.
 
 
-## `routes/books-router.js`
+## Διαγραφή Bιβλίου (2) 
 
 ```javascript
-router.delete('/books/:book_id', function(req, res) {
-  pool.getConnection(function(err, connection) {
-    if (err) {
-      res.send(err);
-      return;
-    }
-    connection.query('DELETE FROM djbr_book ' +
-      'WHERE id = ?',
-      [req.params.book_id],
-      function(err, results, fields) {
-        if (err) {
-          res.send(err);
-        } else {
-          res.send(results);
-        }
-        connection.release();
-    });
-  });
+router.delete('/:book_id', function(req, res, next) {
+  pool.query(
+    'DELETE FROM djbr_book ' +
+    'WHERE id = ?',
+    [req.params.book_id],
+    (err, results, fields) => response_handler(err, res, results, next)
+  );
 });
 ```
 
-## Αναζήτηση βιβλίου με βάση τίτλο
-
-* Η αναζήτηση βιβλίου με βάση συγκεκριμένο τίτλο θα γίνει, κατά το
-  πρότυπο REST, μέσω αίτησης GET της μορφής:
-  
-   ```javascript
-   api/book?title=:book_title
-   ```
-   
-  όπου ο τίτλος αντιστοιχεί στον όρο αναζήτησης του τίτλου.
-
-* Αυτό το χειριζόμαστε αλλάζοντας κατάλληλα τον χειριστή της αίτησης
-  GET `/books`.
-
-## `routes/books-router.js`
+## Αναζήτηση Κριτικών
 
 ```javascript
-router.get('/books', function(req, res) {
-  pool.getConnection(function(err, connection) {
-    var sql;
-    if (err) {
-      res.send(err);
-      return;
-    }
-    if (req.query.title) {
-      sql = 'SELECT * FROM djbr_book WHERE title LIKE '
-        + connection.escape('%' + req.query.title + '%');
-    } else {
-      sql = 'SELECT * FROM djbr_book';
-    }
-    connection.query(sql,
-      function(err, results, fields) {
-        if (err) {
-          res.send(err);
-        } else {
-          res.send(results);
-        }
-        connection.release();
-    });
-  });
+router.get('/:book_id/reviews', function(req, res, next) {
+  pool.query(
+    'SELECT * FROM djbr_review ' +
+    'WHERE book_id = ?',
+    [req.params.book_id],
+    (err, results, fields) => response_handler(err, res, results, next)
+  );
 });
 ```
 
@@ -905,3 +900,185 @@ router.get('/books', function(req, res) {
   ```javascript
   "target": "http://localhost:3000"
   ```
+
+#  Έλεγχος Πρόσβασης
+
+## passport
+
+* Ο έλεγχος πρόσβασης στις εφαρμογές express γίνεται με τη βιβλιοθήκη
+  [passport](http://www.passportjs.org/).
+  
+* Η βιβλιοθήκη αυτή περιλαμβάνει υλοποιήσεις για περισσότερες από 500
+  στρατηγικές ελέγχου!
+  
+* Για να την εγκαταστήσουμε δίνουμε:
+
+   ```bash
+   npm install passport
+   ```
+   
+## passport και JWT
+
+* Εμείς θα χρησιμοποιήσουμε JWT.
+
+* Συνεπώς θα εγκαταστήσουμε τη σχετική στρατηγική
+  [passport-jwt](http://www.passportjs.org/packages/passport-jwt/):
+  
+   ```javascript
+   npm install passport-jwt
+   ```
+   
+## `config-jwt.js`
+
+* Το JWT χρησιμοποιεί ένα μυστικό για την υπογραφή των tokens.
+
+* Σε αντιστοιχία με τις ρυθμίσεις της βάσης, φτιάχνουμε ένα αρχείο
+  `config-jwt.js` στο οποίο γράφουμε, για παράδειγμα:
+  
+   ```javascript
+   module.exports = {
+     'secret': 'khjih89klhjinaxolklasd2knasd'
+   }
+   ```
+
+## Προσαρμογή `books-router.js`
+
+* Κοντά στην αρχή του `books-router.js` προσθέτουμε
+
+   ```javascript
+   const config_jwt = require('../config-jwt');
+
+   var JwtStrategy = require('passport-jwt').Strategy,
+       ExtractJwt = require('passport-jwt').ExtractJwt;
+   var opts = {}
+   opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+   opts.secretOrKey = config_jwt.secret;
+
+   passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
+     return done(null, true);
+   }));
+   ```
+
+## Εισαγωγή Κριτικής
+
+```javascript
+router.post(
+  '/:book_id/reviews',
+  passport.authenticate('jwt', {session: false}),
+  function(req, res, next) {
+    var review_date = new Date();
+    pool.query(
+      'INSERT INTO djbr_review SET ' +
+      'book_id = ?, ' +	
+      'title = ?, ' +
+      'text = ?, ' +
+      'review_date = ?',
+      [ req.params.book_id, req.body.title, req.body.text, review_date ],
+      (err, results, fields) => {
+	var inserted_review = results;
+	if (!err) {
+	  inserted_review = {
+	    id: results.insertId,
+	    book_id: req.params.book_id,
+	    title: req.body.title,
+	    text: req.body.text,
+	    review_date: review_date
+	  }
+	}
+	response_handler(err, res, inserted_review, next);
+      }
+    );
+});
+```
+
+<div class="notes">
+
+Ο έλεγχος γίνεται από τη γραμμή:
+
+```javascript
+passport.authenticate('jwt', {session: false}),
+```
+
+</div>
+
+## Είσοδος Χρήστη (1)
+
+* Για την είσοδο του χρήστη θα χρησιμοποιήσουμε έναν νέο δρομολογητή.
+
+* Ο δρομολογητής θα ελέγχει το username και το password του χρήστη και
+  θα επιστρέφει, αν όλα είναι σωστά, ένα JWT token.
+
+* Τον δρομολογητή θα τον αποθηκεύσουμε στο αρχείο `routes/login-router.js`
+
+* Το αρχείο το συμπεριλαμβάνουμε στο αρχείο `routes/router.js`:
+
+```javascript
+router.use('/token', login_router);
+```
+
+## `login-router.js`
+
+```javascript
+const express = require('express');
+const crypto = require('crypto');
+const router = express.Router();
+const pool = require('../db');
+const jwt = require('jsonwebtoken');
+const config_jwt = require('../config-jwt');
+
+router.post('/', function(req, res, next) {
+  var stored_password, plaintext_password;
+  var algorithm, iterations, salt, hash;
+  const hash_length = 32;
+  var username = req.body.username;
+  var plaintext_password = req.body.password;
+
+  pool.query(
+    'SELECT * FROM auth_user ' +
+    'WHERE username = ?',
+    [username],
+    (err, results, fields) => {
+      if (err) {
+        next(err);
+        return;
+      }
+      if (results.length == 0) { // User not found
+        res.status(401).send('Wrong username');
+        return;
+      }
+      // User found
+      stored_password = results[0]['password'];
+      [ algorithm, iterations, salt, hash ] = stored_password.split('$');
+      // Check password
+      crypto.pbkdf2(
+        plaintext_password, salt, +iterations, hash_length, 'sha256',
+        (err, derived_hash) => {
+          if (err) { // Could not check password
+            next(err);
+            return;
+          }
+          let encoded_hash = derived_hash.toString('base64');
+          if (encoded_hash == hash) {
+            let token = jwt.sign(
+              {username: username},
+              config_jwt.secret,
+              (err, token) => {
+                if (err) {
+                  next(err);
+                  return;
+                }
+                res.send({access: token});
+              }
+            );
+          } else {
+            res.status(401).send('Wrong password');
+          }
+        } // end crypt.pbkdf2() callback
+      ); // end crypt.pbkdf2()
+    } // end pool.query() callback
+  ); // end pool.query()
+});
+
+
+module.exports = router;
+```
