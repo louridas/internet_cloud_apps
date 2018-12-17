@@ -17,7 +17,7 @@
   (όπως έλεγχος πρόσβασης).
 
 
-## Δημιουργία νέας εφαρμογής
+## Δημιουργία Νέας Εφαρμογής
 
 * Αν θέλουμε να ξεκινήσουμε μια νέα εφαρμογή με το Express από το
   μηδέν, δίνουμε:
@@ -66,7 +66,7 @@
 
 # Δρομολόγηση
 
-## Βασικές αρχές
+## Βασικές Αρχές
 
 * Η δρομολόγηση στο Express λειτουργεί με βάση ορισμούς διαδρομών.
 
@@ -92,7 +92,7 @@
 </div>
 
 
-## Παραδείγματα διαδρομών (1)
+## Παραδείγματα Διαδρομών (1)
 
 * Εμφάνιση `Hello, World!` στην κεντρική σελίδα:
 
@@ -110,7 +110,7 @@
    })
    ```
   
-## Παραδείγματα διαδρομών (2)
+## Παραδείγματα Διαδρομών (2)
 
 * Απόκριση σε POST στη διαδρομή `/user`:
 
@@ -128,7 +128,7 @@
    })
    ```
 
-## Σύνταξη διαδρομών
+## Σύνταξη Διαδρομών
 
 * Οι διαδρομές μπορεί να είναι συμβολοσειρές, ή μοτίβα, ή κανονικές
   εκφράσεις.
@@ -138,7 +138,7 @@
   την ερμηνεία των διαδρομών.
 
 
-## Παραδείγματα σύνταξης (1)
+## Παραδείγματα Μοτίβων (1)
 
 * Περιγράφει τη διαδρομή `/random.txt`:
 
@@ -148,11 +148,11 @@
    })
    ```
 
-* Περιγράφει τις διαδρομές `acd`, `abcd`, `abbbcd`, κ.λπ.:
+* Περιγράφει τις διαδρομές `acd` και `abcd`:
 
    ```javascript
    app.get('/ab?cd', function (req, res) {
-     res.send('ab+cd')
+     res.send('ab?cd')
    })
    ```
 
@@ -164,7 +164,7 @@
    })
    ```
 
-## Παραδείγματα σύνταξης (2)
+## Παραδείγματα Μοτίβων (2)
 
 
 * Περιγράφει τις διαδρομές `abcd`, `abxcd`, `abRANDOMcd`, κ.λπ.:
@@ -183,7 +183,7 @@
    })
    ```
 
-## Παραδείγματα σύνταξης με κανονικές εκφράσεις
+## Παραδείγματα Κανονικών Εκφράσεων
 
 
 * Περιγράφει τις διαδρομές που περιέχουν `a`:
@@ -203,7 +203,7 @@
    })
    ```
   
-## Παράμετροι διαδρομών
+## Παράμετροι Διαδρομών
 
 * Οι διαδρομές που ορίζουμε μπορεί να είναι παραμετροποιημένες:
 
@@ -225,7 +225,7 @@
    { "userId": "34", "bookId": "8989" }
    ```
 
-## Χειρισμός σώματος αίτησης
+## Χειρισμός Σώματος Αίτησης
 
 * Το σώμα της αίτησης βρίσκεται στο αντικείμενο `req.body`.
 
@@ -301,9 +301,7 @@
   συνάρτηση `timeLog()`.
 
 
-# Middleware
-
-## Έννοια middleware
+## Έννοια Middleware
 
 * Το middleware είναι μια βασική αρχιτεκτονική επιλογή του Express.
 
@@ -322,7 +320,7 @@
   τερμάτιζε εκεί.
 
 
-## Παράδειγμα middleware (1)
+## Παράδειγμα Middleware (1)
 
 * Η παρακάτω συνάρτηση εκτελείται κάθε φορά που λαμβάνεται μια αίτηση:
 
@@ -335,7 +333,7 @@
    })
    ```
 
-## Παράδειγμα middleware (2)
+## Παράδειγμα Middleware (2)
 
 * Η παρακάτω συνάρτηση αναρτάται στη διαδρομή `/user/:id`. Θα
   εκτελεστεί για κάθε αίτηση σε αυτή τη διαδρομή:
@@ -347,7 +345,7 @@
    })
    ```
   
-## Middleware και χειρισμός λαθών
+## Middleware και Χειρισμός Λαθών
 
 * Αν η συνάρτησή μας παίρνει τέσσερες παραμέτρους, η πρώτη αντιστοιχεί
   σε κάποιο λάθος που έχει εμφανιστεί:
@@ -359,9 +357,9 @@
    })
    ```
   
-# Γεννήτρια εφαρμογών
+# Γεννήτρια Εφαρμογών
   
-## Express generator
+## Express Generator
 
 * Συνήθως δεν ξεκινάμε τη δημιουργία μιας νέας εφαρμογής από το μηδέν,
   όπως κάναμε παραπάνω.
@@ -369,7 +367,7 @@
 * Αντί γι' αυτό, χρησιμοποιούμε τον Express generator.
 
   
-## Δημιουργία εφαρμογής
+## Δημιουργία Εφαρμογής
 
 * Ξεκινάμε εγκαθιστώντας τον Express generator:
 
@@ -396,26 +394,26 @@
 </div>
 
 
-## Εγκατάσταση και εκκίνηση 
+## Εγκατάσταση και Εκκίνηση 
 
 * Μετακινούμαστε στον κατάλογο `bangular_node` που δημιουργήθηκε, και
   εγκαθιστούμε όλα τα απαραίτητα πακέτα:
   
    ```bash
-   cd bangular_node
+   cd server
    npm install
    ```
 
 * Για να τρέξουμε την εφαρμογή σε MacOS ή Linux, δίνουμε:
 
    ```bash
-   DEBUG=bangular_node:* npm start
+   DEBUG=server:* npm start
    ```
   
 * Για να τρέξουμε την εφαρμογή σε MS-Windows, δίνουμε:
 
    ```bash
-   set DEBUG=bangular_node:* & npm start
+   set DEBUG=server:* & npm start
    ```
   
 * Η εφαρμογή μας θα τρέχει στη διεύθυνση `http://localhost:3000`.
@@ -445,7 +443,7 @@ bangular_node
         └── users.js
 ```
 
-## Αυτόματη επανεκκίνηση σε αλλαγές
+## Αυτόματη Επανεκκίνηση σε Αλλαγές
 
 * Κατά την ανάπτυξη της εφαρμογής, είναι πρακτικό να φορτώνεται
   αυτόματα κάθε φορά που κάνουμε κάποιες αλλαγές στον κώδικά της
@@ -490,7 +488,7 @@ npm install --save-dev nodemon
 </div>
 
 
-## Καθάρισμα των αρχείων
+## Καθάρισμα των Αρχείων
 
 * To αρχείο `routes/users.js` είναι ένα υπόδειγμα, δεν θα μας
   χρειαστεί, οπότε μπορούμε να το σβήσουμε.
@@ -552,76 +550,9 @@ app.use('/api', router);
 module.exports = app;
 ```
 
-# Υλοποίηση bangular_node
+# Αποθήκευση Δεδομένων
 
-## Προσθήκη router
-
-* Στο αρχείο `app.js` προσθέτουμε κάπου στην αρχή τη γραμμή:
-
-   ```javascript
-   var router = require('./routes/router');
-   ```
-
-* Στη συνέχεια, προσθέτουμε προς το τέλος, πριν από τη γραμμή:
-
-   ```javascript
-   module.exports = app;
-   ```
-
-  τη γραμμή:
-  
-   ```javascript
-   app.use('/api', router);
-   ```
-
-## `app.js`
-
-```javascript
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-
-var router = require('./routes/router');
-
-var app = express();
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/api', router);
-
-app.use(function (err, req, res, next) {
-  if (err) {
-    console.error(err.code);
-    if (err.sql) {
-      console.log('While executing: ' + err.sql);
-      console.log(err.sqlMessage);
-    }
-    res.status(500).send({'message': 'Something broke!'});
-  }
-});
-
-module.exports = app;
-```
-
-## Έλεγχος της εφαρμογής
-
-* Για να δούμε ότι η εφαρμογή μας λειτουργεί σωστά, δίνουμε:
-  ```bash
-  http http://localhost:3000/api/books
-  ```
-  οπότε θα πρέπει να δούμε στην οθόνη μας τα βιβλία που έχουμε ορίσει.
-
-* Εναλλακτικά, μπορούμε να εγκαταστήσουμε την εφαρμογή
-  [Postman](https://www.getpostman.com/) για να ελέγχουμε το API μας. 
-
-
-# Αποθήκευση δεδομένων
-
-## Εγκατάσταση οδηγού MySQL
+## Εγκατάσταση Οδηγού MySQL
 
 * Για την αποθήκευση των δεδομένων μας μπορούμε να χρησιμοποιήσουμε
   ό,τι θέλουμε.
@@ -634,7 +565,7 @@ module.exports = app;
   npm install mysql
   ```
 
-## Σύνδεση με τη βάση
+## Σύνδεση με τη Βάση
 
 * Για να συνδεθούμε με τη βάση φτιάχνουμε το αρχείο `db.js`:
 
@@ -656,7 +587,7 @@ module.exports = app;
    module.exports = pool;
    ```
   
-## Ευαίσθητα δεδομένα
+## Ευαίσθητα Δεδομένα
 
 * Τα ευαίσθητα δεδομένα της σύνδεσης, τα αποθηκεύουμε σε ένα άλλο
   αρχείο, `config-db.json`, το οποίο *δεν* συμπεριλαμβάνουμε στο
@@ -685,12 +616,12 @@ mysql_native_password BY 'whateverthisis';
 
 </div>
 
-# Υλοποίηση διασυνδεμένης εφαρμογής
+# Υλοποίηση Διασυνδεμένης Εφαρμογής
 
-## Διαδρομή βιβλίων
+## Διαδρομή Βιβλίων
 
 * Για να ενταχθούν οι διαδρομές των βιβλίων στην εφαρμογή μας,
-  αλλάζουμε το αρχείο `routes/router.js` ως εξής:
+  δημιουργούμε το αρχείο `routes/router.js` ως εξής:
   
    ```javascript
    const express = require('express');
@@ -703,9 +634,9 @@ mysql_native_password BY 'whateverthisis';
    module.exports = router;
    ```
 
-## Ανάκτηση όλων των βιβλίων
+## Αναζήτηση Όλων των Βιβλίων
 
-* Για την ανάκτηση όλων των βιβλίων, θα υλοποιήσουμε ένα χειριστή της
+* Για την αναζήτηση όλων των βιβλίων, θα υλοποιήσουμε ένα χειριστή της
   μεθόδου GET.
 
 * Ο χειριστής απλά θα εκτελεί μια αναζήτηση στη βάση για το σύνολο των
@@ -743,7 +674,7 @@ router.get('/', function(req, res) {
 module.exports = router;
 ```
 
-## Βελτίωση Ανάκτησης Βιβλίων
+## Βελτίωση Αναζήτησης Βιβλίων
 
 * Ο παραπάνω κώδικας μπορεί να απλοποιηθεί σημαντικά.
 
@@ -753,10 +684,9 @@ module.exports = router;
 * Επίσης, θα γράψουμε μια βοηθητική συνάρτηση την οποία θα χρησιμοποιούμε 
   για την αποστολή δεδομένων (γιατί το ίδιο πράγμα θα κάνουμε σε όλες
   τις διαδρομές).
-  
-* Τέλος, θα υλοποιήσουμε και την αναζήτηση με βάση τίτλου.
-  
-## Βελτιωμένη Ανάκτηση Βιβλίων
+
+
+## Βελτιωμένη Αναζήτηση Βιβλίων 
 
 ```javascript
 function response_handler(err, res, results,  next) {
@@ -768,6 +698,32 @@ function response_handler(err, res, results,  next) {
 }
 
 router.get('/', function(req, res, next) {
+  pool.query(
+    'SELECT * FROM djbr_book',
+    (err, results, fields) => response_handler(err, res, results, next)
+  );
+});
+```
+
+## Αναζήτηση Βιβλίων και μέσω Τίτλου (1)
+
+* Στην εφαρμογή μας κάνουμε αναζητήσεις των βιβλίων και μέσω του τίτλου τους, 
+  στο typeahead component που έχουμε δημιουργήσει για την αναζήτηση.
+  
+* Οι αναζητήσεις γίνονται όταν το Angular στέλνει GET requests του τύπου:
+
+   ```
+   http://localhost:4200/api/books/?title=The
+   ```
+
+* Προσαρμόζουμε τη συνάρτηση που γράψαμε ώστε να εξυπηρετεί και
+  τέτοιες αναζητήσεις.
+
+
+## Ανάκτηση Βιβλίων και μέσω Τίτλου (2)
+
+```javascript
+router.get('/', function(req, res, next) {
   var sql;
   if (req.query.title) {
     sql = 'SELECT * FROM djbr_book WHERE title LIKE '
@@ -777,46 +733,7 @@ router.get('/', function(req, res, next) {
   }
   pool.query(
     sql,
-    (err, results, fields) => response_handler(err, res, results, next)
-  );
-});
-
-```
-
-## Εισαγωγή Βιβλίου (1)
-
-* Για την εισαγωγή ενός βιβλίου, θα υλοποιήσουμε ένα χειριστή της
-  μεθόδου POST.
-
-* Για να το κάνουμε αυτό, θα προσθέσουμε στο αρχείο
-  `routes/books-router.js` τα ακόλουθα, πριν από το:
-  
-   ```javascript
-   module.exports =  router;
-   ```
-
-## Εισαγωγή Βιβλίου (2)
-
-```javascript
-router.post('/', function(req, res, next) {
-  pool.query(
-    'INSERT INTO djbr_book SET ' +
-    'title = ?, ' +
-    'url = ?, ' +
-    'pub_year = ?',
-    [ req.body.title, req.body.url, req.body.pub_year ],
-    (err, results, fields) => {
-      var inserted_book = results;
-      if (!err) {
-	  inserted_book = {
-	    id: results.insertId,
-	    title: req.body.title,
-	    url: req.body.url,
-	    pub_year: req.body.pub_year
-	  }
-	}
-      response_handler(err, res, inserted_book, next);
-    }
+    (err, results, fields) => response_handler(err, res, results, next)    
   );
 });
 ```
@@ -888,6 +805,82 @@ router.get('/:book_id/reviews', function(req, res, next) {
     (err, results, fields) => response_handler(err, res, results, next)
   );
 });
+```
+
+## Εισαγωγή Βιβλίου (1)
+
+* Για την εισαγωγή ενός βιβλίου, θα υλοποιήσουμε ένα χειριστή της
+  μεθόδου POST.
+
+* Για να το κάνουμε αυτό, θα προσθέσουμε στο αρχείο
+  `routes/books-router.js` τα ακόλουθα, πριν από το:
+  
+   ```javascript
+   module.exports =  router;
+   ```
+
+## Εισαγωγή Βιβλίου (2)
+
+```javascript
+router.post('/', function(req, res, next) {
+  pool.query(
+    'INSERT INTO djbr_book SET ' +
+    'title = ?, ' +
+    'url = ?, ' +
+    'pub_year = ?',
+    [ req.body.title, req.body.url, req.body.pub_year ],
+    (err, results, fields) => {
+      var inserted_book = results;
+      if (!err) {
+	  inserted_book = {
+	    id: results.insertId,
+	    title: req.body.title,
+	    url: req.body.url,
+	    pub_year: req.body.pub_year
+	  }
+	}
+      response_handler(err, res, inserted_book, next);
+    }
+  );
+});
+```
+
+## Χειρισμός Λαθών
+
+* Για τον χειρισμό λαθών θα φτιάξουμε ένα γενικής χρήσης χειριστή στο
+  `app.js`.
+
+## `app.js`
+
+```javascript
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+
+var router = require('./routes/router');
+
+var app = express();
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/api', router);
+
+app.use(function (err, req, res, next) {
+  if (err) {
+    console.error(err.code);
+    if (err.sql) {
+      console.log('While executing: ' + err.sql);
+      console.log(err.sqlMessage);
+    }
+    res.status(500).send({'message': 'Something broke!'});
+  }
+});
+
+module.exports = app;
 ```
 
 ## Προσαρμογή Angular front-end
@@ -1082,3 +1075,18 @@ router.post('/', function(req, res, next) {
 
 module.exports = router;
 ```
+
+
+# Έλεγχος της Εφαρμογής
+
+## Postman
+
+* Για να δούμε ότι η εφαρμογή μας λειτουργεί σωστά, δίνουμε:
+  ```bash
+  http http://localhost:3000/api/books
+  ```
+  οπότε θα πρέπει να δούμε στην οθόνη μας τα βιβλία που έχουμε ορίσει.
+
+* Εναλλακτικά, μπορούμε να εγκαταστήσουμε την εφαρμογή
+  [Postman](https://www.getpostman.com/) για να ελέγχουμε το API μας. 
+
