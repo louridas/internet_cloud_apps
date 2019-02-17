@@ -312,7 +312,7 @@ export class AuthService {
   logout(): void {
     this.isLoggedIn = false;
     localStorage.removeItem('bangular-jwt-access-token');
-    localStorage.removeItem('bangular-jtw-refresh-token');
+    localStorage.removeItem('bangular-jwt-refresh-token');
   }
 
 }
